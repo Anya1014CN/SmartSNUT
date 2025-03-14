@@ -435,21 +435,21 @@ class _HomePageState extends State<HomePage>{
                       ),
                     ):
                     Image(image: AssetImage('assets/images/logo.png'),width: 60,height: 60,),
-                    destinations: const <NavigationRailDestination>[
+                    destinations: <NavigationRailDestination>[
                       NavigationRailDestination(
                         icon: Icon(Icons.home),
                         selectedIcon: Icon(Icons.home),
-                        label: Text('首页'),
+                        label: Text('首页',style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                       ),
                       NavigationRailDestination(
                         icon: Icon(Icons.touch_app),
                         selectedIcon: Icon(Icons.touch_app),
-                        label: Text('校内应用'),
+                        label: Text('校内应用',style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                       ),
                       NavigationRailDestination(
                         icon: Icon(Icons.person),
                         selectedIcon: Icon(Icons.person),
-                        label: Text('我的'),
+                        label: Text('我的',style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                       ),
                     ],
                   ),
