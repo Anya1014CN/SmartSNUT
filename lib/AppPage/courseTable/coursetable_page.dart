@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
@@ -1473,6 +1474,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ((index == 0)? false:((courseMonWeek[index - 1].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
                         Card(
+                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
                           child: SizedBox(
                             width: tableWidth,
                             height: ((index + 3 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 3].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1509,6 +1511,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ((index == 0)? false:((courseTueWeek[index - 1].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
                         Card(
+                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
                           child: SizedBox(
                             width: tableWidth,
                             height: ((index + 3 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 3].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1545,6 +1548,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ((index == 0)? false:((courseWedWeek[index - 1].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
                         Card(
+                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
                           child: SizedBox(
                             width: tableWidth,
                             height: ((index + 3 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 3].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1581,6 +1585,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ((index == 0)? false:((courseThuWeek[index - 1].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
                         Card(
+                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
                           child: SizedBox(
                             width: tableWidth,
                             height: ((index + 3 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 3].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1617,6 +1622,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ((index == 0)? false:((courseFriWeek[index - 1].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
                         Card(
+                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
                           child: SizedBox(
                             width: tableWidth,
                             height: ((index + 3 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 3].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1653,6 +1659,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ((index == 0)? false:((courseSatWeek[index - 1].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
                         Card(
+                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
                           child: SizedBox(
                             width: tableWidth,
                             height: ((index + 3 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 3].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1689,6 +1696,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ((index == 0)? false:((courseSunWeek[index - 1].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
                         Card(
+                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
                           child: SizedBox(
                             width: tableWidth,
                             height: ((index + 3 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 3].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 3][0]['CourseName'])? true:false):false)?
