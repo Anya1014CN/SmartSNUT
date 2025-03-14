@@ -86,16 +86,16 @@ class _SettingsPage extends State<SettingsPage>{
       ),
       body: ListView(
         children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
-            child: Row(
-              children: [
-                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/settings.png'):AssetImage('assets/icons/darktheme/settings.png'),height: 40,),
-                SizedBox(width: 10,),
-                Text('应用设置',style: TextStyle(fontSize: GlobalVars.settings_page_title),)
-              ],
-            ),
+        Container(
+          padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+          child: Row(
+            children: [
+              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/settings.png'):AssetImage('assets/icons/darktheme/settings.png'),height: 40,),
+              SizedBox(width: 10,),
+              Text('应用设置',style: TextStyle(fontSize: GlobalVars.settings_page_title),)
+            ],
           ),
+        ),
         Container(
           padding: EdgeInsets.all(10),
           child: Column(
@@ -245,7 +245,15 @@ class _SettingsPage extends State<SettingsPage>{
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: Column(
                       children: [
-                        Text('智慧陕理使用的所有图标/徽标均来自 Material Design 3 Icons 以及 icons8.com\n智慧陕理所使用的字体为 MiSans（https://hyperos.mi.com/font/zh/）',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),)
+                        Text('智慧陕理使用的所有图标/徽标均来自 Material Design 3 Icons 以及 icons8.com',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                        SizedBox(height: 10,),
+                        Text('智慧陕理所使用的字体为 MiSans（https://hyperos.mi.com/font/zh/）',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                        SizedBox(height: 10,),
+                        Text('智慧陕理**并非**陕西理工大学官方 APP',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                        SizedBox(height: 10,),
+                        Text('智慧陕理 APP 与陕西理工大学**无**任何从属关系',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                        SizedBox(height: 10,),
+                        Text('智慧陕理**从未**有意标榜或冒充是陕西理工大学官方APP',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
                       ],
                     ),
                   ),
