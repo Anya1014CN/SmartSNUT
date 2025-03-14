@@ -1397,10 +1397,10 @@ class _CourseTablePage extends State<CourseTablePage>{
                   ],
                 ),
                 Divider(height: 5,indent: 20,endIndent: 20,),
-                //表头 - 第几节课
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    //表头 - 第几节课
                     Column(
                       children: [
                         SizedBox(
@@ -1455,2084 +1455,257 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ),
                       ],
                     ),
+                    //周一课程
                     Column(
-                      children: [
-                        //周一第一节
-                        (courseMonWeek[0].isEmpty)?
+                      children: courseMonWeek.asMap().entries.map((entry){
+                        int index = entry.key;
+                        var item = entry.value;
+                        return (item.isEmpty)? ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? false:((courseMonWeek[index].isEmpty == true) && (courseMonWeek[index - 1].isEmpty == true)))? 
+                        SizedBox(width: 0,):
                         Card(
                           color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                           shadowColor: Theme.of(context).colorScheme.onPrimary,
                           child: SizedBox(
                             width: tableWidth,
-                            height: (courseMonWeek[0].isEmpty == courseMonWeek[1].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseMonWeek[3].isEmpty)? false:(courseMonWeek[0][0]['CourseName'] == courseMonWeek[3][0]['CourseName'] && courseMonWeek[0][0]['CourseLocation'] == courseMonWeek[3][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseMonWeek[2].isEmpty)? false:(courseMonWeek[0][0]['CourseName'] == courseMonWeek[2][0]['CourseName'] && courseMonWeek[0][0]['CourseLocation'] == courseMonWeek[2][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseMonWeek[1].isEmpty)? false:(courseMonWeek[0][0]['CourseName'] == courseMonWeek[1][0]['CourseName'] && courseMonWeek[0][0]['CourseLocation'] == courseMonWeek[1][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseMonWeek[0].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
+                            height: ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? (courseMonWeek[index].isEmpty == true) && (courseMonWeek[index + 1].isEmpty == true):false)? tableHeight * 2:tableHeight,
                           ),
-                        ),
-                        //周一第二节
-                        (courseMonWeek[1].isEmpty)? (courseMonWeek[0].isEmpty == courseMonWeek[1].isEmpty)? SizedBox(width: 0,height: 0,) :
+                        ):
+                        ((index == 0)? false:((courseMonWeek[index - 1].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index - 1][0]['CourseName'])? true:false))?
+                        SizedBox(height: 0,width: 0,):
                         Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseMonWeek[0].isEmpty)? false:(courseMonWeek[0][0]['CourseName'] == courseMonWeek[1][0]['CourseName'] && courseMonWeek[0][0]['CourseLocation'] == courseMonWeek[1][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
                           child: SizedBox(
                             width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseMonWeek[1].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
+                            height: ((index + 3 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 3].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 3][0]['CourseName'])? true:false):false)?
+                              tableHeight * 4:((index + 2 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 2].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 2][0]['CourseName'])? true:false):false)?
+                              tableHeight * 3:((index + 1 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 1].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 1][0]['CourseName'])? true:false):false)?
+                              tableHeight * 2:tableHeight,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                SizedBox(height: 10,),
+                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              ],
                             ),
                           ),
-                        ),
-                        //周一第三节
-                        (courseMonWeek[2].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseMonWeek[2].isEmpty == courseMonWeek[3].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseMonWeek[0].isEmpty)? false:(courseMonWeek[0][0]['CourseName'] == courseMonWeek[2][0]['CourseName'] && courseMonWeek[0][0]['CourseLocation'] == courseMonWeek[2][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseMonWeek[3].isEmpty == false)? (courseMonWeek[2][0]['CourseName'] == courseMonWeek[3][0]['CourseName'] && courseMonWeek[3].isEmpty == false)? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseMonWeek[2].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周一第四节
-                        (courseMonWeek[3].isEmpty)? (courseMonWeek[2].isEmpty == courseMonWeek[3].isEmpty)? SizedBox(width: 0,height: 0,) :
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseMonWeek[0].isEmpty)? false:(courseMonWeek[0][0]['CourseName'] == courseMonWeek[3][0]['CourseName'] && courseMonWeek[0][0]['CourseLocation'] == courseMonWeek[3][0]['CourseLocation'])) || ((courseMonWeek[2].isEmpty)? false:(courseMonWeek[2][0]['CourseName'] == courseMonWeek[3][0]['CourseName'] && courseMonWeek[2][0]['CourseLocation'] == courseMonWeek[3][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseMonWeek[3].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周一第五节
-                        (courseMonWeek[4].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseMonWeek[4].isEmpty == courseMonWeek[5].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseMonWeek[7].isEmpty)? false:(courseMonWeek[4][0]['CourseName'] == courseMonWeek[7][0]['CourseName'] && courseMonWeek[4][0]['CourseLocation'] == courseMonWeek[7][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseMonWeek[6].isEmpty)? false:(courseMonWeek[4][0]['CourseName'] == courseMonWeek[6][0]['CourseName'] && courseMonWeek[4][0]['CourseLocation'] == courseMonWeek[6][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseMonWeek[5].isEmpty)? false:(courseMonWeek[4][0]['CourseName'] == courseMonWeek[5][0]['CourseName'] && courseMonWeek[4][0]['CourseLocation'] == courseMonWeek[5][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseMonWeek[4].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周一第六节
-                        (courseMonWeek[5].isEmpty)?  (courseMonWeek[4].isEmpty == courseMonWeek[5].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseMonWeek[4].isEmpty)? false:(courseMonWeek[4][0]['CourseName'] == courseMonWeek[5][0]['CourseName'] && courseMonWeek[4][0]['CourseLocation'] == courseMonWeek[5][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseMonWeek[5].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList() 
-                            ),
-                          ),
-                        ),
-                        //周一第七节
-                        (courseMonWeek[6].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseMonWeek[6].isEmpty == courseMonWeek[7].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseMonWeek[4].isEmpty)? false:(courseMonWeek[4][0]['CourseName'] == courseMonWeek[6][0]['CourseName'] && courseMonWeek[4][0]['CourseLocation'] == courseMonWeek[6][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseMonWeek[7].isEmpty == false)? (courseMonWeek[6][0]['CourseName'] == courseMonWeek[7][0]['CourseName'] && courseMonWeek[6][0]['CourseLocation'] == courseMonWeek[7][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseMonWeek[6].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周一第八节
-                        (courseMonWeek[7].isEmpty)? (courseMonWeek[6].isEmpty == courseMonWeek[7].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseMonWeek[4].isEmpty)? false:(courseMonWeek[4][0]['CourseName'] == courseMonWeek[7][0]['CourseName'] && courseMonWeek[4][0]['CourseLocation'] == courseMonWeek[7][0]['CourseLocation'])) || ((courseMonWeek[6].isEmpty)? false:(courseMonWeek[6][0]['CourseName'] == courseMonWeek[7][0]['CourseName'] || courseMonWeek[6][0]['CourseLocation'] == courseMonWeek[7][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseMonWeek[7].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周一第九节
-                        (courseMonWeek[8].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseMonWeek[8].isEmpty == courseMonWeek[9].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseMonWeek[9].isEmpty == false)? (courseMonWeek[8][0]['CourseName'] == courseMonWeek[9][0]['CourseName'] && courseMonWeek[8][0]['CourseLocation'] == courseMonWeek[9][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseMonWeek[8].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周一第十节
-                        (courseMonWeek[9].isEmpty)? (courseMonWeek[8].isEmpty == courseMonWeek[9].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :((courseMonWeek[8].isEmpty)? false:(courseMonWeek[8][0]['CourseName'] == courseMonWeek[9][0]['CourseName'] || courseMonWeek[8][0]['CourseLocation'] == courseMonWeek[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseMonWeek[9].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                      SizedBox(height: 5,),
-                                      Text('${item['CourseWeeks']}\n',style: TextStyle(fontSize: 12),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis)
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList(),
                     ),
+                    //周二课程
                     Column(
-                      children: [
-                        //周二第一节
-                        (courseTueWeek[0].isEmpty)?
+                      children: courseTueWeek.asMap().entries.map((entry){
+                        int index = entry.key;
+                        var item = entry.value;
+                        return (item.isEmpty)? ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? false:((courseTueWeek[index].isEmpty == true) && (courseTueWeek[index - 1].isEmpty == true)))? 
+                        SizedBox(width: 0,):
                         Card(
                           color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                           shadowColor: Theme.of(context).colorScheme.onPrimary,
                           child: SizedBox(
                             width: tableWidth,
-                            height: (courseTueWeek[0].isEmpty == courseTueWeek[1].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseTueWeek[3].isEmpty)? false:(courseTueWeek[0][0]['CourseName'] == courseTueWeek[3][0]['CourseName'] && courseTueWeek[0][0]['CourseLocation'] == courseTueWeek[3][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseTueWeek[2].isEmpty)? false:(courseTueWeek[0][0]['CourseName'] == courseTueWeek[2][0]['CourseName'] && courseTueWeek[0][0]['CourseLocation'] == courseTueWeek[2][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseTueWeek[1].isEmpty)? false:(courseTueWeek[0][0]['CourseName'] == courseTueWeek[1][0]['CourseName'] && courseTueWeek[0][0]['CourseLocation'] == courseTueWeek[1][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseTueWeek[0].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
+                            height: ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? (courseTueWeek[index].isEmpty == true) && (courseTueWeek[index + 1].isEmpty == true):false)? tableHeight * 2:tableHeight,
                           ),
-                        ),
-                        //周二第二节
-                        (courseTueWeek[1].isEmpty)? (courseTueWeek[0].isEmpty == courseTueWeek[1].isEmpty)? SizedBox(width: 0,height: 0,) :
+                        ):
+                        ((index == 0)? false:((courseTueWeek[index - 1].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index - 1][0]['CourseName'])? true:false))?
+                        SizedBox(height: 0,width: 0,):
                         Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseTueWeek[0].isEmpty)? false:(courseTueWeek[0][0]['CourseName'] == courseTueWeek[1][0]['CourseName'] && courseTueWeek[0][0]['CourseLocation'] == courseTueWeek[1][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
                           child: SizedBox(
                             width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseTueWeek[1].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
+                            height: ((index + 3 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 3].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 3][0]['CourseName'])? true:false):false)?
+                              tableHeight * 4:((index + 2 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 2].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 2][0]['CourseName'])? true:false):false)?
+                              tableHeight * 3:((index + 1 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 1].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 1][0]['CourseName'])? true:false):false)?
+                              tableHeight * 2:tableHeight,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                SizedBox(height: 10,),
+                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              ],
                             ),
                           ),
-                        ),
-                        //周二第三节
-                        (courseTueWeek[2].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseTueWeek[2].isEmpty == courseTueWeek[3].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseTueWeek[0].isEmpty)? false:(courseTueWeek[0][0]['CourseName'] == courseTueWeek[2][0]['CourseName'] && courseTueWeek[0][0]['CourseLocation'] == courseTueWeek[2][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseTueWeek[3].isEmpty == false)? (courseTueWeek[2][0]['CourseName'] == courseTueWeek[3][0]['CourseName'] && courseTueWeek[3].isEmpty == false)? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseTueWeek[2].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周二第四节
-                        (courseTueWeek[3].isEmpty)? (courseTueWeek[2].isEmpty == courseTueWeek[3].isEmpty)? SizedBox(width: 0,height: 0,) :
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseTueWeek[0].isEmpty)? false:(courseTueWeek[0][0]['CourseName'] == courseTueWeek[3][0]['CourseName'] && courseTueWeek[0][0]['CourseLocation'] == courseTueWeek[3][0]['CourseLocation'])) || ((courseTueWeek[2].isEmpty)? false:(courseTueWeek[2][0]['CourseName'] == courseTueWeek[3][0]['CourseName'] && courseTueWeek[2][0]['CourseLocation'] == courseTueWeek[3][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseTueWeek[3].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周二第五节
-                        (courseTueWeek[4].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseTueWeek[4].isEmpty == courseTueWeek[5].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseTueWeek[7].isEmpty)? false:(courseTueWeek[4][0]['CourseName'] == courseTueWeek[7][0]['CourseName'] && courseTueWeek[4][0]['CourseLocation'] == courseTueWeek[7][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseTueWeek[6].isEmpty)? false:(courseTueWeek[4][0]['CourseName'] == courseTueWeek[6][0]['CourseName'] && courseTueWeek[4][0]['CourseLocation'] == courseTueWeek[6][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseTueWeek[5].isEmpty)? false:(courseTueWeek[4][0]['CourseName'] == courseTueWeek[5][0]['CourseName'] && courseTueWeek[4][0]['CourseLocation'] == courseTueWeek[5][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseTueWeek[4].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周二第六节
-                        (courseTueWeek[5].isEmpty)?  (courseTueWeek[4].isEmpty == courseTueWeek[5].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseTueWeek[4].isEmpty)? false:(courseTueWeek[4][0]['CourseName'] == courseTueWeek[5][0]['CourseName'] && courseTueWeek[4][0]['CourseLocation'] == courseTueWeek[5][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseTueWeek[5].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList() 
-                            ),
-                          ),
-                        ),
-                        //周二第七节
-                        (courseTueWeek[6].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseTueWeek[6].isEmpty == courseTueWeek[7].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseTueWeek[4].isEmpty)? false:(courseTueWeek[4][0]['CourseName'] == courseTueWeek[6][0]['CourseName'] && courseTueWeek[4][0]['CourseLocation'] == courseTueWeek[6][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseTueWeek[7].isEmpty == false)? (courseTueWeek[6][0]['CourseName'] == courseTueWeek[7][0]['CourseName'] && courseTueWeek[6][0]['CourseLocation'] == courseTueWeek[7][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseTueWeek[6].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周二第八节
-                        (courseTueWeek[7].isEmpty)? (courseTueWeek[6].isEmpty == courseTueWeek[7].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseTueWeek[4].isEmpty)? false:(courseTueWeek[4][0]['CourseName'] == courseTueWeek[7][0]['CourseName'] && courseTueWeek[4][0]['CourseLocation'] == courseTueWeek[7][0]['CourseLocation'])) || ((courseTueWeek[6].isEmpty)? false:(courseTueWeek[6][0]['CourseName'] == courseTueWeek[7][0]['CourseName'] || courseTueWeek[6][0]['CourseLocation'] == courseTueWeek[7][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseTueWeek[7].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周二第九节
-                        (courseTueWeek[8].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseTueWeek[8].isEmpty == courseTueWeek[9].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseTueWeek[9].isEmpty == false)? (courseTueWeek[8][0]['CourseName'] == courseTueWeek[9][0]['CourseName'] && courseTueWeek[8][0]['CourseLocation'] == courseTueWeek[9][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseTueWeek[8].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周二第十节
-                        (courseTueWeek[9].isEmpty)? (courseTueWeek[8].isEmpty == courseTueWeek[9].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :((courseTueWeek[8].isEmpty)? false:(courseTueWeek[8][0]['CourseName'] == courseTueWeek[9][0]['CourseName'] || courseTueWeek[8][0]['CourseLocation'] == courseTueWeek[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseTueWeek[9].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                      SizedBox(height: 5,),
-                                      Text('${item['CourseWeeks']}\n',style: TextStyle(fontSize: 12),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis)
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList(),
                     ),
+                    //周三课程
                     Column(
-                      children: [
-                        //周三第一节
-                        (courseWedWeek[0].isEmpty)?
+                      children: courseWedWeek.asMap().entries.map((entry){
+                        int index = entry.key;
+                        var item = entry.value;
+                        return (item.isEmpty)? ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? false:((courseWedWeek[index].isEmpty == true) && (courseWedWeek[index - 1].isEmpty == true)))? 
+                        SizedBox(width: 0,):
                         Card(
                           color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                           shadowColor: Theme.of(context).colorScheme.onPrimary,
                           child: SizedBox(
                             width: tableWidth,
-                            height: (courseWedWeek[0].isEmpty == courseWedWeek[1].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseWedWeek[3].isEmpty)? false:(courseWedWeek[0][0]['CourseName'] == courseWedWeek[3][0]['CourseName'] && courseWedWeek[0][0]['CourseLocation'] == courseWedWeek[3][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseWedWeek[2].isEmpty)? false:(courseWedWeek[0][0]['CourseName'] == courseWedWeek[2][0]['CourseName'] && courseWedWeek[0][0]['CourseLocation'] == courseWedWeek[2][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseWedWeek[1].isEmpty)? false:(courseWedWeek[0][0]['CourseName'] == courseWedWeek[1][0]['CourseName'] && courseWedWeek[0][0]['CourseLocation'] == courseWedWeek[1][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseWedWeek[0].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
+                            height: ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? (courseWedWeek[index].isEmpty == true) && (courseWedWeek[index + 1].isEmpty == true):false)? tableHeight * 2:tableHeight,
                           ),
-                        ),
-                        //周三第二节
-                        (courseWedWeek[1].isEmpty)? (courseWedWeek[0].isEmpty == courseWedWeek[1].isEmpty)? SizedBox(width: 0,height: 0,) :
+                        ):
+                        ((index == 0)? false:((courseWedWeek[index - 1].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index - 1][0]['CourseName'])? true:false))?
+                        SizedBox(height: 0,width: 0,):
                         Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseWedWeek[0].isEmpty)? false:(courseWedWeek[0][0]['CourseName'] == courseWedWeek[1][0]['CourseName'] && courseWedWeek[0][0]['CourseLocation'] == courseWedWeek[1][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
                           child: SizedBox(
                             width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseWedWeek[1].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
+                            height: ((index + 3 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 3].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 3][0]['CourseName'])? true:false):false)?
+                              tableHeight * 4:((index + 2 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 2].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 2][0]['CourseName'])? true:false):false)?
+                              tableHeight * 3:((index + 1 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 1].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 1][0]['CourseName'])? true:false):false)?
+                              tableHeight * 2:tableHeight,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                SizedBox(height: 10,),
+                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              ],
                             ),
                           ),
-                        ),
-                        //周三第三节
-                        (courseWedWeek[2].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseWedWeek[2].isEmpty == courseWedWeek[3].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseWedWeek[0].isEmpty)? false:(courseWedWeek[0][0]['CourseName'] == courseWedWeek[2][0]['CourseName'] && courseWedWeek[0][0]['CourseLocation'] == courseWedWeek[2][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseWedWeek[3].isEmpty == false)? (courseWedWeek[2][0]['CourseName'] == courseWedWeek[3][0]['CourseName'] && courseWedWeek[3].isEmpty == false)? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseWedWeek[2].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周三第四节
-                        (courseWedWeek[3].isEmpty)? (courseWedWeek[2].isEmpty == courseWedWeek[3].isEmpty)? SizedBox(width: 0,height: 0,) :
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseWedWeek[0].isEmpty)? false:(courseWedWeek[0][0]['CourseName'] == courseWedWeek[3][0]['CourseName'] && courseWedWeek[0][0]['CourseLocation'] == courseWedWeek[3][0]['CourseLocation'])) || ((courseWedWeek[2].isEmpty)? false:(courseWedWeek[2][0]['CourseName'] == courseWedWeek[3][0]['CourseName'] && courseWedWeek[2][0]['CourseLocation'] == courseWedWeek[3][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseWedWeek[3].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周三第五节
-                        (courseWedWeek[4].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseWedWeek[4].isEmpty == courseWedWeek[5].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseWedWeek[7].isEmpty)? false:(courseWedWeek[4][0]['CourseName'] == courseWedWeek[7][0]['CourseName'] && courseWedWeek[4][0]['CourseLocation'] == courseWedWeek[7][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseWedWeek[6].isEmpty)? false:(courseWedWeek[4][0]['CourseName'] == courseWedWeek[6][0]['CourseName'] && courseWedWeek[4][0]['CourseLocation'] == courseWedWeek[6][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseWedWeek[5].isEmpty)? false:(courseWedWeek[4][0]['CourseName'] == courseWedWeek[5][0]['CourseName'] && courseWedWeek[4][0]['CourseLocation'] == courseWedWeek[5][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseWedWeek[4].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周三第六节
-                        (courseWedWeek[5].isEmpty)?  (courseWedWeek[4].isEmpty == courseWedWeek[5].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseWedWeek[4].isEmpty)? false:(courseWedWeek[4][0]['CourseName'] == courseWedWeek[5][0]['CourseName'] && courseWedWeek[4][0]['CourseLocation'] == courseWedWeek[5][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseWedWeek[5].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList() 
-                            ),
-                          ),
-                        ),
-                        //周三第七节
-                        (courseWedWeek[6].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseWedWeek[6].isEmpty == courseWedWeek[7].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseWedWeek[4].isEmpty)? false:(courseWedWeek[4][0]['CourseName'] == courseWedWeek[6][0]['CourseName'] && courseWedWeek[4][0]['CourseLocation'] == courseWedWeek[6][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseWedWeek[7].isEmpty == false)? (courseWedWeek[6][0]['CourseName'] == courseWedWeek[7][0]['CourseName'] && courseWedWeek[6][0]['CourseLocation'] == courseWedWeek[7][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseWedWeek[6].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周三第八节
-                        (courseWedWeek[7].isEmpty)? (courseWedWeek[6].isEmpty == courseWedWeek[7].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseWedWeek[4].isEmpty)? false:(courseWedWeek[4][0]['CourseName'] == courseWedWeek[7][0]['CourseName'] && courseWedWeek[4][0]['CourseLocation'] == courseWedWeek[7][0]['CourseLocation'])) || ((courseWedWeek[6].isEmpty)? false:(courseWedWeek[6][0]['CourseName'] == courseWedWeek[7][0]['CourseName'] || courseWedWeek[6][0]['CourseLocation'] == courseWedWeek[7][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseWedWeek[7].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周三第九节
-                        (courseWedWeek[8].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseWedWeek[8].isEmpty == courseWedWeek[9].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseWedWeek[9].isEmpty == false)? (courseWedWeek[8][0]['CourseName'] == courseWedWeek[9][0]['CourseName'] && courseWedWeek[8][0]['CourseLocation'] == courseWedWeek[9][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseWedWeek[8].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周三第十节
-                        (courseWedWeek[9].isEmpty)? (courseWedWeek[8].isEmpty == courseWedWeek[9].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :((courseWedWeek[8].isEmpty)? false:(courseWedWeek[8][0]['CourseName'] == courseWedWeek[9][0]['CourseName'] || courseWedWeek[8][0]['CourseLocation'] == courseWedWeek[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseWedWeek[9].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                      SizedBox(height: 5,),
-                                      Text('${item['CourseWeeks']}\n',style: TextStyle(fontSize: 12),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis)
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList(),
                     ),
+                    //周四课程
                     Column(
-                      children: [
-                        //周四第一节
-                        (courseThuWeek[0].isEmpty)?
+                      children: courseThuWeek.asMap().entries.map((entry){
+                        int index = entry.key;
+                        var item = entry.value;
+                        return (item.isEmpty)? ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? false:((courseThuWeek[index].isEmpty == true) && (courseThuWeek[index - 1].isEmpty == true)))? 
+                        SizedBox(width: 0,):
                         Card(
                           color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                           shadowColor: Theme.of(context).colorScheme.onPrimary,
                           child: SizedBox(
                             width: tableWidth,
-                            height: (courseThuWeek[0].isEmpty == courseThuWeek[1].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseThuWeek[3].isEmpty)? false:(courseThuWeek[0][0]['CourseName'] == courseThuWeek[3][0]['CourseName'] && courseThuWeek[0][0]['CourseLocation'] == courseThuWeek[3][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseThuWeek[2].isEmpty)? false:(courseThuWeek[0][0]['CourseName'] == courseThuWeek[2][0]['CourseName'] && courseThuWeek[0][0]['CourseLocation'] == courseThuWeek[2][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseThuWeek[1].isEmpty)? false:(courseThuWeek[0][0]['CourseName'] == courseThuWeek[1][0]['CourseName'] && courseThuWeek[0][0]['CourseLocation'] == courseThuWeek[1][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseThuWeek[0].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
+                            height: ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? (courseThuWeek[index].isEmpty == true) && (courseThuWeek[index + 1].isEmpty == true):false)? tableHeight * 2:tableHeight,
                           ),
-                        ),
-                        //周四第二节
-                        (courseThuWeek[1].isEmpty)? (courseThuWeek[0].isEmpty == courseThuWeek[1].isEmpty)? SizedBox(width: 0,height: 0,) :
+                        ):
+                        ((index == 0)? false:((courseThuWeek[index - 1].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index - 1][0]['CourseName'])? true:false))?
+                        SizedBox(height: 0,width: 0,):
                         Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseThuWeek[0].isEmpty)? false:(courseThuWeek[0][0]['CourseName'] == courseThuWeek[1][0]['CourseName'] && courseThuWeek[0][0]['CourseLocation'] == courseThuWeek[1][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
                           child: SizedBox(
                             width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseThuWeek[1].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
+                            height: ((index + 3 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 3].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 3][0]['CourseName'])? true:false):false)?
+                              tableHeight * 4:((index + 2 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 2].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 2][0]['CourseName'])? true:false):false)?
+                              tableHeight * 3:((index + 1 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 1].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 1][0]['CourseName'])? true:false):false)?
+                              tableHeight * 2:tableHeight,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                SizedBox(height: 10,),
+                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              ],
                             ),
                           ),
-                        ),
-                        //周四第三节
-                        (courseThuWeek[2].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseThuWeek[2].isEmpty == courseThuWeek[3].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseThuWeek[0].isEmpty)? false:(courseThuWeek[0][0]['CourseName'] == courseThuWeek[2][0]['CourseName'] && courseThuWeek[0][0]['CourseLocation'] == courseThuWeek[2][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseThuWeek[3].isEmpty == false)? (courseThuWeek[2][0]['CourseName'] == courseThuWeek[3][0]['CourseName'] && courseThuWeek[3].isEmpty == false)? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseThuWeek[2].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周四第四节
-                        (courseThuWeek[3].isEmpty)? (courseThuWeek[2].isEmpty == courseThuWeek[3].isEmpty)? SizedBox(width: 0,height: 0,) :
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseThuWeek[0].isEmpty)? false:(courseThuWeek[0][0]['CourseName'] == courseThuWeek[3][0]['CourseName'] && courseThuWeek[0][0]['CourseLocation'] == courseThuWeek[3][0]['CourseLocation'])) || ((courseThuWeek[2].isEmpty)? false:(courseThuWeek[2][0]['CourseName'] == courseThuWeek[3][0]['CourseName'] && courseThuWeek[2][0]['CourseLocation'] == courseThuWeek[3][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseThuWeek[3].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周四第五节
-                        (courseThuWeek[4].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseThuWeek[4].isEmpty == courseThuWeek[5].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseThuWeek[7].isEmpty)? false:(courseThuWeek[4][0]['CourseName'] == courseThuWeek[7][0]['CourseName'] && courseThuWeek[4][0]['CourseLocation'] == courseThuWeek[7][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseThuWeek[6].isEmpty)? false:(courseThuWeek[4][0]['CourseName'] == courseThuWeek[6][0]['CourseName'] && courseThuWeek[4][0]['CourseLocation'] == courseThuWeek[6][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseThuWeek[5].isEmpty)? false:(courseThuWeek[4][0]['CourseName'] == courseThuWeek[5][0]['CourseName'] && courseThuWeek[4][0]['CourseLocation'] == courseThuWeek[5][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseThuWeek[4].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周四第六节
-                        (courseThuWeek[5].isEmpty)?  (courseThuWeek[4].isEmpty == courseThuWeek[5].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseThuWeek[4].isEmpty)? false:(courseThuWeek[4][0]['CourseName'] == courseThuWeek[5][0]['CourseName'] && courseThuWeek[4][0]['CourseLocation'] == courseThuWeek[5][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseThuWeek[5].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList() 
-                            ),
-                          ),
-                        ),
-                        //周四第七节
-                        (courseThuWeek[6].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseThuWeek[6].isEmpty == courseThuWeek[7].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseThuWeek[4].isEmpty)? false:(courseThuWeek[4][0]['CourseName'] == courseThuWeek[6][0]['CourseName'] && courseThuWeek[4][0]['CourseLocation'] == courseThuWeek[6][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseThuWeek[7].isEmpty == false)? (courseThuWeek[6][0]['CourseName'] == courseThuWeek[7][0]['CourseName'] && courseThuWeek[6][0]['CourseLocation'] == courseThuWeek[7][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseThuWeek[6].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周四第八节
-                        (courseThuWeek[7].isEmpty)? (courseThuWeek[6].isEmpty == courseThuWeek[7].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseThuWeek[4].isEmpty)? false:(courseThuWeek[4][0]['CourseName'] == courseThuWeek[7][0]['CourseName'] && courseThuWeek[4][0]['CourseLocation'] == courseThuWeek[7][0]['CourseLocation'])) || ((courseThuWeek[6].isEmpty)? false:(courseThuWeek[6][0]['CourseName'] == courseThuWeek[7][0]['CourseName'] || courseThuWeek[6][0]['CourseLocation'] == courseThuWeek[7][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseThuWeek[7].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周四第九节
-                        (courseThuWeek[8].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseThuWeek[8].isEmpty == courseThuWeek[9].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseThuWeek[9].isEmpty == false)? (courseThuWeek[8][0]['CourseName'] == courseThuWeek[9][0]['CourseName'] && courseThuWeek[8][0]['CourseLocation'] == courseThuWeek[9][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseThuWeek[8].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周四第十节
-                        (courseThuWeek[9].isEmpty)? (courseThuWeek[8].isEmpty == courseThuWeek[9].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :((courseThuWeek[8].isEmpty)? false:(courseThuWeek[8][0]['CourseName'] == courseThuWeek[9][0]['CourseName'] || courseThuWeek[8][0]['CourseLocation'] == courseThuWeek[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseThuWeek[9].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                      SizedBox(height: 5,),
-                                      Text('${item['CourseWeeks']}\n',style: TextStyle(fontSize: 12),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis)
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList(),
                     ),
+                    //周五课程
                     Column(
-                      children: [
-                        //周五第一节
-                        (courseFriWeek[0].isEmpty)?
+                      children: courseFriWeek.asMap().entries.map((entry){
+                        int index = entry.key;
+                        var item = entry.value;
+                        return (item.isEmpty)? ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? false:((courseFriWeek[index].isEmpty == true) && (courseFriWeek[index - 1].isEmpty == true)))? 
+                        SizedBox(width: 0,):
                         Card(
                           color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                           shadowColor: Theme.of(context).colorScheme.onPrimary,
                           child: SizedBox(
                             width: tableWidth,
-                            height: (courseFriWeek[0].isEmpty == courseFriWeek[1].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseFriWeek[3].isEmpty)? false:(courseFriWeek[0][0]['CourseName'] == courseFriWeek[3][0]['CourseName'] && courseFriWeek[0][0]['CourseLocation'] == courseFriWeek[3][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseFriWeek[2].isEmpty)? false:(courseFriWeek[0][0]['CourseName'] == courseFriWeek[2][0]['CourseName'] && courseFriWeek[0][0]['CourseLocation'] == courseFriWeek[2][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseFriWeek[1].isEmpty)? false:(courseFriWeek[0][0]['CourseName'] == courseFriWeek[1][0]['CourseName'] && courseFriWeek[0][0]['CourseLocation'] == courseFriWeek[1][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseFriWeek[0].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
+                            height: ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? (courseFriWeek[index].isEmpty == true) && (courseFriWeek[index + 1].isEmpty == true):false)? tableHeight * 2:tableHeight,
                           ),
-                        ),
-                        //周五第二节
-                        (courseFriWeek[1].isEmpty)? (courseFriWeek[0].isEmpty == courseFriWeek[1].isEmpty)? SizedBox(width: 0,height: 0,) :
+                        ):
+                        ((index == 0)? false:((courseFriWeek[index - 1].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index - 1][0]['CourseName'])? true:false))?
+                        SizedBox(height: 0,width: 0,):
                         Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseFriWeek[0].isEmpty)? false:(courseFriWeek[0][0]['CourseName'] == courseFriWeek[1][0]['CourseName'] && courseFriWeek[0][0]['CourseLocation'] == courseFriWeek[1][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
                           child: SizedBox(
                             width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseFriWeek[1].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
+                            height: ((index + 3 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 3].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 3][0]['CourseName'])? true:false):false)?
+                              tableHeight * 4:((index + 2 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 2].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 2][0]['CourseName'])? true:false):false)?
+                              tableHeight * 3:((index + 1 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 1].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 1][0]['CourseName'])? true:false):false)?
+                              tableHeight * 2:tableHeight,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                SizedBox(height: 10,),
+                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              ],
                             ),
                           ),
-                        ),
-                        //周五第三节
-                        (courseFriWeek[2].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseFriWeek[2].isEmpty == courseFriWeek[3].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseFriWeek[0].isEmpty)? false:(courseFriWeek[0][0]['CourseName'] == courseFriWeek[2][0]['CourseName'] && courseFriWeek[0][0]['CourseLocation'] == courseFriWeek[2][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseFriWeek[3].isEmpty == false)? (courseFriWeek[2][0]['CourseName'] == courseFriWeek[3][0]['CourseName'] && courseFriWeek[3].isEmpty == false)? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseFriWeek[2].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周五第四节
-                        (courseFriWeek[3].isEmpty)? (courseFriWeek[2].isEmpty == courseFriWeek[3].isEmpty)? SizedBox(width: 0,height: 0,) :
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseFriWeek[0].isEmpty)? false:(courseFriWeek[0][0]['CourseName'] == courseFriWeek[3][0]['CourseName'] && courseFriWeek[0][0]['CourseLocation'] == courseFriWeek[3][0]['CourseLocation'])) || ((courseFriWeek[2].isEmpty)? false:(courseFriWeek[2][0]['CourseName'] == courseFriWeek[3][0]['CourseName'] && courseFriWeek[2][0]['CourseLocation'] == courseFriWeek[3][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseFriWeek[3].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周五第五节
-                        (courseFriWeek[4].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseFriWeek[4].isEmpty == courseFriWeek[5].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseFriWeek[7].isEmpty)? false:(courseFriWeek[4][0]['CourseName'] == courseFriWeek[7][0]['CourseName'] && courseFriWeek[4][0]['CourseLocation'] == courseFriWeek[7][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseFriWeek[6].isEmpty)? false:(courseFriWeek[4][0]['CourseName'] == courseFriWeek[6][0]['CourseName'] && courseFriWeek[4][0]['CourseLocation'] == courseFriWeek[6][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseFriWeek[5].isEmpty)? false:(courseFriWeek[4][0]['CourseName'] == courseFriWeek[5][0]['CourseName'] && courseFriWeek[4][0]['CourseLocation'] == courseFriWeek[5][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseFriWeek[4].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周五第六节
-                        (courseFriWeek[5].isEmpty)?  (courseFriWeek[4].isEmpty == courseFriWeek[5].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseFriWeek[4].isEmpty)? false:(courseFriWeek[4][0]['CourseName'] == courseFriWeek[5][0]['CourseName'] && courseFriWeek[4][0]['CourseLocation'] == courseFriWeek[5][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseFriWeek[5].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList() 
-                            ),
-                          ),
-                        ),
-                        //周五第七节
-                        (courseFriWeek[6].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseFriWeek[6].isEmpty == courseFriWeek[7].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseFriWeek[4].isEmpty)? false:(courseFriWeek[4][0]['CourseName'] == courseFriWeek[6][0]['CourseName'] && courseFriWeek[4][0]['CourseLocation'] == courseFriWeek[6][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseFriWeek[7].isEmpty == false)? (courseFriWeek[6][0]['CourseName'] == courseFriWeek[7][0]['CourseName'] && courseFriWeek[6][0]['CourseLocation'] == courseFriWeek[7][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseFriWeek[6].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周五第八节
-                        (courseFriWeek[7].isEmpty)? (courseFriWeek[6].isEmpty == courseFriWeek[7].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseFriWeek[4].isEmpty)? false:(courseFriWeek[4][0]['CourseName'] == courseFriWeek[7][0]['CourseName'] && courseFriWeek[4][0]['CourseLocation'] == courseFriWeek[7][0]['CourseLocation'])) || ((courseFriWeek[6].isEmpty)? false:(courseFriWeek[6][0]['CourseName'] == courseFriWeek[7][0]['CourseName'] || courseFriWeek[6][0]['CourseLocation'] == courseFriWeek[7][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseFriWeek[7].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周五第九节
-                        (courseFriWeek[8].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseFriWeek[8].isEmpty == courseFriWeek[9].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseFriWeek[9].isEmpty == false)? (courseFriWeek[8][0]['CourseName'] == courseFriWeek[9][0]['CourseName'] && courseFriWeek[8][0]['CourseLocation'] == courseFriWeek[9][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseFriWeek[8].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周五第十节
-                        (courseFriWeek[9].isEmpty)? (courseFriWeek[8].isEmpty == courseFriWeek[9].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :((courseFriWeek[8].isEmpty)? false:(courseFriWeek[8][0]['CourseName'] == courseFriWeek[9][0]['CourseName'] || courseFriWeek[8][0]['CourseLocation'] == courseFriWeek[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseFriWeek[9].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                      SizedBox(height: 5,),
-                                      Text('${item['CourseWeeks']}\n',style: TextStyle(fontSize: 12),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis)
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList(),
                     ),
+                    //周六课程
                     Column(
-                      children: [
-                        //周六第一节
-                        (courseSatWeek[0].isEmpty)?
+                      children: courseSatWeek.asMap().entries.map((entry){
+                        int index = entry.key;
+                        var item = entry.value;
+                        return (item.isEmpty)? ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? false:((courseSatWeek[index].isEmpty == true) && (courseSatWeek[index - 1].isEmpty == true)))? 
+                        SizedBox(width: 0,):
                         Card(
                           color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                           shadowColor: Theme.of(context).colorScheme.onPrimary,
                           child: SizedBox(
                             width: tableWidth,
-                            height: (courseSatWeek[0].isEmpty == courseSatWeek[1].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseSatWeek[3].isEmpty)? false:(courseSatWeek[0][0]['CourseName'] == courseSatWeek[3][0]['CourseName'] && courseSatWeek[0][0]['CourseLocation'] == courseSatWeek[3][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseSatWeek[2].isEmpty)? false:(courseSatWeek[0][0]['CourseName'] == courseSatWeek[2][0]['CourseName'] && courseSatWeek[0][0]['CourseLocation'] == courseSatWeek[2][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseSatWeek[1].isEmpty)? false:(courseSatWeek[0][0]['CourseName'] == courseSatWeek[1][0]['CourseName'] && courseSatWeek[0][0]['CourseLocation'] == courseSatWeek[1][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSatWeek[0].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
+                            height: ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? (courseSatWeek[index].isEmpty == true) && (courseSatWeek[index + 1].isEmpty == true):false)? tableHeight * 2:tableHeight,
                           ),
-                        ),
-                        //周六第二节
-                        (courseSatWeek[1].isEmpty)? (courseSatWeek[0].isEmpty == courseSatWeek[1].isEmpty)? SizedBox(width: 0,height: 0,) :
+                        ):
+                        ((index == 0)? false:((courseSatWeek[index - 1].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index - 1][0]['CourseName'])? true:false))?
+                        SizedBox(height: 0,width: 0,):
                         Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseSatWeek[0].isEmpty)? false:(courseSatWeek[0][0]['CourseName'] == courseSatWeek[1][0]['CourseName'] && courseSatWeek[0][0]['CourseLocation'] == courseSatWeek[1][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
                           child: SizedBox(
                             width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSatWeek[1].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
+                            height: ((index + 3 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 3].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 3][0]['CourseName'])? true:false):false)?
+                              tableHeight * 4:((index + 2 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 2].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 2][0]['CourseName'])? true:false):false)?
+                              tableHeight * 3:((index + 1 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 1].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 1][0]['CourseName'])? true:false):false)?
+                              tableHeight * 2:tableHeight,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                SizedBox(height: 10,),
+                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              ],
                             ),
                           ),
-                        ),
-                        //周六第三节
-                        (courseSatWeek[2].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseSatWeek[2].isEmpty == courseSatWeek[3].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseSatWeek[0].isEmpty)? false:(courseSatWeek[0][0]['CourseName'] == courseSatWeek[2][0]['CourseName'] && courseSatWeek[0][0]['CourseLocation'] == courseSatWeek[2][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseSatWeek[3].isEmpty == false)? (courseSatWeek[2][0]['CourseName'] == courseSatWeek[3][0]['CourseName'] && courseSatWeek[3].isEmpty == false)? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSatWeek[2].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周六第四节
-                        (courseSatWeek[3].isEmpty)? (courseSatWeek[2].isEmpty == courseSatWeek[3].isEmpty)? SizedBox(width: 0,height: 0,) :
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseSatWeek[0].isEmpty)? false:(courseSatWeek[0][0]['CourseName'] == courseSatWeek[3][0]['CourseName'] && courseSatWeek[0][0]['CourseLocation'] == courseSatWeek[3][0]['CourseLocation'])) || ((courseSatWeek[2].isEmpty)? false:(courseSatWeek[2][0]['CourseName'] == courseSatWeek[3][0]['CourseName'] && courseSatWeek[2][0]['CourseLocation'] == courseSatWeek[3][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSatWeek[3].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周六第五节
-                        (courseSatWeek[4].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseSatWeek[4].isEmpty == courseSatWeek[5].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseSatWeek[7].isEmpty)? false:(courseSatWeek[4][0]['CourseName'] == courseSatWeek[7][0]['CourseName'] && courseSatWeek[4][0]['CourseLocation'] == courseSatWeek[7][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseSatWeek[6].isEmpty)? false:(courseSatWeek[4][0]['CourseName'] == courseSatWeek[6][0]['CourseName'] && courseSatWeek[4][0]['CourseLocation'] == courseSatWeek[6][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseSatWeek[5].isEmpty)? false:(courseSatWeek[4][0]['CourseName'] == courseSatWeek[5][0]['CourseName'] && courseSatWeek[4][0]['CourseLocation'] == courseSatWeek[5][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSatWeek[4].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周六第六节
-                        (courseSatWeek[5].isEmpty)?  (courseSatWeek[4].isEmpty == courseSatWeek[5].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseSatWeek[4].isEmpty)? false:(courseSatWeek[4][0]['CourseName'] == courseSatWeek[5][0]['CourseName'] && courseSatWeek[4][0]['CourseLocation'] == courseSatWeek[5][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSatWeek[5].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList() 
-                            ),
-                          ),
-                        ),
-                        //周六第七节
-                        (courseSatWeek[6].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseSatWeek[6].isEmpty == courseSatWeek[7].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseSatWeek[4].isEmpty)? false:(courseSatWeek[4][0]['CourseName'] == courseSatWeek[6][0]['CourseName'] && courseSatWeek[4][0]['CourseLocation'] == courseSatWeek[6][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseSatWeek[7].isEmpty == false)? (courseSatWeek[6][0]['CourseName'] == courseSatWeek[7][0]['CourseName'] && courseSatWeek[6][0]['CourseLocation'] == courseSatWeek[7][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSatWeek[6].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周六第八节
-                        (courseSatWeek[7].isEmpty)? (courseSatWeek[6].isEmpty == courseSatWeek[7].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseSatWeek[4].isEmpty)? false:(courseSatWeek[4][0]['CourseName'] == courseSatWeek[7][0]['CourseName'] && courseSatWeek[4][0]['CourseLocation'] == courseSatWeek[7][0]['CourseLocation'])) || ((courseSatWeek[6].isEmpty)? false:(courseSatWeek[6][0]['CourseName'] == courseSatWeek[7][0]['CourseName'] || courseSatWeek[6][0]['CourseLocation'] == courseSatWeek[7][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSatWeek[7].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周六第九节
-                        (courseSatWeek[8].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseSatWeek[8].isEmpty == courseSatWeek[9].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseSatWeek[9].isEmpty == false)? (courseSatWeek[8][0]['CourseName'] == courseSatWeek[9][0]['CourseName'] && courseSatWeek[8][0]['CourseLocation'] == courseSatWeek[9][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSatWeek[8].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周六第十节
-                        (courseSatWeek[9].isEmpty)? (courseSatWeek[8].isEmpty == courseSatWeek[9].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :((courseSatWeek[8].isEmpty)? false:(courseSatWeek[8][0]['CourseName'] == courseSatWeek[9][0]['CourseName'] || courseSatWeek[8][0]['CourseLocation'] == courseSatWeek[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSatWeek[9].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                      SizedBox(height: 5,),
-                                      Text('${item['CourseWeeks']}\n',style: TextStyle(fontSize: 12),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis)
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList(),
                     ),
+                    //周日课程
                     Column(
-                      children: [
-                        //周日第一节
-                        (courseSunWeek[0].isEmpty)?
+                      children: courseSunWeek.asMap().entries.map((entry){
+                        int index = entry.key;
+                        var item = entry.value;
+                        return (item.isEmpty)? ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? false:((courseSunWeek[index].isEmpty == true) && (courseSunWeek[index - 1].isEmpty == true)))? 
+                        SizedBox(width: 0,):
                         Card(
                           color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                           shadowColor: Theme.of(context).colorScheme.onPrimary,
                           child: SizedBox(
                             width: tableWidth,
-                            height: (courseSunWeek[0].isEmpty == courseSunWeek[1].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseSunWeek[3].isEmpty)? false:(courseSunWeek[0][0]['CourseName'] == courseSunWeek[3][0]['CourseName'] && courseSunWeek[0][0]['CourseLocation'] == courseSunWeek[3][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseSunWeek[2].isEmpty)? false:(courseSunWeek[0][0]['CourseName'] == courseSunWeek[2][0]['CourseName'] && courseSunWeek[0][0]['CourseLocation'] == courseSunWeek[2][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseSunWeek[1].isEmpty)? false:(courseSunWeek[0][0]['CourseName'] == courseSunWeek[1][0]['CourseName'] && courseSunWeek[0][0]['CourseLocation'] == courseSunWeek[1][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSunWeek[0].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
+                            height: ((index == 0 || index == 2 || index == 4 || index == 6 || index == 8)? (courseSunWeek[index].isEmpty == true) && (courseSunWeek[index + 1].isEmpty == true):false)? tableHeight * 2:tableHeight,
                           ),
-                        ),
-                        //周日第二节
-                        (courseSunWeek[1].isEmpty)? (courseSunWeek[0].isEmpty == courseSunWeek[1].isEmpty)? SizedBox(width: 0,height: 0,) :
+                        ):
+                        ((index == 0)? false:((courseSunWeek[index - 1].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index - 1][0]['CourseName'])? true:false))?
+                        SizedBox(height: 0,width: 0,):
                         Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseSunWeek[0].isEmpty)? false:(courseSunWeek[0][0]['CourseName'] == courseSunWeek[1][0]['CourseName'] && courseSunWeek[0][0]['CourseLocation'] == courseSunWeek[1][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
                           child: SizedBox(
                             width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSunWeek[1].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
+                            height: ((index + 3 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 3].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 3][0]['CourseName'])? true:false):false)?
+                              tableHeight * 4:((index + 2 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 2].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 2][0]['CourseName'])? true:false):false)?
+                              tableHeight * 3:((index + 1 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 1].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 1][0]['CourseName'])? true:false):false)?
+                              tableHeight * 2:tableHeight,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                SizedBox(height: 10,),
+                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              ],
                             ),
                           ),
-                        ),
-                        //周日第三节
-                        (courseSunWeek[2].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseSunWeek[2].isEmpty == courseSunWeek[3].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseSunWeek[0].isEmpty)? false:(courseSunWeek[0][0]['CourseName'] == courseSunWeek[2][0]['CourseName'] && courseSunWeek[0][0]['CourseLocation'] == courseSunWeek[2][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseSunWeek[3].isEmpty == false)? (courseSunWeek[2][0]['CourseName'] == courseSunWeek[3][0]['CourseName'] && courseSunWeek[3].isEmpty == false)? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSunWeek[2].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周日第四节
-                        (courseSunWeek[3].isEmpty)? (courseSunWeek[2].isEmpty == courseSunWeek[3].isEmpty)? SizedBox(width: 0,height: 0,) :
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseSunWeek[0].isEmpty)? false:(courseSunWeek[0][0]['CourseName'] == courseSunWeek[3][0]['CourseName'] && courseSunWeek[0][0]['CourseLocation'] == courseSunWeek[3][0]['CourseLocation'])) || ((courseSunWeek[2].isEmpty)? false:(courseSunWeek[2][0]['CourseName'] == courseSunWeek[3][0]['CourseName'] && courseSunWeek[2][0]['CourseLocation'] == courseSunWeek[3][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSunWeek[3].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周日第五节
-                        (courseSunWeek[4].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseSunWeek[4].isEmpty == courseSunWeek[5].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((courseSunWeek[7].isEmpty)? false:(courseSunWeek[4][0]['CourseName'] == courseSunWeek[7][0]['CourseName'] && courseSunWeek[4][0]['CourseLocation'] == courseSunWeek[7][0]['CourseLocation'])? true:false)? tableHeight*4:
-                              ((courseSunWeek[6].isEmpty)? false:(courseSunWeek[4][0]['CourseName'] == courseSunWeek[6][0]['CourseName'] && courseSunWeek[4][0]['CourseLocation'] == courseSunWeek[6][0]['CourseLocation'])? true:false)? tableHeight*3:
-                              ((courseSunWeek[5].isEmpty)? false:(courseSunWeek[4][0]['CourseName'] == courseSunWeek[5][0]['CourseName'] && courseSunWeek[4][0]['CourseLocation'] == courseSunWeek[5][0]['CourseLocation'])? true:false)? tableHeight*2:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSunWeek[4].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周日第六节
-                        (courseSunWeek[5].isEmpty)?  (courseSunWeek[4].isEmpty == courseSunWeek[5].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseSunWeek[4].isEmpty)? false:(courseSunWeek[4][0]['CourseName'] == courseSunWeek[5][0]['CourseName'] && courseSunWeek[4][0]['CourseLocation'] == courseSunWeek[5][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSunWeek[5].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList() 
-                            ),
-                          ),
-                        ),
-                        //周日第七节
-                        (courseSunWeek[6].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseSunWeek[6].isEmpty == courseSunWeek[7].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :(((courseSunWeek[4].isEmpty)? false:(courseSunWeek[4][0]['CourseName'] == courseSunWeek[6][0]['CourseName'] && courseSunWeek[4][0]['CourseLocation'] == courseSunWeek[6][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseSunWeek[7].isEmpty == false)? (courseSunWeek[6][0]['CourseName'] == courseSunWeek[7][0]['CourseName'] && courseSunWeek[6][0]['CourseLocation'] == courseSunWeek[7][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSunWeek[6].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周日第八节
-                        (courseSunWeek[7].isEmpty)? (courseSunWeek[6].isEmpty == courseSunWeek[7].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :(((courseSunWeek[4].isEmpty)? false:(courseSunWeek[4][0]['CourseName'] == courseSunWeek[7][0]['CourseName'] && courseSunWeek[4][0]['CourseLocation'] == courseSunWeek[7][0]['CourseLocation'])) || ((courseSunWeek[6].isEmpty)? false:(courseSunWeek[6][0]['CourseName'] == courseSunWeek[7][0]['CourseName'] || courseSunWeek[6][0]['CourseLocation'] == courseSunWeek[7][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSunWeek[7].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周日第九节
-                        (courseSunWeek[8].isEmpty)? 
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: (courseSunWeek[8].isEmpty == courseSunWeek[9].isEmpty)? tableHeight*2 : tableHeight,
-                          )
-                        )
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height:(courseSunWeek[9].isEmpty == false)? (courseSunWeek[8][0]['CourseName'] == courseSunWeek[9][0]['CourseName'] && courseSunWeek[8][0]['CourseLocation'] == courseSunWeek[9][0]['CourseLocation'])? tableHeight*2:tableHeight:
-                              tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSunWeek[8].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                        //周日第十节
-                        (courseSunWeek[9].isEmpty)? (courseSunWeek[8].isEmpty == courseSunWeek[9].isEmpty)? SizedBox(width: 0,height: 0,):
-                        Card(
-                          color: Theme.of(context).colorScheme.surfaceContainerHigh, 
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          child: SizedBox(width: tableWidth,height: tableHeight,)
-                        )
-                        :((courseSunWeek[8].isEmpty)? false:(courseSunWeek[8][0]['CourseName'] == courseSunWeek[9][0]['CourseName'] || courseSunWeek[8][0]['CourseLocation'] == courseSunWeek[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
-                        :Card(
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: tableHeight,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: courseSunWeek[9].map((item) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('${item['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 10,),
-                                      Text('${item['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 5,),
-                                      Text('${item['CourseWeeks']}\n',style: TextStyle(fontSize: 12),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,)
-                                  ],
-                                );
-                              }).toList()
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      }).toList(),
                     ),
                   ],
                 ),
