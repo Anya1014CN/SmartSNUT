@@ -35,6 +35,41 @@ double tableWidth = 0;
 double tableHeadWidth = 0;
 double tableHeight = 0;
 
+//课表的色块
+final List<Color> courseBlockColors = [
+  Color(0xffd89c7a),
+  Color(0xffd6c38b),
+  Color(0xffcfc3a9),
+  Color(0xff849b91),
+  Color(0xffe1ccb1),
+  Color(0xffd4baad),
+  Color(0xffc2cedc),
+  Color(0xffb0b1b6),
+  Color(0xff979771),
+  Color(0xff91ad9e),
+  Color(0xff686789),
+  Color(0xffb77f70),
+  Color(0xffbeb1a8),
+  Color(0xffa79a89),
+  Color(0xff8a95a9),
+  Color(0xff9fabb9),
+  Color(0xff9aa690),
+  Color(0xff91a0a5),
+  Color(0xff99857e),
+  Color(0xff7d7465),
+  Color(0xff88878d),
+  Color(0xffb4746b),
+  Color(0xff676662),
+  Color(0xffab545a),
+  Color(0xff724e52),
+  Color(0xffbca295),
+  Color(0xffaea9a6),
+  Color(0xffceb797),
+  Color(0xff9a7549),
+  Color(0xffbca289),
+  Color(0xffb57c82),
+];
+
 //全年课表数据
 List courseTableFull = [];//一学期的完整课表
 List<List> courseMonTotal = [[],[],[],[],[],[],[],[],[],[]];//周一课程（第一节到第十节）
@@ -1564,7 +1599,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                               showCourseDetail(context);
                             },
                             child: Card(
-                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 3].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1612,7 +1647,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                               showCourseDetail(context);
                             },
                             child: Card(
-                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 3].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1660,7 +1695,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                               showCourseDetail(context);
                             },
                             child: Card(
-                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 3].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1708,7 +1743,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                               showCourseDetail(context);
                             },
                             child: Card(
-                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 3].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1756,7 +1791,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                               showCourseDetail(context);
                             },
                             child: Card(
-                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 3].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1804,7 +1839,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                               showCourseDetail(context);
                             },
                             child: Card(
-                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 3].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1852,7 +1887,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                               showCourseDetail(context);
                             },
                             child: Card(
-                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 3].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 3][0]['CourseName'])? true:false):false)?
