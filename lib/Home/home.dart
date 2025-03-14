@@ -1037,7 +1037,7 @@ class _HomeState extends State<Home>{
       }
     }
 
-    //加载本周周二课程
+    //加载本周周四课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseThuTotal[courseTODInt].length;courseInt++){
         if(courseThuTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
@@ -1050,7 +1050,7 @@ class _HomeState extends State<Home>{
       }
     }
 
-    //加载本周周三课程
+    //加载本周周五课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseFriTotal[courseTODInt].length;courseInt++){
         if(courseFriTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
@@ -1063,7 +1063,7 @@ class _HomeState extends State<Home>{
       }
     }
 
-    //加载本周周四课程
+    //加载本周周六课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseSatTotal[courseTODInt].length;courseInt++){
         if(courseSatTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
@@ -1076,7 +1076,7 @@ class _HomeState extends State<Home>{
       }
     }
 
-    //加载本周周五课程
+    //加载本周周日课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseSunTotal[courseTODInt].length;courseInt++){
         if(courseSunTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
@@ -1246,7 +1246,10 @@ class _HomeState extends State<Home>{
                             FittedBox(
                               child: IconButton(
                                 iconSize: 20,
-                                onPressed: (){getCourseTable();},
+                                onPressed: (){
+                                  readSelectState();
+                                  getCourseTable();
+                                },
                                 icon: Icon(Icons.refresh),
                                 ),
                               )
@@ -1839,7 +1842,6 @@ class _HomeState extends State<Home>{
         ),
         data: formData,
       );
-      print(response2.data);
     }catch(e){
       if(mounted){
         showDialog<String>(
@@ -1906,7 +1908,7 @@ class _HomeState extends State<Home>{
     }
     return;
     }
-    print('已登录');
+    
     //等待半秒，防止教务系统判定为过快点击
     await Future.delayed(Duration(milliseconds: 500));
 
@@ -2033,6 +2035,7 @@ class _HomeState extends State<Home>{
     //获取课表
     //使用本地选中的 semetserid 来覆盖教务系统返回的 semetserid ，用于请求对应的课表
     semesterId = semestersData['y$currentYearInt'][currentTermInt -1]['id'].toString();
+    
     
     //等待半秒，防止教务系统判定为过快点击
     await Future.delayed(Duration(milliseconds: 500));
@@ -2218,8 +2221,6 @@ class _HomeState extends State<Home>{
     String schoolCalendarpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/schoolCalendar/schoolCalendar$semesterId.json';
     File schoolCalendarfile = File(schoolCalendarpath);
     schoolCalendarfile.writeAsString(jsonEncode(schoolCalendarList));
-
-    print(courseTableFull);
 
     readSchoolCalendarInfo();
     if(mounted){
