@@ -14,7 +14,6 @@ import 'package:smartsnut/AppPage/stdGrades/stdgrades_page.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:crypto/crypto.dart';
 
@@ -113,10 +112,6 @@ class Home extends StatefulWidget{
 }
 
 class _HomeState extends State<Home>{
-  getWeekday() {
-    initializeDateFormatting("zh_CN");
-     GlobalVars.weekDay = DateFormat('EEEE',"zh_CN").format(DateTime.now());
-    }
 
   //读取学期相关信息
   readSemesterInfo() async {
@@ -1180,7 +1175,6 @@ class _HomeState extends State<Home>{
   //控件被创建的时候，执行 initState
   @override
   void initState() {
-    getWeekday();
     readSemesterInfo();
     super.initState();
     if(newsState == 0){

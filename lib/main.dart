@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/AppPage/app_page.dart';
 import 'package:smartsnut/Home/home.dart';
@@ -9,6 +10,7 @@ import 'package:smartsnut/splash.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:smartsnut/mePage/me_page.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 bool loaded = false;//防止重复加载页面
 var deviceType;//定义屏幕类型（桌面，平板，手表等）
@@ -264,6 +266,8 @@ class _SmartSNUT extends State<SmartSNUT> {
           GlobalVars.month = DateTime.now().month;
           GlobalVars.day = DateTime.now().day;
           GlobalVars.hour = DateTime.now().hour;
+          initializeDateFormatting("zh_CN");
+          GlobalVars.weekDay = DateFormat('EEEE',"zh_CN").format(DateTime.now());
         });
       }
     });
