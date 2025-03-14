@@ -1611,7 +1611,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                                   children: [
                                     Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1659,7 +1659,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                                   children: [
                                     Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1707,7 +1707,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                                   children: [
                                     Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1755,7 +1755,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                                   children: [
                                     Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1803,7 +1803,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                                   children: [
                                     Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1851,7 +1851,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                                   children: [
                                     Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1899,7 +1899,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                                   children: [
                                     Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
