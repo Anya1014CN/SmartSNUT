@@ -224,6 +224,57 @@ class _SettingsPage extends State<SettingsPage>{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text('关于智慧陕理',style: TextStyle(fontSize: GlobalVars.generalsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
+              Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(21),
+            ),
+            color: Theme.of(context).colorScheme.surfaceDim,
+            shadowColor: Theme.of(context).colorScheme.onPrimary,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              child: Column(
+                children: [
+                  ListTile(
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(21),
+                    ),
+                    trailing: Icon(Icons.chevron_right),
+                    title: Text('当前版本',style: TextStyle(fontSize: GlobalVars.generalsettings_fontsize_title),),
+                    subtitle: Text(GlobalVars.versionCodeString,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
+                    onTap: (){
+                      showDialog<String>(
+                        context: context,
+                        builder:(BuildContext context) => AlertDialog(
+                          title: Text('智慧陕理 - ${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+                          content: Text('发布日期：${GlobalVars.versionReleaseDate}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                          scrollable: true,
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'OK'),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              )
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Text('声明',style: TextStyle(fontSize: GlobalVars.disclamier_divider_title,color: Theme.of(context).colorScheme.primary),),
               Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
             ],
