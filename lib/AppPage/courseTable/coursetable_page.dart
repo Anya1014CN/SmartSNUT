@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
@@ -54,6 +53,12 @@ List<List> courseThuWeek = [[],[],[],[],[],[],[],[],[],[]];//周四课程
 List<List> courseFriWeek = [[],[],[],[],[],[],[],[],[],[]];//周五课程
 List<List> courseSatWeek = [[],[],[],[],[],[],[],[],[],[]];//周六课程
 List<List> courseSunWeek = [[],[],[],[],[],[],[],[],[],[]];//周日课程
+
+//课程详情
+String sheetcourseName = '';
+String sheetcourseWeeks = '';
+String sheetcourseTeacher = '';
+String sheetcourseLocation = '';
 
 //用户数据
 List stdAccount = [];
@@ -318,8 +323,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              //'CourseWeeks': formattedResult.join(",")
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周二的第一节课
@@ -328,7 +333,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周三的第一节课
@@ -337,7 +343,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周四的第一节课
@@ -346,7 +353,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周五的第一节课
@@ -355,7 +363,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周六的第一节课
@@ -364,7 +373,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周日的第一节课
@@ -373,7 +383,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
         }
@@ -385,7 +396,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周二的第二节课
@@ -394,7 +406,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周三的第二节课
@@ -403,7 +416,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周四的第二节课
@@ -412,7 +426,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周五的第二节课
@@ -421,7 +436,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周六的第二节课
@@ -430,7 +446,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周日的第二节课
@@ -439,7 +456,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
         }
@@ -451,7 +469,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周二的第三节课
@@ -460,7 +479,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周三的第三节课
@@ -469,7 +489,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周四的第三节课
@@ -478,7 +499,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周五的第三节课
@@ -487,7 +509,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周六的第三节课
@@ -496,7 +519,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周日的第三节课
@@ -505,7 +529,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
         }
@@ -517,7 +542,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周二的第四节课
@@ -526,7 +552,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周三的第四节课
@@ -535,7 +562,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周四的第四节课
@@ -544,7 +572,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周五的第四节课
@@ -553,7 +582,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周六的第四节课
@@ -562,7 +592,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周日的第四节课
@@ -571,7 +602,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
         }
@@ -583,7 +615,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周二的第五节课
@@ -592,7 +625,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周三的第五节课
@@ -601,7 +635,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周四的第五节课
@@ -610,7 +645,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周五的第五节课
@@ -619,7 +655,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周六的第五节课
@@ -628,7 +665,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周日的第五节课
@@ -637,7 +675,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
         }
@@ -649,7 +688,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周二的第六节课
@@ -658,7 +698,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周三的第六节课
@@ -667,7 +708,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周四的第六节课
@@ -676,7 +718,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周五的第六节课
@@ -685,7 +728,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周六的第六节课
@@ -694,7 +738,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周日的第六节课
@@ -703,7 +748,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
         }
@@ -715,7 +761,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周二的第七节课
@@ -724,7 +771,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周三的第七节课
@@ -733,7 +781,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周四的第七节课
@@ -742,7 +791,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周五的第七节课
@@ -751,7 +801,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周六的第七节课
@@ -760,7 +811,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周日的第七节课
@@ -769,7 +821,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
         }
@@ -781,7 +834,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周二的第八节课
@@ -790,7 +844,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周三的第八节课
@@ -799,7 +854,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周四的第八节课
@@ -808,7 +864,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周五的第八节课
@@ -817,7 +874,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周六的第八节课
@@ -826,7 +884,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周日的第八节课
@@ -835,7 +894,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
         }
@@ -847,7 +907,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周二的第九节课
@@ -856,7 +917,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周三的第九节课
@@ -865,7 +927,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周四的第九节课
@@ -874,7 +937,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周五的第九节课
@@ -883,7 +947,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周六的第九节课
@@ -892,7 +957,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周日的第九节课
@@ -901,7 +967,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
         }
@@ -913,7 +980,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周二的第十节课
@@ -922,7 +990,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周三的第十节课
@@ -931,7 +1000,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周四的第十节课
@@ -940,7 +1010,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周五的第十节课
@@ -949,7 +1020,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周六的第十节课
@@ -958,7 +1030,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
           //如果是周日的第十节课
@@ -967,7 +1040,8 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTableFull[courseint]['CourseName'],
               'CourseLocation': courseTableFull[courseint]['CourseLocation'],
               'CourseTeacher': courseTableFull[courseint]['CourseTeacher'],
-              'CourseWeeks': courseTableFull[courseint]['CourseWeeks']
+              'CourseWeeks': courseTableFull[courseint]['CourseWeeks'],
+              'FormattedWeeks': formattedResult.join(" 周, "),
             });
           }
         }
@@ -1004,6 +1078,7 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseMonTotal[courseTODInt][courseInt]['CourseName'],
               'CourseLocation': courseMonTotal[courseTODInt][courseInt]['CourseLocation'],
               'CourseTeacher': courseMonTotal[courseTODInt][courseInt]['CourseTeacher'],
+              'FormattedWeeks': courseMonTotal[courseTODInt][courseInt]['FormattedWeeks']
           });
         }
       }
@@ -1017,6 +1092,7 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseTueTotal[courseTODInt][courseInt]['CourseName'],
               'CourseLocation': courseTueTotal[courseTODInt][courseInt]['CourseLocation'],
               'CourseTeacher': courseTueTotal[courseTODInt][courseInt]['CourseTeacher'],
+              'FormattedWeeks': courseTueTotal[courseTODInt][courseInt]['FormattedWeeks']
           });
         }
       }
@@ -1030,32 +1106,7 @@ class _CourseTablePage extends State<CourseTablePage>{
               'CourseName': courseWedTotal[courseTODInt][courseInt]['CourseName'],
               'CourseLocation': courseWedTotal[courseTODInt][courseInt]['CourseLocation'],
               'CourseTeacher': courseWedTotal[courseTODInt][courseInt]['CourseTeacher'],
-          });
-        }
-      }
-    }
-
-    //加载本周周二课程
-    for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
-      for(int courseInt = 0;courseInt < courseThuTotal[courseTODInt].length;courseInt++){
-        if(courseThuTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
-          courseThuWeek[courseTODInt].add({
-              'CourseName': courseThuTotal[courseTODInt][courseInt]['CourseName'],
-              'CourseLocation': courseThuTotal[courseTODInt][courseInt]['CourseLocation'],
-              'CourseTeacher': courseThuTotal[courseTODInt][courseInt]['CourseTeacher'],
-          });
-        }
-      }
-    }
-
-    //加载本周周三课程
-    for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
-      for(int courseInt = 0;courseInt < courseFriTotal[courseTODInt].length;courseInt++){
-        if(courseFriTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
-          courseFriWeek[courseTODInt].add({
-              'CourseName': courseFriTotal[courseTODInt][courseInt]['CourseName'],
-              'CourseLocation': courseFriTotal[courseTODInt][courseInt]['CourseLocation'],
-              'CourseTeacher': courseFriTotal[courseTODInt][courseInt]['CourseTeacher'],
+              'FormattedWeeks': courseWedTotal[courseTODInt][courseInt]['FormattedWeeks']
           });
         }
       }
@@ -1063,12 +1114,13 @@ class _CourseTablePage extends State<CourseTablePage>{
 
     //加载本周周四课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
-      for(int courseInt = 0;courseInt < courseSatTotal[courseTODInt].length;courseInt++){
-        if(courseSatTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
-          courseSatWeek[courseTODInt].add({
-              'CourseName': courseSatTotal[courseTODInt][courseInt]['CourseName'],
-              'CourseLocation': courseSatTotal[courseTODInt][courseInt]['CourseLocation'],
-              'CourseTeacher': courseSatTotal[courseTODInt][courseInt]['CourseTeacher'],
+      for(int courseInt = 0;courseInt < courseThuTotal[courseTODInt].length;courseInt++){
+        if(courseThuTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
+          courseThuWeek[courseTODInt].add({
+              'CourseName': courseThuTotal[courseTODInt][courseInt]['CourseName'],
+              'CourseLocation': courseThuTotal[courseTODInt][courseInt]['CourseLocation'],
+              'CourseTeacher': courseThuTotal[courseTODInt][courseInt]['CourseTeacher'],
+              'FormattedWeeks': courseThuTotal[courseTODInt][courseInt]['FormattedWeeks']
           });
         }
       }
@@ -1076,12 +1128,41 @@ class _CourseTablePage extends State<CourseTablePage>{
 
     //加载本周周五课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
+      for(int courseInt = 0;courseInt < courseFriTotal[courseTODInt].length;courseInt++){
+        if(courseFriTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
+          courseFriWeek[courseTODInt].add({
+              'CourseName': courseFriTotal[courseTODInt][courseInt]['CourseName'],
+              'CourseLocation': courseFriTotal[courseTODInt][courseInt]['CourseLocation'],
+              'CourseTeacher': courseFriTotal[courseTODInt][courseInt]['CourseTeacher'],
+              'FormattedWeeks': courseFriTotal[courseTODInt][courseInt]['FormattedWeeks']
+          });
+        }
+      }
+    }
+
+    //加载本周周六课程
+    for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
+      for(int courseInt = 0;courseInt < courseSatTotal[courseTODInt].length;courseInt++){
+        if(courseSatTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
+          courseSatWeek[courseTODInt].add({
+              'CourseName': courseSatTotal[courseTODInt][courseInt]['CourseName'],
+              'CourseLocation': courseSatTotal[courseTODInt][courseInt]['CourseLocation'],
+              'CourseTeacher': courseSatTotal[courseTODInt][courseInt]['CourseTeacher'],
+              'FormattedWeeks': courseSatTotal[courseTODInt][courseInt]['FormattedWeeks']
+          });
+        }
+      }
+    }
+
+    //加载本周周日课程
+    for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseSunTotal[courseTODInt].length;courseInt++){
         if(courseSunTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
           courseSunWeek[courseTODInt].add({
               'CourseName': courseSunTotal[courseTODInt][courseInt]['CourseName'],
               'CourseLocation': courseSunTotal[courseTODInt][courseInt]['CourseLocation'],
               'CourseTeacher': courseSunTotal[courseTODInt][courseInt]['CourseTeacher'],
+              'FormattedWeeks': courseSunTotal[courseTODInt][courseInt]['FormattedWeeks']
           });
         }
       }
@@ -1473,21 +1554,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ):
                         ((index == 0)? false:((courseMonWeek[index - 1].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
-                        Card(
-                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((index + 3 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 3].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 3][0]['CourseName'])? true:false):false)?
-                              tableHeight * 4:((index + 2 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 2].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 2][0]['CourseName'])? true:false):false)?
-                              tableHeight * 3:((index + 1 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 1].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 1][0]['CourseName'])? true:false):false)?
-                              tableHeight * 2:tableHeight,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                SizedBox(height: 10,),
-                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              ],
+                        Builder(
+                          builder: (context) => InkWell(
+                            onTap: (){
+                              sheetcourseName = item[0]['CourseName'];
+                              sheetcourseWeeks = item[0]['FormattedWeeks'];
+                              sheetcourseTeacher = item[0]['CourseTeacher'];
+                              sheetcourseLocation = item[0]['CourseLocation'];
+                              showCourseDetail(context);
+                            },
+                            child: Card(
+                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              child: SizedBox(
+                                width: tableWidth,
+                                height: ((index + 3 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 3].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 3][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 4:((index + 2 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 2].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 2][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 3:((index + 1 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 1].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 1][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 2:tableHeight,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    SizedBox(height: 10,),
+                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         );
@@ -1510,21 +1602,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ):
                         ((index == 0)? false:((courseTueWeek[index - 1].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
-                        Card(
-                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((index + 3 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 3].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 3][0]['CourseName'])? true:false):false)?
-                              tableHeight * 4:((index + 2 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 2].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 2][0]['CourseName'])? true:false):false)?
-                              tableHeight * 3:((index + 1 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 1].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 1][0]['CourseName'])? true:false):false)?
-                              tableHeight * 2:tableHeight,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                SizedBox(height: 10,),
-                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              ],
+                        Builder(
+                          builder: (context) => InkWell(
+                            onTap: (){
+                              sheetcourseName = item[0]['CourseName'];
+                              sheetcourseWeeks = item[0]['FormattedWeeks'];
+                              sheetcourseTeacher = item[0]['CourseTeacher'];
+                              sheetcourseLocation = item[0]['CourseLocation'];
+                              showCourseDetail(context);
+                            },
+                            child: Card(
+                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              child: SizedBox(
+                                width: tableWidth,
+                                height: ((index + 3 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 3].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 3][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 4:((index + 2 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 2].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 2][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 3:((index + 1 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 1].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 1][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 2:tableHeight,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    SizedBox(height: 10,),
+                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         );
@@ -1547,21 +1650,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ):
                         ((index == 0)? false:((courseWedWeek[index - 1].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
-                        Card(
-                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((index + 3 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 3].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 3][0]['CourseName'])? true:false):false)?
-                              tableHeight * 4:((index + 2 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 2].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 2][0]['CourseName'])? true:false):false)?
-                              tableHeight * 3:((index + 1 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 1].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 1][0]['CourseName'])? true:false):false)?
-                              tableHeight * 2:tableHeight,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                SizedBox(height: 10,),
-                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              ],
+                        Builder(
+                          builder: (context) => InkWell(
+                            onTap: () {
+                              sheetcourseName = item[0]['CourseName'];
+                              sheetcourseWeeks = item[0]['FormattedWeeks'];
+                              sheetcourseTeacher = item[0]['CourseTeacher'];
+                              sheetcourseLocation = item[0]['CourseLocation'];
+                              showCourseDetail(context);
+                            },
+                            child: Card(
+                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              child: SizedBox(
+                                width: tableWidth,
+                                height: ((index + 3 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 3].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 3][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 4:((index + 2 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 2].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 2][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 3:((index + 1 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 1].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 1][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 2:tableHeight,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    SizedBox(height: 10,),
+                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         );
@@ -1584,21 +1698,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ):
                         ((index == 0)? false:((courseThuWeek[index - 1].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
-                        Card(
-                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((index + 3 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 3].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 3][0]['CourseName'])? true:false):false)?
-                              tableHeight * 4:((index + 2 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 2].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 2][0]['CourseName'])? true:false):false)?
-                              tableHeight * 3:((index + 1 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 1].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 1][0]['CourseName'])? true:false):false)?
-                              tableHeight * 2:tableHeight,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                SizedBox(height: 10,),
-                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              ],
+                        Builder(
+                          builder: (context) => InkWell(
+                            onTap: (){
+                              sheetcourseName = item[0]['CourseName'];
+                              sheetcourseWeeks = item[0]['FormattedWeeks'];
+                              sheetcourseTeacher = item[0]['CourseTeacher'];
+                              sheetcourseLocation = item[0]['CourseLocation'];
+                              showCourseDetail(context);
+                            },
+                            child: Card(
+                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              child: SizedBox(
+                                width: tableWidth,
+                                height: ((index + 3 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 3].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 3][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 4:((index + 2 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 2].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 2][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 3:((index + 1 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 1].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 1][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 2:tableHeight,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    SizedBox(height: 10,),
+                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         );
@@ -1621,21 +1746,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ):
                         ((index == 0)? false:((courseFriWeek[index - 1].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
-                        Card(
-                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((index + 3 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 3].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 3][0]['CourseName'])? true:false):false)?
-                              tableHeight * 4:((index + 2 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 2].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 2][0]['CourseName'])? true:false):false)?
-                              tableHeight * 3:((index + 1 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 1].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 1][0]['CourseName'])? true:false):false)?
-                              tableHeight * 2:tableHeight,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                SizedBox(height: 10,),
-                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              ],
+                        Builder(
+                          builder: (context) => InkWell(
+                            onTap: (){
+                              sheetcourseName = item[0]['CourseName'];
+                              sheetcourseWeeks = item[0]['FormattedWeeks'];
+                              sheetcourseTeacher = item[0]['CourseTeacher'];
+                              sheetcourseLocation = item[0]['CourseLocation'];
+                              showCourseDetail(context);
+                            },
+                            child: Card(
+                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              child: SizedBox(
+                                width: tableWidth,
+                                height: ((index + 3 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 3].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 3][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 4:((index + 2 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 2].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 2][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 3:((index + 1 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 1].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 1][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 2:tableHeight,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    SizedBox(height: 10,),
+                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         );
@@ -1658,21 +1794,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ):
                         ((index == 0)? false:((courseSatWeek[index - 1].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
-                        Card(
-                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((index + 3 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 3].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 3][0]['CourseName'])? true:false):false)?
-                              tableHeight * 4:((index + 2 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 2].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 2][0]['CourseName'])? true:false):false)?
-                              tableHeight * 3:((index + 1 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 1].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 1][0]['CourseName'])? true:false):false)?
-                              tableHeight * 2:tableHeight,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                SizedBox(height: 10,),
-                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              ],
+                        Builder(
+                          builder: (context) => InkWell(
+                            onTap: (){
+                              sheetcourseName = item[0]['CourseName'];
+                              sheetcourseWeeks = item[0]['FormattedWeeks'];
+                              sheetcourseTeacher = item[0]['CourseTeacher'];
+                              sheetcourseLocation = item[0]['CourseLocation'];
+                              showCourseDetail(context);
+                            },
+                            child: Card(
+                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              child: SizedBox(
+                                width: tableWidth,
+                                height: ((index + 3 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 3].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 3][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 4:((index + 2 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 2].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 2][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 3:((index + 1 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 1].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 1][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 2:tableHeight,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    SizedBox(height: 10,),
+                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         );
@@ -1695,21 +1842,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                         ):
                         ((index == 0)? false:((courseSunWeek[index - 1].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index - 1][0]['CourseName'])? true:false))?
                         SizedBox(height: 0,width: 0,):
-                        Card(
-                          color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
-                          child: SizedBox(
-                            width: tableWidth,
-                            height: ((index + 3 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 3].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 3][0]['CourseName'])? true:false):false)?
-                              tableHeight * 4:((index + 2 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 2].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 2][0]['CourseName'])? true:false):false)?
-                              tableHeight * 3:((index + 1 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 1].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 1][0]['CourseName'])? true:false):false)?
-                              tableHeight * 2:tableHeight,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                SizedBox(height: 10,),
-                                Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              ],
+                        Builder(
+                          builder: (context) => InkWell(
+                            onTap: (){
+                              sheetcourseName = item[0]['CourseName'];
+                              sheetcourseWeeks = item[0]['FormattedWeeks'];
+                              sheetcourseTeacher = item[0]['CourseTeacher'];
+                              sheetcourseLocation = item[0]['CourseLocation'];
+                              showCourseDetail(context);
+                            },
+                            child: Card(
+                              color: Colors.primaries[item[0]['CourseName'].hashCode % Colors.primaries.length], 
+                              child: SizedBox(
+                                width: tableWidth,
+                                height: ((index + 3 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 3].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 3][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 4:((index + 2 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 2].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 2][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 3:((index + 1 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 1].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 1][0]['CourseName'])? true:false):false)?
+                                  tableHeight * 2:tableHeight,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    SizedBox(height: 10,),
+                                    Text('${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         );
@@ -2195,5 +2353,59 @@ class _CourseTablePage extends State<CourseTablePage>{
         "TimeOfDay": int.parse(match.group(2)!)
       };
     }).toList();
+  }
+
+  //展示每个课程的详细信息
+  showCourseDetail(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
+          child: Center(
+            child: Column(
+              children: [
+                Center(
+                  child: Text('课程详情',style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_title),),
+                ),
+                SizedBox(height: 5,),
+                Divider(height: 5,indent: 20,endIndent: 20,),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                  ),
+                  title: Text(sheetcourseName,style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursecontent),),
+                  subtitle: Text('课程名称',style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursetitle),),
+                ),
+                Divider(height: 5,indent: 20,endIndent: 20,),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                  ),
+                  title: Text("$sheetcourseWeeks 周",style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursecontent),),
+                  subtitle: Text('上课周次',style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursetitle),),
+                ),
+                Divider(height: 5,indent: 20,endIndent: 20,),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                  ),
+                  title: Text(sheetcourseTeacher,style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursecontent),),
+                  subtitle: Text('课程教师',style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursetitle),),
+                ),
+                Divider(height: 5,indent: 20,endIndent: 20,),
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                  ),
+                  title: Text((sheetcourseLocation == '')? '无':sheetcourseLocation,style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursecontent),),
+                  subtitle: Text('上课地点',style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursetitle),),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

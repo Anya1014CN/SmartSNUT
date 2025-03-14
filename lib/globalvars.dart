@@ -108,6 +108,9 @@ class GlobalVars {
   static double coursetable_tablehead_title = 14;
   static double coursetable_coursename_title = 14;
   static double coursetable_courselocation_title = 12;
+  static double coursetable_coursedetailsheet_title = 26;
+  static double coursetable_coursedetailsheet_coursecontent = 22;
+  static double coursetable_coursedetailsheet_coursetitle = 18;
 
   //学籍信息页字体
   static double stddetail_page_title = 40;
@@ -287,6 +290,9 @@ class DefaultfontSize{
   static double coursetable_tablehead_title_default = 14;
   static double coursetable_coursename_title_default = 14;
   static double coursetable_courselocation_title_default = 12;
+  static double coursetable_coursedetailsheet_title_default = 26;
+  static double coursetable_coursedetailsheet_coursecontent_default = 22;
+  static double coursetable_coursedetailsheet_coursetitle_default = 18;
 
   //学籍信息页字体
   static double stddetail_page_title_default = 40;
