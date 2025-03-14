@@ -2398,7 +2398,7 @@ class _CourseTablePage extends State<CourseTablePage>{
         return Container(
           padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
           child: Center(
-            child: Column(
+            child: ListView(
               children: [
                 Center(
                   child: Text('课程详情',style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_title),),
