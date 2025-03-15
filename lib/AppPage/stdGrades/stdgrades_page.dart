@@ -87,6 +87,13 @@ class _StdGradesPageState extends State<StatefulWidget>{
    
   //读取学期的选中状态
   readSelectState() async {
+
+    //每次读取之前进行成绩目录检查，防止后续版本升级，目录未被创建导致崩溃
+    Directory stdGradesdirectory = Directory('${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/stdGrades');
+    if(await stdGradesdirectory.exists() == false){
+      await stdGradesdirectory.create();
+    }
+
     String selectedTYpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/stdGrades/selectedTY.json';
     File selectedTYfile = File(selectedTYpath);
     if(await selectedTYfile.exists()){

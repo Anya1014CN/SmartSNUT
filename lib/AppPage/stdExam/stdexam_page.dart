@@ -94,6 +94,13 @@ class _StdExamPageState extends State<StdExamPage>{
 
   //读取学期的选中状态
   readSelectState() async {
+
+    //每次读取之前进行考试数据目录检查，防止后续版本升级，目录未被创建导致崩溃
+    Directory stdExamdirectory = Directory('${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/stdExam');
+    if(await stdExamdirectory.exists() == false){
+      await stdExamdirectory.create();
+    }
+    
     String selectedTYpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/stdExam/selectedTY.json';
     File selectedTYfile = File(selectedTYpath);
     if(await selectedTYfile.exists()){

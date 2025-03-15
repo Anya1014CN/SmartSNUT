@@ -37,6 +37,8 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
   String openid = '';
 
   checkbindstate() async {
+
+    //每次读取之前进行电费账号目录检查，防止后续版本升级，目录未被创建导致崩溃
     Directory datadirectory = Directory('${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata');
     if(await datadirectory.exists() == false){
       await datadirectory.create();

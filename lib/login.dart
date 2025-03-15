@@ -846,6 +846,12 @@ class _LoginPageState extends State<LoginPage>{
     await emdatadirectory.create();
   }
 
+  //绩点计算器数据目录
+  Directory gpaCalculatordirectory = Directory('${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/GPACalculator');
+  if(await gpaCalculatordirectory.exists() == false){
+    await gpaCalculatordirectory.create();
+  }
+
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
        content: Text('登录成功'),
