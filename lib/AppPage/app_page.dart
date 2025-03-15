@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartsnut/AppPage/GPACalculator/gpacalculator_page.dart';
 import 'package:smartsnut/AppPage/electricMeter/electricmeter_page.dart';
 import 'package:smartsnut/AppPage/stdGrades/stdgrades_page.dart';
 import 'package:smartsnut/AppPage/schoolNetwork/schoolnetwork_page.dart';
@@ -178,6 +179,43 @@ class _AppPageState extends State<AppPage>{
                             ],
                           ),
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: (MediaQuery.of(context).size.width)/2 - 25,
+                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        height: 100,
+                        child: ElevatedButton(
+                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => GPACalculatorPage()));},
+                          style: ElevatedButton.styleFrom(
+                            shadowColor: Theme.of(context).colorScheme.onPrimary,
+                            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(21),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/calculator.png'):AssetImage('assets/icons/darktheme/calculator.png'),height: 36,),
+                              SizedBox(width: 10,),
+                              Expanded(child: Text('绩点计算器',style: TextStyle(fontSize: GlobalVars.coursetable_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 5), // 按钮之间的间距
+                      Container(
+                        width: (MediaQuery.of(context).size.width)/2 - 25,
+                        padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+                        height: 100,
+                        child: SizedBox(),
                       ),
                     ],
                   ),

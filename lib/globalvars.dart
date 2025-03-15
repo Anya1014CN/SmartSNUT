@@ -152,6 +152,9 @@ class GlobalVars {
   static double stdgrade_coursegradegpa_title = 16;
   static double stdgrade_coursetype_title = 16;
 
+  //绩点计算器页字体
+  static double gpacalculator_page_title = 40;
+
   //网费查询页字体
   static double networkquery_page_title = 40;
   static double networkquery_button_title = 16;
@@ -333,6 +336,9 @@ class DefaultfontSize{
   static double stdgrade_coursegradefinal_title_default = 16;
   static double stdgrade_coursegradegpa_title_default = 16;
   static double stdgrade_coursetype_title_default = 16;
+
+  //绩点计算器页字体
+  static double gpacalculator_page_title_default = 40;
 
   //网费查询页字体
   static double networkquery_page_title_default = 40;
