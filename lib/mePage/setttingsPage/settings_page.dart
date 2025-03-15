@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/login.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //开源许可
 String licenseTitle = '';
@@ -259,6 +260,37 @@ class _SettingsPage extends State<SettingsPage>{
                             TextButton(
                               onPressed: () => Navigator.pop(context, 'OK'),
                               child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(21),
+                    ),
+                    trailing: Icon(Icons.chevron_right),
+                    title: Text('Github 开源地址',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_githublink_title),),
+                    subtitle: Text('https://github.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_githublink_subtitle),),
+                    onTap: () async {
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          scrollable: true,
+                          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+                          content: Text('是否要使用系统默认浏览器打开外部链接？\n\nhttps://github.com/Anya1014CN/SmartSNUT',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: const Text('取消'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await launchUrl(Uri.parse('https://github.com/Anya1014CN/SmartSNUT'));
+                                Navigator.pop(context, 'OK');
+                              },
+                              child: const Text('确认'),
                             ),
                           ],
                         ),
@@ -942,6 +974,8 @@ class _SettingsPage extends State<SettingsPage>{
 
       GlobalVars.aboutsnutsettings_divider_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
       GlobalVars.aboutsnutsettings_currentversion_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
+      GlobalVars.aboutsnutsettings_githublink_title = DefaultfontSize.aboutsnutsettings_githublink_title_defalut + changevalue;
+      GlobalVars.aboutsnutsettings_githublink_subtitle = DefaultfontSize.aboutsnutsettings_githublink_title_defalut + changevalue;
       
       GlobalVars.disclamier_divider_title = DefaultfontSize.disclamier_divider_title_default + changevalue;
       GlobalVars.disclamier_title_title = DefaultfontSize.disclamier_title_title_default + changevalue;
@@ -1247,5 +1281,5 @@ class _SettingsPage extends State<SettingsPage>{
       },
     );
   }
-  
+
 }

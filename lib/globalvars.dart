@@ -215,6 +215,8 @@ class GlobalVars {
 
   static double aboutsnutsettings_divider_title = 15;
   static double aboutsnutsettings_currentversion_title = 15;
+  static double aboutsnutsettings_githublink_title = 15;
+  static double aboutsnutsettings_githublink_subtitle = 15;
   
   static double disclamier_divider_title = 15;
   static double disclamier_title_title = 14;
@@ -402,6 +404,8 @@ class DefaultfontSize{
 
   static double aboutsnutsettings_divider_title_default = 15;
   static double aboutsnutsettings_currentversion_title_defalut = 15;
+  static double aboutsnutsettings_githublink_title_defalut = 15;
+  static double aboutsnutsettings_githublink_subtitle_defalut = 15;
   
   static double disclamier_divider_title_default = 15;
   static double disclamier_title_title_default = 14;
