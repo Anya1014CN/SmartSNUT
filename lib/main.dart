@@ -164,6 +164,9 @@ class _SmartSNUT extends State<SmartSNUT> {
       GlobalVars.coursetable_tablehead_title = DefaultfontSize.coursetable_tablehead_title_default + changevalue;
       GlobalVars.coursetable_coursename_title = DefaultfontSize.coursetable_coursename_title_default + changevalue;
       GlobalVars.coursetable_courselocation_title = DefaultfontSize.coursetable_courselocation_title_default + changevalue;
+      GlobalVars.coursetable_coursedetailsheet_title = DefaultfontSize.coursetable_coursedetailsheet_title_default + changevalue;
+      GlobalVars.coursetable_coursedetailsheet_coursecontent  = DefaultfontSize.coursetable_coursedetailsheet_coursecontent_default  + changevalue;
+      GlobalVars.coursetable_coursedetailsheet_coursetitle  = DefaultfontSize.coursetable_coursedetailsheet_coursetitle_default  + changevalue;
 
       //学籍信息页字体
       GlobalVars.stddetail_page_title = DefaultfontSize.stddetail_page_title_default + changevalue;
