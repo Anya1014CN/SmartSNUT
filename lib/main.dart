@@ -205,6 +205,8 @@ class _SmartSNUT extends State<SmartSNUT> {
 
       //绩点计算器页字体
       GlobalVars.gpacalculator_page_title = DefaultfontSize.gpacalculator_page_title_default + changevalue;
+      GlobalVars.gpacalculator_GPAtitle_title = DefaultfontSize.gpacalculator_GPAtitle_title_default + changevalue;
+      GlobalVars.gpacalculator_GPAcontent_title = DefaultfontSize.gpacalculator_GPAcontent_title_default + changevalue;
       GlobalVars.gpacalculator_coursename_title = DefaultfontSize.gpacalculator_coursename_title_default + changevalue;
       GlobalVars.gpacalculator_coursename_content = DefaultfontSize.gpacalculator_coursename_content_default + changevalue;
 
