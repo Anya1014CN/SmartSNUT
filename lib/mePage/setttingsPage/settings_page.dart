@@ -224,7 +224,7 @@ class _SettingsPage extends State<SettingsPage>{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('关于智慧陕理',style: TextStyle(fontSize: GlobalVars.generalsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
+              Text('关于智慧陕理',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
               Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
             ],
           ),
@@ -246,7 +246,7 @@ class _SettingsPage extends State<SettingsPage>{
                     borderRadius: BorderRadius.circular(21),
                     ),
                     trailing: Icon(Icons.chevron_right),
-                    title: Text('当前版本',style: TextStyle(fontSize: GlobalVars.generalsettings_fontsize_title),),
+                    title: Text('当前版本',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_currentversion_title),),
                     subtitle: Text(GlobalVars.versionCodeString,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
                     onTap: (){
                       showDialog<String>(
@@ -939,6 +939,9 @@ class _SettingsPage extends State<SettingsPage>{
       GlobalVars.accountsettings_emaccount_subtitle = DefaultfontSize.accountsettings_emaccount_subtitle_default + changevalue;
       GlobalVars.accountsettings_authserveraccount_title = DefaultfontSize.accountsettings_authserveraccount_title_default + changevalue;
       GlobalVars.accountsettings_authserveraccount_subtitle = DefaultfontSize.accountsettings_authserveraccount_subtitle_default + changevalue;
+
+      GlobalVars.aboutsnutsettings_divider_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
+      GlobalVars.aboutsnutsettings_currentversion_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
       
       GlobalVars.disclamier_divider_title = DefaultfontSize.disclamier_divider_title_default + changevalue;
       GlobalVars.disclamier_title_title = DefaultfontSize.disclamier_title_title_default + changevalue;

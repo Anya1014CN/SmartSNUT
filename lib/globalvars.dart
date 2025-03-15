@@ -212,6 +212,9 @@ class GlobalVars {
   static double accountsettings_emaccount_subtitle = 14;
   static double accountsettings_authserveraccount_title = 16;
   static double accountsettings_authserveraccount_subtitle = 14;
+
+  static double aboutsnutsettings_divider_title = 15;
+  static double aboutsnutsettings_currentversion_title = 15;
   
   static double disclamier_divider_title = 15;
   static double disclamier_title_title = 14;
@@ -396,6 +399,9 @@ class DefaultfontSize{
   static double accountsettings_emaccount_subtitle_default= 14;
   static double accountsettings_authserveraccount_title_default = 16;
   static double accountsettings_authserveraccount_subtitle_default= 14;
+
+  static double aboutsnutsettings_divider_title_default = 15;
+  static double aboutsnutsettings_currentversion_title_defalut = 15;
   
   static double disclamier_divider_title_default = 15;
   static double disclamier_title_title_default = 14;

@@ -258,6 +258,9 @@ class _SmartSNUT extends State<SmartSNUT> {
       GlobalVars.accountsettings_emaccount_subtitle = DefaultfontSize.accountsettings_emaccount_subtitle_default + changevalue;
       GlobalVars.accountsettings_authserveraccount_title = DefaultfontSize.accountsettings_authserveraccount_title_default + changevalue;
       GlobalVars.accountsettings_authserveraccount_subtitle = DefaultfontSize.accountsettings_authserveraccount_subtitle_default + changevalue;
+
+      GlobalVars.aboutsnutsettings_divider_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
+      GlobalVars.aboutsnutsettings_currentversion_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
       
       GlobalVars.disclamier_divider_title = DefaultfontSize.disclamier_divider_title_default + changevalue;
       GlobalVars.disclamier_title_title = DefaultfontSize.disclamier_title_title_default + changevalue;
