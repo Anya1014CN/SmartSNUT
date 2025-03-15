@@ -154,6 +154,10 @@ class GlobalVars {
 
   //绩点计算器页字体
   static double gpacalculator_page_title = 40;
+  static double gpacalculator_GPAtitle_title = 20;
+  static double gpacalculator_GPAcontent_title = 16;
+  static double gpacalculator_coursename_title = 16;
+  static double gpacalculator_coursename_content = 14;
 
   //网费查询页字体
   static double networkquery_page_title = 40;
@@ -339,6 +343,8 @@ class DefaultfontSize{
 
   //绩点计算器页字体
   static double gpacalculator_page_title_default = 40;
+  static double gpacalculator_coursename_title_default = 16;
+  static double gpacalculator_coursename_content_default = 16;
 
   //网费查询页字体
   static double networkquery_page_title_default = 40;
