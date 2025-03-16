@@ -137,6 +137,8 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
       }else{
         if(mounted){
           stdGradesTotal = readGradesTotal;
+          //每次计算之前清空结果，防止无限累加
+          courseGPATotal = 0;
           for(int i = 0;i < stdGradesTotal.length;i ++){
             courseGPATotal = courseGPATotal+ num.parse(stdGradesTotal[i]['CourseGradeGPA']);
           }
