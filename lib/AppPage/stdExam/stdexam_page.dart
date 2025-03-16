@@ -255,6 +255,8 @@ class _StdExamPageState extends State<StdExamPage>{
     selectedTY.add({
       'examBatch': currentExamBatch,
     });
+    //保存完成后刷新状态，防止出现参数更新不及时的情况
+    setState(() {});
     selectedTYfile.writeAsString(jsonEncode(selectedTY));
   }
   
