@@ -50,31 +50,12 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
       await datadirectory.create();
     }
 
-    String openidtxtpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
-    File openidtxtfile = File(openidtxtpath);
-
-    if(await openidtxtfile.exists() == true){
-    String openidstring = await openidtxtfile.readAsString();
-
-
-    //wechatId
-    String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
-    File wechatIdfile = File(wechatIdpath);
-    final wechatIdstring = await wechatIdfile.readAsString();
-
-    //wechatUserNickname
-    String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
-    File wechatUserNicknamefile = File(wechatUserNicknamepath);
-    final wechatUserNicknamestring = await wechatUserNicknamefile.readAsString();
-
-    //电表数量
-    String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
-    File emnumfile = File(emnumpath);
-    electricmeternum = await emnumfile.readAsString();
-
-    //读取用户数据
     String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
     File emUserDatafile = File(emUserDatapath);
+
+    if(await emUserDatafile.exists() == true){
+
+    //读取用户数据
     emUserData =jsonDecode(await emUserDatafile.readAsString());
 
     final docpath = (await getApplicationDocumentsDirectory()).path;
