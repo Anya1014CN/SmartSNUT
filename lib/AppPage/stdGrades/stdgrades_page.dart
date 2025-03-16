@@ -721,6 +721,24 @@ class _StdGradesPageState extends State<StatefulWidget>{
     stdGradesfile.writeAsString(jsonEncode(foundedGrades));
 
     readstdGrades();
+    if(stdGradesTotal.isEmpty){
+      if(mounted){
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            content: Text('当前学期暂无考试成绩',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
     if(mounted){
       setState(() {
         isQuerying = false;
