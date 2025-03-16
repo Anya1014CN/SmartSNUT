@@ -276,9 +276,7 @@ class _electricmeterPageState extends State<electricmeterpage>{
     }
     if(mounted){
       setState(() {
-        print('查询成功');
         QuerySuccess = true;
-        print('查询完成');
         isQuerying = false;
       });
     }

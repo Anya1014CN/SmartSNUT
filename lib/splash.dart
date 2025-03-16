@@ -82,6 +82,19 @@ class _SplashPageState extends State<SplashPage>{
         });
       }
     }
+    String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
+    File emUserDatafile = File(emUserDatapath);
+    if(await emUserDatafile.exists() == true){
+      if(mounted){
+        setState(() {
+          GlobalVars.emBinded = true;
+        });
+      }else{
+        setState(() {
+          GlobalVars.emBinded = false;
+        });
+      }
+    }
     loadPage();
   }
 
