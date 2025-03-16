@@ -50,12 +50,10 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
       await datadirectory.create();
     }
 
+    //读取用户数据
     String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
     File emUserDatafile = File(emUserDatapath);
-
     if(await emUserDatafile.exists() == true){
-
-    //读取用户数据
     emUserData =jsonDecode(await emUserDatafile.readAsString());
 
     final docpath = (await getApplicationDocumentsDirectory()).path;
@@ -76,7 +74,47 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
         });
       }
     }
+    
+    //若用户使用旧版数据，则进行迁移
+    String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
+    File emnumfile = File(emnumpath);
+    if(await emnumfile.exists()){
+      electricmeternum = await emnumfile.readAsString();
+      await emnumfile.delete();
+    }
+
+    String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
+    File openidfile = File(openidpath);
+    if(await openidfile.exists()){
+      openid = await openidfile.readAsString();
+      await openidfile.delete();
+    }
+
+    String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
+    File wechatIdfile = File(wechatIdpath);
+    if(await wechatIdfile.exists()){
+      wechatId = await wechatIdfile.readAsString();
+      await wechatIdfile.delete();
+    }
+
+    String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
+    File wechatUserNicknamefile = File(wechatUserNicknamepath);
+    if(await wechatUserNicknamefile.exists()){
+      wechatUserNickname = await wechatUserNicknamefile.readAsString();
+      await wechatUserNicknamefile.delete();
+      setState(() {binded = true;});
+    }
+    
+    emUserData.clear();
+    emUserData.add({
+      'emNum': electricmeternum,
+      'openId': openid,
+      'wechatId': wechatId,
+      'wechatUserNickname': wechatUserNickname,
+    });
+    emUserDatafile.writeAsString(jsonEncode(emUserData));
   }
+  
 
   @override
   void initState() {
@@ -452,21 +490,6 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
 
     //下载用户头像
     await dio.download(emresponse1.data['data']['wechatUserHeadimgurl'],'${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emavatar.jpg');
-
-    //保存 id 相关信息
-    String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
-    File openidfile = File(openidpath);
-    openidfile.writeAsString(openid);
-
-    //wechatId
-    String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
-    File wechatIdfile = File(wechatIdpath);
-    wechatIdfile.writeAsString(emresponse1.data['data']['wechatId'].toString());
-
-    //wechatUserNickname
-    String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
-    File wechatUserNicknamefile = File(wechatUserNicknamepath);
-    wechatUserNicknamefile.writeAsString(emresponse1.data['data']['wechatUserNickname'].toString());
 
     //保存用户信息
     emUserData.clear();
