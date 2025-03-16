@@ -13,6 +13,10 @@ String licenseTitle = '';
 String licensePath = '';
 String licenseContent = '';
 
+//电费账号数据
+List emUserData = [];
+String wechatUserNickname = '';
+
 class SettingsPage extends StatefulWidget{
   const SettingsPage({super.key});
 
@@ -221,7 +225,7 @@ class _SettingsPage extends State<SettingsPage>{
                     ),
                     trailing: Icon(Icons.chevron_right),
                     title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.accountsettings_emaccount_title),),
-                    subtitle: Text(GlobalVars.emBinded? '已绑定：${emUserData[0]['wechatUserNickname']}':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_emaccount_subtitle),),
+                    subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_emaccount_subtitle),),
                     onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage())).then((value) => emBindRead());},
                     ),
                   Divider(height: 5,indent: 20,endIndent: 20,),
