@@ -366,6 +366,7 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
                   ],
                 ),
               ),
+              noGrades? SizedBox(height: 0,width: 0,):
               Container(
                 padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
                 child: Card(
