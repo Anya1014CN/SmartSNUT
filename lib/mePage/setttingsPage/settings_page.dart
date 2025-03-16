@@ -439,20 +439,6 @@ class _SettingsPage extends State<SettingsPage>{
                     shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(21),
                     ),
-                    title: Text('cupertino_icons',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text("This is an asset repo containing the default set of icon assets used by Flutter's Cupertino widgets.",style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'cupertino_icons';
-                      licensePath = 'cupertino_icons_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
                     title: Text('dart-lang/sdk',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
                     subtitle: Text('The Dart SDK, including the VM, JS and Wasm compilers, analysis, core libraries, and more.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
                     trailing: Icon(Icons.chevron_right),
