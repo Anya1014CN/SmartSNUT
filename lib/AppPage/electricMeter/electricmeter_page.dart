@@ -63,7 +63,7 @@ class _electricmeterPageState extends State<electricmeterpage>{
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(Icons.link),
       ),
-      body: Column(
+      body: ListView(
         children: [
           Container(
             padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
@@ -78,41 +78,36 @@ class _electricmeterPageState extends State<electricmeterpage>{
           isQuerying?
           SizedBox(width: 0,height: 0,):
           QuerySuccess?
-          Expanded(
-            child: ListView.builder(
-            itemCount: emnum,
-            itemBuilder: (context,int i){
-              return Container(
-                padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
-                child: Card(
-                  shadowColor: Theme.of(context).colorScheme.onPrimary,
-                  color: Theme.of(context).colorScheme.surfaceDim,
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
+          Container(
+            padding: EdgeInsets.fromLTRB(15, 10, 15, 80),
+            child: Card(
+              shadowColor: Theme.of(context).colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.surfaceDim,
+              shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+              ),
+              child: Column(
+                children: emstatetotal.map((em) {
+                return Container(
+                  padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('电表编号：${em['userCode']}',style: TextStyle(fontSize: GlobalVars.emdetail_emid_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                      SizedBox(height: 10,),
+                      Text('电表剩余：${em['emDetail']['shengyu']}',style: TextStyle(fontSize: GlobalVars.emdetail_emleft_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                      Text('电表累计：${em['emDetail']['leiji']}',style: TextStyle(fontSize: GlobalVars.emdetail_emtotal_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                      Text('电表状态：${em['emDetail']['zhuangtai']}',style: TextStyle(fontSize: GlobalVars.emdetail_emstate_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                      SizedBox(height: 10,),
+                      Text('${em['userAddress']}',style: TextStyle(fontSize: GlobalVars.emdetail_emaddress_title),textAlign: TextAlign.center,softWrap: true,maxLines: 1,overflow: TextOverflow.ellipsis),
+                      SizedBox(height: 20,),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                    ],
                   ),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: ListTile(
-                      title: Text('电表编号：${emdetail[i]['userCode']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.emdetail_emid_title),),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 10,),
-                          Text('电表剩余：${emstatetotal[i]['shengyu']} 度',style: TextStyle(fontSize: GlobalVars.emdetail_emleft_title),),
-                          SizedBox(height: 5,),
-                          Text('电表累计：${emstatetotal[i]['leiji']} 度',style: TextStyle(fontSize: GlobalVars.emdetail_emtotal_title),),
-                          SizedBox(height: 5,),
-                          Text('电表状态：${emstatetotal[i]['zhuangtai']}',style: TextStyle(fontSize: GlobalVars.emdetail_emstate_title),),
-                          SizedBox(height: 5,),
-                          Text('${emdetail[i]['userAddress']}',style: TextStyle(fontSize: GlobalVars.emdetail_emaddress_title,fontWeight: FontWeight.bold),),
-                        ],
-                      )
-                    ),
-                  ),
-                ),
-              );
-            }
-          ),
+                );
+              }).toList(),
+              )
+            ),
           ):
           Container(
             padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
@@ -251,7 +246,11 @@ class _electricmeterPageState extends State<electricmeterpage>{
       Dio dio = Dio();
       try{
         Response emqresponse1 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/electricMeterQuery?wechatUserId=$wechatUserId&electricUserUid=$electricUserUid&isAfterMoney=0',);
-        emstatetotal.add(emqresponse1.data['data']);
+        emstatetotal.add({
+          'userCode': emdetail[i]['userCode'],
+          'userAddress': emdetail[i]['userAddress'],
+          'emDetail': emqresponse1.data['data']
+        });
       }catch (e){
         if(mounted){
           showDialog<String>(
