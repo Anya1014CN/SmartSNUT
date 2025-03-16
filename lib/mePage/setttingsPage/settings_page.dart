@@ -13,11 +13,6 @@ String licenseTitle = '';
 String licensePath = '';
 String licenseContent = '';
 
-//电表账号相关
-String wechatUserNickname = '';
-
-bool settingsChanged = false;//用于判断设置是否被更改，以便弹窗询问是否重启
-
 class SettingsPage extends StatefulWidget{
   const SettingsPage({super.key});
 
@@ -31,24 +26,69 @@ class _SettingsPage extends State<SettingsPage>{
 
   //判断用户是否绑定电表账号
   emBindRead() async {
-    String openidtxtpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
-    File openidtxtfile = File(openidtxtpath);
-    if(await openidtxtfile.exists() == true){
-      if(mounted){
-        //wechatUserNickname
-        String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
-        File wechatUserNicknamefile = File(wechatUserNicknamepath);
-        final wechatUserNicknamestring = await wechatUserNicknamefile.readAsString();
+    //读取用户数据
+    String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
+    File emUserDatafile = File(emUserDatapath);
+    if(await emUserDatafile.exists() == true){
+    emUserData =jsonDecode(await emUserDatafile.readAsString());
+
+    final docpath = (await getApplicationDocumentsDirectory()).path;
+    if(mounted){
         setState(() {
-          wechatUserNickname = wechatUserNicknamestring;
+          openid = emUserData[0]['openId'];
+          wechatId = emUserData[0]['wechatId'];
+          wechatUserNickname = emUserData[0]['wechatUserNickname'];
+          emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
+          electricmeternum = emUserData[0]['emNum'].toString();
+          binded = true;
         });
       }
     }else{
       if(mounted){
         setState(() {
+          binded = false;
         });
       }
     }
+    
+    //若用户使用旧版数据，则进行迁移
+    String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
+    File emnumfile = File(emnumpath);
+    if(await emnumfile.exists()){
+      electricmeternum = await emnumfile.readAsString();
+      await emnumfile.delete();
+    }
+
+    String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
+    File openidfile = File(openidpath);
+    if(await openidfile.exists()){
+      openid = await openidfile.readAsString();
+      await openidfile.delete();
+    }
+
+    String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
+    File wechatIdfile = File(wechatIdpath);
+    if(await wechatIdfile.exists()){
+      wechatId = await wechatIdfile.readAsString();
+      await wechatIdfile.delete();
+    }
+
+    String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
+    File wechatUserNicknamefile = File(wechatUserNicknamepath);
+    if(await wechatUserNicknamefile.exists()){
+      wechatUserNickname = await wechatUserNicknamefile.readAsString();
+      await wechatUserNicknamefile.delete();
+      setState(() {binded = true;});
+    }
+    
+    emUserData.clear();
+    emUserData.add({
+      'emNum': electricmeternum,
+      'openId': openid,
+      'wechatId': wechatId,
+      'wechatUserNickname': wechatUserNickname,
+    });
+    emUserDatafile.writeAsString(jsonEncode(emUserData));
   }
 
   //保存设置到本地
@@ -181,7 +221,7 @@ class _SettingsPage extends State<SettingsPage>{
                     ),
                     trailing: Icon(Icons.chevron_right),
                     title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.accountsettings_emaccount_title),),
-                    subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_emaccount_subtitle),),
+                    subtitle: Text(GlobalVars.emBinded? '已绑定：${emUserData[0]['wechatUserNickname']}':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_emaccount_subtitle),),
                     onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage())).then((value) => emBindRead());},
                     ),
                   Divider(height: 5,indent: 20,endIndent: 20,),
