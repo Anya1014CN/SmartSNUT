@@ -53,8 +53,8 @@ class StdGradesPage extends StatefulWidget{
 }
 
 class _StdGradesPageState extends State<StatefulWidget>{
+  bool _showAppBarTitle = false;
 
-  
   //读取用户信息并保存在变量中
   readStdAccount() async {
     String stdAccountpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdAccount.json';
@@ -314,19 +314,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () => switchTerm(),
-            icon: Icon(Icons.date_range),
-          )
-        ],
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-        leading: IconButton(
-          onPressed: (){Navigator.pop(context);},
-          icon: Icon(Icons.arrow_back),
-        ),
-      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){getStdGrades();},
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -349,71 +336,111 @@ class _StdGradesPageState extends State<StatefulWidget>{
           ],
         ),
       ),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
-            child: Row(
-              children: [
-                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/grade.png'):AssetImage('assets/icons/darktheme/grade.png'),height: 40,),
-                SizedBox(width: 10,),
-                Text('我的成绩',style: TextStyle(fontSize: GlobalVars.stdgrade_page_title),)
-              ],
-            ),
-          ),
-          noGrades? 
-          Center(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-              child: Card(
-                shadowColor: Theme.of(context).colorScheme.onPrimary,
-                color: Theme.of(context).colorScheme.surfaceDim,
-                shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification.metrics.pixels > 80 && !_showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = true;
+            });
+          } else if (scrollNotification.metrics.pixels <= 80 &&
+              _showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = false;
+            });
+          }
+          return true;
+        },
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                backgroundColor:
+                    Theme.of(context).colorScheme.surfaceContainerHigh,
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back),
                 ),
-                child: ListTile(
-                  leading: Icon(Icons.error),
-                  title: Text('暂无 成绩 信息',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_title,fontWeight: FontWeight.bold),),
-                  subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_subtitle),),
+                actions: [
+                  IconButton(
+                    onPressed: () => switchTerm(),
+                    icon: Icon(Icons.date_range),
+                  )
+                ],
+                pinned: true,
+                expandedHeight: 0,
+                title: _showAppBarTitle ? Text("我的成绩") : null,
+              ),
+            ];
+          },
+          body: ListView(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+                child: Row(
+                  children: [
+                    Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/grade.png'):AssetImage('assets/icons/darktheme/grade.png'),height: 40,),
+                    SizedBox(width: 10,),
+                    Text('我的成绩',style: TextStyle(fontSize: GlobalVars.stdgrade_page_title),)
+                  ],
                 ),
               ),
-            ),
-          ):
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-            child: Card(
-              shadowColor: Theme.of(context).colorScheme.onPrimary,
-              color: Theme.of(context).colorScheme.surfaceDim,
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-              ),
-              child: Column(
-                children: stdGradesTotal.map((grades) {
-                return Container(
-                  padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //Text('序号：${i + 1}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      Text('课程名称：${grades['CourseName']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursename_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      SizedBox(height: 10,),
-                      Text('学分：${grades['CourseCredit']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursecredit_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      Text('总评成绩：${grades['CourseGradeTotal']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursegradetotal_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      Text('最终：${grades['CourseGradeFinal']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursegradefinal_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      Text('绩点：${grades['CourseGradeGPA']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursegradegpa_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      SizedBox(height: 10,),
-                      Text('课程类别：${grades['CourseType']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursetype_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      SizedBox(height: 20,),
-                      Divider(height: 5,indent: 20,endIndent: 20,),
-                    ],
+              noGrades? 
+              Center(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  child: Card(
+                    shadowColor: Theme.of(context).colorScheme.onPrimary,
+                    color: Theme.of(context).colorScheme.surfaceDim,
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: ListTile(
+                      leading: Icon(Icons.error),
+                      title: Text('暂无 成绩 信息',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_title,fontWeight: FontWeight.bold),),
+                      subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_subtitle),),
+                    ),
                   ),
-                );
-              }).toList(),
-              )
-            ),
+                ),
+              ):
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Card(
+                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Column(
+                    children: stdGradesTotal.map((grades) {
+                    return Container(
+                      padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //Text('序号：${i + 1}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('课程名称：${grades['CourseName']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursename_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          SizedBox(height: 10,),
+                          Text('学分：${grades['CourseCredit']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursecredit_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('总评成绩：${grades['CourseGradeTotal']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursegradetotal_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('最终：${grades['CourseGradeFinal']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursegradefinal_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('绩点：${grades['CourseGradeGPA']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursegradegpa_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          SizedBox(height: 10,),
+                          Text('课程类别：${grades['CourseType']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursetype_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          SizedBox(height: 20,),
+                          Divider(height: 5,indent: 20,endIndent: 20,),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  )
+                ),
+              ),
+              Container(padding: EdgeInsets.fromLTRB(0, 80, 0, 0),)
+            ],
           ),
-          Container(padding: EdgeInsets.fromLTRB(0, 80, 0, 0),)
-        ],
+        ),
       ),
     );
   }

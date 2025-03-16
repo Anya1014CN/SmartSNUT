@@ -61,6 +61,7 @@ class StdExamPage extends StatefulWidget{
 }
 
 class _StdExamPageState extends State<StdExamPage>{
+  bool _showAppBarTitle = false;
 
   //读取用户信息并保存在变量中
   readStdAccount() async {
@@ -388,19 +389,6 @@ class _StdExamPageState extends State<StdExamPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () => switchTerm(),
-            icon: Icon(Icons.date_range),
-          )
-        ],
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-        leading: IconButton(
-          onPressed: (){Navigator.pop(context);},
-          icon: Icon(Icons.arrow_back),
-        ),
-      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){getStdExam();},
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -423,134 +411,174 @@ class _StdExamPageState extends State<StdExamPage>{
           ],
         ),
       ),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
-            child: Row(
-              children: [
-                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/exam.png'):AssetImage('assets/icons/darktheme/exam.png'),height: 40,),
-                SizedBox(width: 10,),
-                Text('我的考试',style: TextStyle(fontSize: GlobalVars.stdexam_page_title),)
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(21),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification.metrics.pixels > 80 && !_showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = true;
+            });
+          } else if (scrollNotification.metrics.pixels <= 80 &&
+              _showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = false;
+            });
+          }
+          return true;
+        },
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                backgroundColor:
+                    Theme.of(context).colorScheme.surfaceContainerHigh,
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back),
+                ),
+                actions: [
+                  IconButton(
+                    onPressed: () => switchTerm(),
+                    icon: Icon(Icons.date_range),
+                  )
+                ],
+                pinned: true,
+                expandedHeight: 0,
+                title: _showAppBarTitle ? Text("我的考试") : null,
               ),
-              shadowColor: Theme.of(context).colorScheme.onPrimary,
-              color: Theme.of(context).colorScheme.surfaceDim,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MenuAnchor(
-                    controller: menuExamBatchController,
-                    menuChildren: [
-                      MenuItemButton(
-                        child: Text('期末考试',style: TextStyle(fontSize: GlobalVars.stdexam_type_title),),
-                        onPressed: () async {
-                          if(mounted){
-                            setState(() {
-                              currentExamBatch = 0;
-                              currentExamBatchName = '期末考试';
-                            });
-                          }
-                          saveSelectedTY();
-                          readSemesterInfo();
-                          menuExamBatchController.close();
-                        },
-                      ),
-                      MenuItemButton(
-                        child: Text('重修考试',style: TextStyle(fontSize: GlobalVars.stdexam_type_title),),
-                        onPressed: () async {
-                          if(mounted){
-                            setState(() {
-                              currentExamBatch = 1;
-                              currentExamBatchName = '重修考试';
-                            });
-                          }
-                          saveSelectedTY();
-                          readSemesterInfo();
-                          menuExamBatchController.close();
-                        },
-                      ),
-                    ],
-                    child: SizedBox(
-                      height: 50,
-                      child: TextButton(
-                        style: ElevatedButton.styleFrom(
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
+            ];
+          },
+          body: ListView(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+                child: Row(
+                  children: [
+                    Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/exam.png'):AssetImage('assets/icons/darktheme/exam.png'),height: 40,),
+                    SizedBox(width: 10,),
+                    Text('我的考试',style: TextStyle(fontSize: GlobalVars.stdexam_page_title),)
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(21),
+                  ),
+                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      MenuAnchor(
+                        controller: menuExamBatchController,
+                        menuChildren: [
+                          MenuItemButton(
+                            child: Text('期末考试',style: TextStyle(fontSize: GlobalVars.stdexam_type_title),),
+                            onPressed: () async {
+                              if(mounted){
+                                setState(() {
+                                  currentExamBatch = 0;
+                                  currentExamBatchName = '期末考试';
+                                });
+                              }
+                              saveSelectedTY();
+                              readSemesterInfo();
+                              menuExamBatchController.close();
+                            },
+                          ),
+                          MenuItemButton(
+                            child: Text('重修考试',style: TextStyle(fontSize: GlobalVars.stdexam_type_title),),
+                            onPressed: () async {
+                              if(mounted){
+                                setState(() {
+                                  currentExamBatch = 1;
+                                  currentExamBatchName = '重修考试';
+                                });
+                              }
+                              saveSelectedTY();
+                              readSemesterInfo();
+                              menuExamBatchController.close();
+                            },
+                          ),
+                        ],
+                        child: SizedBox(
+                          height: 50,
+                          child: TextButton(
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: Theme.of(context).colorScheme.onPrimary,
+                              shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              ),
+                            ),
+                            onPressed: () {
+                              if (menuExamBatchController.isOpen) {
+                                menuExamBatchController.close();
+                              } else {
+                                menuExamBatchController.open();
+                              }
+                            },
+                            child: Text('考试类型：$currentExamBatchName', style: TextStyle(fontSize: GlobalVars.stdexam_type_title),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                           ),
                         ),
-                        onPressed: () {
-                          if (menuExamBatchController.isOpen) {
-                            menuExamBatchController.close();
-                          } else {
-                            menuExamBatchController.open();
-                          }
-                        },
-                        child: Text('考试类型：$currentExamBatchName', style: TextStyle(fontSize: GlobalVars.stdexam_type_title),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                       ),
+                    ],
+                  )
+                ),
+              ),
+              noExam? 
+              Center(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  child: Card(
+                    shadowColor: Theme.of(context).colorScheme.onPrimary,
+                    color: Theme.of(context).colorScheme.surfaceDim,
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: ListTile(
+                      leading: Icon(Icons.error),
+                      title: Text('暂无 $currentExamBatchName 信息',style: TextStyle(fontSize: GlobalVars.nostdexam_hint_title,fontWeight: FontWeight.bold),),
+                      subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.nostdexam_hint_subtitle),),
                     ),
                   ),
-                ],
-              )
-            ),
-          ),
-          noExam? 
-          Center(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-              child: Card(
-                shadowColor: Theme.of(context).colorScheme.onPrimary,
-                color: Theme.of(context).colorScheme.surfaceDim,
-                shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
                 ),
-                child: ListTile(
-                  leading: Icon(Icons.error),
-                  title: Text('暂无 $currentExamBatchName 信息',style: TextStyle(fontSize: GlobalVars.nostdexam_hint_title,fontWeight: FontWeight.bold),),
-                  subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.nostdexam_hint_subtitle),),
-                ),
-              ),
-            ),
-          ):
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-            child: Card(
-              shadowColor: Theme.of(context).colorScheme.onPrimary,
-              color: Theme.of(context).colorScheme.surfaceDim,
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-              ),
-              child: Column(
-                children: stdExamTotal.map((exam) {
-                return Container(
-                  padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('课程名称：${exam['CourseName']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamname_title, fontWeight: FontWeight.bold)),
-                      Text('考试日期：${exam['CourseExamDate']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamdate_title)),
-                      Text('考试时间：${exam['CourseExamTime']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamtime_title)),
-                      Text('座位号：${exam['CourseExamSeatNo']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamseatno_title)),
-                      Text('考试类型：${exam['CourseExamType']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamtype_title)),
-                      SizedBox(height: 20,),
-                      Divider(height: 5,indent: 20,endIndent: 20,),
-                    ],
+              ):
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Card(
+                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
                   ),
-                );
-              }).toList(),
-              )
-            ),
+                  child: Column(
+                    children: stdExamTotal.map((exam) {
+                    return Container(
+                      padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('课程名称：${exam['CourseName']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamname_title, fontWeight: FontWeight.bold)),
+                          Text('考试日期：${exam['CourseExamDate']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamdate_title)),
+                          Text('考试时间：${exam['CourseExamTime']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamtime_title)),
+                          Text('座位号：${exam['CourseExamSeatNo']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamseatno_title)),
+                          Text('考试类型：${exam['CourseExamType']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamtype_title)),
+                          SizedBox(height: 20,),
+                          Divider(height: 5,indent: 20,endIndent: 20,),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  )
+                ),
+              ),
+              Container(padding: EdgeInsets.fromLTRB(0, 80, 0, 0),)
+            ],
           ),
-          Container(padding: EdgeInsets.fromLTRB(0, 80, 0, 0),)
-        ],
+        ),
       ),
     );
   }

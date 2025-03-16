@@ -27,6 +27,7 @@ class SettingsPage extends StatefulWidget{
 }
 
 class _SettingsPage extends State<SettingsPage>{
+  bool _showAppBarTitle = false;
 
   //判断用户是否绑定电表账号
   emBindRead() async {
@@ -122,482 +123,509 @@ class _SettingsPage extends State<SettingsPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-        leading: IconButton(
-          onPressed: (){Navigator.pop(context);},
-          icon: Icon(Icons.arrow_back),
-        ),
-      ),
-      body: ListView(
-        children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
-          child: Row(
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification.metrics.pixels > 80 && !_showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = true;
+            });
+          } else if (scrollNotification.metrics.pixels <= 80 &&
+              _showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = false;
+            });
+          }
+          return true;
+        },
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                backgroundColor:
+                    Theme.of(context).colorScheme.surfaceContainerHigh,
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back),
+                ),
+                pinned: true,
+                expandedHeight: 0,
+                title: _showAppBarTitle ? Text("应用设置") : null,
+              ),
+            ];
+          },
+          body: ListView(
             children: [
-              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/settings.png'):AssetImage('assets/icons/darktheme/settings.png'),height: 40,),
-              SizedBox(width: 10,),
-              Text('应用设置',style: TextStyle(fontSize: GlobalVars.settings_page_title),)
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('通用设置',style: TextStyle(fontSize: GlobalVars.generalsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
-              Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(21),
-            ),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            shadowColor: Theme.of(context).colorScheme.onPrimary,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              child: Column(
+            Container(
+              padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+              child: Row(
                 children: [
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    trailing: Icon(Icons.chevron_right),
-                    title: Text('字体大小',style: TextStyle(fontSize: GlobalVars.generalsettings_fontsize_title),),
-                    subtitle: Text(GlobalVars.fontSize_name,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
-                    onTap: (){switchTextSize();},
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    trailing: Icon(Icons.chevron_right),
-                    title: Text('主题颜色',style: TextStyle(fontSize: GlobalVars.generalsettings_themecolor_title),),
-                    subtitle: Text((GlobalVars.themeColor == 0)? '琥珀色':(GlobalVars.themeColor == 1)? '深橙色':(GlobalVars.themeColor == 2)? '曼迪红':(GlobalVars.themeColor == 3)? '深紫色':(GlobalVars.themeColor == 4)? '野鸭绿':(GlobalVars.themeColor == 5)? '粉红色':(GlobalVars.themeColor == 6)? '咖啡色':'鲨鱼灰',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_themecolor_subtitle),),
-                    onTap: (){switchThemeColor();},
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    trailing: Icon(Icons.chevron_right),
-                    title: Text('深色模式',style: TextStyle(fontSize: GlobalVars.generalsettings_darkmode_title),),
-                    subtitle: Text((GlobalVars.darkModeint == 0)? '跟随系统':(GlobalVars.darkModeint == 1)? '始终开启':'始终关闭',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_darkmode_subtitle),),
-                    onTap: (){switchThemeMode();},
-                  ),
+                  Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/settings.png'):AssetImage('assets/icons/darktheme/settings.png'),height: 40,),
+                  SizedBox(width: 10,),
+                  Text('应用设置',style: TextStyle(fontSize: GlobalVars.settings_page_title),)
                 ],
-              )
+              ),
             ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('账号设置',style: TextStyle(fontSize: GlobalVars.accountsettings_divider_title,color: Theme.of(context).colorScheme.primary),),
-              Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(21),
-            ),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            shadowColor: Theme.of(context).colorScheme.onPrimary,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            Container(
+              padding: EdgeInsets.all(10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    trailing: Icon(Icons.chevron_right),
-                    title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.accountsettings_emaccount_title),),
-                    subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_emaccount_subtitle),),
-                    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage())).then((value) => emBindRead());},
-                    ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    trailing: Icon(Icons.chevron_right),
-                    title: Text('退出登录',style: TextStyle(fontSize: GlobalVars.accountsettings_authserveraccount_title),),
-                    subtitle: Text(GlobalVars.userName,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_authserveraccount_subtitle),),
-                    onTap: (){
-                      showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                        content: Text('您确定要退出登录吗？\n退出登录同时会解绑电费账号、清除字体大小、深色模式等设置',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'Cancel'),
-                            child: const Text('取消'),
-                          ),
-                          TextButton(
-                            onPressed: (){
-                                logout();
-                                Navigator.pop(context);
-                              },
-                            child: const Text('确认'),
-                            ),
-                          ],
+                  Text('通用设置',style: TextStyle(fontSize: GlobalVars.generalsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
+                  Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                ),
+                color: Theme.of(context).colorScheme.surfaceDim,
+                shadowColor: Theme.of(context).colorScheme.onPrimary,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
                         ),
-                      );    
-                    },
-                  ),
-                ],
-              )
-            ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('关于智慧陕理',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
-              Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(21),
-            ),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            shadowColor: Theme.of(context).colorScheme.onPrimary,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              child: Column(
-                children: [
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    trailing: Icon(Icons.chevron_right),
-                    title: Text('当前版本',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_currentversion_title),),
-                    subtitle: Text(GlobalVars.versionCodeString,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
-                    onTap: (){
-                      showDialog<String>(
-                        context: context,
-                        builder:(BuildContext context) => AlertDialog(
-                          title: Text('智慧陕理 - ${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                          content: Text('发布日期：${GlobalVars.versionReleaseDate}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-                          scrollable: true,
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'OK'),
-                              child: const Text('OK'),
-                            ),
-                          ],
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('字体大小',style: TextStyle(fontSize: GlobalVars.generalsettings_fontsize_title),),
+                        subtitle: Text(GlobalVars.fontSize_name,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
+                        onTap: (){switchTextSize();},
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
                         ),
-                      );
-                    },
-                  ),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    trailing: Icon(Icons.chevron_right),
-                    title: Text('Github 开源地址',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_githublink_title),),
-                    subtitle: Text('https://github.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_githublink_subtitle),),
-                    onTap: () async {
-                      showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          scrollable: true,
-                          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                          content: Text('是否要使用系统默认浏览器打开外部链接？\n\nhttps://github.com/Anya1014CN/SmartSNUT',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'Cancel'),
-                              child: const Text('取消'),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                await launchUrl(Uri.parse('https://github.com/Anya1014CN/SmartSNUT'));
-                                Navigator.pop(context, 'OK');
-                              },
-                              child: const Text('确认'),
-                            ),
-                          ],
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('主题颜色',style: TextStyle(fontSize: GlobalVars.generalsettings_themecolor_title),),
+                        subtitle: Text((GlobalVars.themeColor == 0)? '琥珀色':(GlobalVars.themeColor == 1)? '深橙色':(GlobalVars.themeColor == 2)? '曼迪红':(GlobalVars.themeColor == 3)? '深紫色':(GlobalVars.themeColor == 4)? '野鸭绿':(GlobalVars.themeColor == 5)? '粉红色':(GlobalVars.themeColor == 6)? '咖啡色':'鲨鱼灰',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_themecolor_subtitle),),
+                        onTap: (){switchThemeColor();},
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
                         ),
-                      );
-                    },
-                  ),
-                ],
-              )
-            ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('声明',style: TextStyle(fontSize: GlobalVars.disclamier_divider_title,color: Theme.of(context).colorScheme.primary),),
-              Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(21),
-            ),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            shadowColor: Theme.of(context).colorScheme.onPrimary,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    child: Column(
-                      children: [
-                        Text('智慧陕理使用的所有图标/徽标均来自 Material Design 3 Icons 以及 icons8.com',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
-                        SizedBox(height: 10,),
-                        Text('智慧陕理所使用的字体为 MiSans（https://hyperos.mi.com/font/zh/）',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
-                        SizedBox(height: 10,),
-                        Text('智慧陕理**并非**陕西理工大学官方 APP',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
-                        SizedBox(height: 10,),
-                        Text('智慧陕理 APP 与陕西理工大学**无**任何从属关系',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
-                        SizedBox(height: 10,),
-                        Text('智慧陕理**从未**有意标榜或冒充是陕西理工大学官方APP',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('开放源代码许可',style: TextStyle(fontSize: GlobalVars.lincense_divider_title,color: Theme.of(context).colorScheme.primary),),
-              Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(21),
-            ),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            shadowColor: Theme.of(context).colorScheme.onPrimary,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              child: Column(
-                children: [
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('cookie_jar',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('A cookie manager for http requests in Dart, by which you can deal with the complex cookie policy and persist cookies easily.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'cookie_jar';
-                      licensePath = 'cookie_jar_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('crypto',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('A set of cryptographic hashing functions for Dart.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'crypto';
-                      licensePath = 'crypto_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('dart-lang/sdk',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('The Dart SDK, including the VM, JS and Wasm compilers, analysis, core libraries, and more.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'dart-lang/sdk';
-                      licensePath = 'dart-lang&sdk_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('dio_cookie_manager',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('A cookie manager combines cookie_jar and dio, based on the interceptor algorithm.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'dio_cookie_manager';
-                      licensePath = 'dio_cookie_manager_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('dio',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('A powerful HTTP networking package for Dart/Flutter, supports Global configuration, Interceptors, FormData, Request cancellation, File uploading/downloading, Timeout, Custom adapters, Transformers, etc.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'dio';
-                      licensePath = 'dio_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('flex_color_scheme',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('A Flutter package to make and use beautiful color scheme based themes.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'flex_color_scheme';
-                      licensePath = 'flex_color_scheme_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('flutter',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('Flutter makes it easy and fast to build beautiful apps for mobile and beyond',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'flutter';
-                      licensePath = 'flutter_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('html',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('A Dart implementation of an HTML5 parser.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'html';
-                      licensePath = 'html_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('intl',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('Provides internationalization and localization facilities, including message translation, plurals and genders, date/number formatting and parsing, and bidirectional text.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'intl';
-                      licensePath = 'intl_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('path_provider',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('A Flutter plugin for finding commonly used locations on the filesystem. Supports Android, iOS, Linux, macOS and Windows. Not all methods are supported on all platforms.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'path_provider';
-                      licensePath = 'path_provider_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('responsive_builder',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('A set of widgets to make responsive UI building in flutter more readable',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'responsive_builder';
-                      licensePath = 'responsive_builder_LICENSE';
-                      showLicense(context);
-                    },
-                  ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('url_launcher',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('A Flutter plugin for launching a URL.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'url_launcher';
-                      licensePath = 'url_launcher_LICENSE';
-                      showLicense(context);
-                      },
-                    ),
-                  Divider(height: 5,indent: 20,endIndent: 20,),
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                    ),
-                    title: Text('provider',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                    subtitle: Text('A wrapper around InheritedWidget to make them easier to use and more reusable.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: (){
-                      licenseTitle = 'provider';
-                      licensePath = 'provider_LICENSE';
-                      showLicense(context);
-                      },
-                    ),
-                  ],
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('深色模式',style: TextStyle(fontSize: GlobalVars.generalsettings_darkmode_title),),
+                        subtitle: Text((GlobalVars.darkModeint == 0)? '跟随系统':(GlobalVars.darkModeint == 1)? '始终开启':'始终关闭',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_darkmode_subtitle),),
+                        onTap: (){switchThemeMode();},
+                      ),
+                    ],
+                  )
                 ),
               ),
             ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('账号设置',style: TextStyle(fontSize: GlobalVars.accountsettings_divider_title,color: Theme.of(context).colorScheme.primary),),
+                  Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                ),
+                color: Theme.of(context).colorScheme.surfaceDim,
+                shadowColor: Theme.of(context).colorScheme.onPrimary,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.accountsettings_emaccount_title),),
+                        subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_emaccount_subtitle),),
+                        onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage())).then((value) => emBindRead());},
+                        ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('退出登录',style: TextStyle(fontSize: GlobalVars.accountsettings_authserveraccount_title),),
+                        subtitle: Text(GlobalVars.userName,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_authserveraccount_subtitle),),
+                        onTap: (){
+                          showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+                            content: Text('您确定要退出登录吗？\n退出登录同时会解绑电费账号、清除字体大小、深色模式等设置',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'Cancel'),
+                                child: const Text('取消'),
+                              ),
+                              TextButton(
+                                onPressed: (){
+                                    logout();
+                                    Navigator.pop(context);
+                                  },
+                                child: const Text('确认'),
+                                ),
+                              ],
+                            ),
+                          );    
+                        },
+                      ),
+                    ],
+                  )
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('关于智慧陕理',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
+                  Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                ),
+                color: Theme.of(context).colorScheme.surfaceDim,
+                shadowColor: Theme.of(context).colorScheme.onPrimary,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('当前版本',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_currentversion_title),),
+                        subtitle: Text(GlobalVars.versionCodeString,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
+                        onTap: (){
+                          showDialog<String>(
+                            context: context,
+                            builder:(BuildContext context) => AlertDialog(
+                              title: Text('智慧陕理 - ${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+                              content: Text('发布日期：${GlobalVars.versionReleaseDate}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                              scrollable: true,
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'OK'),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('Github 开源地址',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_githublink_title),),
+                        subtitle: Text('https://github.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_githublink_subtitle),),
+                        onTap: () async {
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              scrollable: true,
+                              title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+                              content: Text('是否要使用系统默认浏览器打开外部链接？\n\nhttps://github.com/Anya1014CN/SmartSNUT',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                                  child: const Text('取消'),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    await launchUrl(Uri.parse('https://github.com/Anya1014CN/SmartSNUT'));
+                                    Navigator.pop(context, 'OK');
+                                  },
+                                  child: const Text('确认'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('声明',style: TextStyle(fontSize: GlobalVars.disclamier_divider_title,color: Theme.of(context).colorScheme.primary),),
+                  Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                ),
+                color: Theme.of(context).colorScheme.surfaceDim,
+                shadowColor: Theme.of(context).colorScheme.onPrimary,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        child: Column(
+                          children: [
+                            Text('智慧陕理使用的所有图标/徽标均来自 Material Design 3 Icons 以及 icons8.com',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                            SizedBox(height: 10,),
+                            Text('智慧陕理所使用的字体为 MiSans（https://hyperos.mi.com/font/zh/）',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                            SizedBox(height: 10,),
+                            Text('智慧陕理**并非**陕西理工大学官方 APP',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                            SizedBox(height: 10,),
+                            Text('智慧陕理 APP 与陕西理工大学**无**任何从属关系',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                            SizedBox(height: 10,),
+                            Text('智慧陕理**从未**有意标榜或冒充是陕西理工大学官方APP',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('开放源代码许可',style: TextStyle(fontSize: GlobalVars.lincense_divider_title,color: Theme.of(context).colorScheme.primary),),
+                  Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                ),
+                color: Theme.of(context).colorScheme.surfaceDim,
+                shadowColor: Theme.of(context).colorScheme.onPrimary,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('cookie_jar',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A cookie manager for http requests in Dart, by which you can deal with the complex cookie policy and persist cookies easily.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'cookie_jar';
+                          licensePath = 'cookie_jar_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('crypto',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A set of cryptographic hashing functions for Dart.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'crypto';
+                          licensePath = 'crypto_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('dart-lang/sdk',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('The Dart SDK, including the VM, JS and Wasm compilers, analysis, core libraries, and more.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'dart-lang/sdk';
+                          licensePath = 'dart-lang&sdk_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('dio_cookie_manager',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A cookie manager combines cookie_jar and dio, based on the interceptor algorithm.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'dio_cookie_manager';
+                          licensePath = 'dio_cookie_manager_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('dio',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A powerful HTTP networking package for Dart/Flutter, supports Global configuration, Interceptors, FormData, Request cancellation, File uploading/downloading, Timeout, Custom adapters, Transformers, etc.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'dio';
+                          licensePath = 'dio_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('flex_color_scheme',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Flutter package to make and use beautiful color scheme based themes.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'flex_color_scheme';
+                          licensePath = 'flex_color_scheme_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('flutter',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('Flutter makes it easy and fast to build beautiful apps for mobile and beyond',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'flutter';
+                          licensePath = 'flutter_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('html',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Dart implementation of an HTML5 parser.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'html';
+                          licensePath = 'html_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('intl',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('Provides internationalization and localization facilities, including message translation, plurals and genders, date/number formatting and parsing, and bidirectional text.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'intl';
+                          licensePath = 'intl_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('path_provider',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Flutter plugin for finding commonly used locations on the filesystem. Supports Android, iOS, Linux, macOS and Windows. Not all methods are supported on all platforms.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'path_provider';
+                          licensePath = 'path_provider_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('responsive_builder',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A set of widgets to make responsive UI building in flutter more readable',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'responsive_builder';
+                          licensePath = 'responsive_builder_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('url_launcher',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Flutter plugin for launching a URL.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'url_launcher';
+                          licensePath = 'url_launcher_LICENSE';
+                          showLicense(context);
+                          },
+                        ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        title: Text('provider',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A wrapper around InheritedWidget to make them easier to use and more reusable.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'provider';
+                          licensePath = 'provider_LICENSE';
+                          showLicense(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

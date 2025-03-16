@@ -46,7 +46,7 @@ class GPACalculatorPage extends StatefulWidget{
 }
 
 class _GPACalculatorPageState extends State<GPACalculatorPage>{
-
+  bool _showAppBarTitle = false;
   
   //读取用户信息并保存在变量中
   readStdAccount() async {
@@ -305,19 +305,6 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () => switchTerm(),
-            icon: Icon(Icons.date_range),
-          )
-        ],
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-        leading: IconButton(
-          onPressed: (){Navigator.pop(context);},
-          icon: Icon(Icons.arrow_back),
-        ),
-      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => StdGradesPage()));},
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -329,84 +316,124 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
           ],
         ),
       ),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
-            child: Row(
-              children: [
-                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/calculator.png'):AssetImage('assets/icons/darktheme/calculator.png'),height: 40,),
-                SizedBox(width: 10,),
-                Text('绩点计算器',style: TextStyle(fontSize: GlobalVars.gpacalculator_page_title),)
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(21),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification.metrics.pixels > 80 && !_showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = true;
+            });
+          } else if (scrollNotification.metrics.pixels <= 80 &&
+              _showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = false;
+            });
+          }
+          return true;
+        },
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                backgroundColor:
+                    Theme.of(context).colorScheme.surfaceContainerHigh,
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back),
+                ),
+                actions: [
+                  IconButton(
+                    onPressed: () => switchTerm(),
+                    icon: Icon(Icons.date_range),
+                  )
+                ],
+                pinned: true,
+                expandedHeight: 0,
+                title: _showAppBarTitle ? Text("绩点计算器") : null,
               ),
-              shadowColor: Theme.of(context).colorScheme.onPrimary,
-              color: Theme.of(context).colorScheme.surfaceDim,
-              child: Container(
-                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+            ];
+          },
+          body: ListView(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+                child: Row(
                   children: [
-                    Text('算数平均绩点：${(courseGPATotal / stdGradesTotal.length).toStringAsFixed(3)} （保留 3 位小数）',style: TextStyle(fontSize: GlobalVars.gpacalculator_GPAtitle_title),),
-                    SizedBox(height: 5,),
-                    Text('本学期共 ${stdGradesTotal.length} 门课程',style: TextStyle(fontSize: GlobalVars.gpacalculator_GPAcontent_title),),
+                    Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/calculator.png'):AssetImage('assets/icons/darktheme/calculator.png'),height: 40,),
+                    SizedBox(width: 10,),
+                    Text('绩点计算器',style: TextStyle(fontSize: GlobalVars.gpacalculator_page_title),)
                   ],
                 ),
-              )
-            ),
-          ),
-          noGrades? 
-          Center(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-              child: Card(
-                shadowColor: Theme.of(context).colorScheme.onPrimary,
-                color: Theme.of(context).colorScheme.surfaceDim,
-                shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
-                ),
-                child: ListTile(
-                  leading: Icon(Icons.error),
-                  title: Text('暂无 成绩 信息',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_title,fontWeight: FontWeight.bold),),
-                  subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角前往 “我的成绩” 页面刷新成绩',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_subtitle),),
-                ),
               ),
-            ),
-          ):
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-            child: Card(
-              shadowColor: Theme.of(context).colorScheme.onPrimary,
-              color: Theme.of(context).colorScheme.surfaceDim,
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-              ),
-              child: Column(
-                children: stdGradesTotal.map((grades) {
-                return Container(
-                  padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('课程名称：${grades['CourseName']}',style: TextStyle(fontSize: GlobalVars.gpacalculator_coursename_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      SizedBox(height: 10,),
-                      Text('学分：${grades['CourseCredit']}  最终：${grades['CourseGradeFinal']}  绩点：${grades['CourseGradeGPA']}',style: TextStyle(fontSize: GlobalVars.gpacalculator_coursename_content),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      Divider(height: 5,indent: 20,endIndent: 20,),
-                    ],
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(21),
                   ),
-                );
-              }).toList(),
-              )
-            ),
+                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text('算数平均绩点：${(courseGPATotal / stdGradesTotal.length).toStringAsFixed(3)} （保留 3 位小数）',style: TextStyle(fontSize: GlobalVars.gpacalculator_GPAtitle_title),),
+                        SizedBox(height: 5,),
+                        Text('本学期共 ${stdGradesTotal.length} 门课程',style: TextStyle(fontSize: GlobalVars.gpacalculator_GPAcontent_title),),
+                      ],
+                    ),
+                  )
+                ),
+              ),
+              noGrades? 
+              Center(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  child: Card(
+                    shadowColor: Theme.of(context).colorScheme.onPrimary,
+                    color: Theme.of(context).colorScheme.surfaceDim,
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: ListTile(
+                      leading: Icon(Icons.error),
+                      title: Text('暂无 成绩 信息',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_title,fontWeight: FontWeight.bold),),
+                      subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角前往 “我的成绩” 页面刷新成绩',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_subtitle),),
+                    ),
+                  ),
+                ),
+              ):
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Card(
+                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Column(
+                    children: stdGradesTotal.map((grades) {
+                    return Container(
+                      padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('课程名称：${grades['CourseName']}',style: TextStyle(fontSize: GlobalVars.gpacalculator_coursename_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          SizedBox(height: 10,),
+                          Text('学分：${grades['CourseCredit']}  最终：${grades['CourseGradeFinal']}  绩点：${grades['CourseGradeGPA']}',style: TextStyle(fontSize: GlobalVars.gpacalculator_coursename_content),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Divider(height: 5,indent: 20,endIndent: 20,),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  )
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

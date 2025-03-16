@@ -17,6 +17,7 @@ class stdDetailPage extends StatefulWidget{
 }
 
 class _stddetailPageState extends State<stdDetailPage>{
+  bool _showAppBarTitle = false;
 
   @override
   void initState() {
@@ -28,54 +29,81 @@ class _stddetailPageState extends State<stdDetailPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-        leading: IconButton(
-          onPressed: (){Navigator.pop(context);},
-          icon: Icon(Icons.arrow_back),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification.metrics.pixels > 80 && !_showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = true;
+            });
+          } else if (scrollNotification.metrics.pixels <= 80 &&
+              _showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = false;
+            });
+          }
+          return true;
+        },
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                backgroundColor:
+                    Theme.of(context).colorScheme.surfaceContainerHigh,
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back),
+                ),
+                pinned: true,
+                expandedHeight: 0,
+                title: _showAppBarTitle ? Text("学籍信息") : null,
+              ),
+            ];
+          },
+          body: ListView(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+                child: Row(
+                  children: [
+                    Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/account.png'):AssetImage('assets/icons/darktheme/account.png'),height: 40,),
+                    SizedBox(width: 10,),
+                    Text('学籍信息',style: TextStyle(fontSize: GlobalVars.stddetail_page_title),)
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(21),
+                  ),
+                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  child: Column(
+                    children: studentData.entries.map((entry) {
+                      return Container(
+                        padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(entry.key,style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.stddetail_title_title)),
+                            SizedBox(height: 5,),
+                            Text(entry.value,style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.stddetail_content_title)),
+                            SizedBox(height: 20,),
+                            Divider(height: 5,indent: 20,endIndent: 20,),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
-            child: Row(
-              children: [
-                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/account.png'):AssetImage('assets/icons/darktheme/account.png'),height: 40,),
-                SizedBox(width: 10,),
-                Text('学籍信息',style: TextStyle(fontSize: GlobalVars.stddetail_page_title),)
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(21),
-              ),
-              shadowColor: Theme.of(context).colorScheme.onPrimary,
-              color: Theme.of(context).colorScheme.surfaceDim,
-              child: Column(
-                children: studentData.entries.map((entry) {
-                  return Container(
-                    padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(entry.key,style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.stddetail_title_title)),
-                        SizedBox(height: 5,),
-                        Text(entry.value,style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.stddetail_content_title)),
-                        SizedBox(height: 20,),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -19,6 +19,8 @@ class electricmeterpage extends StatefulWidget {
 }
 
 class _electricmeterPageState extends State<electricmeterpage>{
+  bool _showAppBarTitle = false;
+
   //查询状态相关变量
   bool isQuerying =false;
   bool QuerySuccess = false;
@@ -51,110 +53,137 @@ class _electricmeterPageState extends State<electricmeterpage>{
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-        leading: IconButton(
-          onPressed: (){Navigator.pop(context);},
-          icon: Icon(Icons.arrow_back),
-        ),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage()));},
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(Icons.link),
       ),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
-            child: Row(
-              children: [
-                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/electricity.png'):AssetImage('assets/icons/darktheme/electricity.png'),height: 40,),
-                SizedBox(width: 10,),
-                Text('电费查询',style: TextStyle(fontSize: GlobalVars.emquery_page_title),)
-              ],
-            ),
-          ),
-          isQuerying?
-          SizedBox(width: 0,height: 0,):
-          QuerySuccess?
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 80),
-            child: Card(
-              shadowColor: Theme.of(context).colorScheme.onPrimary,
-              color: Theme.of(context).colorScheme.surfaceDim,
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-              ),
-              child: Column(
-                children: emstatetotal.map((em) {
-                return Container(
-                  padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('电表编号：${em['userCode']}',style: TextStyle(fontSize: GlobalVars.emdetail_emid_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      SizedBox(height: 10,),
-                      Text('电表剩余：${em['emDetail']['shengyu']}',style: TextStyle(fontSize: GlobalVars.emdetail_emleft_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      Text('电表累计：${em['emDetail']['leiji']}',style: TextStyle(fontSize: GlobalVars.emdetail_emtotal_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      Text('电表状态：${em['emDetail']['zhuangtai']}',style: TextStyle(fontSize: GlobalVars.emdetail_emstate_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                      SizedBox(height: 10,),
-                      Text('${em['userAddress']}',style: TextStyle(fontSize: GlobalVars.emdetail_emaddress_title),textAlign: TextAlign.center,softWrap: true,maxLines: 1,overflow: TextOverflow.ellipsis),
-                      SizedBox(height: 20,),
-                      Divider(height: 5,indent: 20,endIndent: 20,),
-                    ],
-                  ),
-                );
-              }).toList(),
-              )
-            ),
-          ):
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
-            child: Card(
-              shadowColor: Theme.of(context).colorScheme.onPrimary,
-              color: Theme.of(context).colorScheme.surfaceDim,
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-              ),
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: ListTile(
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(21),
-                  ),
-                  trailing: Icon(Icons.chevron_right),
-                  title: Text('无法连接网络，请点击这里重试',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.emquery_nonetwork_title),),
-                  onTap: (){
-                    queryem();
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification.metrics.pixels > 80 && !_showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = true;
+            });
+          } else if (scrollNotification.metrics.pixels <= 80 &&
+              _showAppBarTitle) {
+            setState(() {
+              _showAppBarTitle = false;
+            });
+          }
+          return true;
+        },
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                backgroundColor:
+                    Theme.of(context).colorScheme.surfaceContainerHigh,
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
                   },
+                  icon: Icon(Icons.arrow_back),
+                ),
+                pinned: true,
+                expandedHeight: 0,
+                title: _showAppBarTitle ? Text("电费查询") : null,
+              ),
+            ];
+          },
+          body: ListView(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+                child: Row(
+                  children: [
+                    Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/electricity.png'):AssetImage('assets/icons/darktheme/electricity.png'),height: 40,),
+                    SizedBox(width: 10,),
+                    Text('电费查询',style: TextStyle(fontSize: GlobalVars.emquery_page_title),)
+                  ],
                 ),
               ),
-            ),
-          ),
-          isQuerying? Container(
-            padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
-            child: Card(
-              shadowColor: Theme.of(context).colorScheme.onPrimary,
-              color: Theme.of(context).colorScheme.surfaceDim,
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-              ),
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: ListTile(
-                  title: Row(
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(width: 10,),
-                      Text('正在查询（$currentQuery/$electricmeternum）......',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.emquery_querying_title),)
-                    ],
+              isQuerying?
+              SizedBox(width: 0,height: 0,):
+              QuerySuccess?
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 80),
+                child: Card(
+                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Column(
+                    children: emstatetotal.map((em) {
+                    return Container(
+                      padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('电表编号：${em['userCode']}',style: TextStyle(fontSize: GlobalVars.emdetail_emid_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          SizedBox(height: 10,),
+                          Text('电表剩余：${em['emDetail']['shengyu']}',style: TextStyle(fontSize: GlobalVars.emdetail_emleft_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('电表累计：${em['emDetail']['leiji']}',style: TextStyle(fontSize: GlobalVars.emdetail_emtotal_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('电表状态：${em['emDetail']['zhuangtai']}',style: TextStyle(fontSize: GlobalVars.emdetail_emstate_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          SizedBox(height: 10,),
+                          Text('${em['userAddress']}',style: TextStyle(fontSize: GlobalVars.emdetail_emaddress_title),textAlign: TextAlign.center,softWrap: true,maxLines: 1,overflow: TextOverflow.ellipsis),
+                          SizedBox(height: 20,),
+                          Divider(height: 5,indent: 20,endIndent: 20,),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  )
+                ),
+              ):
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+                child: Card(
+                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(21),
+                      ),
+                      trailing: Icon(Icons.chevron_right),
+                      title: Text('无法连接网络，请点击这里重试',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.emquery_nonetwork_title),),
+                      onTap: (){
+                        queryem();
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-          ):SizedBox(width: 0,height: 0,)
-        ],
+              isQuerying? Container(
+                padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+                child: Card(
+                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: ListTile(
+                      title: Row(
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(width: 10,),
+                          Text('正在查询（$currentQuery/$electricmeternum）......',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.emquery_querying_title),)
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ):SizedBox(width: 0,height: 0,)
+            ],
+          ),
+        ),
       ),
     );
   }
