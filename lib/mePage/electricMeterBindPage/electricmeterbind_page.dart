@@ -9,6 +9,28 @@ import 'package:smartsnut/AppPage/schoolNetwork/schoolnetwork_page.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:smartsnut/mePage/guidePage/emBindGuidePage/embindguide_page.dart';
 
+//用于存储用户头像路径
+String emavatarpath = '';
+
+//判断绑定状态
+bool isBinding = false;
+bool binded = false;
+
+//用户信息
+String wechatUserNickname = '';
+String wechatId = '';
+
+//电表数量
+String electricmeternum = '0';
+
+//TextController
+final textOpenidController = TextEditingController();
+
+String openid = '';
+
+//用于存储用户的信息
+List emUserData = [];
+
 class electricmeterbindPage extends StatefulWidget{
   const electricmeterbindPage({super.key});
 
@@ -19,22 +41,6 @@ class electricmeterbindPage extends StatefulWidget{
 }
 
 class _electricmeterbindPageState extends State<electricmeterbindPage>{
-  String emavatarpath = '';
-  //判断绑定状态
-  bool isBinding = false;
-  bool binded = false;
-
-  //用户信息
-  String wechatUserNickname = '';
-  String wechatId = '';
-
-  //电表数量
-  String electricmeternum = '0';
-
-  //TextController
-  final textOpenidController = TextEditingController();
-
-  String openid = '';
 
   checkbindstate() async {
 
@@ -66,13 +72,19 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
     File emnumfile = File(emnumpath);
     electricmeternum = await emnumfile.readAsString();
 
+    //读取用户数据
+    String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
+    File emUserDatafile = File(emUserDatapath);
+    emUserData =jsonDecode(await emUserDatafile.readAsString());
+
     final docpath = (await getApplicationDocumentsDirectory()).path;
     if(mounted){
         setState(() {
-          openid = openidstring;
-          wechatId = wechatIdstring;
-          wechatUserNickname = wechatUserNicknamestring;
+          openid = emUserData[0]['openId'];
+          wechatId = emUserData[0]['wechatId'];
+          wechatUserNickname = emUserData[0]['wechatUserNickname'];
           emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
+          electricmeternum = emUserData[0]['emNum'].toString();
           binded = true;
         });
       }
@@ -475,7 +487,19 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
     File wechatUserNicknamefile = File(wechatUserNicknamepath);
     wechatUserNicknamefile.writeAsString(emresponse1.data['data']['wechatUserNickname'].toString());
 
-    Future.delayed(Duration(seconds: 1));
+    //保存用户信息
+    emUserData.clear();
+    emUserData.add({
+      'emNum': emresponse2.data['data'].length,
+      'openId': openid,
+      'wechatId': emresponse1.data['data']['wechatId'].toString(),
+      'wechatUserNickname': emresponse1.data['data']['wechatUserNickname'].toString(),
+    });
+
+    String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
+    File emUserDatafile = File(emUserDatapath);
+    emUserDatafile.writeAsString(jsonEncode(emUserData));
+
     final docpath = (await getApplicationDocumentsDirectory()).path;
 
     ScaffoldMessenger.of(context).showSnackBar(
