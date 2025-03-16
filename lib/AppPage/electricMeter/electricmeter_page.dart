@@ -6,6 +6,9 @@ import 'package:dio/dio.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
 
+//用于存储用户的信息
+List emUserData = [];
+
 class electricmeterpage extends StatefulWidget {
   const electricmeterpage({super.key});
 
@@ -38,7 +41,9 @@ class _electricmeterPageState extends State<electricmeterpage>{
   initData() async {
     String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
     File emnumfile = File(emnumpath);
-    emnum = int.parse(await emnumfile.readAsString());
+    if(await emnumfile.exists()){
+      electricmeternum = int.parse(await emnumfile.readAsString());
+    }
     setState(() {});
   }
 
@@ -147,7 +152,7 @@ class _electricmeterPageState extends State<electricmeterpage>{
                     children: [
                       CircularProgressIndicator(),
                       SizedBox(width: 10,),
-                      Text('正在查询（$currentQuery/$emnum）......',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.emquery_querying_title),)
+                      Text('正在查询（$currentQuery/$electricmeternum）......',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.emquery_querying_title),)
                     ],
                   ),
                 ),
@@ -162,18 +167,74 @@ class _electricmeterPageState extends State<electricmeterpage>{
  queryem() async {
   if(mounted){
     setState(() {
-    isQuerying = true;
-  });
+      isQuerying = true;
+    });
   }
     //读取用户 id
-    String wechatidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
-    File wechtaidfile = File(wechatidpath);
-    wechatUserId = await wechtaidfile.readAsStringSync();
 
-    //获取电表数量
+    //读取用户数据
+    String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
+    File emUserDatafile = File(emUserDatapath);
+    if(await emUserDatafile.exists() == true){
+    emUserData =jsonDecode(await emUserDatafile.readAsString());
+
+    final docpath = (await getApplicationDocumentsDirectory()).path;
+    if(mounted){
+        setState(() {
+          openid = emUserData[0]['openId'];
+          wechatId = emUserData[0]['wechatId'];
+          wechatUserNickname = emUserData[0]['wechatUserNickname'];
+          emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
+          electricmeternum = emUserData[0]['emNum'];
+          binded = true;
+        });
+      }
+    }else{
+      if(mounted){
+        setState(() {
+          binded = false;
+        });
+      }
+    }
+    
+    //若用户使用旧版数据，则进行迁移
     String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
     File emnumfile = File(emnumpath);
-    electricmeternum = int.parse(await emnumfile.readAsString());
+    if(await emnumfile.exists()){
+      electricmeternum = int.parse(await emnumfile.readAsString());
+      await emnumfile.delete();
+    }
+
+    String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
+    File openidfile = File(openidpath);
+    if(await openidfile.exists()){
+      openid = await openidfile.readAsString();
+      await openidfile.delete();
+    }
+
+    String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
+    File wechatIdfile = File(wechatIdpath);
+    if(await wechatIdfile.exists()){
+      wechatId = await wechatIdfile.readAsString();
+      await wechatIdfile.delete();
+    }
+
+    String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
+    File wechatUserNicknamefile = File(wechatUserNicknamepath);
+    if(await wechatUserNicknamefile.exists()){
+      wechatUserNickname = await wechatUserNicknamefile.readAsString();
+      await wechatUserNicknamefile.delete();
+      setState(() {binded = true;});
+    }
+    
+    emUserData.clear();
+    emUserData.add({
+      'emNum': electricmeternum,
+      'openId': openid,
+      'wechatId': wechatId,
+      'wechatUserNickname': wechatUserNickname,
+    });
+    emUserDatafile.writeAsString(jsonEncode(emUserData));
 
     for(int i = 0;i <= electricmeternum - 1;i++){
       if(mounted){
@@ -186,8 +247,8 @@ class _electricmeterPageState extends State<electricmeterpage>{
       File emdetailfile = File(emdetailpath);
       emdetail = jsonDecode(await emdetailfile.readAsString());
       String electricUserUid = emdetail[i]['bindMeterId'];
-      Dio dio = Dio();
 
+      Dio dio = Dio();
       try{
         Response emqresponse1 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/electricMeterQuery?wechatUserId=$wechatUserId&electricUserUid=$electricUserUid&isAfterMoney=0',);
         emstatetotal.add(emqresponse1.data['data']);
@@ -215,9 +276,11 @@ class _electricmeterPageState extends State<electricmeterpage>{
     }
     if(mounted){
       setState(() {
-      isQuerying = false;
-      QuerySuccess = true;
-    });
+        print('查询成功');
+        QuerySuccess = true;
+        print('查询完成');
+        isQuerying = false;
+      });
     }
   }
 }
