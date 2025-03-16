@@ -578,6 +578,20 @@ class _SettingsPage extends State<SettingsPage>{
                       showLicense(context);
                       },
                     ),
+                  Divider(height: 5,indent: 20,endIndent: 20,),
+                  ListTile(
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(21),
+                    ),
+                    title: Text('provider',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                    subtitle: Text('A wrapper around InheritedWidget to make them easier to use and more reusable.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                    trailing: Icon(Icons.chevron_right),
+                    onTap: (){
+                      licenseTitle = 'provider';
+                      licensePath = 'provider_LICENSE';
+                      showLicense(context);
+                      },
+                    ),
                   ],
                 ),
               ),
