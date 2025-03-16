@@ -88,6 +88,7 @@ flutter:
     - assets/description/CourseTable.txt
     - assets/description/ElectricityMeterQuery.txt
     - assets/description/Face.txt
+    - assets/description/GPACalculator.txt
     - assets/description/Library.txt
     - assets/description/Newhall.txt
     - assets/description/SchoolNetwork.txt

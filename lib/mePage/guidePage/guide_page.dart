@@ -185,6 +185,19 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
+                          title: Text('绩点计算器',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          trailing: Icon(Icons.chevron_right),
+                          onTap: (){
+                            describeTitle = '绩点计算器';
+                            describePath = 'GPACalculator';
+                            showDescribe(context);
+                          },
+                        ),
+                        Divider(height: 5,indent: 20,endIndent: 20,),
+                        ListTile(
+                          shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(21),
+                          ),
                           title: Text('网费查询',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
