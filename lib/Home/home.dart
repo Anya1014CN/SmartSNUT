@@ -1654,7 +1654,6 @@ class _HomeState extends State<Home>{
     if(mounted){
       setState(() {
         isLoading = true;
-        isReadingCT = true;
       });
     }
       String newsurl="";
