@@ -143,7 +143,7 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('我的课表',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/JiaoWu/CourseTableForStd.html');
+                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/CourseTableForStd.html');
                             launchURL();
                           },
                         ),
@@ -155,7 +155,7 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('学籍信息',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/JiaoWu/StdDetail.html');
+                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdDetail.html');
                             launchURL();
                           },
                         ),
@@ -167,7 +167,7 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('我的考试',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/JiaoWu/StdExam.html');
+                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdExam.html');
                             launchURL();
                           },
                         ),
@@ -179,7 +179,7 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('我的成绩',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/JiaoWu/StdExam.html');
+                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdExam.html');
                             launchURL();
                           },
                         ),
@@ -191,7 +191,7 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('绩点计算器',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/JiaoWu/GPACalculator.html');
+                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/GPACalculator.html');
                             launchURL();
                           },
                         ),
@@ -203,7 +203,7 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('网费查询',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/HouQin/SchoolNetworkQuery.html');
+                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/HouQin/SchoolNetworkQuery.html');
                             launchURL();
                           },
                         ),
@@ -215,7 +215,7 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('电费查询',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/HouQin/ElectricMeterQuery.html');
+                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/HouQin/ElectricMeterQuery.html');
                             launchURL();
                           },
                         ),
@@ -227,7 +227,7 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('图书检索',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            url = Uri.parse('http://smartsnut.cn/Docs/Functions/ExternalLink/Library.html');
+                            url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/Library.html');
                             launchURL();
                           },
                         ),
@@ -239,7 +239,7 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('人脸信息采集系统',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            url = Uri.parse('http://smartsnut.cn/Docs/Functions/ExternalLink/Face.html');
+                            url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/Face.html');
                             launchURL();
                           },
                         ),
@@ -251,7 +251,7 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('WebVPN',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            url = Uri.parse('http://smartsnut.cn/Docs/Functions/ExternalLink/WebVPN.html');
+                            url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/WebVPN.html');
                             launchURL();
                           },
                         ),
@@ -263,7 +263,7 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('一网通办',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            url = Uri.parse('http://smartsnut.cn/Docs/Functions/ExternalLink/NewHall.html');
+                            url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/NewHall.html');
                             launchURL();
                           },
                         ),
