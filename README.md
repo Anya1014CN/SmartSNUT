@@ -1,16 +1,29 @@
-# smartsnut
+# 智慧陕理
 
-A new Flutter project.
+一个使用Flutter开发的、非官方的陕西理工大学APP
 
-## Getting Started
+[官方网站](https://smartsnut.cn)
 
-This project is a starting point for a Flutter application.
+## 功能展示
 
-A few resources to get you started if this is your first Flutter project:
+### 我的课表
+![我的课表](https://smartsnut.cn/images/Docs/Functions/JiaoWu/CourseTableForStd/1.png)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 学籍信息
+![学籍信息](https://smartsnut.cn/images/Docs/Functions/JiaoWu/StdDetail/1.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 我的考试
+![我的考试](https://smartsnut.cn/images/Docs/Functions/JiaoWu/StdExam/1.png)
+
+### 我的成绩
+![我的成绩](https://smartsnut.cn/images/Docs/Functions/JiaoWu/StdGrades/1.png)
+
+### 绩点计算器
+![绩点计算器](https://smartsnut.cn/images/Docs/Functions/JiaoWu/StdDetail/1.png)
+
+### 网费查询
+![网费查询](https://smartsnut.cn/images/Docs/Functions/HouQin/SchoolNetworkQuery/1.png)
+
+### 电费查询
+![电费查询](https://smartsnut.cn/images/Docs/Functions/HouQin/ElectricMeterQuery/1.png)
+
