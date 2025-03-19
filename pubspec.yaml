@@ -160,13 +160,6 @@ flutter:
     - family: MiSans
       fonts:
         - asset: assets/fonts/MiSans-Bold.ttf
-        # - asset: assets/fonts/MiSans-Demibold.ttf
-        # - asset: assets/fonts/MiSans-ExtraLight.ttf
-        # - asset: assets/fonts/MiSans-Heavy.ttf
-        # - asset: assets/fonts/MiSans-Light.ttf
-        # - asset: assets/fonts/MiSans-Medium.ttf
         - asset: assets/fonts/MiSans-Normal.ttf
         - asset: assets/fonts/MiSans-Regular.ttf
-        # - asset: assets/fonts/MiSans-Semibold.ttf
-        # - asset: assets/fonts/MiSans-Thin.ttf
         
