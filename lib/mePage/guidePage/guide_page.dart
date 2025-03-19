@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:smartsnut/mePage/guidePage/emBindGuidePage/embindguide_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //功能说明
 String describeTitle = '';
 String describePath = '';
 String describeContent = '';
+
+//用于即将打开的链接的完整URL
+Uri url = Uri.parse("uri");
 
 class Guidepage extends StatefulWidget{
   const Guidepage({super.key});
@@ -100,7 +104,10 @@ class _GuidePageState extends State<Guidepage>{
                           ),
                           title: Text('电费账号绑定教程',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
-                          onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => EMBindGuidePage()));},
+                          onTap: (){
+                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/EMBindGuide.html');
+                            launchURL();
+                          },
                         ),
                       ],
                     ),
@@ -136,9 +143,8 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('我的课表',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            describeTitle = '我的课表';
-                            describePath = 'CourseTable';
-                            showDescribe(context);
+                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/JiaoWu/CourseTableForStd.html');
+                            launchURL();
                           },
                         ),
                         Divider(height: 5,indent: 20,endIndent: 20,),
@@ -149,9 +155,8 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('学籍信息',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            describeTitle = '学籍信息';
-                            describePath = 'StdDetail';
-                            showDescribe(context);
+                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/JiaoWu/StdDetail.html');
+                            launchURL();
                           },
                         ),
                         Divider(height: 5,indent: 20,endIndent: 20,),
@@ -162,9 +167,8 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('我的考试',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            describeTitle = '我的考试';
-                            describePath = 'StdExam';
-                            showDescribe(context);
+                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/JiaoWu/StdExam.html');
+                            launchURL();
                           },
                         ),
                         Divider(height: 5,indent: 20,endIndent: 20,),
@@ -175,9 +179,8 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('我的成绩',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            describeTitle = '我的成绩';
-                            describePath = 'StdGrades';
-                            showDescribe(context);
+                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/JiaoWu/StdExam.html');
+                            launchURL();
                           },
                         ),
                         Divider(height: 5,indent: 20,endIndent: 20,),
@@ -188,9 +191,8 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('绩点计算器',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            describeTitle = '绩点计算器';
-                            describePath = 'GPACalculator';
-                            showDescribe(context);
+                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/JiaoWu/GPACalculator.html');
+                            launchURL();
                           },
                         ),
                         Divider(height: 5,indent: 20,endIndent: 20,),
@@ -201,9 +203,8 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('网费查询',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            describeTitle = '网费查询';
-                            describePath = 'SchoolNetwork';
-                            showDescribe(context);
+                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/HouQin/SchoolNetworkQuery.html');
+                            launchURL();
                           },
                         ),
                         Divider(height: 5,indent: 20,endIndent: 20,),
@@ -214,9 +215,8 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('电费查询',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            describeTitle = '电费查询';
-                            describePath = 'ElectricityMeterQuery';
-                            showDescribe(context);
+                            url = Uri.parse('https://smartsnut.cn/Docs/Functions/HouQin/ElectricMeterQuery.html');
+                            launchURL();
                           },
                         ),
                         Divider(height: 5,indent: 20,endIndent: 20,),
@@ -227,9 +227,8 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('图书检索',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            describeTitle = '图书检索';
-                            describePath = 'Library';
-                            showDescribe(context);
+                            url = Uri.parse('http://smartsnut.cn/Docs/Functions/ExternalLink/Library.html');
+                            launchURL();
                           },
                         ),
                         Divider(height: 5,indent: 20,endIndent: 20,),
@@ -240,9 +239,8 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('人脸信息采集系统',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            describeTitle = '人脸信息采集系统';
-                            describePath = 'Face';
-                            showDescribe(context);
+                            url = Uri.parse('http://smartsnut.cn/Docs/Functions/ExternalLink/Face.html');
+                            launchURL();
                           },
                         ),
                         Divider(height: 5,indent: 20,endIndent: 20,),
@@ -253,9 +251,8 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('WebVPN',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            describeTitle = 'WebVPN';
-                            describePath = 'WebVPN';
-                            showDescribe(context);
+                            url = Uri.parse('http://smartsnut.cn/Docs/Functions/ExternalLink/WebVPN.html');
+                            launchURL();
                           },
                         ),
                         Divider(height: 5,indent: 20,endIndent: 20,),
@@ -266,9 +263,8 @@ class _GuidePageState extends State<Guidepage>{
                           title: Text('一网通办',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
-                            describeTitle = '一网通办';
-                            describePath = 'Newhall';
-                            showDescribe(context);
+                            url = Uri.parse('http://smartsnut.cn/Docs/Functions/ExternalLink/NewHall.html');
+                            launchURL();
                           },
                         ),
                       ],
@@ -282,19 +278,26 @@ class _GuidePageState extends State<Guidepage>{
       ),
     );
   }
-
-  void showDescribe(BuildContext context) async{
-    describeContent = await rootBundle.loadString('assets/description/$describePath.txt');
+  
+  //打开链接
+  void launchURL() async{
     showDialog<String>(
       context: context,
-      builder:(BuildContext context) => AlertDialog(
-        title: Text('$describeTitle - 功能说明',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-        content: Text(describeContent,style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+      builder: (BuildContext context) => AlertDialog(
         scrollable: true,
+        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
-            child: const Text('OK'),
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('取消'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await launchUrl(url);
+              Navigator.pop(context, 'OK');
+            },
+            child: const Text('确认'),
           ),
         ],
       ),
