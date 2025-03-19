@@ -13,6 +13,9 @@ String licenseTitle = '';
 String licensePath = '';
 String licenseContent = '';
 
+//用于即将打开的链接的完整URL
+Uri url = Uri.parse("uri");
+
 //电费账号数据
 List emUserData = [];
 String wechatUserNickname = '';
@@ -253,7 +256,7 @@ class _SettingsPage extends State<SettingsPage>{
                         title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.accountsettings_emaccount_title),),
                         subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_emaccount_subtitle),),
                         onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage())).then((value) => emBindRead());},
-                        ),
+                      ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
                         shape: RoundedRectangleBorder(
@@ -336,6 +339,20 @@ class _SettingsPage extends State<SettingsPage>{
                           );
                         },
                       ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('官方网站',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_officialsite_title),),
+                        subtitle: Text('https://SmartSNUT.cn',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_officialsite_subtitle),),
+                        onTap: () {
+                          url = Uri.parse('https://SmartSNUT.cn');
+                          launchURL();
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
@@ -343,28 +360,9 @@ class _SettingsPage extends State<SettingsPage>{
                         trailing: Icon(Icons.chevron_right),
                         title: Text('Github 开源地址',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_githublink_title),),
                         subtitle: Text('https://github.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_githublink_subtitle),),
-                        onTap: () async {
-                          showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              scrollable: true,
-                              title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                              content: Text('是否要使用系统默认浏览器打开外部链接？\n\nhttps://github.com/Anya1014CN/SmartSNUT',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                                  child: const Text('取消'),
-                                ),
-                                TextButton(
-                                  onPressed: () async {
-                                    await launchUrl(Uri.parse('https://github.com/Anya1014CN/SmartSNUT'));
-                                    Navigator.pop(context, 'OK');
-                                  },
-                                  child: const Text('确认'),
-                                ),
-                              ],
-                            ),
-                          );
+                        onTap: () {
+                          url = Uri.parse('https://github.com/Anya1014CN/SmartSNUT');
+                          launchURL();
                         },
                       ),
                     ],
@@ -1046,8 +1044,10 @@ class _SettingsPage extends State<SettingsPage>{
 
       GlobalVars.aboutsnutsettings_divider_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
       GlobalVars.aboutsnutsettings_currentversion_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
+      GlobalVars.aboutsnutsettings_officialsite_title = DefaultfontSize.aboutsnutsettings_officialsite_title_defalut + changevalue;
+      GlobalVars.aboutsnutsettings_officialsite_subtitle = DefaultfontSize.aboutsnutsettings_officialsite_subtitle_defalut + changevalue;
       GlobalVars.aboutsnutsettings_githublink_title = DefaultfontSize.aboutsnutsettings_githublink_title_defalut + changevalue;
-      GlobalVars.aboutsnutsettings_githublink_subtitle = DefaultfontSize.aboutsnutsettings_githublink_title_defalut + changevalue;
+      GlobalVars.aboutsnutsettings_githublink_subtitle = DefaultfontSize.aboutsnutsettings_githublink_subtitle_defalut + changevalue;
       
       GlobalVars.disclamier_divider_title = DefaultfontSize.disclamier_divider_title_default + changevalue;
       GlobalVars.disclamier_title_title = DefaultfontSize.disclamier_title_title_default + changevalue;
@@ -1354,4 +1354,28 @@ class _SettingsPage extends State<SettingsPage>{
     );
   }
 
+  //打开链接
+  void launchURL() async{
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        scrollable: true,
+        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('取消'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await launchUrl(url);
+              Navigator.pop(context, 'OK');
+            },
+            child: const Text('确认'),
+          ),
+        ],
+      ),
+    );
+  }
 }
