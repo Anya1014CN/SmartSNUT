@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -7,6 +8,9 @@ import 'package:smartsnut/login.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+//检查更新状态
+bool isCheckingUpdate = false;
 
 //开源许可
 String licenseTitle = '';
@@ -319,25 +323,10 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        trailing: Icon(Icons.chevron_right),
-                        title: Text('当前版本',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_currentversion_title),),
+                        trailing: isCheckingUpdate? CircularProgressIndicator():Icon(Icons.chevron_right),
+                        title: Text(isCheckingUpdate? '正在检查更新，请稍后...':'检查更新',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_currentversion_title),),
                         subtitle: Text(GlobalVars.versionCodeString,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
-                        onTap: (){
-                          showDialog<String>(
-                            context: context,
-                            builder:(BuildContext context) => AlertDialog(
-                              title: Text('智慧陕理 - ${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                              content: Text('发布日期：${GlobalVars.versionReleaseDate}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-                              scrollable: true,
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, 'OK'),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
+                        onTap: isCheckingUpdate? null:(){checkUpdate();},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
@@ -1377,5 +1366,101 @@ class _SettingsPage extends State<SettingsPage>{
         ],
       ),
     );
+  }
+
+  //检查更新
+  checkUpdate() async {
+    if(mounted){
+      setState(() {
+        isCheckingUpdate = true;
+      });
+    }
+    Dio dio = Dio();
+    Response updateServerResponse = await dio.get('https://apis.smartsnut.cn/Generic/UpdateCheck/LatestVersion.json');
+    List serverResponseData = updateServerResponse.data;
+    if(Platform.isWindows){
+      if(serverResponseData[0]['Windows'][0]['LatestVersionInt'] - GlobalVars.versionCodeInt > 0){
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('发现新的 Windows 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('取消'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await launchUrl(Uri.parse(serverResponseData[0]['Windows'][0]['DownloadLink']));
+                  Navigator.pop(context, 'OK');
+                },
+                child: const Text('确认'),
+              ),
+            ],
+          ),
+        );
+      }else{
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('暂未发现新的 Windows 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            content: Text('您正在使用最新版本的 Windows 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () async {Navigator.pop(context, 'OK');},
+                child: const Text('确认'),
+              ),
+            ],
+          ),
+        );
+      }
+    }if(Platform.isAndroid){
+      if(serverResponseData[0]['Android'][0]['LatestVersionInt'] - GlobalVars.versionCodeInt > 0){
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('发现新的 Windows 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('取消'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await launchUrl(Uri.parse(serverResponseData[0]['Windows'][0]['DownloadLink']));
+                  Navigator.pop(context, 'OK');
+                },
+                child: const Text('确认'),
+              ),
+            ],
+          ),
+        );
+      }else{
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('暂未发现新的 Android 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            content: Text('您正在使用最新版本的 Android 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {Navigator.pop(context, 'OK');},
+                child: const Text('确认'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+    if(mounted){
+      setState(() {
+        isCheckingUpdate = false;
+      });
+    }
   }
 }
