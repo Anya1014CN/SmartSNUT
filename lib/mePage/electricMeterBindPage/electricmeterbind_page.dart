@@ -203,7 +203,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
           ),
           GlobalVars.emBinded? 
           Container(
-            padding: EdgeInsets.fromLTRB(60, 0, 60, 10),
+            padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
             child: Row(
               children: [
                 Expanded(
