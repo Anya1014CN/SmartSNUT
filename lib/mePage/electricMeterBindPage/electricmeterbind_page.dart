@@ -14,7 +14,6 @@ String emavatarpath = '';
 
 //判断绑定状态
 bool isBinding = false;
-bool binded = false;
 
 //用户信息
 String wechatUserNickname = '';
@@ -64,13 +63,13 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
           wechatUserNickname = emUserData[0]['wechatUserNickname'];
           emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
           electricmeternum = emUserData[0]['emNum'].toString();
-          binded = true;
+          GlobalVars.emBinded = true;
         });
       }
     }else{
       if(mounted){
         setState(() {
-          binded = false;
+          GlobalVars.emBinded = false;
         });
       }
     }
@@ -102,7 +101,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
     if(await wechatUserNicknamefile.exists()){
       wechatUserNickname = await wechatUserNicknamefile.readAsString();
       await wechatUserNicknamefile.delete();
-      setState(() {binded = true;});
+      setState(() {GlobalVars.emBinded = true;});
     }
     
     emUserData.clear();
@@ -155,14 +154,14 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
               shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
               ),
-              child: binded? Container(
+              child: GlobalVars.emBinded? Container(
                 padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        CircleAvatar(backgroundImage: binded? FileImage(File(emavatarpath)):AssetImage('assets/images/default_avatar.png')),
+                        CircleAvatar(backgroundImage: GlobalVars.emBinded? FileImage(File(emavatarpath)):AssetImage('assets/images/default_avatar.png')),
                         SizedBox(width: 10,),
                         Container(
                           padding: EdgeInsets.all(10),
@@ -193,7 +192,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
               ),
             ),
           ),
-          binded? 
+          GlobalVars.emBinded? 
           Container(
             padding: EdgeInsets.fromLTRB(60, 0, 60, 10),
             child: Row(
@@ -414,10 +413,10 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
         if(mounted){
           setState(() {
             isBinding = false;
-            if(binded == true){
+            if(GlobalVars.emBinded == true){
               return;
             }else{
-              binded = false;
+              GlobalVars.emBinded = false;
             }
           });
         }
@@ -435,7 +434,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
         if(mounted){
           setState(() {
             isBinding = false;
-            binded = false;
+            GlobalVars.emBinded = false;
           });
         }
         return;
@@ -455,7 +454,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
       ));
       if(mounted){
         setState(() {
-          binded = false;
+          GlobalVars.emBinded = false;
           isBinding = false;
         });
       }
@@ -470,7 +469,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
       ));
       if(mounted){
         setState(() {
-          binded = false;
+          GlobalVars.emBinded = false;
           isBinding = false;
         });
       }
@@ -519,7 +518,6 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
         wechatUserNickname = emresponse1.data['data']['wechatUserNickname'].toString();
         electricmeternum =  emresponse2.data['data'].length.toString();
         isBinding = false;
-        binded = true;
         GlobalVars.emBinded = true;
       });
     }
@@ -546,7 +544,6 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
 
     if(mounted){
       setState(() {
-        binded = false;
         isBinding = false;
         GlobalVars.emBinded = false;
       });
