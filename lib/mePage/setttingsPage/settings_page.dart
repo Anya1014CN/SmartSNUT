@@ -330,6 +330,32 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
+                        title: Text('更新日志',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_officialsite_title),),
+                        subtitle: Text('版本更新日志',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_officialsite_subtitle),),
+                        onTap: () async {
+                          String changelogContent = await rootBundle.loadString('assets/Changelog.txt');
+                          showDialog<String>(
+                            context: context,
+                            builder:(BuildContext context) => AlertDialog(
+                              title: Text('历史版本更新日志',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+                              content: Text(changelogContent,style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                              scrollable: true,
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'OK'),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        trailing: Icon(Icons.chevron_right),
                         title: Text('官方网站',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_officialsite_title),),
                         subtitle: Text('https://SmartSNUT.cn',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_officialsite_subtitle),),
                         onTap: () {
@@ -1043,6 +1069,8 @@ class _SettingsPage extends State<SettingsPage>{
 
       GlobalVars.aboutsnutsettings_divider_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
       GlobalVars.aboutsnutsettings_currentversion_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
+      GlobalVars.aboutsnutsettings_changelog_title = DefaultfontSize.aboutsnutsettings_changelog_title_defalut + changevalue;
+      GlobalVars.aboutsnutsettings_changelog_subtitle = DefaultfontSize.aboutsnutsettings_changelog_title_defalut + changevalue;
       GlobalVars.aboutsnutsettings_officialsite_title = DefaultfontSize.aboutsnutsettings_officialsite_title_defalut + changevalue;
       GlobalVars.aboutsnutsettings_officialsite_subtitle = DefaultfontSize.aboutsnutsettings_officialsite_subtitle_defalut + changevalue;
       GlobalVars.aboutsnutsettings_githublink_title = DefaultfontSize.aboutsnutsettings_githublink_title_defalut + changevalue;

@@ -261,6 +261,8 @@ class _SmartSNUT extends State<SmartSNUT> {
 
       GlobalVars.aboutsnutsettings_divider_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
       GlobalVars.aboutsnutsettings_currentversion_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
+      GlobalVars.aboutsnutsettings_changelog_title = DefaultfontSize.aboutsnutsettings_changelog_title_defalut + changevalue;
+      GlobalVars.aboutsnutsettings_changelog_subtitle = DefaultfontSize.aboutsnutsettings_changelog_title_defalut + changevalue;
       GlobalVars.aboutsnutsettings_officialsite_title = DefaultfontSize.aboutsnutsettings_officialsite_title_defalut + changevalue;
       GlobalVars.aboutsnutsettings_officialsite_subtitle = DefaultfontSize.aboutsnutsettings_officialsite_subtitle_defalut + changevalue;
       GlobalVars.aboutsnutsettings_githublink_title = DefaultfontSize.aboutsnutsettings_githublink_title_defalut + changevalue;

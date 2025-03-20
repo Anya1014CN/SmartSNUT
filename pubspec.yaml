@@ -73,6 +73,7 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
+    - assets/Changelog.txt
     - assets/credits/License/cookie_jar_LICENSE.txt
     - assets/credits/License/crypto_LICENSE.txt
     - assets/credits/License/dart-lang&sdk_LICENSE.txt
