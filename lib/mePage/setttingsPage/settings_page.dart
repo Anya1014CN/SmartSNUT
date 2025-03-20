@@ -1390,83 +1390,91 @@ class _SettingsPage extends State<SettingsPage>{
     List serverResponseData = updateServerResponse.data;
     if(Platform.isWindows){
       if(serverResponseData[0]['Windows'][0]['LatestVersionInt'] - GlobalVars.versionCodeInt > 0){
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('发现新的 Windows 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('取消'),
-              ),
-              TextButton(
-                onPressed: () {
-                  latestDownloadLink = serverResponseData[0]['Windows'][0]['DownloadLink'];
-                  Navigator.pop(context, 'OK');
-                  getUpdate();
-                },
-                child: const Text('确认'),
-              ),
-            ],
-          ),
-        );
+        if(mounted){
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              scrollable: true,
+              title: Text('发现新的 Windows 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+              content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('取消'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    latestDownloadLink = serverResponseData[0]['Windows'][0]['DownloadLink'];
+                    Navigator.pop(context, 'OK');
+                    getUpdate();
+                  },
+                  child: const Text('确认'),
+                ),
+              ],
+            ),
+          );
+        }
       }else{
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('暂未发现新的 Windows 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('您正在使用最新版本的 Windows 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {Navigator.pop(context, 'OK');},
-                child: const Text('确认'),
-              ),
-            ],
-          ),
-        );
+        if(mounted){
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              scrollable: true,
+              title: Text('暂未发现新的 Windows 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+              content: Text('您正在使用最新版本的 Windows 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {Navigator.pop(context, 'OK');},
+                  child: const Text('确认'),
+                ),
+              ],
+            ),
+          );
+        }
       }
     }if(Platform.isAndroid){
       if(serverResponseData[0]['Android'][0]['LatestVersionInt'] - GlobalVars.versionCodeInt > 0){
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('发现新的 Android 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Android'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Android'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('取消'),
-              ),
-              TextButton(
-                onPressed: () {
-                  latestDownloadLink = serverResponseData[0]['Android'][0]['DownloadLink'];
-                  Navigator.pop(context, 'OK');
-                  getUpdate();
-                },
-                child: const Text('确认'),
-              ),
-            ],
-          ),
-        );
+        if(mounted){
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              scrollable: true,
+              title: Text('发现新的 Android 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+              content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Android'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Android'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('取消'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    latestDownloadLink = serverResponseData[0]['Android'][0]['DownloadLink'];
+                    Navigator.pop(context, 'OK');
+                    getUpdate();
+                  },
+                  child: const Text('确认'),
+                ),
+              ],
+            ),
+          );
+        }
       }else{
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('暂未发现新的 Android 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('您正在使用最新版本的 Android 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {Navigator.pop(context, 'OK');},
-                child: const Text('确认'),
-              ),
-            ],
-          ),
-        );
+        if(mounted){
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              scrollable: true,
+              title: Text('暂未发现新的 Android 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+              content: Text('您正在使用最新版本的 Android 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {Navigator.pop(context, 'OK');},
+                  child: const Text('确认'),
+                ),
+              ],
+            ),
+          );
+        }
       }
     }
     if(mounted){
