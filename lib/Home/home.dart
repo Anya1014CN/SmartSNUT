@@ -1092,6 +1092,9 @@ class _HomeState extends State<Home>{
 
   //读取今日课表信息
   readTodayCourseTable() async {
+    //读取之前清空课表，防止与前一天的课表叠加
+    courseToday = [];
+    
     if(currentDOW == 1){
       for(int courseTODInt = 0;courseTODInt < 10;courseTODInt++){
         if(courseMonWeek[courseTODInt].isEmpty == false){
