@@ -210,13 +210,13 @@ class _electricmeterPageState extends State<electricmeterpage>{
           wechatUserNickname = emUserData[0]['wechatUserNickname'];
           emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
           electricmeternum = int.parse(emUserData[0]['emNum']);
-          binded = true;
+          GlobalVars.emBinded = true;
         });
       }
     }else{
       if(mounted){
         setState(() {
-          binded = false;
+          GlobalVars.emBinded = false;
         });
       }
     }
@@ -248,7 +248,7 @@ class _electricmeterPageState extends State<electricmeterpage>{
     if(await wechatUserNicknamefile.exists()){
       wechatUserNickname = await wechatUserNicknamefile.readAsString();
       await wechatUserNicknamefile.delete();
-      setState(() {binded = true;});
+      setState(() {GlobalVars.emBinded = true;});
     }
     
     emUserData.clear();
