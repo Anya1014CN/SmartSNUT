@@ -261,7 +261,26 @@ class _SettingsPage extends State<SettingsPage>{
                         trailing: Icon(Icons.chevron_right),
                         title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.accountsettings_emaccount_title),),
                         subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_emaccount_subtitle),),
-                        onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage())).then((value) => emBindRead());},
+                        onTap: (){
+                          if(GlobalVars.emBinded == false){
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+                                content: Text('您还没有绑定电费账号，\n请先前往 “我的 -> 解/绑电费账号” 绑定后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, 'OK'),
+                                    child: const Text('确定'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            return;
+                          }else{
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage()));
+                          }
+                        },
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
