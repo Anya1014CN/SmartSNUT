@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:intl/intl.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:smartsnut/AppPage/courseTable/coursetable_page.dart';
 import 'package:smartsnut/AppPage/electricMeter/electricmeter_page.dart';
 import 'package:smartsnut/AppPage/schoolNetwork/schoolnetwork_page.dart';
@@ -17,6 +18,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:crypto/crypto.dart';
 
+//最新版本下载链接
+bool updateChecked = false;
+String latestDownloadLink = '';
 
 //判断是否需要联网下载课表
 bool needRefresh = false;
@@ -1175,6 +1179,9 @@ class _HomeState extends State<Home>{
   //控件被创建的时候，执行 initState
   @override
   void initState() {
+    if(updateChecked == false){
+      checkUpdate();
+    }
     readSemesterInfo();
     super.initState();
     if(newsState == 0){
@@ -2266,4 +2273,170 @@ class _HomeState extends State<Home>{
       ),
     );
   }
+
+  
+  //检查更新
+  checkUpdate() async {
+    Dio dio = Dio();
+    Response updateServerResponse = await dio.get('https://apis.smartsnut.cn/Generic/UpdateCheck/LatestVersion.json');
+    List serverResponseData = updateServerResponse.data;
+    if(Platform.isWindows){
+      if(serverResponseData[0]['Windows'][0]['LatestVersionInt'] - GlobalVars.versionCodeInt > 0){
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('发现新的 Windows 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('取消'),
+              ),
+              TextButton(
+                onPressed: () {
+                  latestDownloadLink = serverResponseData[0]['Windows'][0]['DownloadLink'];
+                  Navigator.pop(context, 'OK');
+                  getUpdate();
+                },
+                child: const Text('确认'),
+              ),
+            ],
+          ),
+        );
+      }else{
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('暂未发现新的 Windows 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            content: Text('您正在使用最新版本的 Windows 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {Navigator.pop(context, 'OK');},
+                child: const Text('确认'),
+              ),
+            ],
+          ),
+        );
+      }
+    }if(Platform.isAndroid){
+      if(serverResponseData[0]['Android'][0]['LatestVersionInt'] - GlobalVars.versionCodeInt > 0){
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('发现新的 Android 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Android'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Android'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('取消'),
+              ),
+              TextButton(
+                onPressed: () {
+                  latestDownloadLink = serverResponseData[0]['Android'][0]['DownloadLink'];
+                  Navigator.pop(context, 'OK');
+                  getUpdate();
+                },
+                child: const Text('确认'),
+              ),
+            ],
+          ),
+        );
+      }else{
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('暂未发现新的 Android 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            content: Text('您正在使用最新版本的 Android 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {Navigator.pop(context, 'OK');},
+                child: const Text('确认'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+    if(mounted){
+      setState(() {
+        updateChecked = true;
+      });
+    }
+  }
+
+  //下载更新
+  getUpdate() async {
+    int downloadedSize = 0;
+    int totalDownloadSize = 0;
+    double downloadProgress = 0;
+    Dio dio = Dio();
+    showDialog<String>(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            scrollable: true,
+            title: Text('正在更新...',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            content: Column(
+              children: [
+                Text((Platform.isWindows)? '请勿关闭智慧陕理，下载完成后智慧陕理将会自动重启，完成更新操作':(Platform.isAndroid)? '正在下载安装包，下载完成后智慧陕理将会启动软件更新流程，请您手动进行更新':'正在下载更新...',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                SizedBox(height: 10,),
+                LinearProgressIndicator(
+                  value: downloadProgress,
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('${(downloadProgress * 100).toStringAsFixed(2)}%',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('${(downloadedSize / 1024 /1024).toStringAsFixed(2)}MB / ${(totalDownloadSize / 1024 / 1024).toStringAsFixed(2)}MB',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    
+    if(Platform.isWindows){
+    //Windows 版更新代码
+      String exePath = Platform.resolvedExecutable;
+      String exeDir = File(exePath).parent.path;
+      await dio.download(
+        latestDownloadLink,
+        '$exeDir/Windows_latest.exe',
+        onReceiveProgress: (count, total) {
+          if(mounted){
+            setState(() {
+              downloadProgress = count / total;
+            });
+          }
+        },
+      );
+      Process.start('$exeDir/Windows_latest.exe', [], workingDirectory: exeDir);
+    }if(Platform.isAndroid){
+      //Android 版更新代码
+      await dio.download(
+        latestDownloadLink,
+        '${(await getApplicationDocumentsDirectory()).path}/Android_latest.apk',
+        onReceiveProgress: (count, total) {
+          if(mounted){
+            setState(() {
+              downloadProgress = count / total;
+              downloadedSize = count;
+              totalDownloadSize = total;
+            });
+          }
+        },
+      );
+      OpenFilex.open('${(await getApplicationDocumentsDirectory()).path}/Android_latest.apk');
+    }
+  }
+
 }
