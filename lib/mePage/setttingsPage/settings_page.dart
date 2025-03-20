@@ -376,6 +376,19 @@ class _SettingsPage extends State<SettingsPage>{
                           launchURL();
                         },
                       ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('Gitee 开源地址',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_githublink_title),),
+                        subtitle: Text('https://gitee.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_githublink_subtitle),),
+                        onTap: () {
+                          url = Uri.parse('https://gitee.com/Anya1014CN/SmartSNUT');
+                          launchURL();
+                        },
+                      ),
                     ],
                   )
                 ),
