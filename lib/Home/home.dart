@@ -2311,18 +2311,9 @@ class _HomeState extends State<Home>{
         }
       }else{
         if(mounted){
-          showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-              scrollable: true,
-              title: Text('暂未发现新的 Windows 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('您正在使用最新版本的 Windows 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {Navigator.pop(context, 'OK');},
-                  child: const Text('确认'),
-                ),
-              ],
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('暂未发现新的 Windows 版智慧陕理\n您正在使用最新版本的 Windows 版智慧陕理：${GlobalVars.versionCodeString}'),
             ),
           );
         }
@@ -2352,21 +2343,13 @@ class _HomeState extends State<Home>{
               ],
             ),
           );
+          
         }
       }else{
         if(mounted){
-          showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-              scrollable: true,
-              title: Text('暂未发现新的 Android 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('您正在使用最新版本的 Android 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {Navigator.pop(context, 'OK');},
-                  child: const Text('确认'),
-                ),
-              ],
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('暂未发现新的 Android 版智慧陕理\n您正在使用最新版本的 Android 版智慧陕理：${GlobalVars.versionCodeString}'),
             ),
           );
         }
