@@ -42,9 +42,9 @@ class _SmartSNUT extends State<SmartSNUT> {
     if(await settingstfile.exists()){
       GlobalVars.settingsTotal = jsonDecode(await settingstfile.readAsString());
       setState(() {
-        GlobalVars.fontsizeint = GlobalVars.settingsTotal[0]['fontSize'];
-        GlobalVars.darkModeint = GlobalVars.settingsTotal[0]['DarkMode'];
-        GlobalVars.themeColor = GlobalVars.settingsTotal[0]['ThemeColor'];
+        GlobalVars.fontsizeint = GlobalVars.settingsTotal[0]['fontSize']?? 3;
+        GlobalVars.darkModeint = GlobalVars.settingsTotal[0]['DarkMode']?? 0;
+        GlobalVars.themeColor = GlobalVars.settingsTotal[0]['ThemeColor']?? 1;
       });
     }else{
       setState(() {
