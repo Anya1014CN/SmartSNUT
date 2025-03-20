@@ -93,7 +93,6 @@ class _SplashPageState extends State<SplashPage>{
           });
         }
       }else{
-        print('openId无效');
         setState(() {
           GlobalVars.emBinded = false;
         });

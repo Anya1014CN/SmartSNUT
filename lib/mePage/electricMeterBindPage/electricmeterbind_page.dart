@@ -57,14 +57,23 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
 
     final docpath = (await getApplicationDocumentsDirectory()).path;
     if(mounted){
-        setState(() {
-          openid = emUserData[0]['openId'];
-          wechatId = emUserData[0]['wechatId'];
-          wechatUserNickname = emUserData[0]['wechatUserNickname'];
-          emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
-          electricmeternum = emUserData[0]['emNum'].toString();
-          GlobalVars.emBinded = true;
-        });
+      List emUserData = jsonDecode(await emUserDatafile.readAsString());
+        if(emUserData[0]['openId'] != ''){
+          setState(() {
+            openid = emUserData[0]['openId'];
+            wechatId = emUserData[0]['wechatId'];
+            wechatUserNickname = emUserData[0]['wechatUserNickname'];
+            emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
+            electricmeternum = emUserData[0]['emNum'].toString();
+            GlobalVars.emBinded = true;
+          });
+        }else{
+          if(mounted){
+            setState(() {
+              GlobalVars.emBinded = false;
+            });
+          }
+        }
       }
     }else{
       if(mounted){
