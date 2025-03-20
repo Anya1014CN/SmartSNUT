@@ -48,4 +48,8 @@
         </intent>
     </queries>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- read permissions for external storage -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- installation package permissions -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 </manifest>

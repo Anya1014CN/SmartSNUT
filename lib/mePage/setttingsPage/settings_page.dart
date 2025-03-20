@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/login.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
@@ -1393,7 +1394,7 @@ class _SettingsPage extends State<SettingsPage>{
                 child: const Text('取消'),
               ),
               TextButton(
-                onPressed: () async {
+                onPressed: () {
                   latestDownloadLink = serverResponseData[0]['Windows'][0]['DownloadLink'];
                   Navigator.pop(context, 'OK');
                   getUpdate();
@@ -1412,7 +1413,7 @@ class _SettingsPage extends State<SettingsPage>{
             content: Text('您正在使用最新版本的 Windows 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
             actions: <Widget>[
               TextButton(
-                onPressed: () async {Navigator.pop(context, 'OK');},
+                onPressed: () {Navigator.pop(context, 'OK');},
                 child: const Text('确认'),
               ),
             ],
@@ -1433,9 +1434,10 @@ class _SettingsPage extends State<SettingsPage>{
                 child: const Text('取消'),
               ),
               TextButton(
-                onPressed: () async {
-                  await launchUrl(Uri.parse(serverResponseData[0]['Windows'][0]['DownloadLink']));
+                onPressed: () {
+                  latestDownloadLink = serverResponseData[0]['Android'][0]['DownloadLink'];
                   Navigator.pop(context, 'OK');
+                  getUpdate();
                 },
                 child: const Text('确认'),
               ),
@@ -1468,10 +1470,12 @@ class _SettingsPage extends State<SettingsPage>{
 
   //下载更新
   getUpdate() async {
+    int downloadedSize = 0;
+    int totalDownloadSize = 0;
     double downloadProgress = 0;
     Dio dio = Dio();
     showDialog<String>(
-      //barrierDismissible: false,
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
@@ -1480,13 +1484,19 @@ class _SettingsPage extends State<SettingsPage>{
             title: Text('正在更新...',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
             content: Column(
               children: [
-                Text('请勿关闭智慧陕理，下载完成后智慧陕理将会自动重启，完成更新操作',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                Text((Platform.isWindows)? '请勿关闭智慧陕理，下载完成后智慧陕理将会自动重启，完成更新操作':(Platform.isAndroid)? '正在下载安装包，下载完成后智慧陕理将会启动软件更新流程，请您手动进行更新':'正在下载更新...',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
                 SizedBox(height: 10,),
                 LinearProgressIndicator(
                   value: downloadProgress,
                 ),
                 SizedBox(height: 10,),
-                Center(child: Text('${(downloadProgress * 100).toStringAsFixed(2)}%',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('${(downloadProgress * 100).toStringAsFixed(2)}%',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('${(downloadedSize / 1024 /1024).toStringAsFixed(2)}MB / ${(totalDownloadSize / 1024 / 1024).toStringAsFixed(2)}MB',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                  ],
+                )
               ],
             ),
           ),
@@ -1511,8 +1521,21 @@ class _SettingsPage extends State<SettingsPage>{
       );
       Process.start('$exeDir/Windows_latest.exe', [], workingDirectory: exeDir);
     }if(Platform.isAndroid){
-      
-
+      //Android 版更新代码
+      await dio.download(
+        latestDownloadLink,
+        '${(await getApplicationDocumentsDirectory()).path}/Android_latest.apk',
+        onReceiveProgress: (count, total) {
+          if(mounted){
+            setState(() {
+              downloadProgress = count / total;
+              downloadedSize = count;
+              totalDownloadSize = total;
+            });
+          }
+        },
+      );
+      OpenFilex.open('${(await getApplicationDocumentsDirectory()).path}/Android_latest.apk');
     }
   }
 }
