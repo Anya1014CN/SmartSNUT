@@ -85,11 +85,15 @@ class _SplashPageState extends State<SplashPage>{
     String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
     File emUserDatafile = File(emUserDatapath);
     if(await emUserDatafile.exists() == true){
-      if(mounted){
-        setState(() {
-          GlobalVars.emBinded = true;
-        });
+      List emUserData = jsonDecode(await emUserDatafile.readAsString());
+      if(emUserData[0]['openId'] != ''){
+        if(mounted){
+          setState(() {
+            GlobalVars.emBinded = true;
+          });
+        }
       }else{
+        print('openId无效');
         setState(() {
           GlobalVars.emBinded = false;
         });

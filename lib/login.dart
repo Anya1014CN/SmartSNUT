@@ -923,6 +923,22 @@ class _LoginPageState extends State<LoginPage>{
         });
       }
     }
+    String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
+    File emUserDatafile = File(emUserDatapath);
+    if(await emUserDatafile.exists() == true){
+      List emUserData = jsonDecode(await emUserDatafile.readAsString());
+      if(emUserData[0]['openId'] != ''){
+        if(mounted){
+          setState(() {
+            GlobalVars.emBinded = true;
+          });
+        }
+      }else{
+        setState(() {
+          GlobalVars.emBinded = false;
+        });
+      }
+    }
   }
 
   //打开链接
