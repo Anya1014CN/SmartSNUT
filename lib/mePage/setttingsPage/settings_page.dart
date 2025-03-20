@@ -556,6 +556,20 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
+                        title: Text('open_filex',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A plug-in that can call native APP to open files with string result in flutter, support iOS(DocumentInteraction) / android(intent) / PC(ffi) / web(dart:html)',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'open_filex';
+                          licensePath = 'open_filex_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
                         title: Text('path_provider',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
                         subtitle: Text('A Flutter plugin for finding commonly used locations on the filesystem. Supports Android, iOS, Linux, macOS and Windows. Not all methods are supported on all platforms.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
                         trailing: Icon(Icons.chevron_right),

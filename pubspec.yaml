@@ -82,6 +82,7 @@ flutter:
     - assets/credits/License/flutter_LICENSE.txt
     - assets/credits/License/html_LICENSE.txt
     - assets/credits/License/intl_LICENSE.txt
+    - assets/credits/License/open_filex_LICENSE.txt
     - assets/credits/License/path_provider_LICENSE.txt
     - assets/credits/License/responsive_builder_LICENSE.txt
     - assets/credits/License/url_launcher_LICENSE.txt
