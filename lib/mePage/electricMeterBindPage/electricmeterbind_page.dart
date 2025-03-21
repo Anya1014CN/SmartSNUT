@@ -20,7 +20,7 @@ String wechatUserNickname = '';
 String wechatId = '';
 
 //电表数量
-String electricmeternum = '0';
+int electricmeternum = 0;
 
 //TextController
 final textOpenidController = TextEditingController();
@@ -64,7 +64,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
             wechatId = emUserData[0]['wechatId'];
             wechatUserNickname = emUserData[0]['wechatUserNickname'];
             emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
-            electricmeternum = emUserData[0]['emNum'].toString();
+            electricmeternum = emUserData[0]['emNum'];
             GlobalVars.emBinded = true;
           });
         }else{
@@ -87,7 +87,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
     String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
     File emnumfile = File(emnumpath);
     if(await emnumfile.exists()){
-      electricmeternum = await emnumfile.readAsString();
+      electricmeternum = int.parse(await emnumfile.readAsString());
       await emnumfile.delete();
     }
 
@@ -525,7 +525,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
         emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
         wechatId = emresponse1.data['data']['wechatId'].toString();
         wechatUserNickname = emresponse1.data['data']['wechatUserNickname'].toString();
-        electricmeternum =  emresponse2.data['data'].length.toString();
+        electricmeternum =  emresponse2.data['data'].length;
         isBinding = false;
         GlobalVars.emBinded = true;
       });

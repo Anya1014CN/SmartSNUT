@@ -209,7 +209,11 @@ class _electricmeterPageState extends State<electricmeterpage>{
           wechatId = emUserData[0]['wechatId'];
           wechatUserNickname = emUserData[0]['wechatUserNickname'];
           emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
-          electricmeternum = int.parse(emUserData[0]['emNum']);
+          if(emUserData[0]['emNum'] is int){
+            electricmeternum = emUserData[0]['emNum'];
+          }if(emUserData[0]['emNum'] is String){
+            electricmeternum = int.parse(emUserData[0]['emNum']);
+          }
           GlobalVars.emBinded = true;
         });
       }

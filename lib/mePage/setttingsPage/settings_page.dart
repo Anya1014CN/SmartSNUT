@@ -63,7 +63,7 @@ class _SettingsPage extends State<SettingsPage>{
     String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
     File emnumfile = File(emnumpath);
     if(await emnumfile.exists()){
-      electricmeternum = await emnumfile.readAsString();
+      electricmeternum = int.parse(await emnumfile.readAsString());
       await emnumfile.delete();
     }
 
