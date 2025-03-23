@@ -1,8 +1,8 @@
 class GlobalVars {
   //当前版本号
-  static String versionCodeString = '1.3.9';
-  static int versionCodeInt = 1003009;
-  static String versionReleaseDate = '2025-03-20';
+  static String versionCodeString = '1.3.10';
+  static int versionCodeInt = 1003010;
+  static String versionReleaseDate = '2025-03-23';
 
   //用户数据
   static List stdAccount = [];
