@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:html/parser.dart' show parse;
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:smartsnut/AppPage/courseTable/coursetable_page.dart';
@@ -1198,6 +1199,10 @@ class _HomeState extends State<Home>{
 
   @override
   Widget build(BuildContext context)  {
+    //加载首页之前立即刷新一次周几，解决进入首页后，“星期几” 延迟出现的问题
+    initializeDateFormatting("zh_CN");
+    GlobalVars.weekDay = DateFormat('EEEE',"zh_CN").format(DateTime.now());
+    
     //获取长宽并保存
     tableWidth = (MediaQuery.of(context).size.width );
     tableHeight = tableWidth / 12;
