@@ -36,7 +36,9 @@ double tableHeadWidth = 0;
 double tableHeight = 0;
 
 //课表的色块
-final List<Color> courseBlockColors = [
+List<Color> courseBlockColors = [];
+//莫兰迪色系
+final List<Color> courseBlockMoLandiColors = [
   Color(0xffd89c7a),
   Color(0xffd6c38b),
   Color(0xffcfc3a9),
@@ -68,6 +70,35 @@ final List<Color> courseBlockColors = [
   Color(0xff9a7549),
   Color(0xffbca289),
   Color(0xffb57c82),
+];
+//马卡龙色系
+final List<Color> courseBlockMakalongColors = [
+  Color(0xfff1707d),
+  Color(0xfff155369),
+  Color(0xffef5767),
+  Color(0xffae716e),
+  Color(0xffcb8e85),
+  Color(0xffcf8878),
+  Color(0xffc86f67),
+  Color(0xfff1ccb8),
+  Color(0xfff2debd),
+  Color(0xffb8d38f),
+  Color(0xffddff95),
+  Color(0xffff9b6a),
+  Color(0xfff1b8f1),
+  Color(0xffd9b8f1),
+  Color(0xfff1ccb8),
+  Color(0xfff1f1b8),
+  Color(0xffb8f1ed),
+  Color(0xffb8f1cc),
+  Color(0xffe7dbca),
+  Color(0xffe26538),
+  Color(0xfff3d751),
+  Color(0xfffd803a),
+  Color(0xfffe997b),
+  Color(0xffc490a0),
+  Color(0xfff28a63),
+  Color(0xffdf7a30),
 ];
 
 //全年课表数据
@@ -1329,6 +1360,12 @@ class _CourseTablePage extends State<CourseTablePage>{
 
   @override
   void initState() {
+    //加载课表色块的颜色列表
+    if(GlobalVars.courseBlockColorsInt == 0){
+      courseBlockColors = courseBlockMoLandiColors;
+    }if(GlobalVars.courseBlockColorsInt == 1){
+      courseBlockColors = courseBlockMakalongColors;
+    }
     //清空学期列表
     semestersData = {};
     semestersName = [];

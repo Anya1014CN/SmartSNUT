@@ -47,6 +47,7 @@ class _SmartSNUT extends State<SmartSNUT> {
         GlobalVars.themeColor = GlobalVars.settingsTotal[0]['ThemeColor']?? 1;
         GlobalVars.showSatCourse = GlobalVars.settingsTotal[0]['showSatCourse']?? true;
         GlobalVars.showSunCourse = GlobalVars.settingsTotal[0]['showSunCourse']?? true;
+        GlobalVars.courseBlockColorsInt = GlobalVars.settingsTotal[0]['courseBlockColorsint']?? 0;
       });
     }else{
       setState(() {
@@ -55,6 +56,7 @@ class _SmartSNUT extends State<SmartSNUT> {
         GlobalVars.themeColor = 1;
         GlobalVars.showSatCourse = true;
         GlobalVars.showSunCourse = true;
+        GlobalVars.courseBlockColorsInt = 0;
       });
     }
     setfontsize();

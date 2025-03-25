@@ -109,12 +109,14 @@ class _SettingsPage extends State<SettingsPage>{
     GlobalVars.settingsTotal.remove('ThemeColor');
     GlobalVars.settingsTotal.remove('showSatCourse');
     GlobalVars.settingsTotal.remove('showSunCourse');
+    GlobalVars.settingsTotal.remove('courseBlockColorsInt');
     GlobalVars.settingsTotal.add({
       'fontSize': GlobalVars.fontsizeint,
       'DarkMode': GlobalVars.darkModeint,
       'ThemeColor': GlobalVars.themeColor,
       'showSatCourse': GlobalVars.showSatCourse,
       'showSunCourse': GlobalVars.showSunCourse,
+      'courseBlockColorsint': GlobalVars.courseBlockColorsInt,
     });
     if(mounted){
       setState(() {});
@@ -282,6 +284,16 @@ class _SettingsPage extends State<SettingsPage>{
                         title: Text('显示周日课程',style: TextStyle(fontSize: GlobalVars.generalsettings_fontsize_title),),
                         subtitle: Text('是否在 “我的课表” 中显示周日的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
                         onTap: (){switchTextSize();},
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('课程色系',style: TextStyle(fontSize: GlobalVars.generalsettings_themecolor_title),),
+                        subtitle: Text((GlobalVars.courseBlockColorsInt == 0)? '莫兰迪色系':'马卡龙色系',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_themecolor_subtitle),),
+                        onTap: (){switchCourseBlockColor();},
                       ),
                     ],
                   )
@@ -1456,6 +1468,75 @@ class _SettingsPage extends State<SettingsPage>{
     );
   }
 
+  //切换课程色系
+  switchCourseBlockColor() {
+    int groupValue = GlobalVars.courseBlockColorsInt;
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            scrollable: true,
+            title: Text('课程色系',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            content: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Radio(
+                      value: 0,
+                      groupValue: groupValue,
+                      onChanged: (value){
+                        groupValue = 0;
+                        if(mounted){
+                          setState((){
+                            GlobalVars.courseBlockColorsInt = 0;
+                          });
+                        }
+                        saveSettings();
+                      },
+                    ),
+                    SizedBox(width: 10,),
+                    Text('莫兰迪色系',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Radio(
+                      value: 1,
+                      groupValue: groupValue,
+                      onChanged: (value){
+                        groupValue = 1;
+                        if(mounted){
+                          setState((){
+                            GlobalVars.courseBlockColorsInt = 1;
+                          });
+                        }
+                        saveSettings();
+                      },
+                    ),
+                    SizedBox(width: 10,),
+                    Text('马卡龙色系',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                  ],
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  saveSettings();
+                  Navigator.pop(context, 'OK');
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+  
   //打开链接
   void launchURL() async{
     showDialog<String>(

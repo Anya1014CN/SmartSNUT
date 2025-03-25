@@ -37,6 +37,8 @@ class GlobalVars {
   //课表是否显示周六周日
   static bool showSatCourse = true;
   static bool showSunCourse = true;
+  //课表的配色
+  static int courseBlockColorsInt = 1;
 
   //字体大小相关
   //弹出对话框字体
