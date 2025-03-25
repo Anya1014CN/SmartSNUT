@@ -250,36 +250,10 @@ class _SmartSNUT extends State<SmartSNUT> {
 
       //应用设置页字体
       GlobalVars.settings_page_title = DefaultfontSize.settings_page_title_default + changevalue;
-      
-      GlobalVars.generalsettings_divider_title = DefaultfontSize.generalsettings_divider_title_default + changevalue;
-      GlobalVars.generalsettings_fontsize_title = DefaultfontSize.generalsettings_fontsize_title_default + changevalue;
-      GlobalVars.generalsettings_fontsize_subtitle = DefaultfontSize.generalsettings_fontsize_subtitle_default + changevalue;
-      GlobalVars.generalsettings_themecolor_title = DefaultfontSize.generalsettings_themecolor_title_default + changevalue;
-      GlobalVars.generalsettings_themecolor_subtitle = DefaultfontSize.generalsettings_themecolor_subtitle_default + changevalue;
-      GlobalVars.generalsettings_darkmode_title = DefaultfontSize.generalsettings_darkmode_title_default + changevalue;
-      GlobalVars.generalsettings_darkmode_subtitle = DefaultfontSize.generalsettings_darkmode_subtitle_default + changevalue;
-      
-      GlobalVars.accountsettings_divider_title = DefaultfontSize.accountsettings_divider_title_default + changevalue;
-      GlobalVars.accountsettings_emaccount_title = DefaultfontSize.accountsettings_emaccount_title_default + changevalue;
-      GlobalVars.accountsettings_emaccount_subtitle = DefaultfontSize.accountsettings_emaccount_subtitle_default + changevalue;
-      GlobalVars.accountsettings_authserveraccount_title = DefaultfontSize.accountsettings_authserveraccount_title_default + changevalue;
-      GlobalVars.accountsettings_authserveraccount_subtitle = DefaultfontSize.accountsettings_authserveraccount_subtitle_default + changevalue;
-
-      GlobalVars.aboutsnutsettings_divider_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
-      GlobalVars.aboutsnutsettings_currentversion_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
-      GlobalVars.aboutsnutsettings_changelog_title = DefaultfontSize.aboutsnutsettings_changelog_title_defalut + changevalue;
-      GlobalVars.aboutsnutsettings_changelog_subtitle = DefaultfontSize.aboutsnutsettings_changelog_title_defalut + changevalue;
-      GlobalVars.aboutsnutsettings_officialsite_title = DefaultfontSize.aboutsnutsettings_officialsite_title_defalut + changevalue;
-      GlobalVars.aboutsnutsettings_officialsite_subtitle = DefaultfontSize.aboutsnutsettings_officialsite_subtitle_defalut + changevalue;
-      GlobalVars.aboutsnutsettings_githublink_title = DefaultfontSize.aboutsnutsettings_githublink_title_defalut + changevalue;
-      GlobalVars.aboutsnutsettings_githublink_subtitle = DefaultfontSize.aboutsnutsettings_githublink_subtitle_defalut + changevalue;
-      
-      GlobalVars.disclamier_divider_title = DefaultfontSize.disclamier_divider_title_default + changevalue;
+      GlobalVars.settingsDividerText = DefaultfontSize.settingsDividerText_default + changevalue;
+      GlobalVars.settingsItemTitle = DefaultfontSize.settingsItemTitle_default + changevalue;
+      GlobalVars.settingsItemSubtitle = DefaultfontSize.settingsItemSubtitle_default + changevalue;
       GlobalVars.disclamier_title_title = DefaultfontSize.disclamier_title_title_default + changevalue;
-      
-      GlobalVars.lincense_divider_title = DefaultfontSize.lincense_divider_title_default + changevalue;
-      GlobalVars.lincense_name_title = DefaultfontSize.lincense_name_title_default + changevalue;
-      GlobalVars.lincense_describ_title = DefaultfontSize.lincense_describ_title_default + changevalue;
   }
 
   //每秒刷新一次数据及页面

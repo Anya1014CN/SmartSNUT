@@ -183,7 +183,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('通用设置',style: TextStyle(fontSize: GlobalVars.generalsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
+                  Text('通用设置',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color:Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -205,8 +205,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('字体大小',style: TextStyle(fontSize: GlobalVars.generalsettings_fontsize_title),),
-                        subtitle: Text(GlobalVars.fontSize_name,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
+                        title: Text('字体大小',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text(GlobalVars.fontSize_name,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                         onTap: (){switchTextSize();},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -215,8 +215,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('主题颜色',style: TextStyle(fontSize: GlobalVars.generalsettings_themecolor_title),),
-                        subtitle: Text((GlobalVars.themeColor == 0)? '琥珀色':(GlobalVars.themeColor == 1)? '深橙色':(GlobalVars.themeColor == 2)? '曼迪红':(GlobalVars.themeColor == 3)? '深紫色':(GlobalVars.themeColor == 4)? '野鸭绿':(GlobalVars.themeColor == 5)? '粉红色':(GlobalVars.themeColor == 6)? '咖啡色':'鲨鱼灰',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_themecolor_subtitle),),
+                        title: Text('主题颜色',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text((GlobalVars.themeColor == 0)? '琥珀色':(GlobalVars.themeColor == 1)? '深橙色':(GlobalVars.themeColor == 2)? '曼迪红':(GlobalVars.themeColor == 3)? '深紫色':(GlobalVars.themeColor == 4)? '野鸭绿':(GlobalVars.themeColor == 5)? '粉红色':(GlobalVars.themeColor == 6)? '咖啡色':'鲨鱼灰',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                         onTap: (){switchThemeColor();},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -225,8 +225,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('深色模式',style: TextStyle(fontSize: GlobalVars.generalsettings_darkmode_title),),
-                        subtitle: Text((GlobalVars.darkModeint == 0)? '跟随系统':(GlobalVars.darkModeint == 1)? '始终开启':'始终关闭',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_darkmode_subtitle),),
+                        title: Text('深色模式',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text((GlobalVars.darkModeint == 0)? '跟随系统':(GlobalVars.darkModeint == 1)? '始终开启':'始终关闭',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                         onTap: (){switchThemeMode();},
                       ),
                     ],
@@ -239,7 +239,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('课表设置',style: TextStyle(fontSize: GlobalVars.generalsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
+                  Text('课表设置',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color:Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -264,11 +264,11 @@ class _SettingsPage extends State<SettingsPage>{
                           value: GlobalVars.showSatCourse,
                           onChanged: (value) {
                             GlobalVars.showSatCourse = value;
+                            saveSettings();
                           },
                         ),
-                        title: Text('显示周六课程',style: TextStyle(fontSize: GlobalVars.generalsettings_fontsize_title),),
-                        subtitle: Text('是否在 “我的课表” 中显示周六的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
-                        onTap: (){switchTextSize();},
+                        title: Text('显示周六课程',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text('在 “我的课表” 中显示周六的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
@@ -279,11 +279,11 @@ class _SettingsPage extends State<SettingsPage>{
                           value: GlobalVars.showSunCourse,
                           onChanged: (value) {
                             GlobalVars.showSunCourse = value;
+                            saveSettings();
                           },
                         ),
-                        title: Text('显示周日课程',style: TextStyle(fontSize: GlobalVars.generalsettings_fontsize_title),),
-                        subtitle: Text('是否在 “我的课表” 中显示周日的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
-                        onTap: (){switchTextSize();},
+                        title: Text('显示周日课程',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text('在 “我的课表” 中显示周日的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
@@ -291,8 +291,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('课程色系',style: TextStyle(fontSize: GlobalVars.generalsettings_themecolor_title),),
-                        subtitle: Text((GlobalVars.courseBlockColorsInt == 0)? '莫兰迪色系':'马卡龙色系',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_themecolor_subtitle),),
+                        title: Text('课程色系',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text((GlobalVars.courseBlockColorsInt == 0)? '莫兰迪色系':'马卡龙色系',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                         onTap: (){switchCourseBlockColor();},
                       ),
                     ],
@@ -305,7 +305,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('账号设置',style: TextStyle(fontSize: GlobalVars.accountsettings_divider_title,color: Theme.of(context).colorScheme.primary),),
+                  Text('账号设置',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color: Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -327,8 +327,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.accountsettings_emaccount_title),),
-                        subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_emaccount_subtitle),),
+                        title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                         onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage())).then((value) => emBindRead());},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -337,8 +337,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('退出登录',style: TextStyle(fontSize: GlobalVars.accountsettings_authserveraccount_title),),
-                        subtitle: Text(GlobalVars.userName,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.accountsettings_authserveraccount_subtitle),),
+                        title: Text('退出登录',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text(GlobalVars.userName,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                         onTap: (){
                           showDialog<String>(
                           context: context,
@@ -372,7 +372,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('关于智慧陕理',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
+                  Text('关于智慧陕理',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color:Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -394,8 +394,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: isCheckingUpdate? CircularProgressIndicator():Icon(Icons.chevron_right),
-                        title: Text(isCheckingUpdate? '正在检查更新，请稍后...':'检查更新',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_currentversion_title),),
-                        subtitle: Text(GlobalVars.versionCodeString,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
+                        title: Text(isCheckingUpdate? '正在检查更新，请稍后...':'检查更新',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text(GlobalVars.versionCodeString,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                         onTap: isCheckingUpdate? null:(){checkUpdate();},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -404,8 +404,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('更新日志',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_officialsite_title),),
-                        subtitle: Text('版本更新日志',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_officialsite_subtitle),),
+                        title: Text('更新日志',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text('版本更新日志',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                         onTap: () async {
                           String changelogContent = await rootBundle.loadString('assets/Changelog.txt');
                           showDialog<String>(
@@ -430,8 +430,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('官方网站',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_officialsite_title),),
-                        subtitle: Text('https://SmartSNUT.cn',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_officialsite_subtitle),),
+                        title: Text('官方网站',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text('https://SmartSNUT.cn',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                         onTap: () {
                           url = Uri.parse('https://SmartSNUT.cn');
                           launchURL();
@@ -443,8 +443,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('Github 开源地址',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_githublink_title),),
-                        subtitle: Text('https://github.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_githublink_subtitle),),
+                        title: Text('Github 开源地址',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text('https://github.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                         onTap: () {
                           url = Uri.parse('https://github.com/Anya1014CN/SmartSNUT');
                           launchURL();
@@ -456,8 +456,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('Gitee 开源地址',style: TextStyle(fontSize: GlobalVars.aboutsnutsettings_githublink_title),),
-                        subtitle: Text('https://gitee.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.aboutsnutsettings_githublink_subtitle),),
+                        title: Text('Gitee 开源地址',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
+                        subtitle: Text('https://gitee.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
                         onTap: () {
                           url = Uri.parse('https://gitee.com/Anya1014CN/SmartSNUT');
                           launchURL();
@@ -473,7 +473,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('声明',style: TextStyle(fontSize: GlobalVars.disclamier_divider_title,color: Theme.of(context).colorScheme.primary),),
+                  Text('声明',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color: Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -516,7 +516,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('开放源代码许可',style: TextStyle(fontSize: GlobalVars.lincense_divider_title,color: Theme.of(context).colorScheme.primary),),
+                  Text('开放源代码许可',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color: Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -537,8 +537,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('cookie_jar',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A cookie manager for http requests in Dart, by which you can deal with the complex cookie policy and persist cookies easily.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('cookie_jar',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A cookie manager for http requests in Dart, by which you can deal with the complex cookie policy and persist cookies easily.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'cookie_jar';
@@ -551,8 +551,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('crypto',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A set of cryptographic hashing functions for Dart.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('crypto',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A set of cryptographic hashing functions for Dart.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'crypto';
@@ -565,8 +565,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('dart-lang/sdk',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('The Dart SDK, including the VM, JS and Wasm compilers, analysis, core libraries, and more.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('dart-lang/sdk',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('The Dart SDK, including the VM, JS and Wasm compilers, analysis, core libraries, and more.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'dart-lang/sdk';
@@ -579,8 +579,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('dio_cookie_manager',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A cookie manager combines cookie_jar and dio, based on the interceptor algorithm.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('dio_cookie_manager',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A cookie manager combines cookie_jar and dio, based on the interceptor algorithm.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'dio_cookie_manager';
@@ -593,8 +593,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('dio',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A powerful HTTP networking package for Dart/Flutter, supports Global configuration, Interceptors, FormData, Request cancellation, File uploading/downloading, Timeout, Custom adapters, Transformers, etc.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('dio',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A powerful HTTP networking package for Dart/Flutter, supports Global configuration, Interceptors, FormData, Request cancellation, File uploading/downloading, Timeout, Custom adapters, Transformers, etc.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'dio';
@@ -607,8 +607,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('flex_color_scheme',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A Flutter package to make and use beautiful color scheme based themes.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('flex_color_scheme',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Flutter package to make and use beautiful color scheme based themes.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'flex_color_scheme';
@@ -621,8 +621,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('flutter',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('Flutter makes it easy and fast to build beautiful apps for mobile and beyond',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('flutter',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('Flutter makes it easy and fast to build beautiful apps for mobile and beyond',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'flutter';
@@ -635,8 +635,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('html',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A Dart implementation of an HTML5 parser.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('html',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Dart implementation of an HTML5 parser.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'html';
@@ -649,8 +649,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('intl',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('Provides internationalization and localization facilities, including message translation, plurals and genders, date/number formatting and parsing, and bidirectional text.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('intl',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('Provides internationalization and localization facilities, including message translation, plurals and genders, date/number formatting and parsing, and bidirectional text.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'intl';
@@ -663,8 +663,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('open_filex',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A plug-in that can call native APP to open files with string result in flutter, support iOS(DocumentInteraction) / android(intent) / PC(ffi) / web(dart:html)',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('open_filex',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A plug-in that can call native APP to open files with string result in flutter, support iOS(DocumentInteraction) / android(intent) / PC(ffi) / web(dart:html)',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'open_filex';
@@ -677,8 +677,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('path_provider',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A Flutter plugin for finding commonly used locations on the filesystem. Supports Android, iOS, Linux, macOS and Windows. Not all methods are supported on all platforms.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('path_provider',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Flutter plugin for finding commonly used locations on the filesystem. Supports Android, iOS, Linux, macOS and Windows. Not all methods are supported on all platforms.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'path_provider';
@@ -691,8 +691,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('responsive_builder',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A set of widgets to make responsive UI building in flutter more readable',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('responsive_builder',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A set of widgets to make responsive UI building in flutter more readable',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'responsive_builder';
@@ -705,8 +705,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('url_launcher',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A Flutter plugin for launching a URL.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('url_launcher',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Flutter plugin for launching a URL.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'url_launcher';
@@ -719,8 +719,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('provider',style: TextStyle(fontSize: GlobalVars.lincense_name_title,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A wrapper around InheritedWidget to make them easier to use and more reusable.',style: TextStyle(fontSize: GlobalVars.lincense_describ_title),),
+                        title: Text('provider',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A wrapper around InheritedWidget to make them easier to use and more reusable.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'provider';
@@ -1139,36 +1139,10 @@ class _SettingsPage extends State<SettingsPage>{
 
       //应用设置页字体
       GlobalVars.settings_page_title = DefaultfontSize.settings_page_title_default + changevalue;
-      
-      GlobalVars.generalsettings_divider_title = DefaultfontSize.generalsettings_divider_title_default + changevalue;
-      GlobalVars.generalsettings_fontsize_title = DefaultfontSize.generalsettings_fontsize_title_default + changevalue;
-      GlobalVars.generalsettings_fontsize_subtitle = DefaultfontSize.generalsettings_fontsize_subtitle_default + changevalue;
-      GlobalVars.generalsettings_themecolor_title = DefaultfontSize.generalsettings_themecolor_title_default + changevalue;
-      GlobalVars.generalsettings_themecolor_subtitle = DefaultfontSize.generalsettings_themecolor_subtitle_default + changevalue;
-      GlobalVars.generalsettings_darkmode_title = DefaultfontSize.generalsettings_darkmode_title_default + changevalue;
-      GlobalVars.generalsettings_darkmode_subtitle = DefaultfontSize.generalsettings_darkmode_subtitle_default + changevalue;
-      
-      GlobalVars.accountsettings_divider_title = DefaultfontSize.accountsettings_divider_title_default + changevalue;
-      GlobalVars.accountsettings_emaccount_title = DefaultfontSize.accountsettings_emaccount_title_default + changevalue;
-      GlobalVars.accountsettings_emaccount_subtitle = DefaultfontSize.accountsettings_emaccount_subtitle_default + changevalue;
-      GlobalVars.accountsettings_authserveraccount_title = DefaultfontSize.accountsettings_authserveraccount_title_default + changevalue;
-      GlobalVars.accountsettings_authserveraccount_subtitle = DefaultfontSize.accountsettings_authserveraccount_subtitle_default + changevalue;
-
-      GlobalVars.aboutsnutsettings_divider_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
-      GlobalVars.aboutsnutsettings_currentversion_title = DefaultfontSize.aboutsnutsettings_divider_title_default + changevalue;
-      GlobalVars.aboutsnutsettings_changelog_title = DefaultfontSize.aboutsnutsettings_changelog_title_defalut + changevalue;
-      GlobalVars.aboutsnutsettings_changelog_subtitle = DefaultfontSize.aboutsnutsettings_changelog_title_defalut + changevalue;
-      GlobalVars.aboutsnutsettings_officialsite_title = DefaultfontSize.aboutsnutsettings_officialsite_title_defalut + changevalue;
-      GlobalVars.aboutsnutsettings_officialsite_subtitle = DefaultfontSize.aboutsnutsettings_officialsite_subtitle_defalut + changevalue;
-      GlobalVars.aboutsnutsettings_githublink_title = DefaultfontSize.aboutsnutsettings_githublink_title_defalut + changevalue;
-      GlobalVars.aboutsnutsettings_githublink_subtitle = DefaultfontSize.aboutsnutsettings_githublink_subtitle_defalut + changevalue;
-      
-      GlobalVars.disclamier_divider_title = DefaultfontSize.disclamier_divider_title_default + changevalue;
+      GlobalVars.settingsDividerText = DefaultfontSize.settingsDividerText_default + changevalue;
+      GlobalVars.settingsItemTitle = DefaultfontSize.settingsItemTitle_default + changevalue;
+      GlobalVars.settingsItemSubtitle = DefaultfontSize.settingsItemSubtitle_default + changevalue;
       GlobalVars.disclamier_title_title = DefaultfontSize.disclamier_title_title_default + changevalue;
-      
-      GlobalVars.lincense_divider_title = DefaultfontSize.lincense_divider_title_default + changevalue;
-      GlobalVars.lincense_name_title = DefaultfontSize.lincense_name_title_default + changevalue;
-      GlobalVars.lincense_describ_title = DefaultfontSize.lincense_describ_title_default + changevalue;
       
       //设置完成后刷新页面
       setState(() {});

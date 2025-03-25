@@ -203,37 +203,12 @@ class GlobalVars {
 
   //应用设置页字体
   static double settings_page_title = 40;
-  
-  static double generalsettings_divider_title = 15;
-  static double generalsettings_fontsize_title = 16;
-  static double generalsettings_fontsize_subtitle = 14;
-  static double generalsettings_themecolor_title = 16;
-  static double generalsettings_themecolor_subtitle = 14;
-  static double generalsettings_darkmode_title = 16;
-  static double generalsettings_darkmode_subtitle = 14;
-  
-  static double accountsettings_divider_title = 15;
-  static double accountsettings_emaccount_title = 16;
-  static double accountsettings_emaccount_subtitle = 14;
-  static double accountsettings_authserveraccount_title = 16;
-  static double accountsettings_authserveraccount_subtitle = 14;
 
-  static double aboutsnutsettings_divider_title = 15;
-  static double aboutsnutsettings_currentversion_title = 15;
-  static double aboutsnutsettings_changelog_title = 15;
-  static double aboutsnutsettings_changelog_subtitle = 15;
-  static double aboutsnutsettings_officialsite_title = 15;
-  static double aboutsnutsettings_officialsite_subtitle = 15;
-  static double aboutsnutsettings_githublink_title = 15;
-  static double aboutsnutsettings_githublink_subtitle = 15;
+  static double settingsDividerText = 15;
+  static double settingsItemTitle = 16;
+  static double settingsItemSubtitle = 16;
   
-  static double disclamier_divider_title = 15;
   static double disclamier_title_title = 14;
-  
-  static double lincense_divider_title = 15;
-  static double lincense_name_title = 18;
-  static double lincense_describ_title = 14;
-  
 }
 
 //用于存储所有字体的“适中”的大小
@@ -396,34 +371,10 @@ class DefaultfontSize{
 
   //应用设置页字体
   static double settings_page_title_default = 40;
-  
-  static double generalsettings_divider_title_default = 15;
-  static double generalsettings_fontsize_title_default = 16;
-  static double generalsettings_fontsize_subtitle_default= 14;
-  static double generalsettings_themecolor_title_default = 16;
-  static double generalsettings_themecolor_subtitle_default= 14;
-  static double generalsettings_darkmode_title_default = 16;
-  static double generalsettings_darkmode_subtitle_default= 14;
-  
-  static double accountsettings_divider_title_default = 15;
-  static double accountsettings_emaccount_title_default = 16;
-  static double accountsettings_emaccount_subtitle_default= 14;
-  static double accountsettings_authserveraccount_title_default = 16;
-  static double accountsettings_authserveraccount_subtitle_default= 14;
 
-  static double aboutsnutsettings_divider_title_default = 15;
-  static double aboutsnutsettings_currentversion_title_defalut = 15;
-  static double aboutsnutsettings_changelog_title_defalut = 15;
-  static double aboutsnutsettings_changelog_subtitle_defalut = 15;
-  static double aboutsnutsettings_officialsite_title_defalut = 15;
-  static double aboutsnutsettings_officialsite_subtitle_defalut = 15;
-  static double aboutsnutsettings_githublink_title_defalut = 15;
-  static double aboutsnutsettings_githublink_subtitle_defalut = 15;
+  static double settingsDividerText_default = 15;
+  static double settingsItemTitle_default = 16;
+  static double settingsItemSubtitle_default = 16;
   
-  static double disclamier_divider_title_default = 15;
   static double disclamier_title_title_default = 14;
-  
-  static double lincense_divider_title_default = 15;
-  static double lincense_name_title_default = 18;
-  static double lincense_describ_title_default = 14;
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smartsnut/globalvars.dart';
-import 'package:smartsnut/mePage/guidePage/emBindGuidePage/embindguide_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //功能说明
@@ -81,7 +80,7 @@ class _GuidePageState extends State<Guidepage>{
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('使用说明',style: TextStyle(fontSize: GlobalVars.generalsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
+                    Text('使用说明',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color:Theme.of(context).colorScheme.primary),),
                     Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                   ],
                 ),
@@ -119,7 +118,7 @@ class _GuidePageState extends State<Guidepage>{
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('功能说明',style: TextStyle(fontSize: GlobalVars.generalsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
+                    Text('功能说明',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color:Theme.of(context).colorScheme.primary),),
                     Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                   ],
                 ),
