@@ -1495,22 +1495,22 @@ class _CourseTablePage extends State<CourseTablePage>{
                         child: Text('五',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 5)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.coursetable_tablehead_title),),
                       )
                     ),
-                    Card(
+                    GlobalVars.showSatCourse? Card(
                       color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
                         child: Text('六',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 6)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.coursetable_tablehead_title),),
                       )
-                    ),
-                    Card(
+                    ):SizedBox(),
+                    GlobalVars.showSunCourse? Card(
                       color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
                         child: Text('日',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 7)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.coursetable_tablehead_title),),
                       )
-                    ),
+                    ):SizedBox(),
                   ],
                 ),
                 Divider(height: 5,indent: 20,endIndent: 20,),
@@ -1813,7 +1813,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       }).toList(),
                     ),
                     //周六课程
-                    Column(
+                    GlobalVars.showSatCourse? Column(
                       children: courseSatWeek.asMap().entries.map((entry){
                         int index = entry.key;
                         var item = entry.value;
@@ -1859,9 +1859,9 @@ class _CourseTablePage extends State<CourseTablePage>{
                           ),
                         );
                       }).toList(),
-                    ),
+                    ):SizedBox(),
                     //周日课程
-                    Column(
+                    GlobalVars.showSunCourse? Column(
                       children: courseSunWeek.asMap().entries.map((entry){
                         int index = entry.key;
                         var item = entry.value;
@@ -1907,7 +1907,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                           ),
                         );
                       }).toList(),
-                    ),
+                    ):SizedBox(),
                   ],
                 ),
               ],

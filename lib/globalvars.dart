@@ -34,6 +34,9 @@ class GlobalVars {
   static String fontSize_name = '适中';
   static int darkModeint = 0;//0 - 跟随系统；1 - 始终开启；2 - 始终关闭
   static int themeColor = 0;//对应八种颜色
+  //课表是否显示周六周日
+  static bool showSatCourse = true;
+  static bool showSunCourse = true;
 
   //字体大小相关
   //弹出对话框字体

@@ -106,12 +106,18 @@ class _SettingsPage extends State<SettingsPage>{
     GlobalVars.settingsTotal = [];
     GlobalVars.settingsTotal.remove('fontSize');
     GlobalVars.settingsTotal.remove('DarkMode');
+    GlobalVars.settingsTotal.remove('ThemeColor');
+    GlobalVars.settingsTotal.remove('showSatCourse');
+    GlobalVars.settingsTotal.remove('showSunCourse');
     GlobalVars.settingsTotal.add({
       'fontSize': GlobalVars.fontsizeint,
       'DarkMode': GlobalVars.darkModeint,
-      'ThemeColor': GlobalVars.themeColor
+      'ThemeColor': GlobalVars.themeColor,
+      'showSatCourse': GlobalVars.showSatCourse,
+      'showSunCourse': GlobalVars.showSunCourse,
     });
     if(mounted){
+      setState(() {});
     }
     settingstfile.writeAsString(jsonEncode(GlobalVars.settingsTotal));
   }
@@ -220,6 +226,62 @@ class _SettingsPage extends State<SettingsPage>{
                         title: Text('深色模式',style: TextStyle(fontSize: GlobalVars.generalsettings_darkmode_title),),
                         subtitle: Text((GlobalVars.darkModeint == 0)? '跟随系统':(GlobalVars.darkModeint == 1)? '始终开启':'始终关闭',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_darkmode_subtitle),),
                         onTap: (){switchThemeMode();},
+                      ),
+                    ],
+                  )
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('课表设置',style: TextStyle(fontSize: GlobalVars.generalsettings_divider_title,color:Theme.of(context).colorScheme.primary),),
+                  Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                ),
+                color: Theme.of(context).colorScheme.surfaceDim,
+                shadowColor: Theme.of(context).colorScheme.onPrimary,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        trailing: Switch(
+                          value: GlobalVars.showSatCourse,
+                          onChanged: (value) {
+                            GlobalVars.showSatCourse = value;
+                          },
+                        ),
+                        title: Text('显示周六课程',style: TextStyle(fontSize: GlobalVars.generalsettings_fontsize_title),),
+                        subtitle: Text('是否在 “我的课表” 中显示周六的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
+                        onTap: (){switchTextSize();},
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        trailing: Switch(
+                          value: GlobalVars.showSunCourse,
+                          onChanged: (value) {
+                            GlobalVars.showSunCourse = value;
+                          },
+                        ),
+                        title: Text('显示周日课程',style: TextStyle(fontSize: GlobalVars.generalsettings_fontsize_title),),
+                        subtitle: Text('是否在 “我的课表” 中显示周日的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.generalsettings_fontsize_subtitle),),
+                        onTap: (){switchTextSize();},
                       ),
                     ],
                   )

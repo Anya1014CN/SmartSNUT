@@ -45,12 +45,16 @@ class _LoginPageState extends State<LoginPage>{
         GlobalVars.fontsizeint = GlobalVars.settingsTotal[0]['fontSize']?? 3;
         GlobalVars.darkModeint = GlobalVars.settingsTotal[0]['DarkMode']?? 0;
         GlobalVars.themeColor = GlobalVars.settingsTotal[0]['ThemeColor']?? 1;
+        GlobalVars.showSatCourse = GlobalVars.settingsTotal[0]['showSatCourse']?? true;
+        GlobalVars.showSunCourse = GlobalVars.settingsTotal[0]['showSunCourse']?? true;
       });
     }else{
       setState(() {
         GlobalVars.fontsizeint = 3;
         GlobalVars.darkModeint = 0;
         GlobalVars.themeColor = 1;
+        GlobalVars.showSatCourse = true;
+        GlobalVars.showSunCourse = true;
       });
     }
     setfontsize();
