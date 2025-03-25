@@ -1427,7 +1427,12 @@ class _SettingsPage extends State<SettingsPage>{
       });
     }
     Dio dio = Dio();
-    Response updateServerResponse = await dio.get('https://apis.smartsnut.cn/Generic/UpdateCheck/LatestVersion.json');
+    var updateServerResponse;
+    try{
+      updateServerResponse = await dio.get('https://apis.smartsnut.cn/Generic/UpdateCheck/LatestVersion.json');
+    }catch(e){
+      return;
+    }
     List serverResponseData = updateServerResponse.data;
     if(Platform.isWindows){
       if(serverResponseData[0]['Windows'][0]['LatestVersionInt'] - GlobalVars.versionCodeInt > 0){
@@ -1565,33 +1570,75 @@ class _SettingsPage extends State<SettingsPage>{
     //Windows 版更新代码
       String exePath = Platform.resolvedExecutable;
       String exeDir = File(exePath).parent.path;
-      await dio.download(
-        latestDownloadLink,
-        '$exeDir/Windows_latest.exe',
-        onReceiveProgress: (count, total) {
-          if(mounted){
-            setState(() {
-              downloadProgress = count / total;
-            });
-          }
-        },
-      );
+      try{
+        await dio.download(
+          latestDownloadLink,
+          '$exeDir/Windows_latest.exe',
+          onReceiveProgress: (count, total) {
+            if(mounted){
+              setState(() {
+                downloadProgress = count / total;
+              });
+            }
+          },
+        );
+      }catch(e){
+        if(mounted){
+          Navigator.pop(context);
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              scrollable: true,
+              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+              content: Text('Windows 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {Navigator.pop(context, 'OK');},
+                  child: const Text('确认'),
+                ),
+              ],
+            ),
+          );
+        }
+        return;
+      }
       Process.start('$exeDir/Windows_latest.exe', [], workingDirectory: exeDir);
     }if(Platform.isAndroid){
       //Android 版更新代码
-      await dio.download(
-        latestDownloadLink,
-        '${(await getApplicationDocumentsDirectory()).path}/Android_latest.apk',
-        onReceiveProgress: (count, total) {
-          if(mounted){
-            setState(() {
-              downloadProgress = count / total;
-              downloadedSize = count;
-              totalDownloadSize = total;
-            });
-          }
-        },
-      );
+      try{
+        await dio.download(
+          latestDownloadLink,
+          '${(await getApplicationDocumentsDirectory()).path}/Android_latest.apk',
+          onReceiveProgress: (count, total) {
+            if(mounted){
+              setState(() {
+                downloadProgress = count / total;
+                downloadedSize = count;
+                totalDownloadSize = total;
+              });
+            }
+          },
+        );
+      }catch(e){
+        if(mounted){
+          Navigator.pop(context);
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              scrollable: true,
+              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+              content: Text('Android 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {Navigator.pop(context, 'OK');},
+                  child: const Text('确认'),
+                ),
+              ],
+            ),
+          );
+        }
+        return;
+      }
       OpenFilex.open('${(await getApplicationDocumentsDirectory()).path}/Android_latest.apk');
     }
   }
