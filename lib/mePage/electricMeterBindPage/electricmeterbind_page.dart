@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/AppPage/schoolNetwork/schoolnetwork_page.dart';
 import 'package:smartsnut/globalvars.dart';
-import 'package:smartsnut/mePage/guidePage/emBindGuidePage/embindguide_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //用于存储用户头像路径
 String emavatarpath = '';
@@ -320,7 +320,10 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
                             borderRadius: BorderRadius.circular(25),
                           ),
                         ),
-                        onPressed: isBinding? null:(){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => EMBindGuidePage()));},
+                        onPressed: isBinding? null:(){
+                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/EMBindGuide.html');
+                            launchURL();
+                        },
                         child: Text('如何绑定？',style: TextStyle(fontSize: GlobalVars.embind_binding_title),),
                       ),
                     ),
@@ -557,5 +560,30 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
         GlobalVars.emBinded = false;
       });
     }
+  }
+
+  //打开链接
+  void launchURL() async{
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        scrollable: true,
+        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('取消'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await launchUrl(url);
+              Navigator.pop(context, 'OK');
+            },
+            child: const Text('确认'),
+          ),
+        ],
+      ),
+    );
   }
 }
