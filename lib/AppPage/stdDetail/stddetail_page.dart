@@ -69,7 +69,7 @@ class _stddetailPageState extends State<stdDetailPage>{
                   children: [
                     Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/account.png'):AssetImage('assets/icons/darktheme/account.png'),height: 40,),
                     SizedBox(width: 10,),
-                    Text('学籍信息',style: TextStyle(fontSize: GlobalVars.stddetail_page_title),)
+                    Text('学籍信息',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
                   ],
                 ),
               ),
@@ -89,9 +89,9 @@ class _stddetailPageState extends State<stdDetailPage>{
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(entry.key,style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.stddetail_title_title)),
+                            Text(entry.key,style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.genericTextSmall)),
                             SizedBox(height: 5,),
-                            Text(entry.value,style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.stddetail_content_title)),
+                            Text(entry.value,style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.genericTextSmall)),
                             SizedBox(height: 20,),
                             Divider(height: 5,indent: 20,endIndent: 20,),
                           ],

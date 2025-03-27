@@ -83,7 +83,7 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
                   children: [
                     Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/web.png'):AssetImage('assets/icons/darktheme/web.png'),height: 40,),
                     SizedBox(width: 10,),
-                    Text('网费查询',style: TextStyle(fontSize: GlobalVars.networkquery_page_title),)
+                    Text('网费查询',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
                   ],
                 ),
               ),
@@ -137,8 +137,8 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
                                     context: context,
                                     builder: (BuildContext context) => AlertDialog(
                                       scrollable: true,
-                                      title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                                      content: Text('请您输入账号或登录后再查询',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                                      title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                      content: Text('请您输入账号或登录后再查询',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () => Navigator.pop(context, 'OK'),
@@ -152,7 +152,7 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
                                 networkQuery();
                               }
                             },
-                            child: Text('网费查询',style: TextStyle(fontSize: GlobalVars.networkquery_button_title)),
+                            child: Text('网费查询',style: TextStyle(fontSize: GlobalVars.genericTextMedium)),
                           ),
                         ),
                       ),
@@ -179,7 +179,7 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
                               url = Uri.parse('https://netpay.snut.edu.cn/WebPay/toRecharge?account=${textUsernameController.text}');
                               launchURL();
                             },
-                            child: Text('立即充值',style: TextStyle(fontSize: GlobalVars.networktopup_button_title)),
+                            child: Text('立即充值',style: TextStyle(fontSize: GlobalVars.genericTextMedium)),
                           ),
                         ),
                       ),
@@ -202,15 +202,15 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('账号：${textUsernameController.text}',style: TextStyle(fontSize: GlobalVars.networkdetail_account_title),),
+                          Text('账号：${textUsernameController.text}',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
                           SizedBox(height: 15,),
-                          Text('姓名：$realName',style: TextStyle(fontSize: GlobalVars.networkdetail_realname_title),),
+                          Text('姓名：$realName',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
                           SizedBox(height: 15,),
-                          Text('余额：$balance',style: TextStyle(fontSize: GlobalVars.networkdetail_balance_title),),
+                          Text('余额：$balance',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
                           SizedBox(height: 15,),
-                          Text('状态：$state',style: TextStyle(fontSize: GlobalVars.networkdetail_state_title),),
+                          Text('状态：$state',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
                           SizedBox(height: 15,),
-                          Text('到期时间：$expire',style: TextStyle(fontSize: GlobalVars.networkdetail_expire_title),),
+                          Text('到期时间：$expire',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
                         ],
                       ),
                     ),
@@ -230,10 +230,10 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('服务说明',style: TextStyle(fontSize: GlobalVars.networkquery_hint_title,fontWeight: FontWeight.bold),),
-                        Text('1.校园网用户可使用微信，支付宝，云闪付等多种线上方式对校园网账号充值',style: TextStyle(fontSize: GlobalVars.networkquery_hint_subtitle),),
-                        Text('2.账号框输入校园网上网账号--->点击“网费查询”可查看账号状态及到期日期，点击“立即充值”按页面提示操作并完成支付即可完成对校园网账号的充值',style: TextStyle(fontSize: GlobalVars.networkquery_hint_subtitle),),
-                        Text('3.充值遇到问题，请致电信息化建设与管理处,服务电话:09162641255',style: TextStyle(fontSize: GlobalVars.networkquery_hint_subtitle),),
+                        Text('服务说明',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),),
+                        Text('1.校园网用户可使用微信，支付宝，云闪付等多种线上方式对校园网账号充值',style: TextStyle(fontSize: GlobalVars.genericTextMedium),),
+                        Text('2.账号框输入校园网上网账号--->点击“网费查询”可查看账号状态及到期日期，点击“立即充值”按页面提示操作并完成支付即可完成对校园网账号的充值',style: TextStyle(fontSize: GlobalVars.genericTextMedium),),
+                        Text('3.充值遇到问题，请致电信息化建设与管理处,服务电话:09162641255',style: TextStyle(fontSize: GlobalVars.genericTextMedium),),
                       ],
                     ),
                   ),
@@ -278,8 +278,8 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -318,8 +318,8 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
       showDialog(
         context: context, 
         builder: (BuildContext context)=>AlertDialog(
-          title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-          content: Text('无法查询到信息，请检查您输入的账号是否正确！',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+          title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Text('无法查询到信息，请检查您输入的账号是否正确！',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
         )
       );
@@ -340,8 +340,8 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
       showDialog(
         context: context, 
         builder: (BuildContext context)=>AlertDialog(
-          title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-          content: Text('无法查询到信息，请检查您输入的账号是否正确！',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+          title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Text('无法查询到信息，请检查您输入的账号是否正确！',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
         )
       );
@@ -373,8 +373,8 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),

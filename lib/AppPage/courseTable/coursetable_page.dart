@@ -1248,7 +1248,7 @@ class _CourseTablePage extends State<CourseTablePage>{
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('切换课表时间',style: TextStyle(fontSize: GlobalVars.coursetableswitchterm_title_title),),
+            title: Text('切换课表时间',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),),
             content: Column(
               children: [
                 MenuAnchor(
@@ -1267,7 +1267,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                         readSchoolCalendarInfo();
                         menuYearController.close();
                       },
-                      child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.coursetableswitchterm_year_title),),
+                      child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                     );
                   }).toList(),
                   child: SizedBox(
@@ -1286,7 +1286,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                           menuYearController.open();
                         }
                       },
-                      child: Text('当前学年：$currentYearName',style: TextStyle(fontSize: GlobalVars.coursetableswitchterm_year_title),),
+                      child: Text('当前学年：$currentYearName',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                     ),
                   ),
                 ),
@@ -1295,7 +1295,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                   controller: menuTermController,
                   menuChildren: [
                     MenuItemButton(
-                      child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.coursetableswitchterm_term_title),),
+                      child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                       onPressed: () async {
                         if(mounted){
                           setState(() {
@@ -1309,7 +1309,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       },
                     ),
                     MenuItemButton(
-                      child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.coursetableswitchterm_term_title),),
+                      child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                       onPressed: () async {
                         if(mounted){
                           setState(() {
@@ -1339,7 +1339,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                           menuTermController.open();
                         }
                       },
-                      child: Text('当前学期：$currentTermName',style: TextStyle(fontSize: GlobalVars.coursetableswitchterm_term_title),),
+                      child: Text('当前学期：$currentTermName',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                     ),
                   ),
                 ),
@@ -1390,7 +1390,7 @@ class _CourseTablePage extends State<CourseTablePage>{
             icon: Icon(Icons.date_range),
           )
         ],
-        title: Text('我的课表',style: TextStyle(fontSize: GlobalVars.coursetable_page_title),),
+        title: Text('我的课表',style: TextStyle(fontSize: GlobalVars.genericPageTitleSmall),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
         leading: IconButton(
@@ -1409,14 +1409,14 @@ class _CourseTablePage extends State<CourseTablePage>{
               child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,),
             ),
             SizedBox(width: 10,),
-            Text('正在刷新',style: TextStyle(fontSize: GlobalVars.refreshcoursetable_button_title),)
+            Text('正在刷新',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
           ],
         ):
         Row(
           children: [
             Icon(Icons.refresh),
             SizedBox(width: 10,),
-            Text('刷新课表',style: TextStyle(fontSize: GlobalVars.refreshcoursetable_button_title),)
+            Text('刷新课表',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
           ],
         ),
       ),
@@ -1445,7 +1445,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                     },
                     icon: Icon(Icons.arrow_back),
                   ),
-                  termEnded? Text('第 $currentWeekInt 周\n（本学期已结束）',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetableweek_text_title),):Text('第 $currentWeekInt 周',style: TextStyle(fontSize: GlobalVars.coursetableweek_text_title),),
+                  termEnded? Text('第 $currentWeekInt 周\n（本学期已结束）',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericSwitchContainerTitle),):Text('第 $currentWeekInt 周',style: TextStyle(fontSize: GlobalVars.genericSwitchContainerTitle),),
                   IconButton(
                     onPressed: (currentWeekInt == termWeeks)? null:(){
                       if(mounted){
@@ -1474,8 +1474,8 @@ class _CourseTablePage extends State<CourseTablePage>{
                 ),
                 child: ListTile(
                   leading: Icon(Icons.error),
-                  title: Text('暂无 课表 信息',style: TextStyle(fontSize: GlobalVars.nocoursetable_hint_title,fontWeight: FontWeight.bold),),
-                  subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.nocoursetable_hint_subtitle),),
+                  title: Text('暂无 课表 信息',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                  subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                 ),
               ),
             ),
@@ -1490,14 +1490,14 @@ class _CourseTablePage extends State<CourseTablePage>{
                   children: [
                     SizedBox(
                       width: 50,
-                      child: Text('节\n次',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetable_tablehead_title),),
+                      child: Text('节\n次',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                     ),
                     Card(
                       color: (currentDOW == 1)? Theme.of(context).colorScheme.surfaceTint:Theme.of(context).colorScheme.surfaceContainerHigh, 
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('一',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 1)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.coursetable_tablehead_title),),
+                        child: Text('一',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 1)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1505,7 +1505,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('二',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 2)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.coursetable_tablehead_title),),
+                        child: Text('二',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 2)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1513,7 +1513,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('三',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 3)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.coursetable_tablehead_title),),
+                        child: Text('三',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 3)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1521,7 +1521,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('四',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 4)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.coursetable_tablehead_title),),
+                        child: Text('四',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 4)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1529,7 +1529,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('五',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 5)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.coursetable_tablehead_title),),
+                        child: Text('五',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 5)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     GlobalVars.showSatCourse? Card(
@@ -1537,7 +1537,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('六',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 6)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.coursetable_tablehead_title),),
+                        child: Text('六',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 6)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ):SizedBox(),
                     GlobalVars.showSunCourse? Card(
@@ -1545,7 +1545,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('日',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 7)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.coursetable_tablehead_title),),
+                        child: Text('日',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 7)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ):SizedBox(),
                   ],
@@ -1560,52 +1560,52 @@ class _CourseTablePage extends State<CourseTablePage>{
                         SizedBox(
                           width: 50,
                           height: tableHeight,
-                          child: Center(child: Text('1',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetable_tablehead_title),),),
+                          child: Center(child: Text('1',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),),
                         ),
                         SizedBox(
                           width: 50,
                           height: tableHeight,
-                          child: Center(child: Text('2',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetable_tablehead_title),),),
+                          child: Center(child: Text('2',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),),
                         ),
                         SizedBox(
                           width: 50,
                           height: tableHeight,
-                          child: Center(child: Text('3',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetable_tablehead_title),),),
+                          child: Center(child: Text('3',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),),
                         ),
                         SizedBox(
                           width: 50,
                           height: tableHeight,
-                          child: Center(child: Text('4',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetable_tablehead_title),),),
+                          child: Center(child: Text('4',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),),
                         ),
                         SizedBox(
                           width: 50,
                           height: tableHeight,
-                          child: Center(child: Text('5',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetable_tablehead_title),),),
+                          child: Center(child: Text('5',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),),
                         ),
                         SizedBox(
                           width: 50,
                           height: tableHeight,
-                          child: Center(child: Text('6',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetable_tablehead_title),),),
+                          child: Center(child: Text('6',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),),
                         ),
                         SizedBox(
                           width: 50,
                           height: tableHeight,
-                          child: Center(child: Text('7',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetable_tablehead_title),),),
+                          child: Center(child: Text('7',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),),
                         ),
                         SizedBox(
                           width: 50,
                           height: tableHeight,
-                          child: Center(child: Text('8',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetable_tablehead_title),),),
+                          child: Center(child: Text('8',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),),
                         ),
                         SizedBox(
                           width: 50,
                           height: tableHeight,
-                          child: Center(child: Text('9',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetable_tablehead_title),),),
+                          child: Center(child: Text('9',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),),
                         ),
                         SizedBox(
                           width: 50,
                           height: tableHeight,
-                          child: Center(child: Text('10',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.coursetable_tablehead_title),),),
+                          child: Center(child: Text('10',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),),
                         ),
                       ],
                     ),
@@ -1646,9 +1646,9 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1694,9 +1694,9 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1742,9 +1742,9 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1790,9 +1790,9 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1838,9 +1838,9 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1886,9 +1886,9 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1934,9 +1934,9 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.coursetable_coursename_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.coursetable_courselocation_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -1987,8 +1987,8 @@ class _CourseTablePage extends State<CourseTablePage>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -2050,8 +2050,8 @@ class _CourseTablePage extends State<CourseTablePage>{
         context: context,
         builder: (BuildContext context) => AlertDialog(
           scrollable: true,
-          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-          content: Text('登录失败，账户不存在\n您的账户是否因毕业等原因被校方注销？',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Text('登录失败，账户不存在\n您的账户是否因毕业等原因被校方注销？',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'OK'),
@@ -2071,8 +2071,8 @@ class _CourseTablePage extends State<CourseTablePage>{
         context: context,
         builder: (BuildContext context) => AlertDialog(
           scrollable: true,
-          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-          content: Text('登录失败，密码错误\n您是否在学校官网修改过密码？\n如果是，请退出智慧陕理并重新登录',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Text('登录失败，密码错误\n您是否在学校官网修改过密码？\n如果是，请退出智慧陕理并重新登录',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'OK'),
@@ -2101,8 +2101,8 @@ class _CourseTablePage extends State<CourseTablePage>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -2167,8 +2167,8 @@ class _CourseTablePage extends State<CourseTablePage>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -2242,8 +2242,8 @@ class _CourseTablePage extends State<CourseTablePage>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -2359,8 +2359,8 @@ class _CourseTablePage extends State<CourseTablePage>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -2438,7 +2438,7 @@ class _CourseTablePage extends State<CourseTablePage>{
             child: ListView(
               children: [
                 Center(
-                  child: Text('课程详情',style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_title),),
+                  child: Text('课程详情',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
                 ),
                 SizedBox(height: 5,),
                 Divider(height: 5,indent: 20,endIndent: 20,),
@@ -2446,32 +2446,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                   shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(21),
                   ),
-                  title: Text(sheetcourseName,style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursecontent),),
-                  subtitle: Text('课程名称',style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursetitle),),
+                  title: Text(sheetcourseName,style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                  subtitle: Text('课程名称',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                 ),
                 Divider(height: 5,indent: 20,endIndent: 20,),
                 ListTile(
                   shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(21),
                   ),
-                  title: Text("$sheetcourseWeeks 周",style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursecontent),),
-                  subtitle: Text('上课周次',style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursetitle),),
+                  title: Text("$sheetcourseWeeks 周",style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                  subtitle: Text('上课周次',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                 ),
                 Divider(height: 5,indent: 20,endIndent: 20,),
                 ListTile(
                   shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(21),
                   ),
-                  title: Text(sheetcourseTeacher,style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursecontent),),
-                  subtitle: Text('课程教师',style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursetitle),),
+                  title: Text(sheetcourseTeacher,style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                  subtitle: Text('课程教师',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                 ),
                 Divider(height: 5,indent: 20,endIndent: 20,),
                 ListTile(
                   shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(21),
                   ),
-                  title: Text((sheetcourseLocation == '')? '无':sheetcourseLocation,style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursecontent),),
-                  subtitle: Text('上课地点',style: TextStyle(fontSize: GlobalVars.coursetable_coursedetailsheet_coursetitle),),
+                  title: Text((sheetcourseLocation == '')? '无':sheetcourseLocation,style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                  subtitle: Text('上课地点',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                 ),
               ],
             ),

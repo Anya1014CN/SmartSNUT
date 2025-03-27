@@ -57,14 +57,14 @@ class _AppPageState extends State<AppPage>{
       children: [
         Container(
           padding: EdgeInsets.fromLTRB(10, 50, 0, 30),
-          child: Text('$greeting，${GlobalVars.realName}',style: TextStyle(fontWeight: FontWeight.w300,fontSize: GlobalVars.apppagegreeting_text_title),),
+          child: Text('$greeting，${GlobalVars.realName}',style: TextStyle(fontWeight: FontWeight.w300,fontSize: GlobalVars.genericGreetingTitle),),
         ),
         Container(
           padding: EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('教务功能',style: TextStyle(fontSize: GlobalVars.jwgl_divider_title,color: Theme.of(context).colorScheme.primary),),
+              Text('教务功能',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
               Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
             ],
           ),
@@ -97,7 +97,7 @@ class _AppPageState extends State<AppPage>{
                             children: [
                               Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/schedule.png'):AssetImage('assets/icons/darktheme/schedule.png'),height: 36,),
                               SizedBox(width: 10,),
-                              Expanded(child: Text('我的课表',style: TextStyle(fontSize: GlobalVars.coursetable_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                              Expanded(child: Text('我的课表',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                             ],
                           ),
                         ),
@@ -121,7 +121,7 @@ class _AppPageState extends State<AppPage>{
                             children: [
                               Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/account.png'):AssetImage('assets/icons/darktheme/account.png'),height: 36,),
                               SizedBox(width: 10,),
-                              Expanded(child: Text('学籍信息',style: TextStyle(fontSize: GlobalVars.stddetail_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                              Expanded(child: Text('学籍信息',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                             ],
                           ),
                         ),
@@ -151,7 +151,7 @@ class _AppPageState extends State<AppPage>{
                               children: [
                                 Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/exam.png'):AssetImage('assets/icons/darktheme/exam.png'),height: 36,),
                                 SizedBox(width: 10,),
-                                Expanded(child: Text('我的考试',style: TextStyle(fontSize: GlobalVars.stdexam_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                                Expanded(child: Text('我的考试',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                               ],
                             ),
                           ),
@@ -175,7 +175,7 @@ class _AppPageState extends State<AppPage>{
                               children: [
                                 Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/grade.png'):AssetImage('assets/icons/darktheme/grade.png'),height: 36,),
                                 SizedBox(width: 10,),
-                                Expanded(child: Text('我的成绩',style: TextStyle(fontSize: GlobalVars.stdgrade_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                                Expanded(child: Text('我的成绩',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                             ],
                           ),
                         ),
@@ -205,7 +205,7 @@ class _AppPageState extends State<AppPage>{
                             children: [
                               Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/calculator.png'):AssetImage('assets/icons/darktheme/calculator.png'),height: 36,),
                               SizedBox(width: 10,),
-                              Expanded(child: Text('绩点计算器',style: TextStyle(fontSize: GlobalVars.coursetable_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                              Expanded(child: Text('绩点计算器',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                             ],
                           ),
                         ),
@@ -229,7 +229,7 @@ class _AppPageState extends State<AppPage>{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('后勤功能',style: TextStyle(fontSize: GlobalVars.hqb_divider_title,color: Theme.of(context).colorScheme.primary),),
+              Text('后勤功能',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
               Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
             ],
           ),
@@ -262,7 +262,7 @@ class _AppPageState extends State<AppPage>{
                             children: [
                               Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/web.png'):AssetImage('assets/icons/darktheme/web.png'),height: 36,),
                               SizedBox(width: 10,),
-                              Expanded(child: Text('网费查询',style: TextStyle(fontSize: GlobalVars.networkque_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                              Expanded(child: Text('网费查询',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                             ],
                           ),
                         ),
@@ -278,8 +278,8 @@ class _AppPageState extends State<AppPage>{
                                   showDialog<String>(
                                   context: context,
                                   builder: (BuildContext context) => AlertDialog(
-                                    title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                                    content: Text('您还没有绑定电费账号，\n请先前往 “我的 -> 解/绑电费账号” 绑定后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                                    title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                    content: Text('您还没有绑定电费账号，\n请先前往 “我的 -> 解/绑电费账号” 绑定后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () => Navigator.pop(context, 'OK'),
@@ -305,7 +305,7 @@ class _AppPageState extends State<AppPage>{
                             children: [
                               Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/electricity.png'):AssetImage('assets/icons/darktheme/electricity.png'),height: 36,),
                               SizedBox(width: 10,),
-                              Expanded(child: Text('电费查询',style: TextStyle(fontSize: GlobalVars.emque_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                              Expanded(child: Text('电费查询',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                             ],
                           ),
                         ),
@@ -322,7 +322,7 @@ class _AppPageState extends State<AppPage>{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('校内链接',style: TextStyle(fontSize: GlobalVars.external_divider_title,color: Theme.of(context).colorScheme.primary),),
+              Text('校内链接',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
               Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
             ],
           ),
@@ -358,7 +358,7 @@ class _AppPageState extends State<AppPage>{
                             children: [
                               Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/library.png'):AssetImage('assets/icons/darktheme/library.png'),height: 36,),
                               SizedBox(width: 10,),
-                              Expanded(child: Text('图书检索',style: TextStyle(fontSize: GlobalVars.library_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                              Expanded(child: Text('图书检索',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                             ],
                           ),
                         ),
@@ -385,7 +385,7 @@ class _AppPageState extends State<AppPage>{
                             children: [
                               Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/face.png'):AssetImage('assets/icons/darktheme/face.png'),height: 36,),
                               SizedBox(width: 10,),
-                              Expanded(child: Text('人脸信息采集系统',style: TextStyle(fontSize: GlobalVars.face_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                              Expanded(child: Text('人脸信息采集系统',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                             ],
                           ),
                         ),
@@ -418,7 +418,7 @@ class _AppPageState extends State<AppPage>{
                               children: [
                                 Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/vpn.png'):AssetImage('assets/icons/darktheme/vpn.png'),height: 36,),
                                 SizedBox(width: 10,),
-                                Expanded(child: Text('WebVPN',style: TextStyle(fontSize: GlobalVars.webvpn_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                                Expanded(child: Text('WebVPN',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                               ],
                             ),
                           ),
@@ -445,7 +445,7 @@ class _AppPageState extends State<AppPage>{
                               children: [
                                 Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/museum.png'):AssetImage('assets/icons/darktheme/museum.png'),height: 36,),
                                 SizedBox(width: 10,),
-                                Expanded(child: Text('一网通办',style: TextStyle(fontSize: GlobalVars.newhall_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                                Expanded(child: Text('一网通办',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                             ],
                           ),
                         ),
@@ -485,8 +485,8 @@ class _AppPageState extends State<AppPage>{
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),

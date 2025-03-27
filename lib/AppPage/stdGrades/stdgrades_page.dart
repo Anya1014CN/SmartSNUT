@@ -194,7 +194,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('切换成绩时间',style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_title_title),),
+            title: Text('切换成绩时间',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),),
             content: Column(
               children: [
                 MenuAnchor(
@@ -213,7 +213,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
                         readSemesterInfo();
                         menuYearController.close();
                       },
-                      child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_year_title),),
+                      child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                     );
                   }).toList(),
                   child: SizedBox(
@@ -232,7 +232,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
                           menuYearController.open();
                         }
                       },
-                      child: Text('学年：$currentYearName', style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_year_title),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                      child: Text('学年：$currentYearName', style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                     ),
                   ),
                 ),
@@ -241,7 +241,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
                   controller: menuTermController,
                   menuChildren: [
                     MenuItemButton(
-                      child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_term_title),),
+                      child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                       onPressed: () async {
                         if(mounted){
                           setState(() {
@@ -255,7 +255,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
                       },
                     ),
                     MenuItemButton(
-                      child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_term_title),),
+                      child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                       onPressed: () async {
                         if(mounted){
                           setState(() {
@@ -285,7 +285,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
                           menuTermController.open();
                         }
                       },
-                      child: Text('学期：$currentTermName', style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_term_title),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                      child: Text('学期：$currentTermName', style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                     ),
                   ),
                 ),
@@ -325,14 +325,14 @@ class _StdGradesPageState extends State<StatefulWidget>{
               child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,),
             ),
             SizedBox(width: 10,),
-            Text('正在刷新',style: TextStyle(fontSize: GlobalVars.refreshstdgrade_button_title),)
+            Text('正在刷新',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
           ],
         ):
         Row(
           children: [
             Icon(Icons.refresh),
             SizedBox(width: 10,),
-            Text('刷新数据',style: TextStyle(fontSize: GlobalVars.refreshstdgrade_button_title),)
+            Text('刷新数据',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
           ],
         ),
       ),
@@ -382,7 +382,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
                   children: [
                     Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/grade.png'):AssetImage('assets/icons/darktheme/grade.png'),height: 40,),
                     SizedBox(width: 10,),
-                    Text('我的成绩',style: TextStyle(fontSize: GlobalVars.stdgrade_page_title),)
+                    Text('我的成绩',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
                   ],
                 ),
               ),
@@ -398,8 +398,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
                     ),
                     child: ListTile(
                       leading: Icon(Icons.error),
-                      title: Text('暂无 成绩 信息',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_title,fontWeight: FontWeight.bold),),
-                      subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_subtitle),),
+                      title: Text('暂无 成绩 信息',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                      subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                     ),
                   ),
                 ),
@@ -420,14 +420,14 @@ class _StdGradesPageState extends State<StatefulWidget>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           //Text('序号：${i + 1}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('课程名称：${grades['CourseName']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursename_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('课程名称：${grades['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                           SizedBox(height: 10,),
-                          Text('学分：${grades['CourseCredit']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursecredit_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('总评成绩：${grades['CourseGradeTotal']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursegradetotal_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('最终：${grades['CourseGradeFinal']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursegradefinal_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('绩点：${grades['CourseGradeGPA']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursegradegpa_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('学分：${grades['CourseCredit']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('总评成绩：${grades['CourseGradeTotal']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('最终：${grades['CourseGradeFinal']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('绩点：${grades['CourseGradeGPA']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                           SizedBox(height: 10,),
-                          Text('课程类别：${grades['CourseType']}',style: TextStyle(fontSize: GlobalVars.stdgrade_coursetype_title),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('课程类别：${grades['CourseType']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                           SizedBox(height: 20,),
                           Divider(height: 5,indent: 20,endIndent: 20,),
                         ],
@@ -476,8 +476,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -539,8 +539,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('登录失败，账户不存在\n您的账户是否因毕业等原因被校方注销？',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('登录失败，账户不存在\n您的账户是否因毕业等原因被校方注销？',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -560,8 +560,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('登录失败，密码错误\n您是否在学校官网修改过密码？\n如果是，请退出智慧陕理并重新登录',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('登录失败，密码错误\n您是否在学校官网修改过密码？\n如果是，请退出智慧陕理并重新登录',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -595,8 +595,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -633,8 +633,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -686,8 +686,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -754,8 +754,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('当前学期暂无考试成绩',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('当前学期暂无考试成绩',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),

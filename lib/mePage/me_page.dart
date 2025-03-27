@@ -38,21 +38,21 @@ class _MePageState extends State<MePage>{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${GlobalVars.realName}，',style: TextStyle(fontSize: GlobalVars.person_text_title,fontWeight: FontWeight.w300),),
-              Text('这是你在陕理工的',style: TextStyle(fontSize: GlobalVars.person_text_title,fontWeight: FontWeight.w300),),
+              Text('${GlobalVars.realName}，',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
+              Text('这是你在陕理工的',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
               Row(
                 children: [
-                  Text('第 ',style: TextStyle(fontSize: GlobalVars.person_text_title,fontWeight: FontWeight.w300),),
-                  Text('${GlobalVars.today.difference(DateTime.parse(GlobalVars.enrollTime)).inDays}',style: TextStyle(fontSize: GlobalVars.personday_text_title,fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary),),
-                  Text(' 天。',style: TextStyle(fontSize: GlobalVars.person_text_title,fontWeight: FontWeight.w300),),
+                  Text('第 ',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
+                  Text('${GlobalVars.today.difference(DateTime.parse(GlobalVars.enrollTime)).inDays}',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle + 5,fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary),),
+                  Text(' 天。',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
                 ],
               ),
-              Text('距离毕业还',style: TextStyle(fontSize: GlobalVars.person_text_title,fontWeight: FontWeight.w300),),
+              Text('距离毕业还',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
               Row(
                 children: [
-                  Text('有 ',style: TextStyle(fontSize: GlobalVars.person_text_title,fontWeight: FontWeight.w300),),
-                  Text('${DateTime.parse(GlobalVars.graduationTime).difference(GlobalVars.today).inDays}',style: TextStyle(fontSize: GlobalVars.personday_text_title,fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.error),),
-                  Text(' 天。',style: TextStyle(fontSize: GlobalVars.person_text_title,fontWeight: FontWeight.w300),),
+                  Text('有 ',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
+                  Text('${DateTime.parse(GlobalVars.graduationTime).difference(GlobalVars.today).inDays}',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle + 5,fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.error),),
+                  Text(' 天。',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
                 ],
               ),
             ],
@@ -75,7 +75,7 @@ class _MePageState extends State<MePage>{
                 children: [
                   Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/bulb.png'):AssetImage('assets/icons/darktheme/bulb.png'),height: 36,),
                   SizedBox(height: 10,),
-                  Text(GlobalVars.hint,style: TextStyle(fontSize: GlobalVars.hint_text_title,fontWeight: FontWeight.bold,),)
+                  Text(GlobalVars.hint,style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold,),)
                 ],
               ),
             ),
@@ -113,7 +113,7 @@ class _MePageState extends State<MePage>{
                               SizedBox(height: 10,),
                               Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/electricitybind.png'):AssetImage('assets/icons/darktheme/electricitybind.png'),height: 50,),
                               SizedBox(height: 5,),
-                              Expanded(child: Text('解/绑电费账号',style: TextStyle(fontSize: GlobalVars.embind_button_title),overflow: TextOverflow.ellipsis,),)
+                              Expanded(child: Text('解/绑电费账号',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,),)
                             ],
                           ),
                         ),
@@ -146,7 +146,7 @@ class _MePageState extends State<MePage>{
                               SizedBox(height: 10,),
                               Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/settings.png'):AssetImage('assets/icons/darktheme/settings.png'),height: 50,),
                               SizedBox(height: 5,),
-                              Expanded(child: Text('应用设置',style: TextStyle(fontSize: GlobalVars.settings_button_title),overflow: TextOverflow.ellipsis,),)
+                              Expanded(child: Text('应用设置',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,),)
                             ],
                           ),
                         ),
@@ -183,7 +183,7 @@ class _MePageState extends State<MePage>{
                               SizedBox(height: 10,),
                               Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/guide.png'):AssetImage('assets/icons/darktheme/guide.png'),height: 50,),
                               SizedBox(height: 5,),
-                              Expanded(child: Text('教程&说明',style: TextStyle(fontSize: GlobalVars.guide_button_title),overflow: TextOverflow.ellipsis,),)
+                              Expanded(child: Text('教程&说明',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,),)
                             ],
                           ),
                         ),
@@ -213,8 +213,8 @@ class _MePageState extends State<MePage>{
                             showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
-                              title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                              content: Text('您确定要退出登录吗？\n退出登录同时会解绑电费账号、清除字体大小、颜色模式等设置',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                              title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                              content: Text('您确定要退出登录吗？\n退出登录同时会解绑电费账号、清除字体大小、颜色模式等设置',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -237,7 +237,7 @@ class _MePageState extends State<MePage>{
                               SizedBox(height: 10,),
                               Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/exit.png'):AssetImage('assets/icons/darktheme/exit.png'),height: 50,),
                               SizedBox(height: 5,),
-                              Expanded(child: Text('退出登录',style: TextStyle(fontSize: GlobalVars.logout_button_title),overflow: TextOverflow.ellipsis,),)
+                              Expanded(child: Text('退出登录',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,),)
                             ],
                           ),
                         ),

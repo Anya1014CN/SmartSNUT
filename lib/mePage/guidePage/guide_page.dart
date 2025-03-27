@@ -80,7 +80,7 @@ class _GuidePageState extends State<Guidepage>{
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('使用说明',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color:Theme.of(context).colorScheme.primary),),
+                    Text('使用说明',style: TextStyle(fontSize: GlobalVars.dividerTitle,color:Theme.of(context).colorScheme.primary),),
                     Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                   ],
                 ),
@@ -101,7 +101,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('电费账号绑定教程',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('电费账号绑定教程',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('https://smartsnut.cn/Docs/UserManual/EMBindGuide.html');
@@ -118,7 +118,7 @@ class _GuidePageState extends State<Guidepage>{
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('功能说明',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color:Theme.of(context).colorScheme.primary),),
+                    Text('功能说明',style: TextStyle(fontSize: GlobalVars.dividerTitle,color:Theme.of(context).colorScheme.primary),),
                     Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                   ],
                 ),
@@ -139,7 +139,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('我的课表',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('我的课表',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/CourseTableForStd.html');
@@ -151,7 +151,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('学籍信息',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('学籍信息',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdDetail.html');
@@ -163,7 +163,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('我的考试',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('我的考试',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdExam.html');
@@ -175,7 +175,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('我的成绩',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('我的成绩',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdExam.html');
@@ -187,7 +187,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('绩点计算器',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('绩点计算器',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/GPACalculator.html');
@@ -199,7 +199,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('网费查询',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('网费查询',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/HouQin/SchoolNetworkQuery.html');
@@ -211,7 +211,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('电费查询',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('电费查询',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/HouQin/ElectricMeterQuery.html');
@@ -223,7 +223,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('图书检索',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('图书检索',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/Library.html');
@@ -235,7 +235,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('人脸信息采集系统',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('人脸信息采集系统',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/Face.html');
@@ -247,7 +247,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('WebVPN',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('WebVPN',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/WebVPN.html');
@@ -259,7 +259,7 @@ class _GuidePageState extends State<Guidepage>{
                           shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                           ),
-                          title: Text('一网通办',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                          title: Text('一网通办',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                           trailing: Icon(Icons.chevron_right),
                           onTap: (){
                             url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/NewHall.html');
@@ -284,8 +284,8 @@ class _GuidePageState extends State<Guidepage>{
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),

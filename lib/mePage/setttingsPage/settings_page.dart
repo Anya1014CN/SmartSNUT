@@ -174,7 +174,7 @@ class _SettingsPage extends State<SettingsPage>{
                 children: [
                   Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/settings.png'):AssetImage('assets/icons/darktheme/settings.png'),height: 40,),
                   SizedBox(width: 10,),
-                  Text('应用设置',style: TextStyle(fontSize: GlobalVars.settings_page_title),)
+                  Text('应用设置',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
                 ],
               ),
             ),
@@ -183,7 +183,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('通用设置',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color:Theme.of(context).colorScheme.primary),),
+                  Text('通用设置',style: TextStyle(fontSize: GlobalVars.dividerTitle,color:Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -205,8 +205,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('字体大小',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text(GlobalVars.fontSize_name,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('字体大小',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text(GlobalVars.fontSize_name,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){switchTextSize();},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -215,8 +215,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('主题颜色',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text((GlobalVars.themeColor == 0)? '琥珀色':(GlobalVars.themeColor == 1)? '深橙色':(GlobalVars.themeColor == 2)? '曼迪红':(GlobalVars.themeColor == 3)? '深紫色':(GlobalVars.themeColor == 4)? '野鸭绿':(GlobalVars.themeColor == 5)? '粉红色':(GlobalVars.themeColor == 6)? '咖啡色':'鲨鱼灰',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('主题颜色',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text((GlobalVars.themeColor == 0)? '琥珀色':(GlobalVars.themeColor == 1)? '深橙色':(GlobalVars.themeColor == 2)? '曼迪红':(GlobalVars.themeColor == 3)? '深紫色':(GlobalVars.themeColor == 4)? '野鸭绿':(GlobalVars.themeColor == 5)? '粉红色':(GlobalVars.themeColor == 6)? '咖啡色':'鲨鱼灰',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){switchThemeColor();},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -225,8 +225,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('深色模式',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text((GlobalVars.darkModeint == 0)? '跟随系统':(GlobalVars.darkModeint == 1)? '始终开启':'始终关闭',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('深色模式',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text((GlobalVars.darkModeint == 0)? '跟随系统':(GlobalVars.darkModeint == 1)? '始终开启':'始终关闭',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){switchThemeMode();},
                       ),
                     ],
@@ -239,7 +239,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('课表设置',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color:Theme.of(context).colorScheme.primary),),
+                  Text('课表设置',style: TextStyle(fontSize: GlobalVars.dividerTitle,color:Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -267,8 +267,8 @@ class _SettingsPage extends State<SettingsPage>{
                             saveSettings();
                           },
                         ),
-                        title: Text('显示周六课程',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text('在 “我的课表” 中显示周六的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('显示周六课程',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text('在 “我的课表” 中显示周六的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
@@ -282,8 +282,8 @@ class _SettingsPage extends State<SettingsPage>{
                             saveSettings();
                           },
                         ),
-                        title: Text('显示周日课程',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text('在 “我的课表” 中显示周日的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('显示周日课程',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text('在 “我的课表” 中显示周日的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
@@ -291,8 +291,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('课程色系',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text((GlobalVars.courseBlockColorsInt == 0)? '莫兰迪色系':'马卡龙色系',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('课程色系',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text((GlobalVars.courseBlockColorsInt == 0)? '莫兰迪色系':'马卡龙色系',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){switchCourseBlockColor();},
                       ),
                     ],
@@ -305,7 +305,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('账号设置',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color: Theme.of(context).colorScheme.primary),),
+                  Text('账号设置',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -327,8 +327,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage())).then((value) => emBindRead());},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -337,14 +337,14 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('退出登录',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text(GlobalVars.userName,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('退出登录',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text(GlobalVars.userName,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){
                           showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                            title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                            content: Text('您确定要退出登录吗？\n退出登录同时会解绑电费账号、清除字体大小、深色模式等设置',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                            title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                            content: Text('您确定要退出登录吗？\n退出登录同时会解绑电费账号、清除字体大小、深色模式等设置',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -372,7 +372,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('关于智慧陕理',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color:Theme.of(context).colorScheme.primary),),
+                  Text('关于智慧陕理',style: TextStyle(fontSize: GlobalVars.dividerTitle,color:Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -394,8 +394,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: isCheckingUpdate? CircularProgressIndicator():Icon(Icons.chevron_right),
-                        title: Text(isCheckingUpdate? '正在检查更新，请稍后...':'检查更新',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text(GlobalVars.versionCodeString,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text(isCheckingUpdate? '正在检查更新，请稍后...':'检查更新',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text(GlobalVars.versionCodeString,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: isCheckingUpdate? null:(){checkUpdate();},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -404,15 +404,15 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('更新日志',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text('版本更新日志',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('更新日志',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text('版本更新日志',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: () async {
                           String changelogContent = await rootBundle.loadString('assets/Changelog.txt');
                           showDialog<String>(
                             context: context,
                             builder:(BuildContext context) => AlertDialog(
-                              title: Text('历史版本更新日志',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                              content: Text(changelogContent,style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                              title: Text('历史版本更新日志',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                              content: Text(changelogContent,style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                               scrollable: true,
                               actions: <Widget>[
                                 TextButton(
@@ -430,8 +430,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('官方网站',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text('https://SmartSNUT.cn',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('官方网站',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text('https://SmartSNUT.cn',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: () {
                           url = Uri.parse('https://SmartSNUT.cn');
                           launchURL();
@@ -443,8 +443,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('Github 开源地址',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text('https://github.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('Github 开源地址',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text('https://github.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: () {
                           url = Uri.parse('https://github.com/Anya1014CN/SmartSNUT');
                           launchURL();
@@ -456,8 +456,8 @@ class _SettingsPage extends State<SettingsPage>{
                         borderRadius: BorderRadius.circular(21),
                         ),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('Gitee 开源地址',style: TextStyle(fontSize: GlobalVars.settingsItemTitle),),
-                        subtitle: Text('https://gitee.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('Gitee 开源地址',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text('https://gitee.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: () {
                           url = Uri.parse('https://gitee.com/Anya1014CN/SmartSNUT');
                           launchURL();
@@ -473,7 +473,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('声明',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color: Theme.of(context).colorScheme.primary),),
+                  Text('声明',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -494,15 +494,15 @@ class _SettingsPage extends State<SettingsPage>{
                         padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                         child: Column(
                           children: [
-                            Text('智慧陕理使用的所有图标/徽标均来自 Material Design 3 Icons 以及 icons8.com',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                            Text('智慧陕理使用的所有图标/徽标均来自 Material Design 3 Icons 以及 icons8.com',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                             SizedBox(height: 10,),
-                            Text('智慧陕理所使用的字体为 MiSans（https://hyperos.mi.com/font/zh/）',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                            Text('智慧陕理所使用的字体为 MiSans（https://hyperos.mi.com/font/zh/）',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                             SizedBox(height: 10,),
-                            Text('智慧陕理**并非**陕西理工大学官方 APP',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                            Text('智慧陕理**并非**陕西理工大学官方 APP',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                             SizedBox(height: 10,),
-                            Text('智慧陕理 APP 与陕西理工大学**无**任何从属关系',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                            Text('智慧陕理 APP 与陕西理工大学**无**任何从属关系',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                             SizedBox(height: 10,),
-                            Text('智慧陕理**从未**有意标榜或冒充是陕西理工大学官方APP',style: TextStyle(fontSize: GlobalVars.disclamier_title_title),),
+                            Text('智慧陕理**从未**有意标榜或冒充是陕西理工大学官方APP',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                           ],
                         ),
                       ),
@@ -516,7 +516,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('开放源代码许可',style: TextStyle(fontSize: GlobalVars.settingsDividerText,color: Theme.of(context).colorScheme.primary),),
+                  Text('开放源代码许可',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -537,8 +537,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('cookie_jar',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A cookie manager for http requests in Dart, by which you can deal with the complex cookie policy and persist cookies easily.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('cookie_jar',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A cookie manager for http requests in Dart, by which you can deal with the complex cookie policy and persist cookies easily.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'cookie_jar';
@@ -551,8 +551,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('crypto',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A set of cryptographic hashing functions for Dart.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('crypto',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A set of cryptographic hashing functions for Dart.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'crypto';
@@ -565,8 +565,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('dart-lang/sdk',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('The Dart SDK, including the VM, JS and Wasm compilers, analysis, core libraries, and more.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('dart-lang/sdk',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('The Dart SDK, including the VM, JS and Wasm compilers, analysis, core libraries, and more.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'dart-lang/sdk';
@@ -579,8 +579,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('dio_cookie_manager',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A cookie manager combines cookie_jar and dio, based on the interceptor algorithm.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('dio_cookie_manager',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A cookie manager combines cookie_jar and dio, based on the interceptor algorithm.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'dio_cookie_manager';
@@ -593,8 +593,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('dio',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A powerful HTTP networking package for Dart/Flutter, supports Global configuration, Interceptors, FormData, Request cancellation, File uploading/downloading, Timeout, Custom adapters, Transformers, etc.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('dio',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A powerful HTTP networking package for Dart/Flutter, supports Global configuration, Interceptors, FormData, Request cancellation, File uploading/downloading, Timeout, Custom adapters, Transformers, etc.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'dio';
@@ -607,8 +607,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('flex_color_scheme',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A Flutter package to make and use beautiful color scheme based themes.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('flex_color_scheme',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Flutter package to make and use beautiful color scheme based themes.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'flex_color_scheme';
@@ -621,8 +621,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('flutter',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('Flutter makes it easy and fast to build beautiful apps for mobile and beyond',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('flutter',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('Flutter makes it easy and fast to build beautiful apps for mobile and beyond',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'flutter';
@@ -635,8 +635,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('html',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A Dart implementation of an HTML5 parser.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('html',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Dart implementation of an HTML5 parser.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'html';
@@ -649,8 +649,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('intl',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('Provides internationalization and localization facilities, including message translation, plurals and genders, date/number formatting and parsing, and bidirectional text.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('intl',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('Provides internationalization and localization facilities, including message translation, plurals and genders, date/number formatting and parsing, and bidirectional text.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'intl';
@@ -663,8 +663,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('open_filex',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A plug-in that can call native APP to open files with string result in flutter, support iOS(DocumentInteraction) / android(intent) / PC(ffi) / web(dart:html)',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('open_filex',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A plug-in that can call native APP to open files with string result in flutter, support iOS(DocumentInteraction) / android(intent) / PC(ffi) / web(dart:html)',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'open_filex';
@@ -677,8 +677,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('path_provider',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A Flutter plugin for finding commonly used locations on the filesystem. Supports Android, iOS, Linux, macOS and Windows. Not all methods are supported on all platforms.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('path_provider',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Flutter plugin for finding commonly used locations on the filesystem. Supports Android, iOS, Linux, macOS and Windows. Not all methods are supported on all platforms.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'path_provider';
@@ -691,8 +691,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('responsive_builder',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A set of widgets to make responsive UI building in flutter more readable',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('responsive_builder',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A set of widgets to make responsive UI building in flutter more readable',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'responsive_builder';
@@ -705,8 +705,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('url_launcher',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A Flutter plugin for launching a URL.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('url_launcher',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A Flutter plugin for launching a URL.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'url_launcher';
@@ -719,8 +719,8 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
-                        title: Text('provider',style: TextStyle(fontSize: GlobalVars.settingsItemTitle,fontWeight: FontWeight.bold),),
-                        subtitle: Text('A wrapper around InheritedWidget to make them easier to use and more reusable.',style: TextStyle(fontSize: GlobalVars.settingsItemSubtitle),),
+                        title: Text('provider',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('A wrapper around InheritedWidget to make them easier to use and more reusable.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
                         onTap: (){
                           licenseTitle = 'provider';
@@ -745,8 +745,8 @@ class _SettingsPage extends State<SettingsPage>{
     showDialog<String>(
       context: context,
       builder:(BuildContext context) => AlertDialog(
-        title: Text('$licenseTitle - License',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-        content: Text(licenseContent,style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+        title: Text('$licenseTitle - License',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        content: Text(licenseContent,style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
         scrollable: true,
         actions: <Widget>[
           TextButton(
@@ -784,7 +784,7 @@ class _SettingsPage extends State<SettingsPage>{
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('字体大小',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            title: Text('字体大小',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
             content: Column(
               children: [
                 Row(
@@ -805,7 +805,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('极小',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('极小',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 ),
                 Row(
@@ -826,7 +826,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('超小',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('超小',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 ),
                 Row(
@@ -847,7 +847,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('较小',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('较小',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 ),
                 Row(
@@ -868,7 +868,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('适中',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('适中',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 ),
                 Row(
@@ -889,7 +889,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('较大',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('较大',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 ),
                 Row(
@@ -910,7 +910,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('超大',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('超大',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 ),
                 Row(
@@ -931,7 +931,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('极大',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('极大',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 ),
               ],
@@ -984,168 +984,27 @@ class _SettingsPage extends State<SettingsPage>{
     }
 
       //弹出对话框字体
-      GlobalVars.alertdialog_title_title = DefaultfontSize.alertdialog_title_title_default + changevalue;
-      GlobalVars.alertdialog_content_title = DefaultfontSize.alertdialog_content_title_default + changevalue;
-      
-      //主页底栏/侧栏字体
-      GlobalVars.bottonbar_appname_title = DefaultfontSize.bottonbar_appname_title_default + changevalue;
-      GlobalVars.bottonbar_selected_title = DefaultfontSize.bottonbar_selected_title_default + changevalue;
-      GlobalVars.bottonbar_unselected_title = DefaultfontSize.bottonbar_unselected_title_default + changevalue;
+      GlobalVars.alertdialogTitle = DefaultfontSize.alertdialogTitle + changevalue;
+      GlobalVars.alertdialogContent = DefaultfontSize.alertdialogContent + changevalue;
 
-      //闪屏页字体
-      GlobalVars.smartsnut_text_title = DefaultfontSize.smartsnut_text_title_default + changevalue;
-
-      //登录页字体
-      GlobalVars.welcome_page_title = DefaultfontSize.welcome_page_title_default + changevalue;
-      GlobalVars.login_hint_title = DefaultfontSize.login_hint_title_default + changevalue;
-      GlobalVars.login_button_title = DefaultfontSize.login_button_title_default + changevalue;
-
-      //首页字体
-      GlobalVars.homegreeting_text_title = DefaultfontSize.homegreeting_text_title_default + changevalue;
-
-      GlobalVars.homecoursetable_divider_title = DefaultfontSize.homecoursetable_divider_title_default + changevalue;
-      GlobalVars.homecoursetable_datetime_title = DefaultfontSize.homecoursetable_datetime_title_default + changevalue;
-      GlobalVars.homecoursetable_nocourse_title = DefaultfontSize.homecoursetable_nocourse_title_default + changevalue;
-      GlobalVars.homecoursetable_coursename_title = DefaultfontSize.homecoursetable_coursename_title_default + changevalue;
-      GlobalVars.homecoursetable_coursedetail_title = DefaultfontSize.homecoursetable_coursedetail_title_default + changevalue;
-      GlobalVars.homecoursetable_morehint_title = DefaultfontSize.homecoursetable_morehint_title_default + changevalue;
-
-      GlobalVars.frefunc_divider_title = DefaultfontSize.frefunc_divider_title_default + changevalue;
-      //按钮字体在 应用页字体中//
-
-      GlobalVars.tzgg_divider_title = DefaultfontSize.tzgg_divider_title_default + changevalue;
-      GlobalVars.tzgg_newstitle_title = DefaultfontSize.tzgg_newstitle_title_default + changevalue;
-      GlobalVars.tzgg_newsdate_title = DefaultfontSize.tzgg_newsdate_title_default + changevalue;
-
-      //应用页字体
-      GlobalVars.apppagegreeting_text_title = DefaultfontSize.apppagegreeting_text_title_default + changevalue;
-      GlobalVars.jwgl_divider_title = DefaultfontSize.jwgl_divider_title_default + changevalue;
-      GlobalVars.coursetable_button_title = DefaultfontSize.coursetable_button_title_default + changevalue;
-      GlobalVars.stddetail_button_title = DefaultfontSize.stddetail_button_title_default + changevalue;
-      GlobalVars.stdexam_button_title = DefaultfontSize.stdexam_button_title_default + changevalue;
-      GlobalVars.stdgrade_button_title = DefaultfontSize.stdgrade_button_title_default + changevalue;
-
-      GlobalVars.hqb_divider_title = DefaultfontSize.hqb_divider_title_default + changevalue;
-      GlobalVars.networkque_button_title = DefaultfontSize.networkque_button_title_default + changevalue;
-      GlobalVars.emque_button_title = DefaultfontSize.emque_button_title_default + changevalue;
-
-
-      GlobalVars.external_divider_title = DefaultfontSize.external_divider_title_default + changevalue;
-      GlobalVars.library_button_title = DefaultfontSize.library_button_title_default + changevalue;
-      GlobalVars.face_button_title = DefaultfontSize.face_button_title_default + changevalue;
-      GlobalVars.webvpn_button_title = DefaultfontSize.webvpn_button_title_default + changevalue;
-      GlobalVars.newhall_button_title = DefaultfontSize.newhall_button_title_default + changevalue;
-
-      //我的页字体
-      GlobalVars.person_text_title = DefaultfontSize.person_text_title_default + changevalue;
-      GlobalVars.personday_text_title = DefaultfontSize.personday_text_title_default + changevalue;
-
-      GlobalVars.hint_text_title = DefaultfontSize.hint_text_title_default + changevalue;
-      
-      GlobalVars.embind_button_title = DefaultfontSize.embind_button_title_default + changevalue;
-      GlobalVars.settings_button_title = DefaultfontSize.settings_button_title_default + changevalue;
-      GlobalVars.guide_button_title = DefaultfontSize.guide_button_title_default + changevalue;
-      GlobalVars.logout_button_title = DefaultfontSize.logout_button_title_default + changevalue;
-
-      //课表页字体
-      GlobalVars.coursetable_page_title = DefaultfontSize.coursetable_page_title_default + changevalue;
-      GlobalVars.refreshcoursetable_button_title = DefaultfontSize.refreshcoursetable_button_title_default + changevalue;
-      GlobalVars.coursetableswitchterm_title_title = DefaultfontSize.coursetableswitchterm_title_title_default + changevalue;
-      GlobalVars.coursetableswitchterm_year_title = DefaultfontSize.coursetableswitchterm_year_title_default + changevalue;
-      GlobalVars.coursetableswitchterm_term_title = DefaultfontSize.coursetableswitchterm_term_title_default + changevalue;
-      GlobalVars.coursetableweek_text_title = DefaultfontSize.coursetableweek_text_title_default + changevalue;
-      GlobalVars.nocoursetable_hint_title = DefaultfontSize.nocoursetable_hint_title_default + changevalue;
-      GlobalVars.nocoursetable_hint_subtitle = DefaultfontSize.nocoursetable_hint_subtitle_default + changevalue;
-      GlobalVars.coursetable_tablehead_title = DefaultfontSize.coursetable_tablehead_title_default + changevalue;
-      GlobalVars.coursetable_coursename_title = DefaultfontSize.coursetable_coursename_title_default + changevalue;
-      GlobalVars.coursetable_courselocation_title = DefaultfontSize.coursetable_courselocation_title_default + changevalue;
-      GlobalVars.coursetable_coursedetailsheet_title = DefaultfontSize.coursetable_coursedetailsheet_title_default + changevalue;
-      GlobalVars.coursetable_coursedetailsheet_coursecontent  = DefaultfontSize.coursetable_coursedetailsheet_coursecontent_default  + changevalue;
-      GlobalVars.coursetable_coursedetailsheet_coursetitle  = DefaultfontSize.coursetable_coursedetailsheet_coursetitle_default  + changevalue;
-
-      //学籍信息页字体
-      GlobalVars.stddetail_page_title = DefaultfontSize.stddetail_page_title_default + changevalue;
-      GlobalVars.stddetail_title_title = DefaultfontSize.stddetail_title_title_default + changevalue;
-      GlobalVars.stddetail_content_title = DefaultfontSize.stddetail_content_title_default + changevalue;
-
-      //考试页字体
-      GlobalVars.stdexam_page_title = DefaultfontSize.stdexam_page_title_default + changevalue;
-      GlobalVars.refreshstdexam_button_title = DefaultfontSize.refreshstdexam_button_title_default + changevalue;
-      GlobalVars.stdexamswitchterm_title_title = DefaultfontSize.stdexamswitchterm_title_title_default + changevalue;
-      GlobalVars.stdexamswitchterm_year_title = DefaultfontSize.stdexamswitchterm_year_title_default + changevalue;
-      GlobalVars.stdexamswitchterm_term_title = DefaultfontSize.stdexamswitchterm_term_title_default + changevalue;
-      GlobalVars.stdexam_type_title = DefaultfontSize.stdexam_type_title_default + changevalue;
-      GlobalVars.nostdexam_hint_title = DefaultfontSize.nostdexam_hint_title_default + changevalue;
-      GlobalVars.nostdexam_hint_subtitle = DefaultfontSize.nostdexam_hint_subtitle_default + changevalue;
-      GlobalVars.stdexam_courseexamname_title = DefaultfontSize.stdexam_courseexamname_title_default + changevalue;
-      GlobalVars.stdexam_courseexamdate_title = DefaultfontSize.stdexam_courseexamdate_title_default + changevalue;
-      GlobalVars.stdexam_courseexamtime_title = DefaultfontSize.stdexam_courseexamtime_title_default + changevalue;
-      GlobalVars.stdexam_courseexamseatno_title = DefaultfontSize.stdexam_courseexamseatno_title_default + changevalue;
-      GlobalVars.stdexam_courseexamtype_title = DefaultfontSize.stdexam_courseexamtype_title_default + changevalue;
-
-      //成绩页字体
-      GlobalVars.stdgrade_page_title = DefaultfontSize.stdgrade_page_title_default + changevalue;
-      GlobalVars.refreshstdgrade_button_title = DefaultfontSize.refreshstdgrade_button_title_default + changevalue;
-      GlobalVars.stdgradeswitchterm_title_title = DefaultfontSize.stdgradeswitchterm_title_title_default + changevalue;
-      GlobalVars.stdgradeswitchterm_year_title = DefaultfontSize.stdgradeswitchterm_year_title_default + changevalue;
-      GlobalVars.stdgradeswitchterm_term_title = DefaultfontSize.stdgradeswitchterm_term_title_default + changevalue;
-      GlobalVars.nostdgrade_hint_title = DefaultfontSize.nostdgrade_hint_title_default + changevalue;
-      GlobalVars.nostdgrade_hint_subtitle = DefaultfontSize.nostdgrade_hint_subtitle_default + changevalue;
-      GlobalVars.stdgrade_coursename_title = DefaultfontSize.stdgrade_coursename_title_default + changevalue;
-      GlobalVars.stdgrade_coursecredit_title = DefaultfontSize.stdgrade_coursecredit_title_default + changevalue;
-      GlobalVars.stdgrade_coursegradetotal_title = DefaultfontSize.stdgrade_coursegradetotal_title_default + changevalue;
-      GlobalVars.stdgrade_coursegradefinal_title = DefaultfontSize.stdgrade_coursegradefinal_title_default + changevalue;
-      GlobalVars.stdgrade_coursegradegpa_title = DefaultfontSize.stdgrade_coursegradegpa_title_default + changevalue;
-      GlobalVars.stdgrade_coursetype_title = DefaultfontSize.stdgrade_coursetype_title_default + changevalue;
-
-      //绩点计算器页字体
-      GlobalVars.gpacalculator_page_title = DefaultfontSize.gpacalculator_page_title_default + changevalue;
-      GlobalVars.gpacalculator_GPAtitle_title = DefaultfontSize.gpacalculator_GPAtitle_title_default + changevalue;
-      GlobalVars.gpacalculator_GPAcontent_title = DefaultfontSize.gpacalculator_GPAcontent_title_default + changevalue;
-      GlobalVars.gpacalculator_coursename_title = DefaultfontSize.gpacalculator_coursename_title_default + changevalue;
-      GlobalVars.gpacalculator_coursename_content = DefaultfontSize.gpacalculator_coursename_content_default + changevalue;
-
-      //网费查询页字体
-      GlobalVars.networkquery_page_title = DefaultfontSize.networkquery_page_title_default + changevalue;
-      GlobalVars.networkquery_button_title = DefaultfontSize.networkquery_button_title_default + changevalue;
-      GlobalVars.networktopup_button_title = DefaultfontSize.networktopup_button_title_default + changevalue;
-      GlobalVars.networkdetail_account_title = DefaultfontSize.networkdetail_account_title_default + changevalue;
-      GlobalVars.networkdetail_realname_title = DefaultfontSize.networkdetail_realname_title_default + changevalue;
-      GlobalVars.networkdetail_balance_title = DefaultfontSize.networkdetail_balance_title_default + changevalue;
-      GlobalVars.networkdetail_state_title = DefaultfontSize.networkdetail_state_title_default + changevalue;
-      GlobalVars.networkdetail_expire_title = DefaultfontSize.networkdetail_expire_title_default + changevalue;
-      GlobalVars.networkquery_hint_title = DefaultfontSize.networkquery_hint_title_default + changevalue;
-      GlobalVars.networkquery_hint_subtitle = DefaultfontSize.networkquery_hint_subtitle_default + changevalue;
-
-      //电费查询页字体
-      GlobalVars.emquery_page_title = DefaultfontSize.emquery_page_title_default + changevalue;
-      GlobalVars.emdetail_emid_title = DefaultfontSize.emdetail_emid_title_default + changevalue;
-      GlobalVars.emdetail_emleft_title = DefaultfontSize.emdetail_emleft_title_default + changevalue;
-      GlobalVars.emdetail_emtotal_title = DefaultfontSize.emdetail_emtotal_title_default + changevalue;
-      GlobalVars.emdetail_emstate_title = DefaultfontSize.emdetail_emstate_title_default + changevalue;
-      GlobalVars.emdetail_emaddress_title = DefaultfontSize.emdetail_emaddress_title_default + changevalue;
-      GlobalVars.emquery_nonetwork_title = DefaultfontSize.emquery_nonetwork_title_default + changevalue;
-      GlobalVars.emquery_querying_title = DefaultfontSize.emquery_querying_title_default + changevalue;
-
-      //电费账号绑定页字体
-      GlobalVars.embind_page_title = DefaultfontSize.embind_page_title_default + changevalue;
-      GlobalVars.embind_wechatname_title = DefaultfontSize.embind_wechatname_title_default + changevalue;
-      GlobalVars.embind_emnum_title = DefaultfontSize.embind_emnum_title_default + changevalue;
-      GlobalVars.embindrefresh_button_title = DefaultfontSize.embindrefresh_button_title_default + changevalue;
-      GlobalVars.embindunbind_button_title = DefaultfontSize.embindunbind_button_title_default + changevalue;
-      GlobalVars.embind_binding_title = DefaultfontSize.embind_binding_title_default + changevalue;
-      GlobalVars.embind_hint_title = DefaultfontSize.embind_hint_title_default + changevalue;
-      GlobalVars.embind_hint_subtitle = DefaultfontSize.embind_hint_subtitle_default + changevalue;
-
-      //应用设置页字体
-      GlobalVars.settings_page_title = DefaultfontSize.settings_page_title_default + changevalue;
-      GlobalVars.settingsDividerText = DefaultfontSize.settingsDividerText_default + changevalue;
-      GlobalVars.settingsItemTitle = DefaultfontSize.settingsItemTitle_default + changevalue;
-      GlobalVars.settingsItemSubtitle = DefaultfontSize.settingsItemSubtitle_default + changevalue;
-      GlobalVars.disclamier_title_title = DefaultfontSize.disclamier_title_title_default + changevalue;
-      
-      //设置完成后刷新页面
-      setState(() {});
+      //通用页面字体
+      GlobalVars.splashPageTitle = DefaultfontSize.splashPageTitle + changevalue;
+      GlobalVars.bottonbarAppnameTitle = DefaultfontSize.bottonbarAppnameTitle + changevalue;
+      GlobalVars.bottonbarSelectedTitle = DefaultfontSize.bottonbarSelectedTitle + changevalue;
+      GlobalVars.bottonbarUnselectedTitle = DefaultfontSize.bottonbarUnselectedTitle + changevalue;
+      GlobalVars.genericPageTitle = DefaultfontSize.genericPageTitle + changevalue;
+      GlobalVars.genericPageTitleSmall = DefaultfontSize.genericPageTitleSmall + changevalue;
+      GlobalVars.genericGreetingTitle = DefaultfontSize.genericGreetingTitle + changevalue;
+      GlobalVars.genericFloationActionButtonTitle = DefaultfontSize.genericFloationActionButtonTitle + changevalue;
+      GlobalVars.dividerTitle = DefaultfontSize.dividerTitle + changevalue;
+      GlobalVars.listTileTitle = DefaultfontSize.listTileTitle + changevalue;
+      GlobalVars.listTileSubtitle = DefaultfontSize.listTileSubtitle + changevalue;
+      GlobalVars.genericFunctionsButtonTitle = DefaultfontSize.genericFunctionsButtonTitle + changevalue;
+      GlobalVars.genericSwitchContainerTitle = DefaultfontSize.genericSwitchContainerTitle + changevalue;
+      GlobalVars.genericSwitchMenuTitle = DefaultfontSize.genericSwitchMenuTitle + changevalue;
+      GlobalVars.genericTextSmall = DefaultfontSize.genericTextSmall + changevalue;
+      GlobalVars.genericTextMedium = DefaultfontSize.genericTextMedium + changevalue;
+      GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
   }
 
   //切换主题颜色
@@ -1157,7 +1016,7 @@ class _SettingsPage extends State<SettingsPage>{
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('主题颜色',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            title: Text('主题颜色',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
             content: Column(
               children: [
                 Row(
@@ -1177,7 +1036,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('琥珀色',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('琥珀色',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                     SizedBox(width: 10,),
                     SizedBox(height: 15,width: 15,child: Container(decoration: BoxDecoration(color: Color(0xFFE65100)),),)
                   ],
@@ -1199,7 +1058,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('深橙色',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('深橙色',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                     SizedBox(width: 10,),
                     SizedBox(height: 15,width: 15,child: Container(decoration: BoxDecoration(color: Color(0xFFBF360C)),),)
                   ],
@@ -1221,7 +1080,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('曼迪红',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('曼迪红',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                     SizedBox(width: 10,),
                     SizedBox(height: 15,width: 15,child: Container(decoration: BoxDecoration(color: Color(0xFFCD5758)),),)
                   ],
@@ -1243,7 +1102,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('深紫色',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('深紫色',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                     SizedBox(width: 10,),
                     SizedBox(height: 15,width: 15,child: Container(decoration: BoxDecoration(color: Color(0xFF4527A0)),),)
                   ],
@@ -1265,7 +1124,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('野鸭绿',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('野鸭绿',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                     SizedBox(width: 10,),
                     SizedBox(height: 15,width: 15,child: Container(decoration: BoxDecoration(color: Color(0xFF2D4421)),),)
                   ],
@@ -1287,7 +1146,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('粉红色',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('粉红色',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                     SizedBox(width: 10,),
                     SizedBox(height: 15,width: 15,child: Container(decoration: BoxDecoration(color: Color(0xFFBC004B)),),)
                   ],
@@ -1309,7 +1168,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('咖啡色',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('咖啡色',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                     SizedBox(width: 10,),
                     SizedBox(height: 15,width: 15,child: Container(decoration: BoxDecoration(color: Color(0xFF452F2B)),),)
                   ],
@@ -1331,7 +1190,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('鲨鱼灰',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('鲨鱼灰',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                     SizedBox(width: 10,),
                     SizedBox(height: 15,width: 15,child: Container(decoration: BoxDecoration(color: Color(0xFF1D2228)),),)
                   ],
@@ -1362,7 +1221,7 @@ class _SettingsPage extends State<SettingsPage>{
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('深色模式',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            title: Text('深色模式',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
             content: Column(
               children: [
                 Row(
@@ -1382,7 +1241,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('跟随系统设置',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('跟随系统设置',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 ),
                 Row(
@@ -1402,7 +1261,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('始终开启',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('始终开启',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 ),
                 Row(
@@ -1422,7 +1281,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('始终关闭',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('始终关闭',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 ),
               ],
@@ -1451,7 +1310,7 @@ class _SettingsPage extends State<SettingsPage>{
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('课程色系',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            title: Text('课程色系',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
             content: Column(
               children: [
                 Row(
@@ -1471,7 +1330,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('莫兰迪色系',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('莫兰迪色系',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                   ],
                 ),
                 Row(
@@ -1491,7 +1350,7 @@ class _SettingsPage extends State<SettingsPage>{
                       },
                     ),
                     SizedBox(width: 10,),
-                    Text('马卡龙色系',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                    Text('马卡龙色系',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                   ],
                 ),
               ],
@@ -1517,8 +1376,8 @@ class _SettingsPage extends State<SettingsPage>{
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -1558,8 +1417,8 @@ class _SettingsPage extends State<SettingsPage>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('发现新的 Windows 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              title: Text('发现新的 Windows 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -1583,8 +1442,8 @@ class _SettingsPage extends State<SettingsPage>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('暂未发现新的 Windows 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('您正在使用最新版本的 Windows 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              title: Text('暂未发现新的 Windows 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('您正在使用最新版本的 Windows 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {Navigator.pop(context, 'OK');},
@@ -1602,8 +1461,8 @@ class _SettingsPage extends State<SettingsPage>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('发现新的 Android 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Android'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Android'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              title: Text('发现新的 Android 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Android'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Android'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -1627,8 +1486,8 @@ class _SettingsPage extends State<SettingsPage>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('暂未发现新的 Android 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('您正在使用最新版本的 Android 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              title: Text('暂未发现新的 Android 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('您正在使用最新版本的 Android 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {Navigator.pop(context, 'OK');},
@@ -1660,10 +1519,10 @@ class _SettingsPage extends State<SettingsPage>{
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('正在更新...',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            title: Text('正在更新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
             content: Column(
               children: [
-                Text((Platform.isWindows)? '请勿关闭智慧陕理，下载完成后智慧陕理将会自动重启，完成更新操作':(Platform.isAndroid)? '正在下载安装包，下载完成后智慧陕理将会启动软件更新流程，请您手动进行更新':'正在下载更新...',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                Text((Platform.isWindows)? '请勿关闭智慧陕理，下载完成后智慧陕理将会自动重启，完成更新操作':(Platform.isAndroid)? '正在下载安装包，下载完成后智慧陕理将会启动软件更新流程，请您手动进行更新':'正在下载更新...',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                 SizedBox(height: 10,),
                 LinearProgressIndicator(
                   value: downloadProgress,
@@ -1672,8 +1531,8 @@ class _SettingsPage extends State<SettingsPage>{
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('${(downloadProgress * 100).toStringAsFixed(2)}%',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-                    Text('${(downloadedSize / 1024 /1024).toStringAsFixed(2)}MB / ${(totalDownloadSize / 1024 / 1024).toStringAsFixed(2)}MB',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('${(downloadProgress * 100).toStringAsFixed(2)}%',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                    Text('${(downloadedSize / 1024 /1024).toStringAsFixed(2)}MB / ${(totalDownloadSize / 1024 / 1024).toStringAsFixed(2)}MB',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 )
               ],
@@ -1706,8 +1565,8 @@ class _SettingsPage extends State<SettingsPage>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('Windows 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('Windows 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {Navigator.pop(context, 'OK');},
@@ -1743,8 +1602,8 @@ class _SettingsPage extends State<SettingsPage>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('Android 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('Android 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {Navigator.pop(context, 'OK');},

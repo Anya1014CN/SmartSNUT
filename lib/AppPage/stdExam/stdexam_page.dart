@@ -269,7 +269,7 @@ class _StdExamPageState extends State<StdExamPage>{
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('切换考试时间',style: TextStyle(fontSize: GlobalVars.stdexamswitchterm_title_title),),
+            title: Text('切换考试时间',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),),
             content: Column(
               children: [
                 MenuAnchor(
@@ -288,7 +288,7 @@ class _StdExamPageState extends State<StdExamPage>{
                         readSemesterInfo();
                         menuYearController.close();
                       },
-                      child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.stdexamswitchterm_year_title),),
+                      child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                     );
                   }).toList(),
                   child: SizedBox(
@@ -307,7 +307,7 @@ class _StdExamPageState extends State<StdExamPage>{
                           menuYearController.open();
                         }
                       },
-                      child: Text('学年：$currentYearName',style: TextStyle(fontSize: GlobalVars.stdexamswitchterm_year_title),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                      child: Text('学年：$currentYearName',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                     ),
                   ),
                 ),
@@ -316,7 +316,7 @@ class _StdExamPageState extends State<StdExamPage>{
                   controller: menuTermController,
                   menuChildren: [
                     MenuItemButton(
-                      child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.stdexamswitchterm_term_title),),
+                      child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                       onPressed: () async {
                         if(mounted){
                           setState(() {
@@ -330,7 +330,7 @@ class _StdExamPageState extends State<StdExamPage>{
                       },
                     ),
                     MenuItemButton(
-                      child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.stdexamswitchterm_term_title),),
+                      child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                       onPressed: () async {
                         if(mounted){
                           setState(() {
@@ -360,7 +360,7 @@ class _StdExamPageState extends State<StdExamPage>{
                           menuTermController.open();
                         }
                       },
-                      child: Text('学期：$currentTermName', style: TextStyle(fontSize: GlobalVars.stdexamswitchterm_term_title),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                      child: Text('学期：$currentTermName', style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                     ),
                   ),
                 ),
@@ -400,14 +400,14 @@ class _StdExamPageState extends State<StdExamPage>{
               child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,),
             ),
             SizedBox(width: 10,),
-            Text('正在刷新',style: TextStyle(fontSize: GlobalVars.refreshstdexam_button_title),)
+            Text('正在刷新',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
           ],
         ):
         Row(
           children: [
             Icon(Icons.refresh),
             SizedBox(width: 10,),
-            Text('刷新数据',style: TextStyle(fontSize: GlobalVars.refreshstdexam_button_title),)
+            Text('刷新数据',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
           ],
         ),
       ),
@@ -457,7 +457,7 @@ class _StdExamPageState extends State<StdExamPage>{
                   children: [
                     Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/exam.png'):AssetImage('assets/icons/darktheme/exam.png'),height: 40,),
                     SizedBox(width: 10,),
-                    Text('我的考试',style: TextStyle(fontSize: GlobalVars.stdexam_page_title),)
+                    Text('我的考试',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
                   ],
                 ),
               ),
@@ -476,7 +476,7 @@ class _StdExamPageState extends State<StdExamPage>{
                         controller: menuExamBatchController,
                         menuChildren: [
                           MenuItemButton(
-                            child: Text('期末考试',style: TextStyle(fontSize: GlobalVars.stdexam_type_title),),
+                            child: Text('期末考试',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                             onPressed: () async {
                               if(mounted){
                                 setState(() {
@@ -490,7 +490,7 @@ class _StdExamPageState extends State<StdExamPage>{
                             },
                           ),
                           MenuItemButton(
-                            child: Text('重修考试',style: TextStyle(fontSize: GlobalVars.stdexam_type_title),),
+                            child: Text('重修考试',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                             onPressed: () async {
                               if(mounted){
                                 setState(() {
@@ -520,7 +520,7 @@ class _StdExamPageState extends State<StdExamPage>{
                                 menuExamBatchController.open();
                               }
                             },
-                            child: Text('考试类型：$currentExamBatchName', style: TextStyle(fontSize: GlobalVars.stdexam_type_title),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                            child: Text('考试类型：$currentExamBatchName', style: TextStyle(fontSize: GlobalVars.genericSwitchContainerTitle),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                           ),
                         ),
                       ),
@@ -540,8 +540,8 @@ class _StdExamPageState extends State<StdExamPage>{
                     ),
                     child: ListTile(
                       leading: Icon(Icons.error),
-                      title: Text('暂无 $currentExamBatchName 信息',style: TextStyle(fontSize: GlobalVars.nostdexam_hint_title,fontWeight: FontWeight.bold),),
-                      subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.nostdexam_hint_subtitle),),
+                      title: Text('暂无 $currentExamBatchName 信息',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                      subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                     ),
                   ),
                 ),
@@ -561,11 +561,11 @@ class _StdExamPageState extends State<StdExamPage>{
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('课程名称：${exam['CourseName']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamname_title, fontWeight: FontWeight.bold)),
-                          Text('考试日期：${exam['CourseExamDate']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamdate_title)),
-                          Text('考试时间：${exam['CourseExamTime']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamtime_title)),
-                          Text('座位号：${exam['CourseExamSeatNo']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamseatno_title)),
-                          Text('考试类型：${exam['CourseExamType']}', style: TextStyle(fontSize: GlobalVars.stdexam_courseexamtype_title)),
+                          Text('课程名称：${exam['CourseName']}', style: TextStyle(fontSize: GlobalVars.genericTextMedium, fontWeight: FontWeight.bold)),
+                          Text('考试日期：${exam['CourseExamDate']}', style: TextStyle(fontSize: GlobalVars.genericTextMedium)),
+                          Text('考试时间：${exam['CourseExamTime']}', style: TextStyle(fontSize: GlobalVars.genericTextMedium)),
+                          Text('座位号：${exam['CourseExamSeatNo']}', style: TextStyle(fontSize: GlobalVars.genericTextMedium)),
+                          Text('考试类型：${exam['CourseExamType']}', style: TextStyle(fontSize: GlobalVars.genericTextMedium)),
                           SizedBox(height: 20,),
                           Divider(height: 5,indent: 20,endIndent: 20,),
                         ],
@@ -614,8 +614,8 @@ class _StdExamPageState extends State<StdExamPage>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -677,8 +677,8 @@ class _StdExamPageState extends State<StdExamPage>{
         context: context,
         builder: (BuildContext context) => AlertDialog(
           scrollable: true,
-          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-          content: Text('登录失败，账户不存在\n您的账户是否因毕业等原因被校方注销？',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Text('登录失败，账户不存在\n您的账户是否因毕业等原因被校方注销？',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'OK'),
@@ -698,8 +698,8 @@ class _StdExamPageState extends State<StdExamPage>{
         context: context,
         builder: (BuildContext context) => AlertDialog(
           scrollable: true,
-          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-          content: Text('登录失败，密码错误\n您是否在学校官网修改过密码？\n如果是，请退出智慧陕理并重新登录',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Text('登录失败，密码错误\n您是否在学校官网修改过密码？\n如果是，请退出智慧陕理并重新登录',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'OK'),
@@ -734,8 +734,8 @@ class _StdExamPageState extends State<StdExamPage>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -773,8 +773,8 @@ class _StdExamPageState extends State<StdExamPage>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -841,8 +841,8 @@ class _StdExamPageState extends State<StdExamPage>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -905,8 +905,8 @@ class _StdExamPageState extends State<StdExamPage>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('当前学期暂未设置考试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('当前学期暂未设置考试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -937,8 +937,8 @@ class _StdExamPageState extends State<StdExamPage>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),

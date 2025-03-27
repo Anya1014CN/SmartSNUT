@@ -106,6 +106,10 @@ Map<String,dynamic> tzgg4 ={};
 Map<String,dynamic> tzgg5 ={};
 Map<String,dynamic> tzgg6 ={};
 
+//用于存储智慧陕理的公告
+int notifyState = 0;//用于防止反复获取公告，0 - 未获取； 1 - 已获取
+List smartSNUTNotify = [];
+
 //首页为 陕西理工大学 - 理工要闻
 class Home extends StatefulWidget{
   const Home({super.key});
@@ -1190,9 +1194,9 @@ class _HomeState extends State<Home>{
     super.initState();
     if(newsState == 0){
       getNewsList();
-      return;
-    }if(newsState == 1){
-      return;
+    }
+    if(notifyState == 0){
+      getSmartSNUTNotify();
     }
     setState(() {});
   }
@@ -1211,14 +1215,47 @@ class _HomeState extends State<Home>{
       children: [
         Container(
           padding: EdgeInsets.fromLTRB(10, 50, 0, 30),
-          child: Text('${GlobalVars.greeting}，${GlobalVars.realName}',style: TextStyle(fontWeight: FontWeight.w300,fontSize: GlobalVars.homegreeting_text_title),),
+          child: Text('${GlobalVars.greeting}，${GlobalVars.realName}',style: TextStyle(fontWeight: FontWeight.w300,fontSize: GlobalVars.genericGreetingTitle),),
+        ),
+        (smartSNUTNotify.length == 0)? 
+        SizedBox():
+        Container(
+          padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(21),
+            ),
+            shadowColor: Theme.of(context).colorScheme.onPrimary,
+            color: Theme.of(context).colorScheme.surfaceDim,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+              child: ListTile(
+                shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(21),
+                ),
+                trailing: Icon(Icons.chevron_right),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('${smartSNUTNotify[0]['Content']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                    Text('${smartSNUTNotify[1]['Content']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                  ],
+                ),
+                subtitle: Text('阅读更多',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                onTap: () {
+                  url = Uri.parse('https://smartsnut.cn/');
+                  launchURL();
+                },
+              )
+            )
+          ),
         ),
         Container(
           padding: EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('今日课表',style: TextStyle(fontSize: GlobalVars.homecoursetable_divider_title,color: Theme.of(context).colorScheme.primary),),
+              Text('今日课表',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
               Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
             ],
           ),
@@ -1249,8 +1286,8 @@ class _HomeState extends State<Home>{
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text('今天是：',style: TextStyle(fontSize: GlobalVars.homecoursetable_datetime_title,fontWeight: FontWeight.normal),),
-                            Text('${GlobalVars.month} 月 ${GlobalVars.day} 日 ${GlobalVars.weekDay}',style: TextStyle(fontSize: GlobalVars.homecoursetable_datetime_title,fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary),),
+                            Text('今天是：',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.normal),),
+                            Text('${GlobalVars.month} 月 ${GlobalVars.day} 日 ${GlobalVars.weekDay}',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary),),
                             SizedBox(width: 10,),
                             FittedBox(
                               child: IconButton(
@@ -1275,11 +1312,11 @@ class _HomeState extends State<Home>{
                         (courseToday[0].isEmpty)?
                         SizedBox()
                         :ListTile(
-                          title: ((courseToday[3].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])? true:false)? Text('[1 - 4 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):
-                            ((courseToday[2].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[2][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[2][0]['CourseLocation'])? true:false)? Text('[1 - 3 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):
-                            ((courseToday[1].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[1][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[1][0]['CourseLocation'])? true:false)? Text('[1 - 2 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):
-                            Text('[第 1 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[0][0]['CourseTeacher']} \n ${courseToday[0][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.homecoursetable_coursedetail_title,color: Theme.of(context).colorScheme.secondary),),
+                          title: ((courseToday[3].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])? true:false)? Text('[1 - 4 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
+                            ((courseToday[2].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[2][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[2][0]['CourseLocation'])? true:false)? Text('[1 - 3 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
+                            ((courseToday[1].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[1][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[1][0]['CourseLocation'])? true:false)? Text('[1 - 2 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
+                            Text('[第 1 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
+                          subtitle: Text(' 教师：${courseToday[0][0]['CourseTeacher']} \n ${courseToday[0][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
                         ),
                         //第二节
                         (courseToday[1].isEmpty)? (courseToday[0].isEmpty == courseToday[1].isEmpty)? SizedBox(width: 0,height: 0,) :
@@ -1287,82 +1324,82 @@ class _HomeState extends State<Home>{
                         :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[1][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[1][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
                           title: Text('[第 2 节] ${courseToday[1][0]['CourseName']}'),
-                          subtitle: Text(' 教师：${courseToday[1][0]['CourseTeacher']} \n ${courseToday[1][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.homecoursetable_coursedetail_title,color: Theme.of(context).colorScheme.secondary),),
+                          subtitle: Text(' 教师：${courseToday[1][0]['CourseTeacher']} \n ${courseToday[1][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
                         ),
                         //第三节
                         (courseToday[2].isEmpty)? 
                         SizedBox()
                         :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[2][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[2][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: (courseToday[3].isEmpty == false)? (courseToday[2][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[3].isEmpty == false)? Text('[3 - 4 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):Text('[第 3 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):
-                              Text('[第 3 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),),
-                              subtitle: Text(' 教师：${courseToday[2][0]['CourseTeacher']} \n 地点：${courseToday[2][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.homecoursetable_coursedetail_title,color: Theme.of(context).colorScheme.secondary),),
+                          title: (courseToday[3].isEmpty == false)? (courseToday[2][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[3].isEmpty == false)? Text('[3 - 4 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):Text('[第 3 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
+                              Text('[第 3 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
+                              subtitle: Text(' 教师：${courseToday[2][0]['CourseTeacher']} \n 地点：${courseToday[2][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
                         ),
                         //第四节
                         (courseToday[3].isEmpty)? (courseToday[2].isEmpty == courseToday[3].isEmpty)? SizedBox(width: 0,height: 0,) :
                         SizedBox()
                         :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])) || ((courseToday[2].isEmpty)? false:(courseToday[2][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[2][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: Text('[第 4 节] ${courseToday[3][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[3][0]['CourseTeacher']} \n 地点：${courseToday[3][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.homecoursetable_coursedetail_title,color: Theme.of(context).colorScheme.secondary),),
+                          title: Text('[第 4 节] ${courseToday[3][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
+                          subtitle: Text(' 教师：${courseToday[3][0]['CourseTeacher']} \n 地点：${courseToday[3][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
                         ),
                         //第五节
                         (courseToday[4].isEmpty)? 
                         SizedBox()
                         :ListTile(
-                          title: ((courseToday[7].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])? true:false)? Text('[5 - 8 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):
-                            ((courseToday[6].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[6][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[6][0]['CourseLocation'])? true:false)? Text('[5 - 7 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):
-                            ((courseToday[5].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[5][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[5][0]['CourseLocation'])? true:false)? Text('[5 - 6 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):
-                            Text('[第 5 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text('教师：${courseToday[4][0]['CourseTeacher']} \n 地点：${courseToday[4][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.homecoursetable_coursedetail_title,color: Theme.of(context).colorScheme.secondary),),
+                          title: ((courseToday[7].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])? true:false)? Text('[5 - 8 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
+                            ((courseToday[6].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[6][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[6][0]['CourseLocation'])? true:false)? Text('[5 - 7 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
+                            ((courseToday[5].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[5][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[5][0]['CourseLocation'])? true:false)? Text('[5 - 6 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
+                            Text('[第 5 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
+                          subtitle: Text('教师：${courseToday[4][0]['CourseTeacher']} \n 地点：${courseToday[4][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
                         ),
                         //第六节
                         (courseToday[5].isEmpty)?  (courseToday[4].isEmpty == courseToday[5].isEmpty)? SizedBox(width: 0,height: 0,):
                         SizedBox()
                         :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[5][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[5][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: Text('[第 6 节] ${courseToday[5][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[5][0]['CourseTeacher']} \n 地点：${courseToday[5][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.homecoursetable_coursedetail_title,color: Theme.of(context).colorScheme.secondary),),
+                          title: Text('[第 6 节] ${courseToday[5][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
+                          subtitle: Text(' 教师：${courseToday[5][0]['CourseTeacher']} \n 地点：${courseToday[5][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
                         ),
                         //第七节
                         (courseToday[6].isEmpty)? 
                         SizedBox()
                         :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[6][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[6][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: (courseToday[7].isEmpty == false)? (courseToday[6][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[6][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])? Text('[7 - 8 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):Text('[第 7 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):
-                              Text('[第 7 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[6][0]['CourseTeacher']} \n 地点：${courseToday[6][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.homecoursetable_coursedetail_title,color: Theme.of(context).colorScheme.secondary),),
+                          title: (courseToday[7].isEmpty == false)? (courseToday[6][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[6][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])? Text('[7 - 8 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):Text('[第 7 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
+                              Text('[第 7 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
+                          subtitle: Text(' 教师：${courseToday[6][0]['CourseTeacher']} \n 地点：${courseToday[6][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
                         ),
                         //第八节
                         (courseToday[7].isEmpty)? (courseToday[6].isEmpty == courseToday[7].isEmpty)? SizedBox(width: 0,height: 0,):
                         SizedBox()
                         :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])) || ((courseToday[6].isEmpty)? false:(courseToday[6][0]['CourseName'] == courseToday[7][0]['CourseName'] || courseToday[6][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: Text('[第 8 节] ${courseToday[7][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[7][0]['CourseTeacher']} \n 地点：${courseToday[7][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.homecoursetable_coursedetail_title,color: Theme.of(context).colorScheme.secondary),),
+                          title: Text('[第 8 节] ${courseToday[7][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
+                          subtitle: Text(' 教师：${courseToday[7][0]['CourseTeacher']} \n 地点：${courseToday[7][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
                         ),
                         //第九节
                         (courseToday[8].isEmpty)? 
                         SizedBox()
                         :ListTile(
-                          title: (courseToday[9].isEmpty == false)? (courseToday[8][0]['CourseName'] == courseToday[9][0]['CourseName'] && courseToday[8][0]['CourseLocation'] == courseToday[9][0]['CourseLocation'])? Text('[9 - 10 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):Text('[第 9 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),):
-                            Text('[第 9 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[8][0]['CourseTeacher']} \n 地点：${courseToday[8][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.homecoursetable_coursedetail_title,color: Theme.of(context).colorScheme.secondary),),
+                          title: (courseToday[9].isEmpty == false)? (courseToday[8][0]['CourseName'] == courseToday[9][0]['CourseName'] && courseToday[8][0]['CourseLocation'] == courseToday[9][0]['CourseLocation'])? Text('[9 - 10 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):Text('[第 9 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
+                            Text('[第 9 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
+                          subtitle: Text(' 教师：${courseToday[8][0]['CourseTeacher']} \n 地点：${courseToday[8][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
                         ),
                         //第十节
                         (courseToday[9].isEmpty)? (courseToday[8].isEmpty == courseToday[9].isEmpty)? SizedBox(width: 0,height: 0,):
                         SizedBox()
                         :((courseToday[8].isEmpty)? false:(courseToday[8][0]['CourseName'] == courseToday[9][0]['CourseName'] || courseToday[8][0]['CourseLocation'] == courseToday[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: Text('[第 10 节] ${courseToday[9][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_coursename_title,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[7][0]['CourseTeacher']} \n 地点：${courseToday[7][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.homecoursetable_coursedetail_title,color: Theme.of(context).colorScheme.secondary),),
+                          title: Text('[第 10 节] ${courseToday[9][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
+                          subtitle: Text(' 教师：${courseToday[7][0]['CourseTeacher']} \n 地点：${courseToday[7][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
                         ),
                         //今日无课
                         ((courseToday[0].isEmpty == true) && (courseToday[1].isEmpty == true) && (courseToday[2].isEmpty == true) && (courseToday[3].isEmpty == true) && (courseToday[4].isEmpty == true) && (courseToday[5].isEmpty == true) && (courseToday[6].isEmpty == true) && (courseToday[7].isEmpty == true) && (courseToday[8].isEmpty == true) && (courseToday[9].isEmpty == true))?
                         Column(
                           children: [
                             SizedBox(height: 30,),
-                            Text('今日无课哦',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_nocourse_title),),
+                            Text('今日无课哦',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.genericTextLarge),),
                             SizedBox(height: 30,)
                           ],
                         ):SizedBox()
@@ -1374,7 +1411,7 @@ class _HomeState extends State<Home>{
                       borderRadius: BorderRadius.circular(21),
                       ),
                       trailing: Icon(Icons.chevron_right),
-                      title: Text('查看本周课表、切换学年、刷新数据，请点击这里',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.homecoursetable_morehint_title),),
+                      title: Text('查看本周课表、切换学年、刷新数据，请点击这里',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle),),
                       onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => CourseTablePage())).then((value) => readSemesterInfo());},
                     ),
                   ],
@@ -1387,7 +1424,7 @@ class _HomeState extends State<Home>{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('便捷生活',style: TextStyle(fontSize: GlobalVars.frefunc_divider_title,color: Theme.of(context).colorScheme.primary),),
+                Text('便捷生活',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
                 Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
               ],
             ),
@@ -1420,7 +1457,7 @@ class _HomeState extends State<Home>{
                               children: [
                                 Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/web.png'):AssetImage('assets/icons/darktheme/web.png'),height: 36,),
                                 SizedBox(width: 10,),
-                                Expanded(child: Text('网费查询',style: TextStyle(fontSize: GlobalVars.networkque_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                                Expanded(child: Text('网费查询',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                               ],
                             ),
                           ),
@@ -1436,8 +1473,8 @@ class _HomeState extends State<Home>{
                                   showDialog<String>(
                                   context: context,
                                   builder: (BuildContext context) => AlertDialog(
-                                    title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title),),
-                                    content: Text('您还没有绑定电费账号，\n请先前往 “我的 -> 解/绑电费账号” 绑定后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title),),
+                                    title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),),
+                                    content: Text('您还没有绑定电费账号，\n请先前往 “我的 -> 解/绑电费账号” 绑定后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent),),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () => Navigator.pop(context, 'OK'),
@@ -1463,7 +1500,7 @@ class _HomeState extends State<Home>{
                               children: [
                                 Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/electricity.png'):AssetImage('assets/icons/darktheme/electricity.png'),height: 36,),
                                 SizedBox(width: 10,),
-                                Expanded(child: Text('电费查询',style: TextStyle(fontSize: GlobalVars.emque_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                                Expanded(child: Text('电费查询',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                               ],
                             ),
                           ),
@@ -1493,7 +1530,7 @@ class _HomeState extends State<Home>{
                                   children: [
                                     Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/exam.png'):AssetImage('assets/icons/darktheme/exam.png'),height: 36,),
                                     SizedBox(width: 10,),
-                                    Expanded(child: Text('我的考试',style: TextStyle(fontSize: GlobalVars.stdexam_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                                    Expanded(child: Text('我的考试',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                                   ],
                                 ),
                             ),
@@ -1517,7 +1554,7 @@ class _HomeState extends State<Home>{
                                 children: [
                                   Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/grade.png'):AssetImage('assets/icons/darktheme/grade.png'),height: 36,),
                                   SizedBox(width: 10,),
-                                  Expanded(child: Text('我的成绩',style: TextStyle(fontSize: GlobalVars.stdgrade_button_title),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                                  Expanded(child: Text('我的成绩',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
                                 ],
                               ),
                             ),
@@ -1534,7 +1571,7 @@ class _HomeState extends State<Home>{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('通知公告',style: TextStyle(fontSize: GlobalVars.tzgg_divider_title,color: Theme.of(context).colorScheme.primary),),
+                Text('通知公告',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
                 Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
               ],
             ),
@@ -1570,8 +1607,8 @@ class _HomeState extends State<Home>{
                       borderRadius: BorderRadius.circular(21),
                       ),
                       trailing: Icon(Icons.chevron_right),
-                      title: Text('${tzgg1['title']}',style: TextStyle(fontSize: GlobalVars.tzgg_newstitle_title),),
-                      subtitle: Text('${tzgg1['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.tzgg_newsdate_title),),
+                      title: Text('${tzgg1['title']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                      subtitle: Text('${tzgg1['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       onTap: (){
                         url = Uri.parse('https://www.snut.edu.cn${tzgg1['location']}');
                         launchURL();
@@ -1583,8 +1620,8 @@ class _HomeState extends State<Home>{
                       borderRadius: BorderRadius.circular(21),
                       ),
                       trailing: Icon(Icons.chevron_right),
-                      title: Text('${tzgg2['title']}',style: TextStyle(fontSize: GlobalVars.tzgg_newstitle_title),),
-                      subtitle: Text('${tzgg2['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.tzgg_newsdate_title),),
+                      title: Text('${tzgg2['title']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                      subtitle: Text('${tzgg2['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       onTap: (){
                         url = Uri.parse('https://www.snut.edu.cn${tzgg2['location']}');
                         launchURL();
@@ -1596,8 +1633,8 @@ class _HomeState extends State<Home>{
                       borderRadius: BorderRadius.circular(21),
                       ),
                       trailing: Icon(Icons.chevron_right),
-                      title: Text('${tzgg3['title']}',style: TextStyle(fontSize: GlobalVars.tzgg_newstitle_title),),
-                      subtitle: Text('${tzgg3['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.tzgg_newsdate_title),),
+                      title: Text('${tzgg3['title']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                      subtitle: Text('${tzgg3['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       onTap: (){
                         url = Uri.parse('https://www.snut.edu.cn${tzgg3['location']}');
                         launchURL();
@@ -1609,8 +1646,8 @@ class _HomeState extends State<Home>{
                       borderRadius: BorderRadius.circular(21),
                       ),
                       trailing: Icon(Icons.chevron_right),
-                      title: Text('${tzgg4['title']}',style: TextStyle(fontSize: GlobalVars.tzgg_newstitle_title),),
-                      subtitle: Text('${tzgg4['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.tzgg_newsdate_title),),
+                      title: Text('${tzgg4['title']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                      subtitle: Text('${tzgg4['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       onTap: (){
                         url = Uri.parse('https://www.snut.edu.cn${tzgg4['location']}');
                         launchURL();
@@ -1622,8 +1659,8 @@ class _HomeState extends State<Home>{
                       borderRadius: BorderRadius.circular(21),
                       ),
                       trailing: Icon(Icons.chevron_right),
-                      title: Text('${tzgg5['title']}',style: TextStyle(fontSize: GlobalVars.tzgg_newstitle_title),),
-                      subtitle: Text('${tzgg5['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.tzgg_newsdate_title),),
+                      title: Text('${tzgg5['title']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                      subtitle: Text('${tzgg5['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       onTap: (){
                         url = Uri.parse('https://www.snut.edu.cn${tzgg5['location']}');
                         launchURL();
@@ -1635,8 +1672,8 @@ class _HomeState extends State<Home>{
                       borderRadius: BorderRadius.circular(21),
                       ),
                       trailing: Icon(Icons.chevron_right),
-                      title: Text('${tzgg6['title']}',style: TextStyle(fontSize: GlobalVars.tzgg_newstitle_title),),
-                      subtitle: Text('${tzgg6['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.tzgg_newsdate_title),),
+                      title: Text('${tzgg6['title']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                      subtitle: Text('${tzgg6['date']}',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       onTap: (){
                         url = Uri.parse('https://www.snut.edu.cn${tzgg6['location']}');
                         launchURL();
@@ -1651,7 +1688,7 @@ class _HomeState extends State<Home>{
                       borderRadius: BorderRadius.circular(21),
                       ),
                       trailing: Icon(Icons.chevron_right),
-                      title: Text('无法连接网络，请点击这里重试',style: TextStyle(fontSize: 16),),
+                      title: Text('无法连接网络，请点击这里重试',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
                       onTap: (){
                         getNewsList();
                       },
@@ -1664,6 +1701,21 @@ class _HomeState extends State<Home>{
         ],
       );
   }
+  //获取公告
+  getSmartSNUTNotify() async {
+    smartSNUTNotify = [];
+    Dio dio = Dio();
+    var smartSNUTNotifyResponse;
+    try{
+      smartSNUTNotifyResponse = await dio.get('https://apis.smartsnut.cn/Generic/Notify/Notify.json');
+    }catch(e){
+      return;
+    }
+    if(mounted){
+      smartSNUTNotify = jsonDecode(jsonEncode(smartSNUTNotifyResponse.data));
+    }
+  }
+
   //获取新闻并解析，便于首页渲染
   getNewsList() async {
     if(mounted){
@@ -1792,8 +1844,8 @@ class _HomeState extends State<Home>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -1856,8 +1908,8 @@ class _HomeState extends State<Home>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -1879,8 +1931,8 @@ class _HomeState extends State<Home>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('登录失败，账户不存在',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('登录失败，账户不存在',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -1900,8 +1952,8 @@ class _HomeState extends State<Home>{
         context: context,
         builder: (BuildContext context) => AlertDialog(
           scrollable: true,
-          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-          content: Text('登录失败，密码错误',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Text('登录失败，密码错误',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'OK'),
@@ -1930,8 +1982,8 @@ class _HomeState extends State<Home>{
         context: context,
         builder: (BuildContext context) => AlertDialog(
           scrollable: true,
-          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-          content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'OK'),
@@ -1996,8 +2048,8 @@ class _HomeState extends State<Home>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -2072,8 +2124,8 @@ class _HomeState extends State<Home>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -2189,8 +2241,8 @@ class _HomeState extends State<Home>{
           context: context,
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -2263,8 +2315,8 @@ class _HomeState extends State<Home>{
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -2300,8 +2352,8 @@ class _HomeState extends State<Home>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('发现新的 Windows 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              title: Text('发现新的 Windows 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -2335,8 +2387,8 @@ class _HomeState extends State<Home>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('发现新的 Android 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Android'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Android'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              title: Text('发现新的 Android 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Android'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Android'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -2385,10 +2437,10 @@ class _HomeState extends State<Home>{
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('正在更新...',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
+            title: Text('正在更新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
             content: Column(
               children: [
-                Text((Platform.isWindows)? '请勿关闭智慧陕理，下载完成后智慧陕理将会自动重启，完成更新操作':(Platform.isAndroid)? '正在下载安装包，下载完成后智慧陕理将会启动软件更新流程，请您手动进行更新':'正在下载更新...',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                Text((Platform.isWindows)? '请勿关闭智慧陕理，下载完成后智慧陕理将会自动重启，完成更新操作':(Platform.isAndroid)? '正在下载安装包，下载完成后智慧陕理将会启动软件更新流程，请您手动进行更新':'正在下载更新...',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                 SizedBox(height: 10,),
                 LinearProgressIndicator(
                   value: downloadProgress,
@@ -2397,8 +2449,8 @@ class _HomeState extends State<Home>{
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('${(downloadProgress * 100).toStringAsFixed(2)}%',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
-                    Text('${(downloadedSize / 1024 /1024).toStringAsFixed(2)}MB / ${(totalDownloadSize / 1024 / 1024).toStringAsFixed(2)}MB',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title))
+                    Text('${(downloadProgress * 100).toStringAsFixed(2)}%',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                    Text('${(downloadedSize / 1024 /1024).toStringAsFixed(2)}MB / ${(totalDownloadSize / 1024 / 1024).toStringAsFixed(2)}MB',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                   ],
                 )
               ],
@@ -2430,8 +2482,8 @@ class _HomeState extends State<Home>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('Windows 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('Windows 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {Navigator.pop(context, 'OK');},
@@ -2467,8 +2519,8 @@ class _HomeState extends State<Home>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('Android 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('Android 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {Navigator.pop(context, 'OK');},

@@ -98,7 +98,7 @@ class _electricmeterPageState extends State<electricmeterpage>{
                   children: [
                     Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/electricity.png'):AssetImage('assets/icons/darktheme/electricity.png'),height: 40,),
                     SizedBox(width: 10,),
-                    Text('电费查询',style: TextStyle(fontSize: GlobalVars.emquery_page_title),)
+                    Text('电费查询',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
                   ],
                 ),
               ),
@@ -120,13 +120,13 @@ class _electricmeterPageState extends State<electricmeterpage>{
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('电表编号：${em['userCode']}',style: TextStyle(fontSize: GlobalVars.emdetail_emid_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('电表编号：${em['userCode']}',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                           SizedBox(height: 10,),
-                          Text('电表剩余：${em['emDetail']['shengyu']}',style: TextStyle(fontSize: GlobalVars.emdetail_emleft_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('电表累计：${em['emDetail']['leiji']}',style: TextStyle(fontSize: GlobalVars.emdetail_emtotal_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('电表状态：${em['emDetail']['zhuangtai']}',style: TextStyle(fontSize: GlobalVars.emdetail_emstate_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('电表剩余：${em['emDetail']['shengyu']}',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('电表累计：${em['emDetail']['leiji']}',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('电表状态：${em['emDetail']['zhuangtai']}',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                           SizedBox(height: 10,),
-                          Text('${em['userAddress']}',style: TextStyle(fontSize: GlobalVars.emdetail_emaddress_title),textAlign: TextAlign.center,softWrap: true,maxLines: 1,overflow: TextOverflow.ellipsis),
+                          Text('${em['userAddress']}',style: TextStyle(fontSize: GlobalVars.genericTextLarge),textAlign: TextAlign.center,softWrap: true,maxLines: 1,overflow: TextOverflow.ellipsis),
                           SizedBox(height: 20,),
                           Divider(height: 5,indent: 20,endIndent: 20,),
                         ],
@@ -151,7 +151,7 @@ class _electricmeterPageState extends State<electricmeterpage>{
                       borderRadius: BorderRadius.circular(21),
                       ),
                       trailing: Icon(Icons.chevron_right),
-                      title: Text('无法连接网络，请点击这里重试',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.emquery_nonetwork_title),),
+                      title: Text('无法连接网络，请点击这里重试',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle),),
                       onTap: (){
                         queryem();
                       },
@@ -174,7 +174,7 @@ class _electricmeterPageState extends State<electricmeterpage>{
                         children: [
                           CircularProgressIndicator(),
                           SizedBox(width: 10,),
-                          Text('正在查询（$currentQuery/$electricmeternum）......',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.emquery_querying_title),)
+                          Text('正在查询（$currentQuery/$electricmeternum）......',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle),)
                         ],
                       ),
                     ),
@@ -289,8 +289,8 @@ class _electricmeterPageState extends State<electricmeterpage>{
           showDialog<String>(
             context: context,
             builder: (BuildContext context) => AlertDialog(
-              title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-              content: Text('查询失败，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+              title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('查询失败，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'OK'),

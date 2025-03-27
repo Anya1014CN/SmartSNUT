@@ -151,7 +151,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
               children: [
                 Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/electricitybind.png'):AssetImage('assets/icons/darktheme/electricitybind.png'),height: 40,),
                 SizedBox(width: 10,),
-                Text('解/绑电费账号',style: TextStyle(fontSize: GlobalVars.embind_page_title),)
+                Text('解/绑电费账号',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
               ],
             ),
           ),
@@ -177,8 +177,8 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(wechatUserNickname,style: TextStyle(fontSize: GlobalVars.embind_wechatname_title,fontWeight: FontWeight.bold),),
-                              Text('电表数量：$electricmeternum',style: TextStyle(fontSize: GlobalVars.embind_emnum_title),)
+                              Text(wechatUserNickname,style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),),
+                              Text('电表数量：$electricmeternum',style: TextStyle(fontSize: GlobalVars.genericTextLarge),)
                             ],
                           ),
                         ),
@@ -227,8 +227,8 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
                           showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
-                              title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                              content: Text('您确定要刷新数据吗',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                              title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                              content: Text('您确定要刷新数据吗',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -245,7 +245,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
                             ),
                           );
                         }, 
-                        child: isBinding? Center(child: CircularProgressIndicator(),):Text('刷新数据',style: TextStyle(fontSize: GlobalVars.embindrefresh_button_title),),
+                        child: isBinding? Center(child: CircularProgressIndicator(),):Text('刷新数据',style: TextStyle(fontSize: GlobalVars.genericTextMedium),),
                       ),
                     ),
                   ),
@@ -272,8 +272,8 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
                           showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
-                              title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                              content: Text('您确定要解绑账号吗',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                              title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                              content: Text('您确定要解绑账号吗',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -290,7 +290,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
                             ),
                           );
                         },
-                        child: Text('解绑账号',style: TextStyle(fontSize: GlobalVars.embindunbind_button_title),),
+                        child: Text('解绑账号',style: TextStyle(fontSize: GlobalVars.genericTextMedium),),
                       ),
                     ),
                   ),
@@ -324,7 +324,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
                             url = Uri.parse('https://smartsnut.cn/Docs/UserManual/EMBindGuide.html');
                             launchURL();
                         },
-                        child: Text('如何绑定？',style: TextStyle(fontSize: GlobalVars.embind_binding_title),),
+                        child: Text('如何绑定？',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
                       ),
                     ),
                   ),
@@ -352,8 +352,8 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
                                 scrollable: true,
-                                title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-                                content: Text('请先输入您的 openId',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+                                title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                content: Text('请先输入您的 openId',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () => Navigator.pop(context, 'OK'),
@@ -367,7 +367,7 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
                             bindelectricmeter();
                           }
                         },
-                        child: isBinding? Center(child: CircularProgressIndicator(),):Text('绑定账号',style: TextStyle(fontSize: GlobalVars.embind_binding_title),),
+                        child: isBinding? Center(child: CircularProgressIndicator(),):Text('绑定账号',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
                       ),
                     ),
                   ),
@@ -388,9 +388,9 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('服务说明',style: TextStyle(fontSize: GlobalVars.embind_hint_title,fontWeight: FontWeight.bold),),
-                    Text('1.电费账号与陕西理工大学统一身份认证账号相互独立\n登录/退出陕西理工大学统一身份认证账号不会影响电费账号\n绑定电费账号不会关联到陕西理工大学统一身份认证账号',style: TextStyle(fontSize: GlobalVars.embind_hint_subtitle),),
-                    Text('2.如果您在绑定电费账号之后在陕西理工大学后勤保障部公众号进行了绑定/解绑用户（电表）操作，请务必点击下方的“刷新数据”按钮，否则可能会导致“电表查询”功能出现电表列表不准确的情况',style: TextStyle(fontSize: GlobalVars.embind_hint_subtitle),),
+                    Text('服务说明',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),),
+                    Text('1.电费账号与陕西理工大学统一身份认证账号相互独立\n登录/退出陕西理工大学统一身份认证账号不会影响电费账号\n绑定电费账号不会关联到陕西理工大学统一身份认证账号',style: TextStyle(fontSize: GlobalVars.genericTextMedium),),
+                    Text('2.如果您在绑定电费账号之后在陕西理工大学后勤保障部公众号进行了绑定/解绑用户（电表）操作，请务必点击下方的“刷新数据”按钮，否则可能会导致“电表查询”功能出现电表列表不准确的情况',style: TextStyle(fontSize: GlobalVars.genericTextMedium),),
                   ],
                 ),
               ),
@@ -418,8 +418,8 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
       showDialog(
         context: context, 
         builder: (BuildContext context)=>AlertDialog(
-          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-          content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
         ));
         if(mounted){
@@ -439,8 +439,8 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
       showDialog(
         context: context, 
         builder: (BuildContext context)=>AlertDialog(
-          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-          content: Text('无法获取用户信息，请检查您的 openId 是否正确',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Text('无法获取用户信息，请检查您的 openId 是否正确',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
         ));
         if(mounted){
@@ -460,8 +460,8 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
     showDialog(
       context: context, 
       builder: (BuildContext context)=>AlertDialog(
-        title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-        content: Text('您的微信账号还未绑定电表，请先前往陕西理工大学后勤保障部公众号绑定电表',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+        title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        content: Text('您的微信账号还未绑定电表，请先前往陕西理工大学后勤保障部公众号绑定电表',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
         actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
       ));
       if(mounted){
@@ -475,8 +475,8 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
     showDialog(
       context: context, 
       builder: (BuildContext context)=>AlertDialog(
-        title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-        content: Text('无法获取数据，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+        title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        content: Text('无法获取数据，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
         actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
       ));
       if(mounted){
@@ -568,8 +568,8 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialog_title_title)),
-        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialog_content_title)),
+        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),

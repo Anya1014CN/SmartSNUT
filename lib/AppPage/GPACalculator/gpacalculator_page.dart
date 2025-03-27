@@ -187,7 +187,7 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('切换成绩时间',style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_title_title),),
+            title: Text('切换成绩时间',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),),
             content: Column(
               children: [
                 MenuAnchor(
@@ -206,7 +206,7 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
                         readSemesterInfo();
                         menuYearController.close();
                       },
-                      child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_year_title),),
+                      child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                     );
                   }).toList(),
                   child: SizedBox(
@@ -225,7 +225,7 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
                           menuYearController.open();
                         }
                       },
-                      child: Text('学年：$currentYearName', style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_year_title),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                      child: Text('学年：$currentYearName', style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                     ),
                   ),
                 ),
@@ -234,7 +234,7 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
                   controller: menuTermController,
                   menuChildren: [
                     MenuItemButton(
-                      child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_term_title),),
+                      child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                       onPressed: () async {
                         if(mounted){
                           setState(() {
@@ -248,7 +248,7 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
                       },
                     ),
                     MenuItemButton(
-                      child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_term_title),),
+                      child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                       onPressed: () async {
                         if(mounted){
                           setState(() {
@@ -278,7 +278,7 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
                           menuTermController.open();
                         }
                       },
-                      child: Text('学期：$currentTermName', style: TextStyle(fontSize: GlobalVars.stdgradeswitchterm_term_title),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                      child: Text('学期：$currentTermName', style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                     ),
                   ),
                 ),
@@ -314,7 +314,7 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
           children: [
             Icon(Icons.open_in_new),
             SizedBox(width: 10,),
-            Text('我的成绩',style: TextStyle(fontSize: GlobalVars.refreshcoursetable_button_title),)
+            Text('我的成绩',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
           ],
         ),
       ),
@@ -364,7 +364,7 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
                   children: [
                     Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/calculator.png'):AssetImage('assets/icons/darktheme/calculator.png'),height: 40,),
                     SizedBox(width: 10,),
-                    Text('绩点计算器',style: TextStyle(fontSize: GlobalVars.gpacalculator_page_title),)
+                    Text('绩点计算器',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
                   ],
                 ),
               ),
@@ -382,9 +382,9 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text('算数平均绩点：${(courseGPATotal / stdGradesTotal.length).toStringAsFixed(3)} （保留 3 位小数）',style: TextStyle(fontSize: GlobalVars.gpacalculator_GPAtitle_title),),
+                        Text('算数平均绩点：${(courseGPATotal / stdGradesTotal.length).toStringAsFixed(3)} （保留 3 位小数）',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
                         SizedBox(height: 5,),
-                        Text('本学期共 ${stdGradesTotal.length} 门课程',style: TextStyle(fontSize: GlobalVars.gpacalculator_GPAcontent_title),),
+                        Text('本学期共 ${stdGradesTotal.length} 门课程',style: TextStyle(fontSize: GlobalVars.genericSwitchContainerTitle),),
                       ],
                     ),
                   )
@@ -402,8 +402,8 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
                     ),
                     child: ListTile(
                       leading: Icon(Icons.error),
-                      title: Text('暂无 成绩 信息',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_title,fontWeight: FontWeight.bold),),
-                      subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角前往 “我的成绩” 页面刷新成绩',style: TextStyle(fontSize: GlobalVars.nostdgrade_hint_subtitle),),
+                      title: Text('暂无 成绩 信息',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                      subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角前往 “我的成绩” 页面刷新成绩',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                     ),
                   ),
                 ),
@@ -423,9 +423,9 @@ class _GPACalculatorPageState extends State<GPACalculatorPage>{
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('课程名称：${grades['CourseName']}',style: TextStyle(fontSize: GlobalVars.gpacalculator_coursename_title,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('课程名称：${grades['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                           SizedBox(height: 10,),
-                          Text('学分：${grades['CourseCredit']}  最终：${grades['CourseGradeFinal']}  绩点：${grades['CourseGradeGPA']}',style: TextStyle(fontSize: GlobalVars.gpacalculator_coursename_content),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                          Text('学分：${grades['CourseCredit']}  最终：${grades['CourseGradeFinal']}  绩点：${grades['CourseGradeGPA']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
                           Divider(height: 5,indent: 20,endIndent: 20,),
                         ],
                       ),
