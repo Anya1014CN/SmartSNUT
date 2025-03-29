@@ -31,7 +31,6 @@ class GlobalVars {
   //用户设置相关
   static List settingsTotal = [];
   static int fontsizeint = 1;//0 - 小；1 - 中；2 - 大
-  static String fontSize_name = '适中';
   static int darkModeint = 0;//0 - 跟随系统；1 - 始终开启；2 - 始终关闭
   static int themeColor = 0;//对应八种颜色
   //课表是否显示周六周日

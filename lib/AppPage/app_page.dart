@@ -108,7 +108,7 @@ class _AppPageState extends State<AppPage>{
                         padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
                         height: 100,
                         child: ElevatedButton(
-                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => stdDetailPage()));},
+                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => StdDetailPage()));},
                           style: ElevatedButton.styleFrom(
                             shadowColor: Theme.of(context).colorScheme.onPrimary,
                             backgroundColor: Theme.of(context).colorScheme.surfaceDim,
@@ -249,7 +249,7 @@ class _AppPageState extends State<AppPage>{
                         padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                         height: 100,
                         child: ElevatedButton(
-                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => schoolNetworkPage()));},
+                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => SchoolNetworkPage()));},
                           style: ElevatedButton.styleFrom(
                             shadowColor: Theme.of(context).colorScheme.onPrimary,
                             backgroundColor: Theme.of(context).colorScheme.surfaceDim,
@@ -290,7 +290,7 @@ class _AppPageState extends State<AppPage>{
                                 );
                                 return;
                               }else{
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterpage()));
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => Electricmeterpage()));
                               }
                             },
                           style: ElevatedButton.styleFrom(
@@ -495,7 +495,9 @@ class _AppPageState extends State<AppPage>{
           TextButton(
             onPressed: () async {
               await launchUrl(url);
-              Navigator.pop(context, 'OK');
+              if(context.mounted){
+                Navigator.pop(context, 'OK');
+              }
             },
             child: const Text('确认'),
           ),

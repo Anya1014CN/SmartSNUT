@@ -167,7 +167,7 @@ class _StdExamPageState extends State<StdExamPage>{
   //读取考试信息
   readstdExam() async  {
     //使用本地选中的 semetserid 来读取对应的课表
-    var stdExamBatchInfo;
+    late List stdExamBatchInfo;
     String semesterId = semestersData['y$currentYearInt'][currentTermInt -1 ]['id'].toString();
     String stdExamBatchpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/stdExam/stdExam$semesterId-Batch.json';
     File stdExamBatchfile = File(stdExamBatchpath);
@@ -605,7 +605,7 @@ class _StdExamPageState extends State<StdExamPage>{
     dio.interceptors.add(CookieManager(jwglcookie));
 
     //第一次请求，获取 hash
-    var response1;
+    late Response response1;
     try{
       response1 = await dio.get('http://jwgl.snut.edu.cn/eams/loginExt.action');
     }catch (e){
@@ -660,8 +660,8 @@ class _StdExamPageState extends State<StdExamPage>{
       'http://jwgl.snut.edu.cn/eams/loginExt.action',
       options: Options(
         followRedirects: true,
-        validateStatus: (Status){
-          return Status != null && Status <= 302;
+        validateStatus: (status){
+          return status != null && status <= 302;
         },
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -717,9 +717,8 @@ class _StdExamPageState extends State<StdExamPage>{
     
 
     //请求首页，初始化数据
-    var homeresponse1;
     try{
-      homeresponse1 = await dio.get(
+      await dio.get(
         options: Options(
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
@@ -756,7 +755,7 @@ class _StdExamPageState extends State<StdExamPage>{
     //等待半秒，防止教务系统判定为过快点击
     await Future.delayed(Duration(milliseconds: 500));
 
-    var stdExamresponse1;
+    late Response stdExamresponse1;
     try{
       stdExamresponse1 = await dio.get(
         options: Options(
@@ -792,18 +791,11 @@ class _StdExamPageState extends State<StdExamPage>{
 
     //提取相关数据
     String semesterId = '';
-    String tagId = '';
 
     RegExp semesterExp = RegExp(r'semester\.id=(\d+)');
-    Match? semesteridmatch = semesterExp.firstMatch(stdExamresponse1.headers['Set-Cookie'][0].toString());
+    Match? semesteridmatch = semesterExp.firstMatch(stdExamresponse1.headers['Set-Cookie']!.first);
     if(semesteridmatch != null){
       semesterId = semesteridmatch.group(1)!;
-    }
-
-    RegExp tagIdExp = RegExp(r'semesterBar(\d+)Semester');
-    Match? tagIdmatch = tagIdExp.firstMatch(stdExamresponse1.data.toString());
-    if(tagIdmatch != null){
-      tagId = tagIdmatch.group(1)!;
     }
 
     //获取 examBatchId
@@ -814,11 +806,7 @@ class _StdExamPageState extends State<StdExamPage>{
     //等待半秒，防止教务系统判定为过快点击
     await Future.delayed(Duration(milliseconds: 500));
 
-   final stdExamformData2 = FormData.fromMap({
-      "project.id": '1',
-      "semester.id": semesterId.toString(),
-    });
-    var stdExamresponse5;
+    late Response stdExamresponse5;
     try{
       var headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -921,7 +909,7 @@ class _StdExamPageState extends State<StdExamPage>{
       }
       return;
     }
-    var stdExamresponse6;
+    late Response stdExamresponse6;
     try{
       stdExamresponse6 = await dio.get(
         'http://jwgl.snut.edu.cn/eams/stdExamTable!examTable.action?examBatch.id=$currentExamBatchid',

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:smartsnut/before_start.dart';
 import 'package:smartsnut/login.dart';
 import 'package:smartsnut/mePage/guidePage/guide_page.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
@@ -106,7 +105,7 @@ class _MePageState extends State<MePage>{
                               borderRadius: BorderRadius.circular(25),
                             ),
                           ),
-                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage()));},
+                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => ElectricmeterbindPage()));},
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -268,17 +267,21 @@ class _MePageState extends State<MePage>{
       await smartSNUTdirectory.create();
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('退出登录成功'),
-      ),
-    );
+    if(mounted){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('退出登录成功'),
+        ),
+      );
+    }
 
     if(mounted){
       setState(() {
         isloggedin = false;  
       });
     }
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext ctx) => LoginPage()));
+    if(mounted){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext ctx) => LoginPage()));
+    }
   }
 }

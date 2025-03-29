@@ -4,7 +4,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:html/parser.dart' show parse;
+import 'package:html/dom.dart' as html_dom;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
@@ -16,7 +16,7 @@ import 'package:smartsnut/AppPage/stdGrades/stdgrades_page.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:html/parser.dart' as parser;
+import 'package:html/parser.dart' as html_parser;
 import 'package:crypto/crypto.dart';
 
 //最新版本下载链接
@@ -1217,7 +1217,7 @@ class _HomeState extends State<Home>{
           padding: EdgeInsets.fromLTRB(10, 50, 0, 30),
           child: Text('${GlobalVars.greeting}，${GlobalVars.realName}',style: TextStyle(fontWeight: FontWeight.w300,fontSize: GlobalVars.genericGreetingTitle),),
         ),
-        (smartSNUTNotify.length == 0)? 
+        (smartSNUTNotify.isEmpty)? 
         SizedBox():
         Container(
           padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -1444,7 +1444,7 @@ class _HomeState extends State<Home>{
                           padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                           height: 100,
                           child: ElevatedButton(
-                            onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => schoolNetworkPage()));},
+                            onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => SchoolNetworkPage()));},
                             style: ElevatedButton.styleFrom(
                               shadowColor: Theme.of(context).colorScheme.onPrimary,
                               backgroundColor: Theme.of(context).colorScheme.surfaceDim,
@@ -1485,7 +1485,7 @@ class _HomeState extends State<Home>{
                                 );
                                 return;
                               }else{
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterpage()));
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => Electricmeterpage()));
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -1705,7 +1705,7 @@ class _HomeState extends State<Home>{
   getSmartSNUTNotify() async {
     smartSNUTNotify = [];
     Dio dio = Dio();
-    var smartSNUTNotifyResponse;
+    late Response smartSNUTNotifyResponse;
     try{
       smartSNUTNotifyResponse = await dio.get('https://apis.smartsnut.cn/Generic/Notify/Notify.json');
     }catch(e){
@@ -1753,10 +1753,10 @@ class _HomeState extends State<Home>{
         }
           
           //这里需要进行两次 get，第一次 get 拿到 cookie，第二次 get 需要带 cookie 才能正常获取到页面
-          var document;
+          late html_dom.Document document;
           try{
             Response response = await dio.get(newsurl);
-            document = parse(response.data);
+            document = html_parser.parse(response.data);
           }catch (e){
             if(mounted){
               setState(() {
@@ -1835,7 +1835,7 @@ class _HomeState extends State<Home>{
     dio.interceptors.add(CookieManager(jwglcookie));
 
     //第一次请求，获取 hash
-    var response1;
+    late Response response1;
     try{
       response1 = await dio.get('http://jwgl.snut.edu.cn/eams/loginExt.action');
     }catch (e){
@@ -1886,14 +1886,14 @@ class _HomeState extends State<Home>{
       "session_locale": "zh_CN"
     });
 
-    var response2;
+    late Response response2;
     try{
       response2 = await dio.post(
         'http://jwgl.snut.edu.cn/eams/loginExt.action',
         options: Options(
           followRedirects: true,
-          validateStatus: (Status){
-            return Status != null && Status <= 302;
+          validateStatus: (status){
+            return status != null && status <= 302;
           },
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -1973,7 +1973,7 @@ class _HomeState extends State<Home>{
     await Future.delayed(Duration(milliseconds: 500));
 
     //请求课表初始信息
-    var courseresponse1;
+    late Response courseresponse1;
     try{
       courseresponse1 = await dio.get('http://jwgl.snut.edu.cn/eams/courseTableForStd.action');
     }catch (e){
@@ -2002,10 +2002,10 @@ class _HomeState extends State<Home>{
     String semesterId = '';
     String tagId = '';
     String idsMe = '';
-    String idsClass = '';
+    //String idsClass = ''; 班级课表 id
 
     RegExp semesterExp = RegExp(r'semester\.id=(\d+)');
-    Match? semesteridmatch = semesterExp.firstMatch(courseresponse1.headers['Set-Cookie'][0].toString());
+    Match? semesteridmatch = semesterExp.firstMatch(courseresponse1.headers['Set-Cookie']!.first);
     if(semesteridmatch != null){
       semesterId = semesteridmatch.group(1)!;
     }
@@ -2020,7 +2020,7 @@ class _HomeState extends State<Home>{
     Iterable<Match> idsmatch = idsExp.allMatches(courseresponse1.data);
     if(idsmatch.length >=2 ){
       idsMe = idsmatch.elementAt(0).group(1)!;
-      idsClass = idsmatch.elementAt(1).group(1)!;
+      //idsClass = idsmatch.elementAt(1).group(1)!; 班级课表 id
     }
 
     //获取所有学期的 semester.id，学年名称，学期名称
@@ -2030,7 +2030,7 @@ class _HomeState extends State<Home>{
       "value": semesterId.toString(),
       "empty": 'false'
     });
-    var courseresponse2;
+    late Response courseresponse2;
     try{
       courseresponse2 = await dio.post(
       'http://jwgl.snut.edu.cn/eams/dataQuery.action',
@@ -2066,7 +2066,7 @@ class _HomeState extends State<Home>{
     }
 
     String rawdata = courseresponse2.data.toString();
-    var semesters;
+    late String semesters;
 
     //处理教务系统的非标准 json
     rawdata = rawdata.replaceAllMapped(
@@ -2106,7 +2106,7 @@ class _HomeState extends State<Home>{
       "semester.id": semesterId,
       'ids': idsMe,
     });
-    var courseresponse3;
+    late Response courseresponse3;
     try{
       courseresponse3 = await dio.post(
         'http://jwgl.snut.edu.cn/eams/courseTableForStd!courseTable.action',
@@ -2152,10 +2152,6 @@ class _HomeState extends State<Home>{
   RegExp teacherPattern = RegExp(
     r'var teachers = \[(.*?)\];',
     dotAll: true
-  );
-
-  RegExp timePattern = RegExp(
-    r'index\s*=\s*(\d+)\s*\*\s*unitCount\s*\+\s*(\d+);'
   );
 
   List<Match> courseBlocks = courseBlockPattern.allMatches(courseresponse3.data).toList();
@@ -2223,7 +2219,7 @@ class _HomeState extends State<Home>{
       "semester.id": semesterId,
       '_': '1740564686472',
     });
-    var schoolCalendarresponse;
+    late Response schoolCalendarresponse;
     try{
       schoolCalendarresponse = await dio.post(
         'http://jwgl.snut.edu.cn/eams/schoolCalendar!search.action',
@@ -2259,7 +2255,7 @@ class _HomeState extends State<Home>{
     }
     
     List schoolCalendarList = [];
-    var schoolCalendardocument = parser.parse(schoolCalendarresponse.data);
+    var schoolCalendardocument = html_parser.parse(schoolCalendarresponse.data);
     var contentCells = schoolCalendardocument.querySelectorAll("td.content");
 
       if (contentCells.length > 1) {
@@ -2325,7 +2321,9 @@ class _HomeState extends State<Home>{
           TextButton(
             onPressed: () async {
               await launchUrl(url);
-              Navigator.pop(context, 'OK');
+              if(context.mounted){
+                Navigator.pop(context, 'OK');
+              }
             },
             child: const Text('确认'),
           ),
@@ -2338,7 +2336,7 @@ class _HomeState extends State<Home>{
   //检查更新
   checkUpdate() async {
     Dio dio = Dio();
-    var updateServerResponse;
+    late Response updateServerResponse;
     try{
       updateServerResponse = await dio.get('https://apis.smartsnut.cn/Generic/UpdateCheck/LatestVersion.json');
     }catch(e){

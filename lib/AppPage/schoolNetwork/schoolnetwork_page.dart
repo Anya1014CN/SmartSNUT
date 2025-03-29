@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:html/parser.dart' as html_parser;
+import 'package:html/dom.dart' as html_dom;
 import 'package:smartsnut/globalvars.dart';
 
 //用于存储外部链接的完整URL
@@ -19,16 +20,16 @@ String balance = '';
 String state = '';
 String expire = '';
 
-class schoolNetworkPage extends StatefulWidget{
-  const schoolNetworkPage({super.key});
+class SchoolNetworkPage extends StatefulWidget{
+  const SchoolNetworkPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _schoolNetworkPage();
+    return _SchoolNetworkPage();
   }
 }
 
-class _schoolNetworkPage extends State<schoolNetworkPage>{
+class _SchoolNetworkPage extends State<SchoolNetworkPage>{
   final textUsernameController = TextEditingController();
   bool _showAppBarTitle = false;
 
@@ -257,7 +258,7 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
     dio.interceptors.add(CookieManager(netcookiejar));
 
     //第一次请求，提取相关信息
-    var document;
+    late html_dom.Document document;
     String csrfToken = '';
     String ajaxCsrfToken = '';
 
@@ -267,7 +268,7 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
       
       //提取 csrftoken
       final csrfTokenInput = document.querySelector('input[name="csrftoken"]');
-      csrfToken = csrfTokenInput?.attributes['value'];
+      csrfToken = csrfTokenInput?.attributes['value']?? '';
 
       //提取 AJAXCSRFTOKEN
       final ajaxCsrfTokenRegExp = RegExp(r'window\.AJAXCSRFTOKEN\s*=\s*"([^"]+)"');
@@ -297,7 +298,7 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
 
 
     //第二次请求，查询数据
-    var netresponse2;
+    late Response netresponse2;
     try{
       netresponse2 = await dio.post(
         'https://netpay.snut.edu.cn/WebPay/queryUser',
@@ -315,15 +316,15 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
         },
       );
     }catch(e){
-      showDialog(
-        context: context, 
-        builder: (BuildContext context)=>AlertDialog(
-          title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-          content: Text('无法查询到信息，请检查您输入的账号是否正确！',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-          actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
-        )
-      );
       if(mounted){
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法查询到信息，请检查您输入的账号是否正确！',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+          )
+        );
         setState(() {
           realName = '';
           balance = '';
@@ -337,15 +338,15 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
 
     var netdata = jsonDecode(netresponse2.data);
     if(netdata['userName'] == ''){
-      showDialog(
-        context: context, 
-        builder: (BuildContext context)=>AlertDialog(
-          title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-          content: Text('无法查询到信息，请检查您输入的账号是否正确！',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-          actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
-        )
-      );
       if(mounted){
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法查询到信息，请检查您输入的账号是否正确！',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+          )
+        );
         setState(() {
           realName = '';
           balance = '';
@@ -383,7 +384,9 @@ class _schoolNetworkPage extends State<schoolNetworkPage>{
           TextButton(
             onPressed: () async {
               await launchUrl(url);
-              Navigator.pop(context, 'OK');
+              if(context.mounted){
+                Navigator.pop(context, 'OK');
+              }
             },
             child: const Text('确认'),
           ),

@@ -74,7 +74,7 @@ final List<Color> courseBlockMoLandiColors = [
 //马卡龙色系
 final List<Color> courseBlockMakalongColors = [
   Color(0xfff1707d),
-  Color(0xfff155369),
+  Color(0xff155369),
   Color(0xffef5767),
   Color(0xffae716e),
   Color(0xffcb8e85),
@@ -1978,7 +1978,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     dio.interceptors.add(CookieManager(jwglcookie));
 
     //第一次请求，获取 hash
-    var response1;
+    late Response response1;
     try{
       response1 = await dio.get('http://jwgl.snut.edu.cn/eams/loginExt.action');
     }catch (e){
@@ -2033,8 +2033,8 @@ class _CourseTablePage extends State<CourseTablePage>{
       'http://jwgl.snut.edu.cn/eams/loginExt.action',
       options: Options(
         followRedirects: true,
-        validateStatus: (Status){
-          return Status != null && Status <= 302;
+        validateStatus: (status){
+          return status != null && status <= 302;
         },
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -2092,7 +2092,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     await Future.delayed(Duration(milliseconds: 500));
 
     //请求课表初始信息
-    var courseresponse1;
+    late Response courseresponse1;
     try{
       courseresponse1 = await dio.get('http://jwgl.snut.edu.cn/eams/courseTableForStd.action');
     }catch (e){
@@ -2121,10 +2121,10 @@ class _CourseTablePage extends State<CourseTablePage>{
     String semesterId = '';
     String tagId = '';
     String idsMe = '';
-    String idsClass = '';
+    //String idsClass = ''; 班级课表 id
 
     RegExp semesterExp = RegExp(r'semester\.id=(\d+)');
-    Match? semesteridmatch = semesterExp.firstMatch(courseresponse1.headers['Set-Cookie'][0].toString());
+    Match? semesteridmatch = semesterExp.firstMatch(courseresponse1.headers['Set-Cookie']!.first);
     if(semesteridmatch != null){
       semesterId = semesteridmatch.group(1)!;
     }
@@ -2135,12 +2135,13 @@ class _CourseTablePage extends State<CourseTablePage>{
       tagId = tagIdmatch.group(1)!;
     }
 
-    RegExp idsExp = RegExp(r'bg\.form\.addInput\(form,"ids","(\d+)"\)');
-    Iterable<Match> idsmatch = idsExp.allMatches(courseresponse1.data);
-    if(idsmatch.length >=2 ){
-      idsMe = idsmatch.elementAt(0).group(1)!;
-      idsClass = idsmatch.elementAt(1).group(1)!;
-    }
+    //RegExp idsExp = RegExp(r'bg\.form\.addInput\(form,"ids","(\d+)"\)');
+    //Iterable<Match> idsmatch = idsExp.allMatches(courseresponse1.data);
+    //班级课表id
+    // if(idsmatch.length >=2 ){
+    //   idsMe = idsmatch.elementAt(0).group(1)!;
+    //   idsClass = idsmatch.elementAt(1).group(1)!;
+    // }
 
     //获取所有学期的 semester.id，学年名称，学期名称
     final courseTableformData = FormData.fromMap({
@@ -2149,7 +2150,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       "value": semesterId.toString(),
       "empty": 'false'
     });
-    var courseresponse2;
+    late Response courseresponse2;
     try{
       courseresponse2 = await dio.post(
       'http://jwgl.snut.edu.cn/eams/dataQuery.action',
@@ -2185,7 +2186,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     }
 
     String rawdata = courseresponse2.data.toString();
-    var semesters;
+    late String semesters;
 
     //处理教务系统的非标准 json
     rawdata = rawdata.replaceAllMapped(
@@ -2224,7 +2225,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       "semester.id": semesterId,
       'ids': idsMe,
     });
-    var courseresponse3;
+    late Response courseresponse3;
     try{
       courseresponse3 = await dio.post(
         'http://jwgl.snut.edu.cn/eams/courseTableForStd!courseTable.action',
@@ -2270,10 +2271,6 @@ class _CourseTablePage extends State<CourseTablePage>{
   RegExp teacherPattern = RegExp(
     r'var teachers = \[(.*?)\];',
     dotAll: true
-  );
-
-  RegExp timePattern = RegExp(
-    r'index\s*=\s*(\d+)\s*\*\s*unitCount\s*\+\s*(\d+);'
   );
 
   List<Match> courseBlocks = courseBlockPattern.allMatches(courseresponse3.data).toList();
@@ -2341,7 +2338,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       "semester.id": semesterId,
       '_': '1740564686472',
     });
-    var schoolCalendarresponse;
+    late Response schoolCalendarresponse;
     try{
       schoolCalendarresponse = await dio.post(
         'http://jwgl.snut.edu.cn/eams/schoolCalendar!search.action',

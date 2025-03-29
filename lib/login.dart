@@ -65,57 +65,29 @@ class _LoginPageState extends State<LoginPage>{
   //设置字体大小
   setfontsize() {
     double changevalue = 0;
-    if(GlobalVars.fontsizeint == 0){
-      changevalue = -6;
-      GlobalVars.fontSize_name = '极小';
-    }
-    if(GlobalVars.fontsizeint == 1){
-      changevalue = -4;
-      GlobalVars.fontSize_name = '超小';
-    }
-    if(GlobalVars.fontsizeint == 2){
-      changevalue = -2;
-      GlobalVars.fontSize_name = '较小';
-    }
-    if(GlobalVars.fontsizeint == 3){
-      changevalue = 0;
-      GlobalVars.fontSize_name = '适中';
-    }
-    if(GlobalVars.fontsizeint == 4){
-      changevalue = 2;
-      GlobalVars.fontSize_name = '较大';
-    }
-    if(GlobalVars.fontsizeint == 5){
-      changevalue = 4;
-      GlobalVars.fontSize_name = '超大';
-    }
-    if(GlobalVars.fontsizeint == 6){
-      changevalue = 6;
-      GlobalVars.fontSize_name = '极大';
-    }
 
-      //弹出对话框字体
-      GlobalVars.alertdialogTitle = DefaultfontSize.alertdialogTitle + changevalue;
-      GlobalVars.alertdialogContent = DefaultfontSize.alertdialogContent + changevalue;
+    //弹出对话框字体
+    GlobalVars.alertdialogTitle = DefaultfontSize.alertdialogTitle + changevalue;
+    GlobalVars.alertdialogContent = DefaultfontSize.alertdialogContent + changevalue;
 
-      //通用页面字体
-      GlobalVars.splashPageTitle = DefaultfontSize.splashPageTitle + changevalue;
-      GlobalVars.bottonbarAppnameTitle = DefaultfontSize.bottonbarAppnameTitle + changevalue;
-      GlobalVars.bottonbarSelectedTitle = DefaultfontSize.bottonbarSelectedTitle + changevalue;
-      GlobalVars.bottonbarUnselectedTitle = DefaultfontSize.bottonbarUnselectedTitle + changevalue;
-      GlobalVars.genericPageTitle = DefaultfontSize.genericPageTitle + changevalue;
-      GlobalVars.genericPageTitleSmall = DefaultfontSize.genericPageTitleSmall + changevalue;
-      GlobalVars.genericGreetingTitle = DefaultfontSize.genericGreetingTitle + changevalue;
-      GlobalVars.genericFloationActionButtonTitle = DefaultfontSize.genericFloationActionButtonTitle + changevalue;
-      GlobalVars.dividerTitle = DefaultfontSize.dividerTitle + changevalue;
-      GlobalVars.listTileTitle = DefaultfontSize.listTileTitle + changevalue;
-      GlobalVars.listTileSubtitle = DefaultfontSize.listTileSubtitle + changevalue;
-      GlobalVars.genericFunctionsButtonTitle = DefaultfontSize.genericFunctionsButtonTitle + changevalue;
-      GlobalVars.genericSwitchContainerTitle = DefaultfontSize.genericSwitchContainerTitle + changevalue;
-      GlobalVars.genericSwitchMenuTitle = DefaultfontSize.genericSwitchMenuTitle + changevalue;
-      GlobalVars.genericTextSmall = DefaultfontSize.genericTextSmall + changevalue;
-      GlobalVars.genericTextMedium = DefaultfontSize.genericTextMedium + changevalue;
-      GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
+    //通用页面字体
+    GlobalVars.splashPageTitle = DefaultfontSize.splashPageTitle + changevalue;
+    GlobalVars.bottonbarAppnameTitle = DefaultfontSize.bottonbarAppnameTitle + changevalue;
+    GlobalVars.bottonbarSelectedTitle = DefaultfontSize.bottonbarSelectedTitle + changevalue;
+    GlobalVars.bottonbarUnselectedTitle = DefaultfontSize.bottonbarUnselectedTitle + changevalue;
+    GlobalVars.genericPageTitle = DefaultfontSize.genericPageTitle + changevalue;
+    GlobalVars.genericPageTitleSmall = DefaultfontSize.genericPageTitleSmall + changevalue;
+    GlobalVars.genericGreetingTitle = DefaultfontSize.genericGreetingTitle + changevalue;
+    GlobalVars.genericFloationActionButtonTitle = DefaultfontSize.genericFloationActionButtonTitle + changevalue;
+    GlobalVars.dividerTitle = DefaultfontSize.dividerTitle + changevalue;
+    GlobalVars.listTileTitle = DefaultfontSize.listTileTitle + changevalue;
+    GlobalVars.listTileSubtitle = DefaultfontSize.listTileSubtitle + changevalue;
+    GlobalVars.genericFunctionsButtonTitle = DefaultfontSize.genericFunctionsButtonTitle + changevalue;
+    GlobalVars.genericSwitchContainerTitle = DefaultfontSize.genericSwitchContainerTitle + changevalue;
+    GlobalVars.genericSwitchMenuTitle = DefaultfontSize.genericSwitchMenuTitle + changevalue;
+    GlobalVars.genericTextSmall = DefaultfontSize.genericTextSmall + changevalue;
+    GlobalVars.genericTextMedium = DefaultfontSize.genericTextMedium + changevalue;
+    GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
   }
 
   @override
@@ -291,7 +263,7 @@ class _LoginPageState extends State<LoginPage>{
     dio.interceptors.add(CookieManager(jwglcookie));
 
     //第一次请求，获取 hash
-    var response1;
+    late Response response1;
     try{
       response1 = await dio.get('http://jwgl.snut.edu.cn/eams/loginExt.action');
     }catch (e){
@@ -344,14 +316,14 @@ class _LoginPageState extends State<LoginPage>{
     });
 
 
-  var response2;
+  late Response response2;
   try{
         response2 = await dio.post(
         'http://jwgl.snut.edu.cn/eams/loginExt.action',
         options: Options(
           followRedirects: true,
-          validateStatus: (Status){
-            return Status != null && Status <= 302;
+          validateStatus: (status){
+            return status != null && status <= 302;
           },
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -446,7 +418,7 @@ class _LoginPageState extends State<LoginPage>{
     }
 
     //真实姓名
-    var myactionresponse;
+    late Response myactionresponse;
     try{
       myactionresponse = await dio.get('http://jwgl.snut.edu.cn/eams/security/my.action');
     }catch(e){
@@ -496,7 +468,7 @@ class _LoginPageState extends State<LoginPage>{
     }
 
   //学籍信息保存
-  var stdDetailresponse;
+  late Response stdDetailresponse;
   try{
     stdDetailresponse = await dio.get('http://jwgl.snut.edu.cn/eams/stdDetail.action');
   }catch(e){
@@ -565,7 +537,7 @@ class _LoginPageState extends State<LoginPage>{
     await Future.delayed(Duration(milliseconds: 500));
 
     //请求课表初始信息
-    var courseresponse1;
+    late Response courseresponse1;
     try{
       courseresponse1 = await dio.get('http://jwgl.snut.edu.cn/eams/courseTableForStd.action');
     }catch (e){
@@ -594,11 +566,9 @@ class _LoginPageState extends State<LoginPage>{
     //提取相关数据
     String semesterId = '';
     String tagId = '';
-    String idsMe = '';
-    String idsClass = '';
 
     RegExp semesterExp = RegExp(r'semester\.id=(\d+)');
-    Match? semesteridmatch = semesterExp.firstMatch(courseresponse1.headers['Set-Cookie'][0].toString());
+    Match? semesteridmatch = semesterExp.firstMatch(courseresponse1.headers['Set-Cookie']!.first);
     if(semesteridmatch != null){
       semesterId = semesteridmatch.group(1)!;
     }
@@ -609,13 +579,6 @@ class _LoginPageState extends State<LoginPage>{
       tagId = tagIdmatch.group(1)!;
     }
 
-    RegExp idsExp = RegExp(r'bg\.form\.addInput\(form,"ids","(\d+)"\)');
-    Iterable<Match> idsmatch = idsExp.allMatches(courseresponse1.data);
-    if(idsmatch.length >=2 ){
-      idsMe = idsmatch.elementAt(0).group(1)!;
-      idsClass = idsmatch.elementAt(1).group(1)!;
-    }
-
     //获取所有学期的 semester.id，学年名称，学期名称
     final courseTableformData = FormData.fromMap({
       "tagId": 'semesterBar${tagId}Semester',
@@ -623,7 +586,7 @@ class _LoginPageState extends State<LoginPage>{
       "value": semesterId.toString(),
       "empty": 'false'
     });
-    var courseresponse2;
+    late Response courseresponse2;
     try{
       courseresponse2 = await dio.post(
       'http://jwgl.snut.edu.cn/eams/dataQuery.action',
@@ -660,7 +623,7 @@ class _LoginPageState extends State<LoginPage>{
     }
     
     String rawdata = courseresponse2.data.toString();
-    var semesters;
+    late String semesters;
 
     //处理教务系统的非标准 json
     rawdata = rawdata.replaceAllMapped(
@@ -710,11 +673,13 @@ class _LoginPageState extends State<LoginPage>{
     await gpaCalculatordirectory.create();
   }
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-       content: Text('登录成功'),
-    ),
-  );
+  if(mounted){
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('登录成功'),
+      ),
+    );
+  }
 
   //登录流程完成，刷新用户信息，创建一个占位文件
   readStdAccount();
@@ -723,7 +688,9 @@ class _LoginPageState extends State<LoginPage>{
   loginsuccessfile.writeAsString('');
   
 
-  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext ctx) => HomePage()));
+    if(mounted){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext ctx) => HomePage()));
+    }
   }
   
   //读取用户信息并保存在变量中
@@ -801,7 +768,9 @@ class _LoginPageState extends State<LoginPage>{
           TextButton(
             onPressed: () async {
               await launchUrl(url);
-              Navigator.pop(context, 'OK');
+              if(context.mounted){
+                Navigator.pop(context, 'OK');
+              }
             },
             child: const Text('确认'),
           ),

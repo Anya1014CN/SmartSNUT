@@ -9,27 +9,27 @@ import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.da
 //用于存储用户的信息
 List emUserData = [];
 
-class electricmeterpage extends StatefulWidget {
-  const electricmeterpage({super.key});
+class Electricmeterpage extends StatefulWidget {
+  const Electricmeterpage({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _electricmeterPageState();
+    return _ElectricmeterPageState();
   }
 }
 
-class _electricmeterPageState extends State<electricmeterpage>{
+class _ElectricmeterPageState extends State<Electricmeterpage>{
   bool _showAppBarTitle = false;
 
   //查询状态相关变量
   bool isQuerying =false;
-  bool QuerySuccess = false;
+  bool querySuccess = false;
   int currentQuery = 0;
 
   String wechatUserId = '';
   String electricUserUid = '';
   int electricmeternum = 0;
-  var emdetail;
+  late List emdetail;
   int emnum = 0;
   List<dynamic> emstatetotal = [];
 
@@ -54,7 +54,7 @@ class _electricmeterPageState extends State<electricmeterpage>{
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
       floatingActionButton: FloatingActionButton(
-        onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage()));},
+        onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => ElectricmeterbindPage()));},
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(Icons.link),
       ),
@@ -104,7 +104,7 @@ class _electricmeterPageState extends State<electricmeterpage>{
               ),
               isQuerying?
               SizedBox(width: 0,height: 0,):
-              QuerySuccess?
+              querySuccess?
               Container(
                 padding: EdgeInsets.fromLTRB(15, 10, 15, 80),
                 child: Card(
@@ -308,7 +308,7 @@ class _electricmeterPageState extends State<electricmeterpage>{
     }
     if(mounted){
       setState(() {
-        QuerySuccess = true;
+        querySuccess = true;
         isQuerying = false;
       });
     }

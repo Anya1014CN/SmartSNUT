@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -294,7 +293,9 @@ class _GuidePageState extends State<Guidepage>{
           TextButton(
             onPressed: () async {
               await launchUrl(url);
-              Navigator.pop(context, 'OK');
+              if(context.mounted){
+                Navigator.pop(context, 'OK');
+              }
             },
             child: const Text('确认'),
           ),

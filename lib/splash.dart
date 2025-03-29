@@ -104,9 +104,9 @@ class _SplashPageState extends State<SplashPage>{
   //根据登录状态加载页面
   loadPage(){
     if(loginstate == 1){
-      Future.delayed(Duration(milliseconds: 200),(){Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));});
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
     }if(loginstate == 2){
-      Future.delayed(Duration(milliseconds: 200),(){Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));});
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
     }
   }
 

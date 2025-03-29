@@ -7,16 +7,16 @@ import 'package:smartsnut/globalvars.dart';
 
 Map<String, String> studentData = {};
 
-class stdDetailPage extends StatefulWidget{
-  const stdDetailPage({super.key});
+class StdDetailPage extends StatefulWidget{
+  const StdDetailPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _stddetailPageState();
+    return _StddetailPageState();
   }
 }
 
-class _stddetailPageState extends State<stdDetailPage>{
+class _StddetailPageState extends State<StdDetailPage>{
   bool _showAppBarTitle = false;
 
   @override
@@ -119,7 +119,7 @@ class _stddetailPageState extends State<stdDetailPage>{
           });
         }
         for(i = 1; i <= studentData.length;){
-          return Text(studentData[i].toString());
+          return Text(studentData[i.toString()].toString());
         }
   }
 }

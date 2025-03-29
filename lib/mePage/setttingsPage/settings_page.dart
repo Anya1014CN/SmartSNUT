@@ -206,7 +206,7 @@ class _SettingsPage extends State<SettingsPage>{
                         ),
                         trailing: Icon(Icons.chevron_right),
                         title: Text('字体大小',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text(GlobalVars.fontSize_name,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                        subtitle: Text((GlobalVars.fontsizeint == 0)? '极小':(GlobalVars.fontsizeint == 1)? '超小':(GlobalVars.fontsizeint == 2)? '较小':(GlobalVars.fontsizeint == 3)? '适中':(GlobalVars.fontsizeint == 4)? '较大':(GlobalVars.fontsizeint == 5)? '超大':'极大',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){switchTextSize();},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -329,7 +329,7 @@ class _SettingsPage extends State<SettingsPage>{
                         trailing: Icon(Icons.chevron_right),
                         title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
                         subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
-                        onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => electricmeterbindPage())).then((value) => emBindRead());},
+                        onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => ElectricmeterbindPage())).then((value) => emBindRead());},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
@@ -408,20 +408,22 @@ class _SettingsPage extends State<SettingsPage>{
                         subtitle: Text('版本更新日志',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: () async {
                           String changelogContent = await rootBundle.loadString('assets/Changelog.txt');
-                          showDialog<String>(
-                            context: context,
-                            builder:(BuildContext context) => AlertDialog(
-                              title: Text('历史版本更新日志',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                              content: Text(changelogContent,style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                              scrollable: true,
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, 'OK'),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
+                          if(context.mounted){
+                            showDialog<String>(
+                              context: context,
+                              builder:(BuildContext context) => AlertDialog(
+                                title: Text('历史版本更新日志',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                content: Text(changelogContent,style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                scrollable: true,
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, 'OK'),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                         },
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -742,20 +744,22 @@ class _SettingsPage extends State<SettingsPage>{
 
   void showLicense(BuildContext context) async{
     licenseContent = await rootBundle.loadString('assets/credits/License/$licensePath.txt');
-    showDialog<String>(
-      context: context,
-      builder:(BuildContext context) => AlertDialog(
-        title: Text('$licenseTitle - License',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-        content: Text(licenseContent,style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-        scrollable: true,
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+    if(context.mounted){
+      showDialog<String>(
+        context: context,
+        builder:(BuildContext context) => AlertDialog(
+          title: Text('$licenseTitle - License',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Text(licenseContent,style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+          scrollable: true,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   //退出登录
@@ -767,12 +771,17 @@ class _SettingsPage extends State<SettingsPage>{
       await smartSNUTdirectory.create();
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('退出登录成功'),
-      ),
-    );
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext ctx) => LoginPage()));
+    if(mounted){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('退出登录成功'),
+        ),
+      );
+    }
+
+    if(mounted){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext ctx) => LoginPage()));
+    }
   }
 
   //切换字体大小
@@ -954,57 +963,29 @@ class _SettingsPage extends State<SettingsPage>{
   //设置字体大小
   setfontsize() {
     double changevalue = 0;
-    if(GlobalVars.fontsizeint == 0){
-      changevalue = -6;
-      GlobalVars.fontSize_name = '极小';
-    }
-    if(GlobalVars.fontsizeint == 1){
-      changevalue = -4;
-      GlobalVars.fontSize_name = '超小';
-    }
-    if(GlobalVars.fontsizeint == 2){
-      changevalue = -2;
-      GlobalVars.fontSize_name = '较小';
-    }
-    if(GlobalVars.fontsizeint == 3){
-      changevalue = 0;
-      GlobalVars.fontSize_name = '适中';
-    }
-    if(GlobalVars.fontsizeint == 4){
-      changevalue = 2;
-      GlobalVars.fontSize_name = '较大';
-    }
-    if(GlobalVars.fontsizeint == 5){
-      changevalue = 4;
-      GlobalVars.fontSize_name = '超大';
-    }
-    if(GlobalVars.fontsizeint == 6){
-      changevalue = 6;
-      GlobalVars.fontSize_name = '极大';
-    }
 
-      //弹出对话框字体
-      GlobalVars.alertdialogTitle = DefaultfontSize.alertdialogTitle + changevalue;
-      GlobalVars.alertdialogContent = DefaultfontSize.alertdialogContent + changevalue;
+    //弹出对话框字体
+    GlobalVars.alertdialogTitle = DefaultfontSize.alertdialogTitle + changevalue;
+    GlobalVars.alertdialogContent = DefaultfontSize.alertdialogContent + changevalue;
 
-      //通用页面字体
-      GlobalVars.splashPageTitle = DefaultfontSize.splashPageTitle + changevalue;
-      GlobalVars.bottonbarAppnameTitle = DefaultfontSize.bottonbarAppnameTitle + changevalue;
-      GlobalVars.bottonbarSelectedTitle = DefaultfontSize.bottonbarSelectedTitle + changevalue;
-      GlobalVars.bottonbarUnselectedTitle = DefaultfontSize.bottonbarUnselectedTitle + changevalue;
-      GlobalVars.genericPageTitle = DefaultfontSize.genericPageTitle + changevalue;
-      GlobalVars.genericPageTitleSmall = DefaultfontSize.genericPageTitleSmall + changevalue;
-      GlobalVars.genericGreetingTitle = DefaultfontSize.genericGreetingTitle + changevalue;
-      GlobalVars.genericFloationActionButtonTitle = DefaultfontSize.genericFloationActionButtonTitle + changevalue;
-      GlobalVars.dividerTitle = DefaultfontSize.dividerTitle + changevalue;
-      GlobalVars.listTileTitle = DefaultfontSize.listTileTitle + changevalue;
-      GlobalVars.listTileSubtitle = DefaultfontSize.listTileSubtitle + changevalue;
-      GlobalVars.genericFunctionsButtonTitle = DefaultfontSize.genericFunctionsButtonTitle + changevalue;
-      GlobalVars.genericSwitchContainerTitle = DefaultfontSize.genericSwitchContainerTitle + changevalue;
-      GlobalVars.genericSwitchMenuTitle = DefaultfontSize.genericSwitchMenuTitle + changevalue;
-      GlobalVars.genericTextSmall = DefaultfontSize.genericTextSmall + changevalue;
-      GlobalVars.genericTextMedium = DefaultfontSize.genericTextMedium + changevalue;
-      GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
+    //通用页面字体
+    GlobalVars.splashPageTitle = DefaultfontSize.splashPageTitle + changevalue;
+    GlobalVars.bottonbarAppnameTitle = DefaultfontSize.bottonbarAppnameTitle + changevalue;
+    GlobalVars.bottonbarSelectedTitle = DefaultfontSize.bottonbarSelectedTitle + changevalue;
+    GlobalVars.bottonbarUnselectedTitle = DefaultfontSize.bottonbarUnselectedTitle + changevalue;
+    GlobalVars.genericPageTitle = DefaultfontSize.genericPageTitle + changevalue;
+    GlobalVars.genericPageTitleSmall = DefaultfontSize.genericPageTitleSmall + changevalue;
+    GlobalVars.genericGreetingTitle = DefaultfontSize.genericGreetingTitle + changevalue;
+    GlobalVars.genericFloationActionButtonTitle = DefaultfontSize.genericFloationActionButtonTitle + changevalue;
+    GlobalVars.dividerTitle = DefaultfontSize.dividerTitle + changevalue;
+    GlobalVars.listTileTitle = DefaultfontSize.listTileTitle + changevalue;
+    GlobalVars.listTileSubtitle = DefaultfontSize.listTileSubtitle + changevalue;
+    GlobalVars.genericFunctionsButtonTitle = DefaultfontSize.genericFunctionsButtonTitle + changevalue;
+    GlobalVars.genericSwitchContainerTitle = DefaultfontSize.genericSwitchContainerTitle + changevalue;
+    GlobalVars.genericSwitchMenuTitle = DefaultfontSize.genericSwitchMenuTitle + changevalue;
+    GlobalVars.genericTextSmall = DefaultfontSize.genericTextSmall + changevalue;
+    GlobalVars.genericTextMedium = DefaultfontSize.genericTextMedium + changevalue;
+    GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
   }
 
   //切换主题颜色
@@ -1386,7 +1367,9 @@ class _SettingsPage extends State<SettingsPage>{
           TextButton(
             onPressed: () async {
               await launchUrl(url);
-              Navigator.pop(context, 'OK');
+              if(context.mounted){
+                Navigator.pop(context, 'OK');
+              }
             },
             child: const Text('确认'),
           ),
@@ -1403,7 +1386,7 @@ class _SettingsPage extends State<SettingsPage>{
       });
     }
     Dio dio = Dio();
-    var updateServerResponse;
+    late Response updateServerResponse;
     try{
       updateServerResponse = await dio.get('https://apis.smartsnut.cn/Generic/UpdateCheck/LatestVersion.json');
     }catch(e){

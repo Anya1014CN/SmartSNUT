@@ -30,16 +30,16 @@ String openid = '';
 //用于存储用户的信息
 List emUserData = [];
 
-class electricmeterbindPage extends StatefulWidget{
-  const electricmeterbindPage({super.key});
+class ElectricmeterbindPage extends StatefulWidget{
+  const ElectricmeterbindPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _electricmeterbindPageState();
+    return _ElectricmeterbindPageState();
   }
 }
 
-class _electricmeterbindPageState extends State<electricmeterbindPage>{
+class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
 
   checkbindstate() async {
 
@@ -411,18 +411,18 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
     dio.interceptors.add(CookieManager(emcookiejar));
 
     //获取用户相关信息
-    var emresponse1;
+    late Response emresponse1;
     try{
       emresponse1 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/index?openId=$openid',);
     }catch (e){
-      showDialog(
-        context: context, 
-        builder: (BuildContext context)=>AlertDialog(
-          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-          content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-          actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
-        ));
-        if(mounted){
+      if(mounted){
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+          ));
           setState(() {
             isBinding = false;
             if(GlobalVars.emBinded == true){
@@ -436,14 +436,14 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
     }
     
     if(emresponse1.data.toString().contains('获取用户失败请重新打开')){
-      showDialog(
-        context: context, 
-        builder: (BuildContext context)=>AlertDialog(
-          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-          content: Text('无法获取用户信息，请检查您的 openId 是否正确',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-          actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
-        ));
         if(mounted){
+          showDialog(
+            context: context, 
+            builder: (BuildContext context)=>AlertDialog(
+              title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('无法获取用户信息，请检查您的 openId 是否正确',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+              actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+          ));
           setState(() {
             isBinding = false;
             GlobalVars.emBinded = false;
@@ -457,14 +457,14 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
     Response emresponse2 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/getBindListWx?wechatUserId=$wechatId');
 
     if(emresponse2.data['data'].toString() == '[]'){
-    showDialog(
-      context: context, 
-      builder: (BuildContext context)=>AlertDialog(
-        title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-        content: Text('您的微信账号还未绑定电表，请先前往陕西理工大学后勤保障部公众号绑定电表',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-        actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
-      ));
       if(mounted){
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('您的微信账号还未绑定电表，请先前往陕西理工大学后勤保障部公众号绑定电表',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+        ));
         setState(() {
           GlobalVars.emBinded = false;
           isBinding = false;
@@ -472,14 +472,14 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
       }
       return;
     }if(emresponse2.data['data'].toString() == 'null'){
-    showDialog(
-      context: context, 
-      builder: (BuildContext context)=>AlertDialog(
-        title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-        content: Text('无法获取数据，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-        actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
-      ));
       if(mounted){
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法获取数据，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+        ));
         setState(() {
           GlobalVars.emBinded = false;
           isBinding = false;
@@ -517,13 +517,12 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
 
     final docpath = (await getApplicationDocumentsDirectory()).path;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('电表数据获取成功'),
-      ),
-    );
-
     if(mounted){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('电表数据获取成功'),
+        ),
+      );
       setState(() {
         emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
         wechatId = emresponse1.data['data']['wechatId'].toString();
@@ -548,13 +547,12 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
       await emdatadirectory.create();
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('电表账号解绑成功'),
-      ),
-    );
-
     if(mounted){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('电表账号解绑成功'),
+        ),
+      );
       setState(() {
         isBinding = false;
         GlobalVars.emBinded = false;
@@ -578,7 +576,9 @@ class _electricmeterbindPageState extends State<electricmeterbindPage>{
           TextButton(
             onPressed: () async {
               await launchUrl(url);
-              Navigator.pop(context, 'OK');
+              if(context.mounted){
+                Navigator.pop(context, 'OK');
+              }
             },
             child: const Text('确认'),
           ),
