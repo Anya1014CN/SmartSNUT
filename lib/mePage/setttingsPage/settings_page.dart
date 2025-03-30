@@ -372,7 +372,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('关于智慧陕理',style: TextStyle(fontSize: GlobalVars.dividerTitle,color:Theme.of(context).colorScheme.primary),),
+                  Text('关于智慧陕理工',style: TextStyle(fontSize: GlobalVars.dividerTitle,color:Theme.of(context).colorScheme.primary),),
                   Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
                 ],
               ),
@@ -496,15 +496,15 @@ class _SettingsPage extends State<SettingsPage>{
                         padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                         child: Column(
                           children: [
-                            Text('智慧陕理使用的所有图标/徽标均来自 Material Design 3 Icons 以及 icons8.com',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
+                            Text('智慧陕理工使用的所有图标/徽标均来自 Material Design 3 Icons 以及 icons8.com',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                             SizedBox(height: 10,),
-                            Text('智慧陕理所使用的字体为 MiSans（https://hyperos.mi.com/font/zh/）',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
+                            Text('智慧陕理工所使用的字体为 MiSans（https://hyperos.mi.com/font/zh/）',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                             SizedBox(height: 10,),
-                            Text('智慧陕理**并非**陕西理工大学官方 APP',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
+                            Text('智慧陕理工**并非**陕西理工大学官方 APP',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                             SizedBox(height: 10,),
-                            Text('智慧陕理 APP 与陕西理工大学**无**任何从属关系',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
+                            Text('智慧陕理工 APP 与陕西理工大学**无**任何从属关系',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                             SizedBox(height: 10,),
-                            Text('智慧陕理**从未**有意标榜或冒充是陕西理工大学官方APP',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
+                            Text('智慧陕理工**从未**有意标榜或冒充是陕西理工大学官方APP',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                           ],
                         ),
                       ),
@@ -1400,7 +1400,7 @@ class _SettingsPage extends State<SettingsPage>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('发现新的 Windows 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Text('发现新的 Windows 版智慧陕理工  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
@@ -1425,8 +1425,8 @@ class _SettingsPage extends State<SettingsPage>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('暂未发现新的 Windows 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-              content: Text('您正在使用最新版本的 Windows 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+              title: Text('暂未发现新的 Windows 版智慧陕理工',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('您正在使用最新版本的 Windows 版智慧陕理工：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {Navigator.pop(context, 'OK');},
@@ -1444,7 +1444,7 @@ class _SettingsPage extends State<SettingsPage>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('发现新的 Android 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Text('发现新的 Android 版智慧陕理工  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Android'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Android'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
@@ -1469,8 +1469,8 @@ class _SettingsPage extends State<SettingsPage>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('暂未发现新的 Android 版智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-              content: Text('您正在使用最新版本的 Android 版智慧陕理：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+              title: Text('暂未发现新的 Android 版智慧陕理工',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Text('您正在使用最新版本的 Android 版智慧陕理工：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {Navigator.pop(context, 'OK');},
@@ -1505,7 +1505,7 @@ class _SettingsPage extends State<SettingsPage>{
             title: Text('正在更新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
             content: Column(
               children: [
-                Text((Platform.isWindows)? '请勿关闭智慧陕理，下载完成后智慧陕理将会自动重启，完成更新操作':(Platform.isAndroid)? '正在下载安装包，下载完成后智慧陕理将会启动软件更新流程，请您手动进行更新':'正在下载更新...',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                Text((Platform.isWindows)? '请勿关闭智慧陕理工，下载完成后智慧陕理工将会自动重启，完成更新操作':(Platform.isAndroid)? '正在下载安装包，下载完成后智慧陕理工将会启动软件更新流程，请您手动进行更新':'正在下载更新...',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                 SizedBox(height: 10,),
                 LinearProgressIndicator(
                   value: downloadProgress,

@@ -106,7 +106,7 @@ Map<String,dynamic> tzgg4 ={};
 Map<String,dynamic> tzgg5 ={};
 Map<String,dynamic> tzgg6 ={};
 
-//用于存储智慧陕理的公告
+//用于存储智慧陕理工的公告
 int notifyState = 0;//用于防止反复获取公告，0 - 未获取； 1 - 已获取
 List smartSNUTNotify = [];
 
@@ -2350,7 +2350,7 @@ class _HomeState extends State<Home>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('发现新的 Windows 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Text('发现新的 Windows 版智慧陕理工  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
@@ -2373,7 +2373,7 @@ class _HomeState extends State<Home>{
         if(mounted){
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('暂未发现新的 Windows 版智慧陕理\n您正在使用最新版本的 Windows 版智慧陕理：${GlobalVars.versionCodeString}'),
+              content: Text('暂未发现新的 Windows 版智慧陕理工\n您正在使用最新版本的 Windows 版智慧陕理工：${GlobalVars.versionCodeString}'),
             ),
           );
         }
@@ -2385,7 +2385,7 @@ class _HomeState extends State<Home>{
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('发现新的 Android 版智慧陕理  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Text('发现新的 Android 版智慧陕理工  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Android'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Android'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
               actions: <Widget>[
                 TextButton(
@@ -2409,7 +2409,7 @@ class _HomeState extends State<Home>{
         if(mounted){
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('暂未发现新的 Android 版智慧陕理\n您正在使用最新版本的 Android 版智慧陕理：${GlobalVars.versionCodeString}'),
+              content: Text('暂未发现新的 Android 版智慧陕理工\n您正在使用最新版本的 Android 版智慧陕理工：${GlobalVars.versionCodeString}'),
             ),
           );
         }
@@ -2438,7 +2438,7 @@ class _HomeState extends State<Home>{
             title: Text('正在更新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
             content: Column(
               children: [
-                Text((Platform.isWindows)? '请勿关闭智慧陕理，下载完成后智慧陕理将会自动重启，完成更新操作':(Platform.isAndroid)? '正在下载安装包，下载完成后智慧陕理将会启动软件更新流程，请您手动进行更新':'正在下载更新...',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                Text((Platform.isWindows)? '请勿关闭智慧陕理工，下载完成后智慧陕理工将会自动重启，完成更新操作':(Platform.isAndroid)? '正在下载安装包，下载完成后智慧陕理工将会启动软件更新流程，请您手动进行更新':'正在下载更新...',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                 SizedBox(height: 10,),
                 LinearProgressIndicator(
                   value: downloadProgress,

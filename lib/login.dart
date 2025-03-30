@@ -16,7 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 Uri url = Uri.parse("uri");
 
 //定义登录按钮标题
-String loginButtonTitle = '登录智慧陕理';
+String loginButtonTitle = '登录智慧陕理工';
 
 class LoginPage extends StatefulWidget{
   const LoginPage ({super.key});
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage>{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('登录智慧陕理',style: TextStyle(fontSize: GlobalVars.genericTextMedium,color: Theme.of(context).colorScheme.primary),),
+                Text('登录智慧陕理工',style: TextStyle(fontSize: GlobalVars.genericTextMedium,color: Theme.of(context).colorScheme.primary),),
                 Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
               ],
             ),
@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage>{
                         children: [
                           Icon(Icons.login),
                           SizedBox(width: 10,),
-                          Text('登录智慧陕理',style: TextStyle(fontSize: GlobalVars.genericTextMedium),)
+                          Text('登录智慧陕理工',style: TextStyle(fontSize: GlobalVars.genericTextMedium),)
                         ],
                       ),
                     ),

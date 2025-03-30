@@ -251,7 +251,7 @@ class _MePageState extends State<MePage>{
         Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
         Container(
           padding: EdgeInsets.all(10),
-          child: Text('智慧陕理',style: TextStyle(fontSize: 12,color: Colors.grey,fontWeight: FontWeight.w100),textAlign: TextAlign.center,),
+          child: Text('智慧陕理工',style: TextStyle(fontSize: 12,color: Colors.grey,fontWeight: FontWeight.w100),textAlign: TextAlign.center,),
         ),
       ],
     );

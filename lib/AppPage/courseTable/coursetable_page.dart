@@ -2072,7 +2072,7 @@ class _CourseTablePage extends State<CourseTablePage>{
         builder: (BuildContext context) => AlertDialog(
           scrollable: true,
           title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-          content: Text('登录失败，密码错误\n您是否在学校官网修改过密码？\n如果是，请退出智慧陕理并重新登录',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+          content: Text('登录失败，密码错误\n您是否在学校官网修改过密码？\n如果是，请退出智慧陕理工并重新登录',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'OK'),
