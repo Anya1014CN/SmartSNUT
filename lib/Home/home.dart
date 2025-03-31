@@ -107,8 +107,8 @@ Map<String,dynamic> tzgg5 ={};
 Map<String,dynamic> tzgg6 ={};
 
 //用于存储智慧陕理工的公告
-int notifyState = 0;//用于防止反复获取公告，0 - 未获取； 1 - 已获取
-List smartSNUTNotify = [];
+int announcementState = 0;//用于防止反复获取公告，0 - 未获取； 1 - 已获取
+List smartSNUTAnnouncements = [];
 
 //首页为 陕西理工大学 - 理工要闻
 class Home extends StatefulWidget{
@@ -1195,8 +1195,8 @@ class _HomeState extends State<Home>{
     if(newsState == 0){
       getNewsList();
     }
-    if(notifyState == 0){
-      getSmartSNUTNotify();
+    if(announcementState == 0){
+      getSmartSNUTAnnouncement();
     }
     setState(() {});
   }
@@ -1217,7 +1217,7 @@ class _HomeState extends State<Home>{
           padding: EdgeInsets.fromLTRB(10, 50, 0, 30),
           child: Text('${GlobalVars.greeting}，${GlobalVars.realName}',style: TextStyle(fontWeight: FontWeight.w300,fontSize: GlobalVars.genericGreetingTitle),),
         ),
-        (smartSNUTNotify.isEmpty)? 
+        (smartSNUTAnnouncements.isEmpty)? 
         SizedBox():
         Container(
           padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -1237,13 +1237,13 @@ class _HomeState extends State<Home>{
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${smartSNUTNotify[0]['Content']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                    Text('${smartSNUTNotify[1]['Content']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                    Text('${smartSNUTAnnouncements[0]['Content']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                    Text('${smartSNUTAnnouncements[1]['Content']}',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
                   ],
                 ),
                 subtitle: Text('阅读更多',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                 onTap: () {
-                  url = Uri.parse('https://smartsnut.cn/');
+                  url = Uri.parse('https://smartsnut.cn/Announcements');
                   launchURL();
                 },
               )
@@ -1702,17 +1702,18 @@ class _HomeState extends State<Home>{
       );
   }
   //获取公告
-  getSmartSNUTNotify() async {
-    smartSNUTNotify = [];
+  getSmartSNUTAnnouncement() async {
+    smartSNUTAnnouncements = [];
     Dio dio = Dio();
     late Response smartSNUTNotifyResponse;
     try{
-      smartSNUTNotifyResponse = await dio.get('https://apis.smartsnut.cn/Generic/Notify/Notify.json');
+      smartSNUTNotifyResponse = await dio.get('https://apis.smartsnut.cn/Generic/Announcement/Announcement.json');
     }catch(e){
       return;
     }
     if(mounted){
-      smartSNUTNotify = jsonDecode(jsonEncode(smartSNUTNotifyResponse.data));
+      smartSNUTAnnouncements = jsonDecode(jsonEncode(smartSNUTNotifyResponse.data));
+      announcementState = 1;
     }
   }
 
