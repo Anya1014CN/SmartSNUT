@@ -65,6 +65,13 @@ class _LoginPageState extends State<LoginPage>{
   //设置字体大小
   setfontsize() {
     double changevalue = 0;
+    if(GlobalVars.fontsizeint == 0)changevalue = -6;
+    if(GlobalVars.fontsizeint == 1)changevalue = -4;
+    if(GlobalVars.fontsizeint == 2)changevalue = -2;
+    if(GlobalVars.fontsizeint == 3)changevalue = 0;
+    if(GlobalVars.fontsizeint == 4)changevalue = 2;
+    if(GlobalVars.fontsizeint == 5)changevalue = 4;
+    if(GlobalVars.fontsizeint == 6)changevalue = 6;
 
     //弹出对话框字体
     GlobalVars.alertdialogTitle = DefaultfontSize.alertdialogTitle + changevalue;
@@ -88,6 +95,11 @@ class _LoginPageState extends State<LoginPage>{
     GlobalVars.genericTextSmall = DefaultfontSize.genericTextSmall + changevalue;
     GlobalVars.genericTextMedium = DefaultfontSize.genericTextMedium + changevalue;
     GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
+
+    if(mounted){
+      print('刷新状态');
+      setState(() {});
+    }
   }
 
   @override
