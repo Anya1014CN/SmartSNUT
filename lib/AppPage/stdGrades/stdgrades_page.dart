@@ -192,132 +192,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
     });
     selectedTYfile.writeAsString(jsonEncode(selectedTY));
   }
-  
-  //切换考试学期
-  switchTerm() async {
-    showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) => AlertDialog(
-            scrollable: true,
-            title: Text('切换成绩时间',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),),
-            content: Column(
-              children: [
-                MenuAnchor(
-                  controller: menuYearController,
-                  menuChildren: semestersName.map((item) {
-                    return MenuItemButton(
-                      onPressed: () async {
-                        int yearSelectedIndex = semestersName.indexOf(item);
-                        if(mounted){
-                          setState(() {
-                            currentYearInt = yearSelectedIndex;
-                            currentYearName = item['name'];
-                          });
-                        }
-                        saveSelectedTY();
-                        readSemesterInfo();
-                        menuYearController.close();
-                      },
-                      child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
-                    );
-                  }).toList(),
-                  child: SizedBox(
-                    height: 50,
-                    child: TextButton(
-                      style: ElevatedButton.styleFrom(
-                        shadowColor: Theme.of(context).colorScheme.onPrimary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                      onPressed: () {
-                        if (menuYearController.isOpen) {
-                          menuYearController.close();
-                        } else {
-                          menuYearController.open();
-                        }
-                      },
-                      child: Text('学年：$currentYearName', style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                    ),
-                  ),
-                ),
-                Divider(height: 5, indent: 20, endIndent: 20),
-                MenuAnchor(
-                  controller: menuTermController,
-                  menuChildren: [
-                    MenuItemButton(
-                      child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
-                      onPressed: () async {
-                        if(mounted){
-                          setState(() {
-                            currentTermInt = 1;
-                            currentTermName = '第一学期';
-                          });
-                        }
-                        saveSelectedTY();
-                        readSemesterInfo();
-                        menuTermController.close();
-                      },
-                    ),
-                    MenuItemButton(
-                      child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
-                      onPressed: () async {
-                        if(mounted){
-                          setState(() {
-                            currentTermInt = 2;
-                            currentTermName = '第二学期';
-                          });
-                        }
-                        saveSelectedTY();
-                        readSemesterInfo();
-                        menuTermController.close();
-                      },
-                    ),
-                  ],
-                  child: SizedBox(
-                    height: 50,
-                    child: TextButton(
-                      style: ElevatedButton.styleFrom(
-                        shadowColor: Theme.of(context).colorScheme.onPrimary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                      onPressed: () {
-                        if (menuTermController.isOpen) {
-                          menuTermController.close();
-                        } else {
-                          menuTermController.open();
-                        }
-                      },
-                      child: Text('学期：$currentTermName', style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      readStdAccount();
-      readSemesterInfo();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -326,6 +200,10 @@ class _StdGradesPageState extends State<StatefulWidget>{
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){getStdGrades();},
         backgroundColor: Theme.of(context).colorScheme.primary,
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
         label: Row(
           children: [
             Icon(Icons.refresh),
@@ -364,6 +242,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
                   IconButton(
                     onPressed: () => switchTerm(),
                     icon: Icon(Icons.date_range),
+                    tooltip: '切换成绩时间',
                   )
                 ],
                 pinned: true,
@@ -374,101 +253,512 @@ class _StdGradesPageState extends State<StatefulWidget>{
           },
           body: ListView(
             children: [
+              // 页面标题区域 - 改进样式和间距
               Container(
-                padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+                padding: EdgeInsets.fromLTRB(16, 24, 16, 20),
                 child: Row(
                   children: [
-                    Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/grade.png'):AssetImage('assets/icons/darktheme/grade.png'),height: 40,),
-                    SizedBox(width: 10,),
-                    Text('我的成绩',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
+                    Image(
+                      image: Theme.of(context).brightness == Brightness.light ? 
+                        AssetImage('assets/icons/lighttheme/grade.png') : 
+                        AssetImage('assets/icons/darktheme/grade.png'),
+                      height: 40,
+                    ),
+                    SizedBox(width: 16,),
+                    Text(
+                      '我的成绩',
+                      style: TextStyle(
+                        fontSize: GlobalVars.genericPageTitle,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    )
                   ],
                 ),
               ),
+              
               noGrades? 
+              // 无成绩信息显示 - 改进样式
               Center(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  padding: EdgeInsets.fromLTRB(16, 10, 16, 20),
                   child: Card(
-                    shadowColor: Theme.of(context).colorScheme.onPrimary,
+                    shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
                     color: Theme.of(context).colorScheme.surfaceDim,
+                    elevation: 2,
                     shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    child: Column(
-                      children: [
-                        Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/empty.png'):AssetImage('assets/icons/darktheme/empty.png'),height: MediaQuery.of(context).size.height / 4,),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                        SizedBox(height: 10,),
-                        Text('暂无 $currentYearName $currentTermName 的 成绩 信息\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                        SizedBox(height: 10,),
-                      ],
+                    child: Padding(
+                      padding: EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image(
+                            image: Theme.of(context).brightness == Brightness.light? 
+                              AssetImage('assets/icons/lighttheme/empty.png'):
+                              AssetImage('assets/icons/darktheme/empty.png'),
+                            height: MediaQuery.of(context).size.height / 4,
+                          ),
+                          Divider(height: 24, indent: 20, endIndent: 20,),
+                          Text(
+                            '暂无 $currentYearName $currentTermName 的 成绩 信息',
+                            style: TextStyle(
+                              fontSize: GlobalVars.listTileTitle,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            '请尝试在右上角切换学期或在右下角刷新',
+                            style: TextStyle(
+                              fontSize: GlobalVars.listTileSubtitle,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 16),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ):
+              // 有成绩信息显示 - 改进布局
               Column(
                 children: [
+                  // 成绩统计卡片
                   Container(
-                    padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
                     child: Card(
-                      shadowColor: Theme.of(context).colorScheme.onPrimary,
+                      shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
                       color: Theme.of(context).colorScheme.surfaceDim,
+                      elevation: 2,
                       shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      child: ListTile(
-                        title: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Column(
                           children: [
-                            Text('算数平均绩点： ${(gpaTotal / stdGradesTotal.length).toStringAsFixed(3)}（保留 3 位小数）',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
-                            Text('算数平均成绩： ${(gradeTotal / validGradesNum).toStringAsFixed(3)}（保留 3 位小数）',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
-                            SizedBox(height: 5,),
-                            Text('本学期共 ${stdGradesTotal.length} 门课程',style: TextStyle(fontSize: GlobalVars.genericSwitchContainerTitle),),
+                            Row(
+                              children: [
+                                Icon(Icons.calculate, color: Theme.of(context).colorScheme.primary),
+                                SizedBox(width: 12),
+                                Text(
+                                  '成绩统计',
+                                  style: TextStyle(
+                                    fontSize: GlobalVars.genericTextLarge,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(height: 24),
+                            Row(
+                              children: [
+                                Icon(Icons.trending_up, size: 18, color: Theme.of(context).colorScheme.secondary),
+                                SizedBox(width: 8),
+                                Text(
+                                  '算术平均绩点：',
+                                  style: TextStyle(fontSize: GlobalVars.genericTextMedium),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    (gpaTotal / stdGradesTotal.length).toStringAsFixed(2),
+                                    style: TextStyle(
+                                      fontSize: GlobalVars.genericTextMedium,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Icon(Icons.score, size: 18, color: Theme.of(context).colorScheme.secondary),
+                                SizedBox(width: 8),
+                                Text(
+                                  '算术平均成绩：',
+                                  style: TextStyle(fontSize: GlobalVars.genericTextMedium),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    (gradeTotal / validGradesNum).toStringAsFixed(2),
+                                    style: TextStyle(
+                                      fontSize: GlobalVars.genericTextMedium,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Icon(Icons.school, size: 18, color: Theme.of(context).colorScheme.secondary),
+                                SizedBox(width: 8),
+                                Text(
+                                  '本学期课程数：',
+                                  style: TextStyle(fontSize: GlobalVars.genericTextMedium),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    '${stdGradesTotal.length} 门',
+                                    style: TextStyle(
+                                      fontSize: GlobalVars.genericTextMedium,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
+                  
+                  // 成绩详细信息卡片
                   Container(
-                    padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    padding: EdgeInsets.fromLTRB(16, 10, 16, 20),
                     child: Card(
-                      shadowColor: Theme.of(context).colorScheme.onPrimary,
+                      shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
                       color: Theme.of(context).colorScheme.surfaceDim,
+                      elevation: 2,
                       shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Column(
-                        children: stdGradesTotal.map((grades) {
-                        return Container(
-                          padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              //Text('序号：${i + 1}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              Text('课程名称：${grades['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              SizedBox(height: 10,),
-                              Text('学分：${grades['CourseCredit']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              Text('总评成绩：${grades['CourseGradeTotal']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              Text('最终：${grades['CourseGradeFinal']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              Text('绩点：${grades['CourseGradeGPA']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              SizedBox(height: 10,),
-                              Text('课程类别：${grades['CourseType']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                              SizedBox(height: 20,),
-                              Divider(height: 5,indent: 20,endIndent: 20,),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                      )
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.list_alt,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    '成绩详情',
+                                    style: TextStyle(
+                                      fontSize: GlobalVars.listTileTitle,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Divider(height: 24, indent: 16, endIndent: 16),
+                            Column(
+                              children: stdGradesTotal.map((grades) {
+                                return buildGradeItem(context, grades);
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   )
                 ],
               ),
+              // 底部间隔
               Container(padding: EdgeInsets.fromLTRB(0, 80, 0, 0),)
             ],
           ),
         ),
       ),
+    );
+  }
+
+  // 新增帮助方法 - 构建成绩项
+  Widget buildGradeItem(BuildContext context, Map grades) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary.withAlpha(13),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${grades['CourseName']}', 
+              style: TextStyle(
+                fontSize: GlobalVars.listTileTitle, 
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            SizedBox(height: 12),
+            Row(
+              children: [
+                Icon(
+                  Icons.score, 
+                  size: 16,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  '总评成绩：${grades['CourseGradeTotal']}',
+                  style: TextStyle(
+                    fontSize: GlobalVars.genericTextMedium,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.grade,
+                  size: 16,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  '绩点：${grades['CourseGradeGPA']}',
+                  style: TextStyle(
+                    fontSize: GlobalVars.genericTextMedium,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle_outline, 
+                  size: 16,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  '最终：${grades['CourseGradeFinal']}',
+                  style: TextStyle(
+                    fontSize: GlobalVars.genericTextMedium,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.credit_card, 
+                  size: 16,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  '学分：${grades['CourseCredit']}',
+                  style: TextStyle(
+                    fontSize: GlobalVars.genericTextMedium,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(
+                  Icons.category, 
+                  size: 16,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    '课程类别：${grades['CourseType']}',
+                    style: TextStyle(
+                      fontSize: GlobalVars.genericTextMedium,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // 切换考试学期
+  switchTerm() async {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            scrollable: true,
+            title: Text('切换成绩时间',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // 学年选择
+                Container(
+                  margin: EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary.withAlpha(13),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: MenuAnchor(
+                    controller: menuYearController,
+                    menuChildren: semestersName.map((item) {
+                      return MenuItemButton(
+                        onPressed: () async {
+                          int yearSelectedIndex = semestersName.indexOf(item);
+                          if(mounted){
+                            setState(() {
+                              currentYearInt = yearSelectedIndex;
+                              currentYearName = item['name'];
+                            });
+                          }
+                          saveSelectedTY();
+                          readSemesterInfo();
+                          menuYearController.close();
+                        },
+                        child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
+                      );
+                    }).toList(),
+                    child: SizedBox(
+                      height: 50,
+                      child: TextButton(
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Theme.of(context).colorScheme.onPrimary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (menuYearController.isOpen) {
+                            menuYearController.close();
+                          } else {
+                            menuYearController.open();
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '学年：$currentYearName',
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericSwitchMenuTitle,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              softWrap: true,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis
+                            ),
+                            Icon(Icons.arrow_drop_down),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                
+                // 学期选择
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary.withAlpha(13),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: MenuAnchor(
+                    controller: menuTermController,
+                    menuChildren: [
+                      MenuItemButton(
+                        child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
+                        onPressed: () async {
+                          if(mounted){
+                            setState(() {
+                              currentTermInt = 1;
+                              currentTermName = '第一学期';
+                            });
+                          }
+                          saveSelectedTY();
+                          readSemesterInfo();
+                          menuTermController.close();
+                        },
+                      ),
+                      MenuItemButton(
+                        child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
+                        onPressed: () async {
+                          if(mounted){
+                            setState(() {
+                              currentTermInt = 2;
+                              currentTermName = '第二学期';
+                            });
+                          }
+                          saveSelectedTY();
+                          readSemesterInfo();
+                          menuTermController.close();
+                        },
+                      ),
+                    ],
+                    child: SizedBox(
+                      height: 50,
+                      child: TextButton(
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Theme.of(context).colorScheme.onPrimary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (menuTermController.isOpen) {
+                            menuTermController.close();
+                          } else {
+                            menuTermController.open();
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '学期：$currentTermName', 
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericSwitchMenuTitle,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              softWrap: true,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis
+                            ),
+                            Icon(Icons.arrow_drop_down),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('确定'),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
