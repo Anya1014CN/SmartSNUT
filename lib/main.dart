@@ -102,15 +102,31 @@ class _SmartSNUT extends State<SmartSNUT> {
 
   //每秒刷新一次数据及页面
   refreshState() async {
-    Future.delayed(Duration(seconds: 2),(){
-      if(mounted){
+    Future.delayed(Duration(seconds: 2), () {
+      if(mounted) {
         setState(() {
-          GlobalVars.today = DateTime.now();
-          GlobalVars.month = DateTime.now().month;
-          GlobalVars.day = DateTime.now().day;
+          // 获取今天的日期
+          DateTime now = DateTime.now();
+          
+          // 月和日强制转换为两位数字
+          int month = DateTime.now().month;
+          GlobalVars.monthString = month.toString().padLeft(2, '0');
+          int day = DateTime.now().day;
+          GlobalVars.dayString = day.toString().padLeft(2, '0');
+          
           GlobalVars.hour = DateTime.now().hour;
+          
+          // 初始化中文日期格式
           initializeDateFormatting("zh_CN");
-          GlobalVars.weekDay = DateFormat('EEEE',"zh_CN").format(DateTime.now());
+          GlobalVars.weekDay = DateFormat('EEEE', "zh_CN").format(now);
+          
+          // 获取明天的日期和星期
+          DateTime tomorrow = now.add(Duration(days: 1));
+          int tomorrowMonth = tomorrow.month;
+          GlobalVars.tomorrowMonthString = tomorrowMonth.toString().padLeft(2, '0');
+          int tomorrowDay = tomorrow.day;
+          GlobalVars.tomorrowDayString = tomorrowDay.toString().padLeft(2, '0');
+          GlobalVars.tomorrowWeekDay = DateFormat('EEEE', "zh_CN").format(tomorrow);
         });
       }
     });

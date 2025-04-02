@@ -19,10 +19,14 @@ class GlobalVars {
 
   //当前日期
   static var today = DateTime.now();
-  static int month = DateTime.now().month;
-  static int day = DateTime.now().day;
+  static String monthString = '';
+  static String dayString = '';
   static int hour = DateTime.now().hour;
   static String weekDay = '';
+  //明日日期
+  static String tomorrowMonthString = '';
+  static String tomorrowDayString = '';
+  static String tomorrowWeekDay = '';
 
   //用于存储不同时间段的问候语
   static String greeting = '';

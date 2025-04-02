@@ -55,6 +55,7 @@ List<List> courseSunWeek = [[],[],[],[],[],[],[],[],[],[]];//周日课程
 
 //今日课表数据
 List<List> courseToday = [[],[],[],[],[],[],[],[],[],[]];//今日课程（第一节到第十节）
+bool courseIsToday = true;//判断是否读取今天的课程
 
 //课表读取状态
 bool isReadingCT = true;
@@ -241,6 +242,7 @@ class _HomeState extends State<Home>{
         saveSelectedTY();
       }
     }
+    if(!courseIsToday) currentDOW = currentDOW + 1;
     readCourseTabDetail();
   }
 
@@ -1087,11 +1089,11 @@ class _HomeState extends State<Home>{
         }
       }
     }
-    readTodayCourseTable();
+    readDaildCourseTable();
   }
 
-  //读取今日课表信息
-  readTodayCourseTable() async {
+  //读取每日课表信息
+  readDaildCourseTable() async {
     //读取之前清空课表，防止与前一天的课表叠加
     courseToday = [[],[],[],[],[],[],[],[],[],[]];
     
@@ -1198,9 +1200,28 @@ class _HomeState extends State<Home>{
 
   @override
   Widget build(BuildContext context)  {
-    //加载首页之前立即刷新一次周几，解决进入首页后，“星期几” 延迟出现的问题
+    //加载首页之前立即刷新一次日期，解决进入首页后，日期信息延迟出现的问题
+    DateTime now = DateTime.now();
+          
+    // 月和日强制转换为两位数字
+    int month = DateTime.now().month;
+    GlobalVars.monthString = month.toString().padLeft(2, '0');
+    int day = DateTime.now().day;
+    GlobalVars.dayString = day.toString().padLeft(2, '0');
+          
+    GlobalVars.hour = DateTime.now().hour;
+          
+    // 初始化中文日期格式
     initializeDateFormatting("zh_CN");
-    GlobalVars.weekDay = DateFormat('EEEE',"zh_CN").format(DateTime.now());
+    GlobalVars.weekDay = DateFormat('EEEE', "zh_CN").format(now);
+          
+    // 获取明天的日期和星期
+    DateTime tomorrow = now.add(Duration(days: 1));
+    int tomorrowMonth = tomorrow.month;
+    GlobalVars.tomorrowMonthString = tomorrowMonth.toString().padLeft(2, '0');
+    int tomorrowDay = tomorrow.day;
+    GlobalVars.tomorrowDayString = tomorrowDay.toString().padLeft(2, '0');
+    GlobalVars.tomorrowWeekDay = DateFormat('EEEE', "zh_CN").format(tomorrow);
     
     //获取长宽并保存
     tableWidth = (MediaQuery.of(context).size.width );
@@ -1313,7 +1334,7 @@ class _HomeState extends State<Home>{
                 margin: EdgeInsets.only(right: 8),
               ),
               Text(
-                '今日课表',
+                (courseIsToday)? '今日课表':'明日课表',
                 style: TextStyle(
                   fontSize: GlobalVars.dividerTitle,
                   fontWeight: FontWeight.bold,
@@ -1364,17 +1385,12 @@ class _HomeState extends State<Home>{
                       color: Theme.of(context).colorScheme.primary.withAlpha(26),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Row(
+                    child: (courseIsToday)? Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.calendar_today, 
-                          size: 20, 
-                          color: Theme.of(context).colorScheme.primary
-                        ),
-                        SizedBox(width: 8),
                         Flexible(
                           child: Text(
-                            '${GlobalVars.month} 月 ${GlobalVars.day} 日 ${GlobalVars.weekDay}',
+                            '今 | ${GlobalVars.monthString} 月 ${GlobalVars.dayString} 日 | ${GlobalVars.weekDay}',
                             style: TextStyle(
                               fontSize: GlobalVars.genericTextLarge,
                               fontWeight: FontWeight.bold,
@@ -1383,8 +1399,53 @@ class _HomeState extends State<Home>{
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                        SizedBox(width: 8),
+                        IconButton(
+                          onPressed: (!courseIsToday)? null:(){
+                            if(mounted){
+                              setState(() {
+                                courseIsToday = false;
+                                readSchoolCalendarInfo();
+                              });
+                            }
+                          },
+                          icon: Icon(Icons.arrow_forward,
+                            color: (currentWeekInt == 1)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
+                          ),
+                          tooltip: '明日课表',
+                        ),
                       ],
-                    ),
+                    ):Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            '明 | ${GlobalVars.tomorrowMonthString} 月 ${GlobalVars.tomorrowDayString} 日 | ${GlobalVars.tomorrowWeekDay}',
+                            style: TextStyle(
+                              fontSize: GlobalVars.genericTextLarge,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        IconButton(
+                          onPressed: (courseIsToday)? null:(){
+                            if(mounted){
+                              setState(() {
+                                courseIsToday = true;
+                                readSchoolCalendarInfo();
+                              });
+                            }
+                          },
+                          icon: Icon(Icons.arrow_back,
+                            color: (currentWeekInt == 1)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
+                          ),
+                          tooltip: '今日课表',
+                        ),
+                      ],
+                    )
                   ),
                   Divider(height: 24, indent: 20, endIndent: 20),
                   // 课表内容
@@ -1451,7 +1512,7 @@ class _HomeState extends State<Home>{
                             ),
                             SizedBox(height: 16),
                             Text(
-                              '今日无课，尽情享受休闲时光',
+                              (courseIsToday)?'今日无课，尽情享受休闲时光':'明日无课，今天上完课可以休息啦',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: GlobalVars.genericTextLarge,
