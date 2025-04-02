@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:smartsnut/AppPage/schoolNetwork/schoolnetwork_page.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+//用于存储外部链接的完整URL
+Uri url = Uri.parse("uri");
 
 bool isQuerying = false;
 //用于存储用户头像路径
