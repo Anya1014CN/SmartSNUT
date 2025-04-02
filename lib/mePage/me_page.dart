@@ -32,39 +32,77 @@ class _MePageState extends State<MePage>{
     
     return ListView(
       children: [
+        // 问候语区域 - 改进样式和间距
         Container(
-          padding: EdgeInsets.fromLTRB(23, 50, 0, 20),
+          padding: EdgeInsets.fromLTRB(16, 40, 16, 20),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface.withAlpha(179),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(24),
+              bottomRight: Radius.circular(24),
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${GlobalVars.realName}，',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
-              Text('这是你在陕理工的',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
+              Text('${GlobalVars.realName}，',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),),
+              Text('这是你在陕理工的',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w300),),
               Row(
                 children: [
-                  Text('第 ',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
-                  Text('${GlobalVars.today.difference(DateTime.parse(GlobalVars.enrollTime)).inDays}',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle + 5,fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary),),
-                  Text(' 天。',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
+                  Text('第 ',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w300),),
+                  Text('${GlobalVars.today.difference(DateTime.parse(GlobalVars.enrollTime)).inDays}',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle + 5, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+                  Text(' 天。',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w300),),
                 ],
               ),
-              Text('距离毕业还',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
+              Text('距离毕业还',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w300),),
               Row(
                 children: [
-                  Text('有 ',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
-                  Text('${DateTime.parse(GlobalVars.graduationTime).difference(GlobalVars.today).inDays}',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle + 5,fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.error),),
-                  Text(' 天。',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle,fontWeight: FontWeight.w300),),
+                  Text('有 ',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w300),),
+                  Text('${DateTime.parse(GlobalVars.graduationTime).difference(GlobalVars.today).inDays}',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle + 5, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.error),),
+                  Text(' 天。',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w300),),
                 ],
               ),
             ],
           )
         ),
-        Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+        
+        SizedBox(height: 10),
+        
+        // 每日提示标题 - 改进样式
         Container(
-          padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                width: 4,
+                height: 18,
+                margin: EdgeInsets.only(right: 8),
+              ),
+              Text(
+                '每日提示',
+                style: TextStyle(
+                  fontSize: GlobalVars.dividerTitle,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // 每日提示卡片 - 改进视觉呈现
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Card(
+            elevation: 2,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(16),
             ),
-            shadowColor: Theme.of(context).colorScheme.onPrimary,
+            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
             color: Theme.of(context).colorScheme.surfaceDim,
             child: Container(
               padding: EdgeInsets.all(20),
@@ -72,188 +110,201 @@ class _MePageState extends State<MePage>{
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/bulb.png'):AssetImage('assets/icons/darktheme/bulb.png'),height: 36,),
-                  SizedBox(height: 10,),
-                  Text(GlobalVars.hint,style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold,),)
+                  Image(
+                    image: Theme.of(context).brightness == Brightness.light
+                      ? AssetImage('assets/icons/lighttheme/bulb.png')
+                      : AssetImage('assets/icons/darktheme/bulb.png'),
+                    height: 40,
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    GlobalVars.hint,
+                    style: TextStyle(
+                      fontSize: GlobalVars.genericTextMedium,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
                 ],
               ),
             ),
           ),
         ),
-        Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+        
+        // 功能区标题 - 改进样式
         Container(
-          padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-          child: Column(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Row(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 125,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        shadowColor: Theme.of(context).colorScheme.onPrimary,
-                        color: Theme.of(context).colorScheme.surfaceDim,
-                        child: TextButton(
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Theme.of(context).colorScheme.onPrimary,
-                            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                          ),
-                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => ElectricmeterbindPage()));},
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              SizedBox(height: 10,),
-                              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/electricitybind.png'):AssetImage('assets/icons/darktheme/electricitybind.png'),height: 50,),
-                              SizedBox(height: 5,),
-                              Expanded(child: Text('解/绑电费账号',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,),)
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 5,),
-                  Expanded(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 125,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        shadowColor: Theme.of(context).colorScheme.onPrimary,
-                        color: Theme.of(context).colorScheme.surfaceDim,
-                        child: TextButton(
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Theme.of(context).colorScheme.onPrimary,
-                            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                          ),
-                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => SettingsPage()));},
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              SizedBox(height: 10,),
-                              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/settings.png'):AssetImage('assets/icons/darktheme/settings.png'),height: 50,),
-                              SizedBox(height: 5,),
-                              Expanded(child: Text('应用设置',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,),)
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                width: 4,
+                height: 18,
+                margin: EdgeInsets.only(right: 8),
               ),
-              SizedBox(height: 5,),
-              Row(
+              Text(
+                '其他功能',
+                style: TextStyle(
+                  fontSize: GlobalVars.dividerTitle,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // 功能区卡片 - 改进布局和样式
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+          child: Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+            color: Theme.of(context).colorScheme.surfaceDim,
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 125,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        shadowColor: Theme.of(context).colorScheme.onPrimary,
-                        color: Theme.of(context).colorScheme.surfaceDim,
-                        child: TextButton(
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Theme.of(context).colorScheme.onPrimary,
-                            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                          ),
-                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => Guidepage()));},
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              SizedBox(height: 10,),
-                              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/guide.png'):AssetImage('assets/icons/darktheme/guide.png'),height: 50,),
-                              SizedBox(height: 5,),
-                              Expanded(child: Text('教程&说明',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,),)
-                            ],
-                          ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '解/绑电费账号',
+                          'electricitybind',
+                          () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (BuildContext ctx) => ElectricmeterbindPage()
+                            ));
+                          },
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(width: 5,),
-                  Expanded(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 125,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '应用设置',
+                          'settings',
+                          () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (BuildContext ctx) => SettingsPage()
+                            ));
+                          },
                         ),
-                        shadowColor: Theme.of(context).colorScheme.onPrimary,
-                        color: Theme.of(context).colorScheme.surfaceDim,
-                        child: TextButton(
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Theme.of(context).colorScheme.onPrimary,
-                            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                          ),
-                          onPressed: (){
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '教程&说明',
+                          'guide',
+                          () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (BuildContext ctx) => Guidepage()
+                            ));
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '退出登录',
+                          'exit',
+                          () {
                             showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                              content: Text('您确定要退出登录吗？\n退出登录同时会解绑电费账号、清除字体大小、颜色模式等设置',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                                  child: const Text('取消'),
-                                ),
-                                TextButton(
-                                  onPressed: (){
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                content: Text('您确定要退出登录吗？\n退出登录同时会解绑电费账号、清除字体大小、颜色模式等设置', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                                    child: const Text('取消'),
+                                  ),
+                                  TextButton(
+                                    onPressed: (){
                                       logout();
                                       Navigator.pop(context);
                                     },
-                                  child: const Text('确认'),
+                                    child: const Text('确认'),
                                   ),
                                 ],
                               ),
                             );
                           },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              SizedBox(height: 10,),
-                              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/exit.png'):AssetImage('assets/icons/darktheme/exit.png'),height: 50,),
-                              SizedBox(height: 5,),
-                              Expanded(child: Text('退出登录',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,),)
-                            ],
-                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
-        Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+        
+        // 底部版权信息
         Container(
-          padding: EdgeInsets.all(10),
-          child: Text('智慧陕理工',style: TextStyle(fontSize: 12,color: Colors.grey,fontWeight: FontWeight.w100),textAlign: TextAlign.center,),
+          padding: EdgeInsets.fromLTRB(0, 16, 0, 20),
+          child: Text(
+            '智慧陕理工',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+              fontWeight: FontWeight.w300
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
       ],
+    );
+  }
+
+  // 功能按钮构建辅助方法
+  Widget buildFunctionButton(BuildContext context, String title, String iconName, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary.withAlpha(26),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image(
+              image: Theme.of(context).brightness == Brightness.light
+                ? AssetImage('assets/icons/lighttheme/$iconName.png')
+                : AssetImage('assets/icons/darktheme/$iconName.png'),
+              height: 40,
+            ),
+            SizedBox(height: 12),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: GlobalVars.genericFunctionsButtonTitle,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              textAlign: TextAlign.center,
+            )
+          ],
+        ),
+      ),
     );
   }
 
