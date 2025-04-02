@@ -18,6 +18,7 @@ class StdDetailPage extends StatefulWidget{
 
 class _StddetailPageState extends State<StdDetailPage>{
   bool _showAppBarTitle = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -63,63 +64,138 @@ class _StddetailPageState extends State<StdDetailPage>{
           },
           body: ListView(
             children: [
+              // 标题区域 - 改进样式和间距
               Container(
-                padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+                padding: EdgeInsets.fromLTRB(16, 20, 16, 24),
                 child: Row(
                   children: [
-                    Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/account.png'):AssetImage('assets/icons/darktheme/account.png'),height: 40,),
-                    SizedBox(width: 10,),
-                    Text('学籍信息',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
+                    Image(
+                      image: Theme.of(context).brightness == Brightness.light
+                          ? AssetImage('assets/icons/lighttheme/account.png')
+                          : AssetImage('assets/icons/darktheme/account.png'),
+                      height: 40,
+                    ),
+                    SizedBox(width: 16),
+                    Text(
+                      '学籍信息',
+                      style: TextStyle(
+                        fontSize: GlobalVars.genericPageTitle,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    )
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                  ),
-                  shadowColor: Theme.of(context).colorScheme.onPrimary,
-                  color: Theme.of(context).colorScheme.surfaceDim,
-                  child: Column(
-                    children: studentData.entries.map((entry) {
-                      return Container(
-                        padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(entry.key,style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.genericTextSmall)),
-                            SizedBox(height: 5,),
-                            Text(entry.value,style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.genericTextSmall)),
-                            SizedBox(height: 20,),
-                            Divider(height: 5,indent: 20,endIndent: 20,),
-                          ],
+              
+              // 学籍信息内容 - 改进视觉呈现
+              _isLoading 
+              ? Container(
+                  padding: EdgeInsets.symmetric(vertical: 80),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: 20),
+                        Text(
+                          "正在加载学籍信息...",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontSize: GlobalVars.genericTextMedium,
+                          ),
                         ),
-                      );
-                    }).toList(),
+                      ],
+                    ),
+                  ),
+                )
+              : Container(
+                  padding: EdgeInsets.fromLTRB(16, 10, 16, 20),
+                  child: Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+                    color: Theme.of(context).colorScheme.surfaceDim,
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        children: studentData.entries.map((entry) {
+                          return buildInfoItem(context, entry.key, entry.value);
+                        }).toList(),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              
+              // 底部间隔
+              SizedBox(height: 20),
             ],
           ),
         ),
       ),
     );
   }
+  
+  // 信息项构建辅助方法
+  Widget buildInfoItem(BuildContext context, String label, String value) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: GlobalVars.genericTextMedium,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: GlobalVars.genericTextMedium,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8),
+          Divider(height: 1),
+        ],
+      ),
+    );
+  }
+  
   readstdinfo() async {
-    int i = 1;
-    String stdDetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdDetail.json';
-    File stdDetailfile = File(stdDetailpath);
-    String jsonstring = await stdDetailfile.readAsString();
-    Map<String, dynamic> jsonData = json.decode(jsonstring);
-        if(mounted){
-          setState(() {
-            studentData = jsonData.map((key, value) => MapEntry(key, value.toString()));
-          });
-        }
-        for(i = 1; i <= studentData.length;){
-          return Text(studentData[i.toString()].toString());
-        }
+    setState(() {
+      _isLoading = true;
+    });
+    
+    try {
+      String stdDetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdDetail.json';
+      File stdDetailfile = File(stdDetailpath);
+      String jsonstring = await stdDetailfile.readAsString();
+      Map<String, dynamic> jsonData = json.decode(jsonstring);
+      
+      if(mounted){
+        setState(() {
+          studentData = jsonData.map((key, value) => MapEntry(key, value.toString()));
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if(mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('加载学籍信息失败，请稍后再试'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
   }
 }
