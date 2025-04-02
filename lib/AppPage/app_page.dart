@@ -415,6 +415,106 @@ class _AppPageState extends State<AppPage>{
                     ],
                   ),
                 ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                  child: Row(
+                      children: [
+                        Container(
+                          width: (MediaQuery.of(context).size.width)/2 - 25,
+                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          height: 100,
+                          child: ElevatedButton(
+                            onPressed: (){
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  scrollable: true,
+                                  title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                  content: Text('此页面可能包含背景音乐\n如果您正在公共场所，请注意控制设备声音',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                                      child: const Text('取消'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                        url = Uri.parse('http://720yun.com/t/728jOreO5n0?scene_id=2641644');
+                                        launchURL();
+                                      },
+                                      child: const Text('确认'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: Theme.of(context).colorScheme.onPrimary,
+                              backgroundColor: Theme.of(context).colorScheme.surfaceDim,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(21),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/city.png'):AssetImage('assets/icons/darktheme/city.png'),height: 36,),
+                                SizedBox(width: 10,),
+                                Expanded(child: Text('南区全景',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 5), // 按钮之间的间距
+                        Container(
+                          width: (MediaQuery.of(context).size.width)/2 - 25,
+                          padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+                          height: 100,
+                          child: ElevatedButton(
+                            onPressed: (){
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  scrollable: true,
+                                  title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                  content: Text('此页面可能包含背景音乐\n如果您正在公共场所，请注意控制设备声音',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                                      child: const Text('取消'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                        url = Uri.parse('http://720yun.com/t/271jO0uyOv2?scene_id=2712476');
+                                        launchURL();
+                                      },
+                                      child: const Text('确认'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: Theme.of(context).colorScheme.onPrimary,
+                              backgroundColor: Theme.of(context).colorScheme.surfaceDim,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(21),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/mountain-city.png'):AssetImage('assets/icons/darktheme/mountain-city.png'),height: 36,),
+                                SizedBox(width: 10,),
+                                Expanded(child: Text('北区全景',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

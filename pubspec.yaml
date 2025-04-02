@@ -99,6 +99,7 @@ flutter:
     - assets/guide/EMBindGuide/9.jpg
     - assets/icons/darktheme/account.png
     - assets/icons/darktheme/bulb.png
+    - assets/icons/darktheme/city.png
     - assets/icons/darktheme/electricity.png
     - assets/icons/darktheme/electricitybind.png
     - assets/icons/darktheme/exam.png
@@ -108,6 +109,7 @@ flutter:
     - assets/icons/darktheme/guide.png
     - assets/icons/darktheme/hand.png
     - assets/icons/darktheme/library.png
+    - assets/icons/darktheme/mountain-city.png
     - assets/icons/darktheme/museum.png
     - assets/icons/darktheme/schedule.png
     - assets/icons/darktheme/settings.png
@@ -115,6 +117,7 @@ flutter:
     - assets/icons/darktheme/web.png
     - assets/icons/lighttheme/account.png
     - assets/icons/lighttheme/bulb.png
+    - assets/icons/lighttheme/city.png
     - assets/icons/lighttheme/electricity.png
     - assets/icons/lighttheme/electricitybind.png
     - assets/icons/lighttheme/exam.png
@@ -124,6 +127,7 @@ flutter:
     - assets/icons/lighttheme/guide.png
     - assets/icons/lighttheme/hand.png
     - assets/icons/lighttheme/library.png
+    - assets/icons/lighttheme/mountain-city.png
     - assets/icons/lighttheme/museum.png
     - assets/icons/lighttheme/schedule.png
     - assets/icons/lighttheme/settings.png
