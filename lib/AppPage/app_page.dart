@@ -23,7 +23,7 @@ int hour = DateTime.now().hour;
 //用于存储不同时间段的问候语
 String greeting = '';
 
-class AppPage extends StatefulWidget{
+class AppPage extends StatefulWidget {
   const AppPage({super.key});
 
   @override
@@ -32,508 +32,496 @@ class AppPage extends StatefulWidget{
   }
 }
 
-class _AppPageState extends State<AppPage>{
-
+class _AppPageState extends State<AppPage> {
   @override
   void initState() {
     super.initState();
     setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
-    if(hour >= 0 && hour <= 5){
+    if (hour >= 0 && hour <= 5) {
       greeting = '晚上好';
-    }if(hour >= 6 && hour <= 11){
+    }
+    if (hour >= 6 && hour <= 11) {
       greeting = '早上好';
-    }if(hour >= 12 && hour <= 13){
+    }
+    if (hour >= 12 && hour <= 13) {
       greeting = '中午好';
-    }if(hour >= 14 && hour <= 18){
+    }
+    if (hour >= 14 && hour <= 18) {
       greeting = '下午好';
-    }if(hour >= 19 && hour <= 23){
+    }
+    if (hour >= 19 && hour <= 23) {
       greeting = '晚上好';
     }
     return ListView(
       children: [
+        // 问候语区域 - 改进样式和间距
         Container(
-          padding: EdgeInsets.fromLTRB(10, 50, 0, 30),
-          child: Text('$greeting，${GlobalVars.realName}',style: TextStyle(fontWeight: FontWeight.w300,fontSize: GlobalVars.genericGreetingTitle),),
+          padding: EdgeInsets.fromLTRB(16, 40, 16, 20),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface.withAlpha(179),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(24),
+              bottomRight: Radius.circular(24),
+            ),
+          ),
+          child: Text(
+            '$greeting，${GlobalVars.realName}',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: GlobalVars.genericGreetingTitle,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
         ),
+        SizedBox(height: 10),
+        // 教务功能标题 - 改进样式
         Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Row(
             children: [
-              Text('教务功能',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
-              Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                width: 4,
+                height: 18,
+                margin: EdgeInsets.only(right: 8),
+              ),
+              Text(
+                '教务功能',
+                style: TextStyle(
+                    fontSize: GlobalVars.dividerTitle,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary),
+              ),
             ],
           ),
         ),
-        FittedBox(
-          fit: BoxFit.cover,
-          child: Container(
-            padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                  child: Row(
+        // 教务功能卡片 - 改进布局和样式
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+          child: Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+            color: Theme.of(context).colorScheme.surfaceDim,
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Row(
                     children: [
-                      Container(
-                        width: (MediaQuery.of(context).size.width)/2 - 25,
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        height: 100,
-                        child: ElevatedButton(
-                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => CourseTablePage()));},
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Theme.of(context).colorScheme.onPrimary,
-                            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(21),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/schedule.png'):AssetImage('assets/icons/darktheme/schedule.png'),height: 36,),
-                              SizedBox(width: 10,),
-                              Expanded(child: Text('我的课表',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
-                            ],
-                          ),
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '我的课表',
+                          'schedule',
+                          () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext ctx) =>
+                                        CourseTablePage()));
+                          },
                         ),
                       ),
-                      SizedBox(width: 5), // 按钮之间的间距
-                      Container(
-                        width: (MediaQuery.of(context).size.width)/2 - 25,
-                        padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-                        height: 100,
-                        child: ElevatedButton(
-                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => StdDetailPage()));},
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Theme.of(context).colorScheme.onPrimary,
-                            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(21),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/account.png'):AssetImage('assets/icons/darktheme/account.png'),height: 36,),
-                              SizedBox(width: 10,),
-                              Expanded(child: Text('学籍信息',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
-                            ],
-                          ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '学籍信息',
+                          'account',
+                          () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext ctx) =>
+                                        StdDetailPage()));
+                          },
                         ),
                       ),
                     ],
                   ),
+                  SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '我的考试',
+                          'exam',
+                          () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext ctx) =>
+                                        StdExamPage()));
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '我的成绩',
+                          'grade',
+                          () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext ctx) =>
+                                        StdGradesPage()));
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        // 后勤功能标题 - 改进样式
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(4),
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                  child: Row(
-                      children: [
-                        Container(
-                          width: (MediaQuery.of(context).size.width)/2 - 25,
-                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                          height: 100,
-                          child: ElevatedButton(
-                            onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => StdExamPage()));},
-                            style: ElevatedButton.styleFrom(
-                              shadowColor: Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(21),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/exam.png'):AssetImage('assets/icons/darktheme/exam.png'),height: 36,),
-                                SizedBox(width: 10,),
-                                Expanded(child: Text('我的考试',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
+                width: 4,
+                height: 18,
+                margin: EdgeInsets.only(right: 8),
+              ),
+              Text(
+                '后勤功能',
+                style: TextStyle(
+                    fontSize: GlobalVars.dividerTitle,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary),
+              ),
+            ],
+          ),
+        ),
+        // 后勤功能卡片 - 改进布局和样式
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+          child: Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+            color: Theme.of(context).colorScheme.surfaceDim,
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: buildFunctionButton(
+                      context,
+                      '网费查询',
+                      'web',
+                      () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext ctx) =>
+                                    SchoolNetworkPage()));
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: buildFunctionButton(
+                      context,
+                      '电费查询',
+                      'electricity',
+                      () {
+                        if (GlobalVars.emBinded == false) {
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: Text('提示：',
+                                  style: TextStyle(
+                                      fontSize: GlobalVars.alertdialogTitle)),
+                              content: Text(
+                                  '您还没有绑定电费账号，\n请先前往 "我的 -> 解/绑电费账号" 绑定后再试',
+                                  style: TextStyle(
+                                      fontSize: GlobalVars.alertdialogContent)),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'OK'),
+                                  child: const Text('确定'),
+                                ),
                               ],
                             ),
-                          ),
-                        ),
-                        SizedBox(width: 5), // 按钮之间的间距
-                        Container(
-                          width: (MediaQuery.of(context).size.width)/2 - 25,
-                          padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-                          height: 100,
-                          child: ElevatedButton(
-                            onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => StdGradesPage()));},
-                            style: ElevatedButton.styleFrom(
-                              shadowColor: Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(21),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/grade.png'):AssetImage('assets/icons/darktheme/grade.png'),height: 36,),
-                                SizedBox(width: 10,),
-                                Expanded(child: Text('我的成绩',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                          );
+                          return;
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext ctx) =>
+                                      Electricmeterpage()));
+                        }
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
+        // 校内链接标题 - 改进样式
         Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Row(
             children: [
-              Text('后勤功能',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
-              Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
-            ],
-          ),
-        ),
-        FittedBox(
-          fit: BoxFit.cover,
-          child: Container(
-            padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: (MediaQuery.of(context).size.width)/2 - 25,
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        height: 100,
-                        child: ElevatedButton(
-                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => SchoolNetworkPage()));},
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Theme.of(context).colorScheme.onPrimary,
-                            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(21),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/web.png'):AssetImage('assets/icons/darktheme/web.png'),height: 36,),
-                              SizedBox(width: 10,),
-                              Expanded(child: Text('网费查询',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 5), // 按钮之间的间距
-                      Container(
-                        width: (MediaQuery.of(context).size.width)/2 - 25,
-                        padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-                        height: 100,
-                        child: ElevatedButton(
-                          onPressed: (){
-                              if(GlobalVars.emBinded == false){
-                                  showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) => AlertDialog(
-                                    title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                                    content: Text('您还没有绑定电费账号，\n请先前往 “我的 -> 解/绑电费账号” 绑定后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context, 'OK'),
-                                        child: const Text('确定'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                return;
-                              }else{
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => Electricmeterpage()));
-                              }
-                            },
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Theme.of(context).colorScheme.onPrimary,
-                            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(21),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/electricity.png'):AssetImage('assets/icons/darktheme/electricity.png'),height: 36,),
-                              SizedBox(width: 10,),
-                              Expanded(child: Text('电费查询',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(4),
                 ),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('校内链接',style: TextStyle(fontSize: GlobalVars.dividerTitle,color: Theme.of(context).colorScheme.primary),),
-              Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+                width: 4,
+                height: 18,
+                margin: EdgeInsets.only(right: 8),
+              ),
+              Text(
+                '校内链接',
+                style: TextStyle(
+                    fontSize: GlobalVars.dividerTitle,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary),
+              ),
             ],
           ),
         ),
-        FittedBox(
-          fit: BoxFit.cover,
-          child: Container(
-            padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                  child: Row(
+        // 校内链接卡片 - 改进布局和样式
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+          child: Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+            color: Theme.of(context).colorScheme.surfaceDim,
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Row(
                     children: [
-                      Container(
-                        width: (MediaQuery.of(context).size.width)/2 - 25,
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        height: 100,
-                        child: ElevatedButton(
-                          onPressed: (){
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '图书检索',
+                          'library',
+                          () {
                             url = Uri.parse('https://findsnut.libsp.com/');
                             launchURL();
                           },
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Theme.of(context).colorScheme.onPrimary,
-                            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(21),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/library.png'):AssetImage('assets/icons/darktheme/library.png'),height: 36,),
-                              SizedBox(width: 10,),
-                              Expanded(child: Text('图书检索',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
-                            ],
-                          ),
                         ),
                       ),
-                      SizedBox(width: 5), // 按钮之间的间距
-                      Container(
-                        width: (MediaQuery.of(context).size.width)/2 - 25,
-                        padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-                        height: 100,
-                        child: ElevatedButton(
-                          onPressed: (){
-                            url = Uri.parse('https://faceid.snut.edu.cn/cflms-opencas/cas/v1/collection/');
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '人脸信息采集系统',
+                          'face',
+                          () {
+                            url = Uri.parse(
+                                'https://faceid.snut.edu.cn/cflms-opencas/cas/v1/collection/');
                             launchURL();
                           },
-                          style: ElevatedButton.styleFrom(
-                            shadowColor: Theme.of(context).colorScheme.onPrimary,
-                            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(21),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/face.png'):AssetImage('assets/icons/darktheme/face.png'),height: 36,),
-                              SizedBox(width: 10,),
-                              Expanded(child: Text('人脸信息采集系统',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
-                            ],
-                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                  child: Row(
-                      children: [
-                        Container(
-                          width: (MediaQuery.of(context).size.width)/2 - 25,
-                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                          height: 100,
-                          child: ElevatedButton(
-                            onPressed: (){
-                              url = Uri.parse('https://sec.snut.edu.cn/');
-                              launchURL();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shadowColor: Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(21),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/vpn.png'):AssetImage('assets/icons/darktheme/vpn.png'),height: 36,),
-                                SizedBox(width: 10,),
-                                Expanded(child: Text('WebVPN',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
-                              ],
-                            ),
-                          ),
+                  SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          'WebVPN',
+                          'vpn',
+                          () {
+                            url = Uri.parse('https://sec.snut.edu.cn/');
+                            launchURL();
+                          },
                         ),
-                        SizedBox(width: 5), // 按钮之间的间距
-                        Container(
-                          width: (MediaQuery.of(context).size.width)/2 - 25,
-                          padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-                          height: 100,
-                          child: ElevatedButton(
-                            onPressed: (){
-                              url = Uri.parse('https://newehall.snut.edu.cn/');
-                              launchURL();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shadowColor: Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(21),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/museum.png'):AssetImage('assets/icons/darktheme/museum.png'),height: 36,),
-                                SizedBox(width: 10,),
-                                Expanded(child: Text('一网通办',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
-                            ],
-                          ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '一网通办',
+                          'museum',
+                          () {
+                            url = Uri.parse('https://newehall.snut.edu.cn/');
+                            launchURL();
+                          },
                         ),
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                  child: Row(
-                      children: [
-                        Container(
-                          width: (MediaQuery.of(context).size.width)/2 - 25,
-                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                          height: 100,
-                          child: ElevatedButton(
-                            onPressed: (){
-                              showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  scrollable: true,
-                                  title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                                  content: Text('此页面可能包含背景音乐\n如果您正在公共场所，请注意控制设备声音',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                                      child: const Text('取消'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () async {
-                                        Navigator.pop(context);
-                                        url = Uri.parse('http://720yun.com/t/728jOreO5n0?scene_id=2641644');
-                                        launchURL();
-                                      },
-                                      child: const Text('确认'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shadowColor: Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(21),
+                  SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '南区全景',
+                          'city',
+                          () {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                scrollable: true,
+                                title: Text('提示',
+                                    style: TextStyle(
+                                        fontSize: GlobalVars.alertdialogTitle)),
+                                content: Text(
+                                    '此页面可能包含背景音乐\n如果您正在公共场所，请注意控制设备声音',
+                                    style: TextStyle(
+                                        fontSize: GlobalVars.alertdialogTitle)),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
+                                    child: const Text('取消'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      Navigator.pop(context);
+                                      url = Uri.parse(
+                                          'http://720yun.com/t/728jOreO5n0?scene_id=2641644');
+                                      launchURL();
+                                    },
+                                    child: const Text('确认'),
+                                  ),
+                                ],
                               ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/city.png'):AssetImage('assets/icons/darktheme/city.png'),height: 36,),
-                                SizedBox(width: 10,),
-                                Expanded(child: Text('南区全景',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
-                              ],
-                            ),
-                          ),
+                            );
+                          },
                         ),
-                        SizedBox(width: 5), // 按钮之间的间距
-                        Container(
-                          width: (MediaQuery.of(context).size.width)/2 - 25,
-                          padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-                          height: 100,
-                          child: ElevatedButton(
-                            onPressed: (){
-                              showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  scrollable: true,
-                                  title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                                  content: Text('此页面可能包含背景音乐\n如果您正在公共场所，请注意控制设备声音',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                                      child: const Text('取消'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () async {
-                                        Navigator.pop(context);
-                                        url = Uri.parse('http://720yun.com/t/271jO0uyOv2?scene_id=2712476');
-                                        launchURL();
-                                      },
-                                      child: const Text('确认'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shadowColor: Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(21),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '北区全景',
+                          'mountain-city',
+                          () {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                scrollable: true,
+                                title: Text('提示',
+                                    style: TextStyle(
+                                        fontSize: GlobalVars.alertdialogTitle)),
+                                content: Text(
+                                    '此页面可能包含背景音乐\n如果您正在公共场所，请注意控制设备声音',
+                                    style: TextStyle(
+                                        fontSize: GlobalVars.alertdialogTitle)),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
+                                    child: const Text('取消'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      Navigator.pop(context);
+                                      url = Uri.parse(
+                                          'http://720yun.com/t/271jO0uyOv2?scene_id=2712476');
+                                      launchURL();
+                                    },
+                                    child: const Text('确认'),
+                                  ),
+                                ],
                               ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/mountain-city.png'):AssetImage('assets/icons/darktheme/mountain-city.png'),height: 36,),
-                                SizedBox(width: 10,),
-                                Expanded(child: Text('北区全景',style: TextStyle(fontSize: GlobalVars.genericFunctionsButtonTitle),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,))
-                            ],
-                          ),
+                            );
+                          },
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
+        // 底部间隔
+        SizedBox(height: 20),
       ],
     );
   }
 
+  // 功能按钮构建辅助方法
+  Widget buildFunctionButton(
+      BuildContext context, String title, String iconName, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary.withAlpha(26),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image(
+              image: Theme.of(context).brightness == Brightness.light
+                  ? AssetImage('assets/icons/lighttheme/$iconName.png')
+                  : AssetImage('assets/icons/darktheme/$iconName.png'),
+              height: 40,
+            ),
+            SizedBox(height: 12),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: GlobalVars.genericFunctionsButtonTitle,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              textAlign: TextAlign.center,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   loginstatecheck() async {
-    String loginstatepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/loginstate.txt';
+    String loginstatepath =
+        '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/loginstate.txt';
     File loginstatefile = File(loginstatepath);
-    if(await loginstatefile.exists() == true){
-      if(mounted){
+    if (await loginstatefile.exists() == true) {
+      if (mounted) {
         setState(() {
           loginstate = true;
         });
       }
-    }if(await loginstatefile.exists() == false){
-      if(mounted){
+    }
+    if (await loginstatefile.exists() == false) {
+      if (mounted) {
         setState(() {
           loginstate = false;
         });
@@ -542,13 +530,14 @@ class _AppPageState extends State<AppPage>{
   }
 
   //打开链接
-  void launchURL() async{
+  void launchURL() async {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',
+            style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -557,7 +546,7 @@ class _AppPageState extends State<AppPage>{
           TextButton(
             onPressed: () async {
               await launchUrl(url);
-              if(context.mounted){
+              if (context.mounted) {
                 Navigator.pop(context, 'OK');
               }
             },
