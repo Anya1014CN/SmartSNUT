@@ -42,6 +42,9 @@ String currentTermName = '';
 //当前学期成绩信息
 List stdGradesTotal = [];
 bool noGrades = false;//用于判断该学期是否有成绩
+double gpaTotal = 0.00;//存储每门课的绩点
+int validGradesNum = 0;//存储有效成绩的数量
+double gradeTotal = 0.00;//存储每门课的总评成绩
 
 class StdGradesPage extends StatefulWidget{
   const StdGradesPage({super.key});
@@ -154,11 +157,22 @@ class _StdGradesPageState extends State<StatefulWidget>{
           });
         }
       }else{
+        stdGradesTotal = readGradesTotal;
+        noGrades = false;
+        for(int i = 0; i < stdGradesTotal.length; i++){
+          try {
+            double gpa = double.parse(stdGradesTotal[i]['CourseGradeGPA']!);
+            double grade = double.parse(stdGradesTotal[i]['CourseGradeTotal']!);
+            gpaTotal += gpa;
+            gradeTotal += grade;
+            validGradesNum++; // 只有成功解析为数字的成绩才计入有效成绩数
+          } catch (e) {
+            // 如果解析失败，说明成绩不是数字（可能是"优秀"/"良好"等），跳过统计
+            continue;
+          }
+        }
         if(mounted){
-          setState(() {
-            stdGradesTotal = readGradesTotal;
-            noGrades = false;
-          });
+          setState(() {});
         }
       }
     }else{
@@ -404,38 +418,63 @@ class _StdGradesPageState extends State<StatefulWidget>{
                   ),
                 ),
               ):
-              Container(
-                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-                child: Card(
-                  shadowColor: Theme.of(context).colorScheme.onPrimary,
-                  color: Theme.of(context).colorScheme.surfaceDim,
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Column(
-                    children: stdGradesTotal.map((grades) {
-                    return Container(
-                      padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //Text('序号：${i + 1}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('课程名称：${grades['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          SizedBox(height: 10,),
-                          Text('学分：${grades['CourseCredit']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('总评成绩：${grades['CourseGradeTotal']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('最终：${grades['CourseGradeFinal']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('绩点：${grades['CourseGradeGPA']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          SizedBox(height: 10,),
-                          Text('课程类别：${grades['CourseType']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          SizedBox(height: 20,),
-                          Divider(height: 5,indent: 20,endIndent: 20,),
-                        ],
+              Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    child: Card(
+                      shadowColor: Theme.of(context).colorScheme.onPrimary,
+                      color: Theme.of(context).colorScheme.surfaceDim,
+                      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
                       ),
-                    );
-                  }).toList(),
+                      child: ListTile(
+                        title: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('算数平均绩点： ${(gpaTotal / stdGradesTotal.length).toStringAsFixed(3)}（保留 3 位小数）',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
+                            Text('算数平均成绩： ${(gradeTotal / validGradesNum).toStringAsFixed(3)}（保留 3 位小数）',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
+                            SizedBox(height: 5,),
+                            Text('本学期共 ${stdGradesTotal.length} 门课程',style: TextStyle(fontSize: GlobalVars.genericSwitchContainerTitle),),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    child: Card(
+                      shadowColor: Theme.of(context).colorScheme.onPrimary,
+                      color: Theme.of(context).colorScheme.surfaceDim,
+                      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Column(
+                        children: stdGradesTotal.map((grades) {
+                        return Container(
+                          padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //Text('序号：${i + 1}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              Text('课程名称：${grades['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              SizedBox(height: 10,),
+                              Text('学分：${grades['CourseCredit']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              Text('总评成绩：${grades['CourseGradeTotal']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              Text('最终：${grades['CourseGradeFinal']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              Text('绩点：${grades['CourseGradeGPA']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              SizedBox(height: 10,),
+                              Text('课程类别：${grades['CourseType']}',style: TextStyle(fontSize: GlobalVars.genericTextMedium),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                              SizedBox(height: 20,),
+                              Divider(height: 5,indent: 20,endIndent: 20,),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      )
+                    ),
                   )
-                ),
+                ],
               ),
               Container(padding: EdgeInsets.fromLTRB(0, 80, 0, 0),)
             ],

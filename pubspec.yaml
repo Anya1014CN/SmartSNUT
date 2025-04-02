@@ -99,7 +99,6 @@ flutter:
     - assets/guide/EMBindGuide/9.jpg
     - assets/icons/darktheme/account.png
     - assets/icons/darktheme/bulb.png
-    - assets/icons/darktheme/calculator.png
     - assets/icons/darktheme/electricity.png
     - assets/icons/darktheme/electricitybind.png
     - assets/icons/darktheme/exam.png
@@ -116,7 +115,6 @@ flutter:
     - assets/icons/darktheme/web.png
     - assets/icons/lighttheme/account.png
     - assets/icons/lighttheme/bulb.png
-    - assets/icons/lighttheme/calculator.png
     - assets/icons/lighttheme/electricity.png
     - assets/icons/lighttheme/electricitybind.png
     - assets/icons/lighttheme/exam.png

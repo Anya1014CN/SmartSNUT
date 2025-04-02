@@ -995,7 +995,6 @@ class _SettingsPage extends State<SettingsPage>{
     GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
 
     if(mounted){
-      print('刷新状态');
       setState(() {});
     }
   }

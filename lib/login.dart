@@ -97,7 +97,6 @@ class _LoginPageState extends State<LoginPage>{
     GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
 
     if(mounted){
-      print('刷新状态');
       setState(() {});
     }
   }

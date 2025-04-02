@@ -96,7 +96,6 @@ class _SmartSNUT extends State<SmartSNUT> {
     GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
 
     if(mounted){
-      print('刷新状态');
       setState(() {});
     }
   }
