@@ -1957,10 +1957,32 @@ class _CourseTablePage extends State<CourseTablePage>{
   }
 
   getCourseTable() async {
+    bool getCourseTableCanceled = false;
     if(mounted){
-      setState(() {
-        isQuerying = true;
-      });
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+          scrollable: true,
+          title: Text('正在刷新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Column(
+            children: [
+              SizedBox(height: 10,),
+              CircularProgressIndicator(),
+              SizedBox(height: 10,)
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                getCourseTableCanceled = true;
+                Navigator.pop(context);
+              },
+              child: const Text('取消'),
+            ),
+          ],
+        ),
+      );
     }
     
     //课表数据目录
@@ -1978,11 +2000,13 @@ class _CourseTablePage extends State<CourseTablePage>{
     dio.interceptors.add(CookieManager(jwglcookie));
 
     //第一次请求，获取 hash
+    if(getCourseTableCanceled) return;
     late Response response1;
     try{
       response1 = await dio.get('http://jwgl.snut.edu.cn/eams/loginExt.action');
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -2020,9 +2044,11 @@ class _CourseTablePage extends State<CourseTablePage>{
     encryptedpassword = digest.toString();
 
     //等待半秒，防止教务系统判定为过快点击
+    if(getCourseTableCanceled) return;
     await Future.delayed(Duration(milliseconds: 500));
 
     //第二次请求，尝试登录
+    if(getCourseTableCanceled) return;
     final formData = FormData.fromMap({
       "username": userName,
       "password": encryptedpassword,
@@ -2046,6 +2072,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     String response2string = response2.data.toString();
     if(response2string.contains('账户不存在')){
     if(mounted){
+      Navigator.pop(context);
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -2067,6 +2094,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     return;
     }if(response2string.contains('密码错误')){
     if(mounted){
+      Navigator.pop(context);
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -2089,14 +2117,17 @@ class _CourseTablePage extends State<CourseTablePage>{
     }
     
     //等待半秒，防止教务系统判定为过快点击
+    if(getCourseTableCanceled) return;
     await Future.delayed(Duration(milliseconds: 500));
 
     //请求课表初始信息
+    if(getCourseTableCanceled) return;
     late Response courseresponse1;
     try{
       courseresponse1 = await dio.get('http://jwgl.snut.edu.cn/eams/courseTableForStd.action');
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -2164,6 +2195,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       );
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -2217,7 +2249,10 @@ class _CourseTablePage extends State<CourseTablePage>{
     semesterId = semestersData['y$currentYearInt'][currentTermInt -1]['id'].toString();
     
     //等待半秒，防止教务系统判定为过快点击
+    if(getCourseTableCanceled) return;
     await Future.delayed(Duration(milliseconds: 500));
+
+    if(getCourseTableCanceled) return;
     final courseTablegetformData = FormData.fromMap({
       "ignoreHead": '1',
       "setting.kind": 'std',
@@ -2239,6 +2274,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       );
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -2333,7 +2369,10 @@ class _CourseTablePage extends State<CourseTablePage>{
     semesterId = semestersData['y$currentYearInt'][currentTermInt -1]['id'].toString();
     
     //等待半秒，防止教务系统判定为过快点击
+    if(getCourseTableCanceled) return;
     await Future.delayed(Duration(milliseconds: 500));
+
+    if(getCourseTableCanceled) return;
     final schoolCalendarformData = FormData.fromMap({
       "semester.id": semesterId,
       '_': '1740564686472',
@@ -2352,6 +2391,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       );
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
