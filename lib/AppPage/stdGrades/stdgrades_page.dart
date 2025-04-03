@@ -319,9 +319,11 @@ class _StdGradesPageState extends State<StatefulWidget>{
 
   @override
   void initState() {
-    readStdAccount();
-    readSemesterInfo();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      readStdAccount();
+      readSemesterInfo();
+    });
   }
 
   @override
@@ -485,10 +487,32 @@ class _StdGradesPageState extends State<StatefulWidget>{
   }
 
   getStdGrades() async {
+    bool getStdGradesCanceled = false;
     if(mounted){
-      setState(() {
-        isQuerying = true;
-      });
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+          scrollable: true,
+          title: Text('正在刷新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Column(
+            children: [
+              SizedBox(height: 10,),
+              CircularProgressIndicator(),
+              SizedBox(height: 10,)
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                getStdGradesCanceled = true;
+                Navigator.pop(context);
+              },
+              child: const Text('取消'),
+            ),
+          ],
+        ),
+      );
     }
     
     //课表数据目录
@@ -506,11 +530,13 @@ class _StdGradesPageState extends State<StatefulWidget>{
     dio.interceptors.add(CookieManager(jwglcookie));
 
     //第一次请求，获取 hash
+    if(getStdGradesCanceled) return;
     late Response response1;
     try{
       response1 = await dio.get('http://jwgl.snut.edu.cn/eams/loginExt.action');
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -548,9 +574,11 @@ class _StdGradesPageState extends State<StatefulWidget>{
     encryptedpassword = digest.toString();
 
     //等待半秒，防止教务系统判定为过快点击
+    if(getStdGradesCanceled) return;
     await Future.delayed(Duration(milliseconds: 500));
 
     //第二次请求，尝试登录
+    if(getStdGradesCanceled) return;
     final formData = FormData.fromMap({
       "username": userName,
       "password": encryptedpassword,
@@ -574,6 +602,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
     String response2string = response2.data.toString();
     if(response2string.contains('账户不存在')){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -595,6 +624,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
     return;
     }if(response2string.contains('密码错误')){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -618,6 +648,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
     
 
     //请求首页，初始化数据
+    if(getStdGradesCanceled) return;
     try{
       await dio.get(
         options: Options(
@@ -629,6 +660,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
       );
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -653,8 +685,10 @@ class _StdGradesPageState extends State<StatefulWidget>{
     //请求成绩页面
     
     //等待半秒，防止教务系统判定为过快点击
+    if(getStdGradesCanceled) return;
     await Future.delayed(Duration(milliseconds: 500));
 
+    if(getStdGradesCanceled) return;
     late Response stdGradesresponse1;
     try{
       stdGradesresponse1 = await dio.get(
@@ -667,6 +701,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
       );
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -701,6 +736,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
     semesterId = semestersData['y$currentYearInt'][currentTermInt -1 ]['id'].toString();
 
     //开始下载成绩
+    if(getStdGradesCanceled) return;
     late Response stdGradesresponse2;
     try{
       stdGradesresponse2 = await dio.get(
@@ -713,6 +749,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
       );
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -733,8 +770,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
       }
       return;
     }
-
-
 
     List<Map<String, String>> foundedGrades = [];
     dom.Document stdExmaDocument2 = parser.parse(stdGradesresponse2.data);
@@ -781,6 +816,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
     readstdGrades();
     if(stdGradesTotal.isEmpty){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
