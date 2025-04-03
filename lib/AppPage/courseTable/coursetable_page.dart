@@ -2443,6 +2443,7 @@ class _CourseTablePage extends State<CourseTablePage>{
         isQuerying = false;
         needRefresh = false;
       });
+      Navigator.pop(context);
     }
   }
 
