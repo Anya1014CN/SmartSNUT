@@ -2140,13 +2140,12 @@ class _CourseTablePage extends State<CourseTablePage>{
       tagId = tagIdmatch.group(1)!;
     }
 
-    //RegExp idsExp = RegExp(r'bg\.form\.addInput\(form,"ids","(\d+)"\)');
-    //Iterable<Match> idsmatch = idsExp.allMatches(courseresponse1.data);
-    //班级课表id
-    // if(idsmatch.length >=2 ){
-    //   idsMe = idsmatch.elementAt(0).group(1)!;
-    //   idsClass = idsmatch.elementAt(1).group(1)!;
-    // }
+    RegExp idsExp = RegExp(r'bg\.form\.addInput\(form,"ids","(\d+)"\)');
+    Iterable<Match> idsmatch = idsExp.allMatches(courseresponse1.data);
+    if(idsmatch.length >=2 ){
+      idsMe = idsmatch.elementAt(0).group(1)!;
+      //idsClass = idsmatch.elementAt(1).group(1)!; 班级课表
+    }
 
     //获取所有学期的 semester.id，学年名称，学期名称
     final courseTableformData = FormData.fromMap({
@@ -2195,19 +2194,14 @@ class _CourseTablePage extends State<CourseTablePage>{
     rawdata = rawdata.replaceAllMapped(
       RegExp(r'(\w+):'), (match) => '"${match[1]}":');
     rawdata = rawdata.replaceAll("'", "\""); // 替换单引号为双引号
-
     // 去除 HTML 代码
     rawdata = rawdata.replaceAll(RegExp(r'\"<tr>.*?</tr>\"', dotAll: true), '""');
-
     // 解析 JSON
     Map<String, dynamic> proceeddata = json.decode(rawdata);
-
       if (proceeddata.containsKey("semesters")) {
         Map<String, dynamic> semestersMap = proceeddata["semesters"];
-
         // 转换为标准 JSON 格式的字符串
         String jsonSemesters = json.encode(semestersMap);
-
         semesters = jsonSemesters;
       }
     
@@ -2251,7 +2245,7 @@ class _CourseTablePage extends State<CourseTablePage>{
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
             title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            content: Text('无法连接服务器1，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -2365,7 +2359,7 @@ class _CourseTablePage extends State<CourseTablePage>{
           builder: (BuildContext context) => AlertDialog(
             scrollable: true,
             title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            content: Text('无法连接服务器0，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
