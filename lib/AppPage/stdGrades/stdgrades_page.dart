@@ -37,7 +37,7 @@ String currentTermName = '';
 
 //当前学期成绩信息
 List stdGradesTotal = [];
-bool noGrades = false;//用于判断该学期是否有成绩
+bool noGrades = true;//用于判断该学期是否有成绩
 double gpaTotal = 0.00;//存储每门课的绩点
 int validGradesNum = 0;//存储有效成绩的数量
 double gradeTotal = 0.00;//存储每门课的总评成绩
