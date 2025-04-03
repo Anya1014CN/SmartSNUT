@@ -17,9 +17,6 @@ import 'package:url_launcher/url_launcher.dart';
 //用于存储要打开的URL
 Uri url = Uri.parse("uri");
 
-//定义登录按钮标题
-String loginButtonTitle = '登录智慧陕理工';
-
 class LoginPage extends StatefulWidget{
   const LoginPage ({super.key});
 
@@ -35,9 +32,6 @@ class _LoginPageState extends State<LoginPage>{
   final textUsernameController = TextEditingController();
   final textPasswordController = TextEditingController();
   final textCaptchaController = TextEditingController();
-
-  //登录状态
-  bool loggingin = false;
 
   //读取设置并保存在变量中
   readSettings() async {
@@ -216,18 +210,10 @@ class _LoginPageState extends State<LoginPage>{
                         ));
                         return;
                       }else{
-                        loggingin ? null : loginjwgl();
+                        loginjwgl();
                       }
                     },
-                    child: loggingin ? FittedBox(
-                      child: Row(
-                        children: [
-                          CircularProgressIndicator(color: Colors.white,),
-                          SizedBox(width: 10,),
-                          Text('\n$loginButtonTitle\n')
-                        ],
-                      ),
-                    ):FittedBox(
+                    child: FittedBox(
                       child: Row(
                         children: [
                           Icon(Icons.login),
@@ -265,10 +251,30 @@ class _LoginPageState extends State<LoginPage>{
   //登录教务系统
   loginjwgl() async {
     if(mounted){
-      setState(() {
-        loggingin = true;
-        loginButtonTitle = '正在登录教务系统';
-      });
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+          scrollable: true,
+          title: Text('正在登录...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Column(
+            children: [
+              SizedBox(height: 10,),
+              CircularProgressIndicator(),
+              SizedBox(height: 10,)
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                clearTempLogindata();
+                Navigator.pop(context);
+              },
+              child: const Text('取消'),
+            ),
+          ],
+        ),
+      );
     }
 
     //数据目录
@@ -297,6 +303,7 @@ class _LoginPageState extends State<LoginPage>{
       response1 = await dio.get('http://jwgl.snut.edu.cn/eams/loginExt.action');
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -312,9 +319,6 @@ class _LoginPageState extends State<LoginPage>{
           ),
         );
         clearTempLogindata();
-        setState(() {
-          loggingin = false;
-        });
       }
       return;
     }
@@ -363,6 +367,7 @@ class _LoginPageState extends State<LoginPage>{
       );
     }catch(e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -378,9 +383,6 @@ class _LoginPageState extends State<LoginPage>{
           ),
         );
         clearTempLogindata();
-        setState(() {
-          loggingin = false;
-        });
       }
       return;
     }
@@ -388,6 +390,7 @@ class _LoginPageState extends State<LoginPage>{
     String response2string = response2.data.toString();
     if(response2string.contains('账户不存在')){
     if(mounted){
+      Navigator.pop(context);
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -403,13 +406,11 @@ class _LoginPageState extends State<LoginPage>{
         ),
       );
       clearTempLogindata();
-      setState(() {
-        loggingin = false;
-      });
     }
     return;
     }if(response2string.contains('密码错误')){
     if(mounted){
+      Navigator.pop(context);
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -425,17 +426,8 @@ class _LoginPageState extends State<LoginPage>{
         ),
       );
       clearTempLogindata();
-      setState(() {
-        loggingin = false;
-      });
     }
     return;
-    }
-
-    if(mounted){
-      setState(() {
-        loginButtonTitle = '正在获取个人信息';
-      });
     }
 
     //登录成功，获取个人信息
@@ -452,6 +444,7 @@ class _LoginPageState extends State<LoginPage>{
       myactionresponse = await dio.get('http://jwgl.snut.edu.cn/eams/security/my.action');
     }catch(e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -467,9 +460,6 @@ class _LoginPageState extends State<LoginPage>{
           ),
         );
         clearTempLogindata();
-        setState(() {
-          loggingin = false;
-        });
       }
       return;
     }
@@ -490,18 +480,13 @@ class _LoginPageState extends State<LoginPage>{
     File stdAccountfile = File(stdAccountpath);
     stdAccountfile.writeAsString(stdAccountJson);
 
-    if(mounted){
-      setState(() {
-        loginButtonTitle = '正在获取学籍信息';
-      });
-    }
-
   //学籍信息保存
   late Response stdDetailresponse;
   try{
     stdDetailresponse = await dio.get('http://jwgl.snut.edu.cn/eams/stdDetail.action');
   }catch(e){
     if(mounted){
+      Navigator.pop(context);
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -517,9 +502,6 @@ class _LoginPageState extends State<LoginPage>{
         ),
       );
       clearTempLogindata();
-      setState(() {
-        loggingin = false;
-      });
     }
     return;
   }
@@ -549,19 +531,12 @@ class _LoginPageState extends State<LoginPage>{
   File stdDetailfile = File(stdDetailpath);
   stdDetailfile.writeAsString(jsonOutput);
 
-    if(mounted){
-      setState(() {
-        loginButtonTitle = '正在获取最新课表';
-      });
-    }
-
   //课表数据目录
   Directory courseTableStddirectory = Directory('${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/courseTableStd');
   if(await courseTableStddirectory.exists() == false){
     await courseTableStddirectory.create();
   }
 
-  
     //等待半秒，防止教务系统判定为过快点击
     await Future.delayed(Duration(milliseconds: 500));
 
@@ -571,6 +546,7 @@ class _LoginPageState extends State<LoginPage>{
       courseresponse1 = await dio.get('http://jwgl.snut.edu.cn/eams/courseTableForStd.action');
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -586,9 +562,6 @@ class _LoginPageState extends State<LoginPage>{
           ),
         );
         clearTempLogindata();
-        setState(() {
-          loggingin = false;
-        });
       }
       return;
     }
@@ -629,6 +602,7 @@ class _LoginPageState extends State<LoginPage>{
       );
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -644,9 +618,6 @@ class _LoginPageState extends State<LoginPage>{
           ),
         );
         clearTempLogindata();
-        setState(() {
-          loggingin = false;
-        });
       }
       return;
     }
@@ -718,6 +689,7 @@ class _LoginPageState extends State<LoginPage>{
   
 
     if(mounted){
+      Navigator.pop(context);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext ctx) => HomePage()));
     }
   }
