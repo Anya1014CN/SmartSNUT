@@ -13,6 +13,10 @@ import 'package:smartsnut/globalvars.dart';
 //判断是否需要联网下载课表
 bool needRefresh = false;
 
+//存储本周每一天的日期
+List<String> weekDates = [];
+int weekDiff = 0;//存储用户的周数与当前周数的差异
+
 //学期信息
 String termStart = '';
 String termEnd = '';
@@ -1367,6 +1371,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     semestersData = {};
     semestersName = [];
     super.initState();
+    getWeekDates();
     readStdAccount();
     readSemesterInfo();
   }
@@ -1424,8 +1429,10 @@ class _CourseTablePage extends State<CourseTablePage>{
                       if(mounted){
                         setState(() {
                           currentWeekInt --;
+                          weekDiff --;
                         });
                       }
+                      getWeekDates();
                       readWeeklyCourseTableDetail();
                       saveSelectedTY();
                     },
@@ -1437,8 +1444,10 @@ class _CourseTablePage extends State<CourseTablePage>{
                       if(mounted){
                         setState(() {
                           currentWeekInt ++;
+                          weekDiff ++;
                         });
                       }
+                      getWeekDates();
                       readWeeklyCourseTableDetail();
                       saveSelectedTY();
                     },
@@ -1483,7 +1492,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('一',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 1)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('一\n${weekDates[0]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 1)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1491,7 +1500,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('二',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 2)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('二\n${weekDates[1]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 2)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1499,7 +1508,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('三',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 3)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('三\n${weekDates[2]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 3)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1507,7 +1516,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('四',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 4)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('四\n${weekDates[3]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 4)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1515,7 +1524,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('五',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 5)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('五\n${weekDates[4]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 5)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     GlobalVars.showSatCourse? Card(
@@ -1523,7 +1532,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('六',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 6)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('六\n${weekDates[5]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 6)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ):SizedBox(),
                     GlobalVars.showSunCourse? Card(
@@ -1531,7 +1540,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('日',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 7)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('日\n${weekDates[6]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 7)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ):SizedBox(),
                   ],
@@ -2476,4 +2485,22 @@ class _CourseTablePage extends State<CourseTablePage>{
       },
     );
   }
+
+  //获取本周每一天的日期
+  getWeekDates() {
+    weekDates = [];
+    DateTime now = DateTime.now();
+    DateTime monday = now.subtract(Duration(days: now.weekday - 1));
+    monday = monday.add(Duration(days: 7 * weekDiff));
+
+    for (int i = 0; i < 7; i++) {
+      DateTime day = monday.add(Duration(days: i));
+      String month = day.month.toString().padLeft(2, '0');
+      String date = day.day.toString().padLeft(2, '0');
+      weekDates.add('$month-$date');
+    }
+    print(weekDiff);
+    setState(() {});
+  }
+
 }
