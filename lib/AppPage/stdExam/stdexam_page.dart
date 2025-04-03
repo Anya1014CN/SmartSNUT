@@ -10,9 +10,6 @@ import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
 import 'package:smartsnut/globalvars.dart';
 
-//保存查询状态
-bool isQuerying = false;
-
 //学期信息
 String termStart = '';
 String termEnd = '';
@@ -392,18 +389,7 @@ class _StdExamPageState extends State<StdExamPage>{
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){getStdExam();},
         backgroundColor: Theme.of(context).colorScheme.primary,
-        label: isQuerying? Row(
-          children: [
-            SizedBox(
-              height: 30,
-              width: 30,
-              child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,),
-            ),
-            SizedBox(width: 10,),
-            Text('正在刷新',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
-          ],
-        ):
-        Row(
+        label: Row(
           children: [
             Icon(Icons.refresh),
             SizedBox(width: 10,),
@@ -648,9 +634,6 @@ class _StdExamPageState extends State<StdExamPage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -714,9 +697,6 @@ class _StdExamPageState extends State<StdExamPage>{
           ],
         ),
       );
-      setState(() {
-        isQuerying = false;
-      });
     }
     return;
     }if(response2string.contains('密码错误')){
@@ -736,9 +716,6 @@ class _StdExamPageState extends State<StdExamPage>{
           ],
         ),
       );
-      setState(() {
-        isQuerying = false;
-      });
     }
     return;
     }
@@ -772,9 +749,6 @@ class _StdExamPageState extends State<StdExamPage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -814,9 +788,6 @@ class _StdExamPageState extends State<StdExamPage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -874,9 +845,6 @@ class _StdExamPageState extends State<StdExamPage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -939,9 +907,6 @@ class _StdExamPageState extends State<StdExamPage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -974,9 +939,6 @@ class _StdExamPageState extends State<StdExamPage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -1025,10 +987,7 @@ class _StdExamPageState extends State<StdExamPage>{
 
     readSchoolCalendarInfo();
     if(mounted){
-      setState(() {
-        isQuerying = false;
-        Navigator.pop(context);
-      });
+      Navigator.pop(context);
     }
   }
 }

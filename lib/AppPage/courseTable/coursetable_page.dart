@@ -10,9 +10,6 @@ import 'package:html/parser.dart' as parser;
 import 'package:intl/intl.dart';
 import 'package:smartsnut/globalvars.dart';
 
-//保存查询状态
-bool isQuerying = false;
-
 //判断是否需要联网下载课表
 bool needRefresh = false;
 
@@ -1255,7 +1252,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                   controller: menuYearController,
                   menuChildren: semestersName.map((item) {
                     return MenuItemButton(
-                      onPressed: isQuerying ? null : () async {
+                      onPressed: () async {
                         int yearSelectedIndex = semestersName.indexOf(item);
                         if(mounted){
                           setState(() {
@@ -1279,7 +1276,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                           borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      onPressed: isQuerying ? null : () {
+                      onPressed: () {
                         if (menuYearController.isOpen) {
                           menuYearController.close();
                         } else {
@@ -1332,7 +1329,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                           borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      onPressed: isQuerying ? null : () {
+                      onPressed: () {
                         if (menuTermController.isOpen) {
                           menuTermController.close();
                         } else {
@@ -1401,18 +1398,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){getCourseTable();},
         backgroundColor: Theme.of(context).colorScheme.primary,
-        label: isQuerying? Row(
-          children: [
-            SizedBox(
-              height: 30,
-              width: 30,
-              child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,),
-            ),
-            SizedBox(width: 10,),
-            Text('正在刷新',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
-          ],
-        ):
-        Row(
+        label: Row(
           children: [
             Icon(Icons.refresh),
             SizedBox(width: 10,),
@@ -2021,9 +2007,6 @@ class _CourseTablePage extends State<CourseTablePage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -2087,9 +2070,6 @@ class _CourseTablePage extends State<CourseTablePage>{
           ],
         ),
       );
-      setState(() {
-        isQuerying = false;
-      });
     }
     return;
     }if(response2string.contains('密码错误')){
@@ -2109,9 +2089,6 @@ class _CourseTablePage extends State<CourseTablePage>{
           ],
         ),
       );
-      setState(() {
-        isQuerying = false;
-      });
     }
     return;
     }
@@ -2142,9 +2119,6 @@ class _CourseTablePage extends State<CourseTablePage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -2210,9 +2184,6 @@ class _CourseTablePage extends State<CourseTablePage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -2289,9 +2260,6 @@ class _CourseTablePage extends State<CourseTablePage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -2406,9 +2374,6 @@ class _CourseTablePage extends State<CourseTablePage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -2440,7 +2405,6 @@ class _CourseTablePage extends State<CourseTablePage>{
     readSchoolCalendarInfo();
     if(mounted){
       setState(() {
-        isQuerying = false;
         needRefresh = false;
       });
       Navigator.pop(context);

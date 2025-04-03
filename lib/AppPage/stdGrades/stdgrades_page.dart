@@ -10,10 +10,6 @@ import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
 import 'package:smartsnut/globalvars.dart';
 
-
-//保存查询状态
-bool isQuerying = false;
-
 //判断是否需要联网下载成绩
 bool needRefresh = false;
 
@@ -333,18 +329,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){getStdGrades();},
         backgroundColor: Theme.of(context).colorScheme.primary,
-        label: isQuerying? Row(
-          children: [
-            SizedBox(
-              height: 30,
-              width: 30,
-              child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,),
-            ),
-            SizedBox(width: 10,),
-            Text('正在刷新',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
-          ],
-        ):
-        Row(
+        label: Row(
           children: [
             Icon(Icons.refresh),
             SizedBox(width: 10,),
@@ -551,9 +536,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -617,9 +599,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
     return;
     }if(response2string.contains('密码错误')){
@@ -639,9 +618,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
     return;
     }
@@ -675,9 +651,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -716,9 +689,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -764,9 +734,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -835,9 +802,9 @@ class _StdGradesPageState extends State<StatefulWidget>{
     }
     if(mounted){
       setState(() {
-        isQuerying = false;
         needRefresh = false;
       });
+      Navigator.pop(context);
     }
   }
 }
