@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -8,6 +9,7 @@ import 'package:crypto/crypto.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:html/dom.dart' as html_dom;
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:smartsnut/main.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,6 +34,8 @@ class _LoginPageState extends State<LoginPage>{
   //创建 TextEditingController
   final textUsernameController = TextEditingController();
   final textPasswordController = TextEditingController();
+  final textCaptchaController = TextEditingController();
+
   //登录状态
   bool loggingin = false;
 
@@ -107,6 +111,29 @@ class _LoginPageState extends State<LoginPage>{
     super.initState();
   }
 
+  Widget _buildCardContent() {
+    return Column(
+      children: [
+        TextField(
+          controller: textUsernameController,
+          decoration: InputDecoration(
+            labelText: '用户名',
+            prefixIcon: Icon(Icons.person),
+          ),
+        ),
+        SizedBox(height: 10),
+        TextField(
+          controller: textPasswordController,
+          obscureText: true,
+          decoration: InputDecoration(
+            labelText: '密码',
+            prefixIcon: Icon(Icons.lock),
+          ),
+        ),
+      ],
+    );
+  } 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,40 +161,30 @@ class _LoginPageState extends State<LoginPage>{
             ),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
-            child: Card(
-              shadowColor: Theme.of(context).colorScheme.onPrimary,
-              color: Theme.of(context).colorScheme.surfaceDim,
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(21),
+            padding:EdgeInsets.fromLTRB(15, 0, 15, 10),
+            child: ScreenTypeLayout.builder(
+              mobile: (BuildContext context) => Card(
+                shadowColor: Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(context).colorScheme.surfaceDim,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                ),
+                margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 30, 0, MediaQuery.of(context).size.width / 30, 10), // 手机端边距
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  child: _buildCardContent(),
+                ),
               ),
-              child: Container(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Center(child: Text('请使用陕西理工大学统一身份认证账号登录'),),
-                    SizedBox(height: 15,),
-                    TextField(
-                      controller: textUsernameController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: '用户名',
-                        hintText: '请输入您的学号/工号',
-                        filled: false
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    TextField(
-                      controller: textPasswordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: '密码',
-                        hintText: '请输入您的密码',
-                        filled: false
-                      ),
-                    ),
-                  ],
+              desktop: (BuildContext context) => Card(
+                shadowColor: Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(context).colorScheme.surfaceDim,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                ),
+                margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 5, 10, MediaQuery.of(context).size.width / 5, 10), // 手机端边距
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  child: _buildCardContent(),
                 ),
               ),
             ),
@@ -244,6 +261,7 @@ class _LoginPageState extends State<LoginPage>{
       ),
     );
   }
+
   //登录教务系统
   loginjwgl() async {
     if(mounted){
