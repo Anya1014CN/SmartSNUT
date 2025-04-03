@@ -247,6 +247,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
   }
 
   networkQuery() async {
+    bool networkQueryCanceled = false;
     if(mounted){
       showDialog<String>(
         context: context,
@@ -264,6 +265,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
           actions: <Widget>[
             TextButton(
               onPressed: () {
+                networkQueryCanceled = true;
                 Navigator.pop(context);
               },
               child: const Text('取消'),
@@ -277,6 +279,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
     dio.interceptors.add(CookieManager(netcookiejar));
 
     //第一次请求，提取相关信息
+    if(networkQueryCanceled) return;
     late html_dom.Document document;
     String csrfToken = '';
     String ajaxCsrfToken = '';
@@ -315,6 +318,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
 
 
     //第二次请求，查询数据
+    if(networkQueryCanceled) return;
     late Response netresponse2;
     try{
       netresponse2 = await dio.post(
