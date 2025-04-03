@@ -11,9 +11,6 @@ import 'package:smartsnut/globalvars.dart';
 //用于存储外部链接的完整URL
 Uri url = Uri.parse("uri");
 
-//状态相关变量
-bool isQuerying = false;
-
 //用户数据
 String realName = GlobalVars.realName;
 String balance = '';
@@ -36,8 +33,10 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
   @override
   void initState() {
     textUsernameController.text = GlobalVars.userName;
-    networkQuery();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      networkQuery();
+    });
   }
 
   @override
@@ -123,7 +122,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                         color: Theme.of(context).colorScheme.surfaceDim,
                         child: SizedBox(
                           height: 75,
-                          child:isQuerying? Center(child: CircularProgressIndicator(),):TextButton(
+                          child: TextButton(
                             style: ElevatedButton.styleFrom(
                               shadowColor: Theme.of(context).colorScheme.onPrimary,
                               backgroundColor: Theme.of(context).colorScheme.surfaceDim,
@@ -131,7 +130,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                                 borderRadius: BorderRadius.circular(25),
                               ),
                             ),
-                            onPressed: isQuerying? null:() {
+                            onPressed: () {
                               if(textUsernameController.text == ''){
                                 if(mounted){
                                   showDialog<String>(
@@ -249,9 +248,29 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
 
   networkQuery() async {
     if(mounted){
-      setState(() {
-      isQuerying = true;
-    });
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+          scrollable: true,
+          title: Text('正在查询...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Column(
+            children: [
+              SizedBox(height: 10,),
+              CircularProgressIndicator(),
+              SizedBox(height: 10,)
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('取消'),
+            ),
+          ],
+        ),
+      );
     }
     CookieJar netcookiejar = CookieJar();
     Dio dio = Dio();
@@ -276,6 +295,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
       ajaxCsrfToken = (ajaxCsrfTokenMatch?.group(1)).toString();
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -289,9 +309,6 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
             ],
           ),
         );
-        setState(() {
-          isQuerying = false;
-        });
       }
       return;
     }
@@ -317,6 +334,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
       );
     }catch(e){
       if(mounted){
+        Navigator.pop(context);
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
@@ -330,7 +348,6 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
           balance = '';
           state = '';
           expire = '';
-          isQuerying = false;
         });
       }
       return;
@@ -339,6 +356,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
     var netdata = jsonDecode(netresponse2.data);
     if(netdata['userName'] == ''){
       if(mounted){
+        Navigator.pop(context);
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
@@ -352,7 +370,6 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
           balance = '';
           state = '';
           expire = '';
-          isQuerying = false;
         });
       }
       return;
@@ -363,7 +380,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
       balance = netdata['leftMoney'];
       state = netdata['useFlag'];
       expire = netdata['dueDate'];
-      isQuerying = false;
+      Navigator.pop(context);
     });
     }
   }
