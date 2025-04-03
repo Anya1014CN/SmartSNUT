@@ -401,22 +401,48 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
       ),
     );
   }
+
   bindelectricmeter() async {
+    bool bindelectricmeterCanceled = false;
     if(mounted){
-      setState(() {
-        isBinding = true;
-      });
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+          scrollable: true,
+          title: Text('正在绑定...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Column(
+            children: [
+              SizedBox(height: 10,),
+              CircularProgressIndicator(),
+              SizedBox(height: 10,)
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                bindelectricmeterCanceled = true;
+                Navigator.pop(context);
+              },
+              child: const Text('取消'),
+            ),
+          ],
+        ),
+      );
     }
+
     CookieJar emcookiejar = CookieJar();
     Dio dio = Dio();
     dio.interceptors.add(CookieManager(emcookiejar));
 
     //获取用户相关信息
+    if(bindelectricmeterCanceled) return;
     late Response emresponse1;
     try{
       emresponse1 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/index?openId=$openid',);
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
@@ -438,6 +464,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     
     if(emresponse1.data.toString().contains('获取用户失败请重新打开')){
         if(mounted){
+          Navigator.pop(context);
           showDialog(
             context: context, 
             builder: (BuildContext context)=>AlertDialog(
@@ -455,10 +482,13 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
 
     //检查并电表信息
     wechatId = emresponse1.data['data']['wechatId'].toString();
+
+    if(bindelectricmeterCanceled) return;
     Response emresponse2 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/getBindListWx?wechatUserId=$wechatId');
 
     if(emresponse2.data['data'].toString() == '[]'){
       if(mounted){
+        Navigator.pop(context);
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
@@ -474,6 +504,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
       return;
     }if(emresponse2.data['data'].toString() == 'null'){
       if(mounted){
+        Navigator.pop(context);
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
@@ -501,6 +532,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
 
 
     //下载用户头像
+    if(bindelectricmeterCanceled) return;
     await dio.download(emresponse1.data['data']['wechatUserHeadimgurl'],'${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emavatar.jpg');
 
     //保存用户信息
@@ -532,6 +564,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         isBinding = false;
         GlobalVars.emBinded = true;
       });
+      Navigator.pop(context);
     }
   }
 
