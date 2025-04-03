@@ -103,6 +103,7 @@ flutter:
     - assets/icons/darktheme/city.png
     - assets/icons/darktheme/electricity.png
     - assets/icons/darktheme/electricitybind.png
+    - assets/icons/darktheme/empty.png
     - assets/icons/darktheme/exam.png
     - assets/icons/darktheme/exit.png
     - assets/icons/darktheme/face.png
@@ -121,6 +122,7 @@ flutter:
     - assets/icons/lighttheme/city.png
     - assets/icons/lighttheme/electricity.png
     - assets/icons/lighttheme/electricitybind.png
+    - assets/icons/lighttheme/empty.png
     - assets/icons/lighttheme/exam.png
     - assets/icons/lighttheme/exit.png
     - assets/icons/lighttheme/face.png

@@ -524,10 +524,14 @@ class _StdExamPageState extends State<StdExamPage>{
                     shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
                     ),
-                    child: ListTile(
-                      leading: Icon(Icons.error),
-                      title: Text('暂无 $currentExamBatchName 信息',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                      subtitle: Text('当前学期：$currentYearName $currentTermName\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
+                    child: Column(
+                      children: [
+                        Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/empty.png'):AssetImage('assets/icons/darktheme/empty.png'),height: MediaQuery.of(context).size.height / 4,),
+                        Divider(height: 5,indent: 20,endIndent: 20,),
+                        SizedBox(height: 10,),
+                        Text('暂无 $currentYearName $currentTermName 的 $currentExamBatchName 信息\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                        SizedBox(height: 10,),
+                      ],
                     ),
                   ),
                 ),
