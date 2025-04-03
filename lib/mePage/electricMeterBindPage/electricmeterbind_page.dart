@@ -9,6 +9,7 @@ import 'package:smartsnut/AppPage/schoolNetwork/schoolnetwork_page.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+bool isQuerying = false;
 //用于存储用户头像路径
 String emavatarpath = '';
 

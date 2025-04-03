@@ -35,9 +35,11 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
 
   @override
   void initState() {
-    queryem();
-    initData();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      queryem();
+      initData();
+    });
   }
 
   initData() async {
@@ -104,7 +106,6 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
               ),
               isQuerying?
               SizedBox(width: 0,height: 0,):
-              querySuccess?
               Container(
                 padding: EdgeInsets.fromLTRB(15, 10, 15, 80),
                 child: Card(
@@ -135,52 +136,7 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
                   }).toList(),
                   )
                 ),
-              ):
-              Container(
-                padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
-                child: Card(
-                  shadowColor: Theme.of(context).colorScheme.onPrimary,
-                  color: Theme.of(context).colorScheme.surfaceDim,
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(21),
-                      ),
-                      trailing: Icon(Icons.chevron_right),
-                      title: Text('无法连接网络，请点击这里重试',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle),),
-                      onTap: (){
-                        queryem();
-                      },
-                    ),
-                  ),
-                ),
               ),
-              isQuerying? Container(
-                padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
-                child: Card(
-                  shadowColor: Theme.of(context).colorScheme.onPrimary,
-                  color: Theme.of(context).colorScheme.surfaceDim,
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: ListTile(
-                      title: Row(
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(width: 10,),
-                          Text('正在查询（$currentQuery/$electricmeternum）......',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle),)
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ):SizedBox(width: 0,height: 0,)
             ],
           ),
         ),
@@ -189,13 +145,38 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
   }
 
  queryem() async {
+  bool queryemCanceled = false;
   if(mounted){
-    setState(() {
-      isQuerying = true;
-    });
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            scrollable: true,
+            title: Text('正在查询（$currentQuery/$electricmeternum）...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Column(
+              children: [
+                SizedBox(height: 10,),
+                CircularProgressIndicator(),
+                SizedBox(height: 10,)
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  Navigator.pop(context, 'OK');
+                  queryemCanceled = true;
+                },
+                child: const Text('取消'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
-    //读取用户 id
 
+    //读取用户 id
     //读取用户数据
     String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
     File emUserDatafile = File(emUserDatapath);
@@ -284,8 +265,10 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
           'userAddress': emdetail[i]['userAddress'],
           'emDetail': emqresponse1.data['data']
         });
+        if(queryemCanceled) return;
       }catch (e){
         if(mounted){
+          Navigator.pop(context);
           showDialog<String>(
             context: context,
             builder: (BuildContext context) => AlertDialog(
@@ -306,9 +289,10 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
         return;
       }
     }
+    if(queryemCanceled) return;
     if(mounted){
+      Navigator.pop(context);
       setState(() {
-        querySuccess = true;
         isQuerying = false;
       });
     }
