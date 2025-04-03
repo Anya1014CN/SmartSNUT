@@ -108,10 +108,15 @@ class _LoginPageState extends State<LoginPage>{
   Widget _buildCardContent() {
     return Column(
       children: [
+        Text('请使用陕西理工大学统一身份认证平台的账号登录',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
+        SizedBox(height: 10),
+        Divider(height: 15,indent: 20,endIndent: 20,),
+        SizedBox(height: 10),
         TextField(
           controller: textUsernameController,
           decoration: InputDecoration(
             labelText: '用户名',
+            hintText: '请在此输入您的学号/工号',
             prefixIcon: Icon(Icons.person),
           ),
         ),
@@ -121,9 +126,14 @@ class _LoginPageState extends State<LoginPage>{
           obscureText: true,
           decoration: InputDecoration(
             labelText: '密码',
+            hintText: '请在此输入您的统一身份认证平台的密码',
             prefixIcon: Icon(Icons.lock),
           ),
         ),
+        SizedBox(height: 10),
+        Divider(height: 15,indent: 20,endIndent: 20,),
+        SizedBox(height: 10),
+        Text('如忘记密码，请点击下方按钮进行找回',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
       ],
     );
   } 
@@ -155,7 +165,7 @@ class _LoginPageState extends State<LoginPage>{
             ),
           ),
           Container(
-            padding:EdgeInsets.fromLTRB(15, 0, 15, 10),
+            padding:EdgeInsets.fromLTRB(15, 20, 15, 10),
             child: ScreenTypeLayout.builder(
               mobile: (BuildContext context) => Card(
                 shadowColor: Theme.of(context).colorScheme.onPrimary,
