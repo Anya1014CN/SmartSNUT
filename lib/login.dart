@@ -250,6 +250,7 @@ class _LoginPageState extends State<LoginPage>{
 
   //登录教务系统
   loginjwgl() async {
+    bool loginjwglCalceled = false;
     if(mounted){
       showDialog<String>(
         context: context,
@@ -268,6 +269,7 @@ class _LoginPageState extends State<LoginPage>{
             TextButton(
               onPressed: () {
                 clearTempLogindata();
+                loginjwglCalceled = true;
                 Navigator.pop(context);
               },
               child: const Text('取消'),
@@ -298,6 +300,7 @@ class _LoginPageState extends State<LoginPage>{
     dio.interceptors.add(CookieManager(jwglcookie));
 
     //第一次请求，获取 hash
+    if(loginjwglCalceled) return;
     late Response response1;
     try{
       response1 = await dio.get('http://jwgl.snut.edu.cn/eams/loginExt.action');
@@ -339,9 +342,11 @@ class _LoginPageState extends State<LoginPage>{
     encryptedpassword = digest.toString();
 
     //等待一秒，防止教务系统判定为过快点击
+    if(loginjwglCalceled) return;
     await Future.delayed(Duration(seconds: 1));
 
     //第二次请求，尝试登录
+    if(loginjwglCalceled) return;
     final formData = FormData.fromMap({
       "username": userName,
       "password": encryptedpassword,
@@ -439,6 +444,7 @@ class _LoginPageState extends State<LoginPage>{
     }
 
     //真实姓名
+    if(loginjwglCalceled) return;
     late Response myactionresponse;
     try{
       myactionresponse = await dio.get('http://jwgl.snut.edu.cn/eams/security/my.action');
@@ -481,6 +487,7 @@ class _LoginPageState extends State<LoginPage>{
     stdAccountfile.writeAsString(stdAccountJson);
 
   //学籍信息保存
+  if(loginjwglCalceled) return;
   late Response stdDetailresponse;
   try{
     stdDetailresponse = await dio.get('http://jwgl.snut.edu.cn/eams/stdDetail.action');
@@ -538,9 +545,11 @@ class _LoginPageState extends State<LoginPage>{
   }
 
     //等待半秒，防止教务系统判定为过快点击
+    if(loginjwglCalceled) return;
     await Future.delayed(Duration(milliseconds: 500));
 
     //请求课表初始信息
+    if(loginjwglCalceled) return;
     late Response courseresponse1;
     try{
       courseresponse1 = await dio.get('http://jwgl.snut.edu.cn/eams/courseTableForStd.action');
