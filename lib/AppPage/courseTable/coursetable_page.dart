@@ -1488,7 +1488,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       child: Text('节\n次',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
                     ),
                     Card(
-                      color: (currentDOW == 1)? Theme.of(context).colorScheme.surfaceTint:Theme.of(context).colorScheme.surfaceContainerHigh, 
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
@@ -1496,7 +1496,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       )
                     ),
                     Card(
-                      color: (currentDOW == 2)? Theme.of(context).colorScheme.surfaceTint:Theme.of(context).colorScheme.surfaceContainerHigh, 
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
@@ -1504,7 +1504,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       )
                     ),
                     Card(
-                      color: (currentDOW == 3)? Theme.of(context).colorScheme.surfaceTint:Theme.of(context).colorScheme.surfaceContainerHigh,  
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh,  
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
@@ -1512,7 +1512,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       )
                     ),
                     Card(
-                      color: (currentDOW == 4)? Theme.of(context).colorScheme.surfaceTint:Theme.of(context).colorScheme.surfaceContainerHigh, 
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
@@ -1520,7 +1520,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       )
                     ),
                     Card(
-                      color: (currentDOW == 5)? Theme.of(context).colorScheme.surfaceTint:Theme.of(context).colorScheme.surfaceContainerHigh,  
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh,  
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
@@ -1528,7 +1528,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       )
                     ),
                     GlobalVars.showSatCourse? Card(
-                      color: (currentDOW == 6)? Theme.of(context).colorScheme.surfaceTint:Theme.of(context).colorScheme.surfaceContainerHigh, 
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
@@ -1536,7 +1536,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       )
                     ):SizedBox(),
                     GlobalVars.showSunCourse? Card(
-                      color: (currentDOW == 7)? Theme.of(context).colorScheme.surfaceTint:Theme.of(context).colorScheme.surfaceContainerHigh, 
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh, 
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
