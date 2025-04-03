@@ -584,10 +584,32 @@ class _StdExamPageState extends State<StdExamPage>{
   }
 
   getStdExam() async {
+    bool getStdExamCanceled = false;
     if(mounted){
-      setState(() {
-        isQuerying = true;
-      });
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+          scrollable: true,
+          title: Text('正在刷新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Column(
+            children: [
+              SizedBox(height: 10,),
+              CircularProgressIndicator(),
+              SizedBox(height: 10,)
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                getStdExamCanceled = true;
+                Navigator.pop(context);
+              },
+              child: const Text('取消'),
+            ),
+          ],
+        ),
+      );
     }
     
     //考试数据目录
@@ -605,11 +627,13 @@ class _StdExamPageState extends State<StdExamPage>{
     dio.interceptors.add(CookieManager(jwglcookie));
 
     //第一次请求，获取 hash
+    if(getStdExamCanceled) return;
     late Response response1;
     try{
       response1 = await dio.get('http://jwgl.snut.edu.cn/eams/loginExt.action');
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -647,9 +671,11 @@ class _StdExamPageState extends State<StdExamPage>{
     encryptedpassword = digest.toString();
 
     //等待半秒，防止教务系统判定为过快点击
+    if(getStdExamCanceled) return;
     await Future.delayed(Duration(milliseconds: 500));
 
     //第二次请求，尝试登录
+    if(getStdExamCanceled) return;
     final formData = FormData.fromMap({
       "username": userName,
       "password": encryptedpassword,
@@ -673,6 +699,7 @@ class _StdExamPageState extends State<StdExamPage>{
     String response2string = response2.data.toString();
     if(response2string.contains('账户不存在')){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -694,6 +721,7 @@ class _StdExamPageState extends State<StdExamPage>{
     return;
     }if(response2string.contains('密码错误')){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -714,9 +742,9 @@ class _StdExamPageState extends State<StdExamPage>{
     }
     return;
     }
-    
 
     //请求首页，初始化数据
+    if(getStdExamCanceled) return;
     try{
       await dio.get(
         options: Options(
@@ -729,6 +757,7 @@ class _StdExamPageState extends State<StdExamPage>{
       );
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -753,8 +782,10 @@ class _StdExamPageState extends State<StdExamPage>{
     //请求考试页面
     
     //等待半秒，防止教务系统判定为过快点击
+    if(getStdExamCanceled) return;
     await Future.delayed(Duration(milliseconds: 500));
 
+    if(getStdExamCanceled) return;
     late Response stdExamresponse1;
     try{
       stdExamresponse1 = await dio.get(
@@ -768,6 +799,7 @@ class _StdExamPageState extends State<StdExamPage>{
       );
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -804,8 +836,10 @@ class _StdExamPageState extends State<StdExamPage>{
     semesterId = semestersData['y$currentYearInt'][currentTermInt -1]['id'].toString();
 
     //等待半秒，防止教务系统判定为过快点击
+    if(getStdExamCanceled) return;
     await Future.delayed(Duration(milliseconds: 500));
 
+    if(getStdExamCanceled) return;
     late Response stdExamresponse5;
     try{
       var headers = {
@@ -825,6 +859,7 @@ class _StdExamPageState extends State<StdExamPage>{
       );
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -889,6 +924,7 @@ class _StdExamPageState extends State<StdExamPage>{
       }
     }else{
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -909,6 +945,8 @@ class _StdExamPageState extends State<StdExamPage>{
       }
       return;
     }
+
+    if(getStdExamCanceled) return;
     late Response stdExamresponse6;
     try{
       stdExamresponse6 = await dio.get(
@@ -921,6 +959,7 @@ class _StdExamPageState extends State<StdExamPage>{
       );
     }catch (e){
       if(mounted){
+        Navigator.pop(context);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -988,6 +1027,7 @@ class _StdExamPageState extends State<StdExamPage>{
     if(mounted){
       setState(() {
         isQuerying = false;
+        Navigator.pop(context);
       });
     }
   }
