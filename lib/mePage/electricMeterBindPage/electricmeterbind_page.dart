@@ -194,8 +194,8 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                   controller: textOpenidController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: '请输入您从微信获取到的 openId',
-                    hintText: 'openId',
+                    labelText: 'openId',
+                    prefixIcon: Icon(Icons.commit),
                     filled: false
                   ),
                 ),
