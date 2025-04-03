@@ -1296,11 +1296,17 @@ class _HomeState extends State<Home>{
                         (courseToday[0].isEmpty)?
                         SizedBox()
                         :ListTile(
-                          title: ((courseToday[3].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])? true:false)? Text('[1 - 4 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
-                            ((courseToday[2].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[2][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[2][0]['CourseLocation'])? true:false)? Text('[1 - 3 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
-                            ((courseToday[1].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[1][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[1][0]['CourseLocation'])? true:false)? Text('[1 - 2 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
-                            Text('[第 1 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[0][0]['CourseTeacher']} \n ${courseToday[0][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
+                          title: ((courseToday[3].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])? true:false)? Text('[1 - 4 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):
+                            ((courseToday[2].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[2][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[2][0]['CourseLocation'])? true:false)? Text('[1 - 3 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):
+                            ((courseToday[1].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[1][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[1][0]['CourseLocation'])? true:false)? Text('[1 - 2 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):
+                            Text('[第 1 节] ${courseToday[0][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(' 教师：${courseToday[0][0]['CourseTeacher']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              Text(' 地点：${(courseToday[0][0]['CourseLocation'] == '')? '无':'${courseToday[0][0]['CourseLocation']}'}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                            ],
+                          ),
                         ),
                         //第二节
                         (courseToday[1].isEmpty)? (courseToday[0].isEmpty == courseToday[1].isEmpty)? SizedBox(width: 0,height: 0,) :
@@ -1308,75 +1314,129 @@ class _HomeState extends State<Home>{
                         :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[1][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[1][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
                           title: Text('[第 2 节] ${courseToday[1][0]['CourseName']}'),
-                          subtitle: Text(' 教师：${courseToday[1][0]['CourseTeacher']} \n ${courseToday[1][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(' 教师：${courseToday[1][0]['CourseTeacher']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              Text(' 地点：${(courseToday[1][0]['CourseLocation'] == '')? '无':'${courseToday[1][0]['CourseLocation']}'}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,)
+                            ],
+                          ),
                         ),
                         //第三节
                         (courseToday[2].isEmpty)? 
                         SizedBox()
                         :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[2][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[2][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: (courseToday[3].isEmpty == false)? (courseToday[2][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[3].isEmpty == false)? Text('[3 - 4 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):Text('[第 3 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
-                              Text('[第 3 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
-                              subtitle: Text(' 教师：${courseToday[2][0]['CourseTeacher']} \n 地点：${courseToday[2][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
+                          title: (courseToday[3].isEmpty == false)? (courseToday[2][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[3].isEmpty == false)? Text('[3 - 4 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):Text('[第 3 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):
+                              Text('[第 3 节] ${courseToday[2][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(' 教师：${courseToday[2][0]['CourseTeacher']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              Text(' 地点：${(courseToday[2][0]['CourseLocation'] == '')? '无':'${courseToday[2][0]['CourseLocation']}'}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,)
+                            ],
+                          ),
                         ),
                         //第四节
                         (courseToday[3].isEmpty)? (courseToday[2].isEmpty == courseToday[3].isEmpty)? SizedBox(width: 0,height: 0,) :
                         SizedBox()
                         :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])) || ((courseToday[2].isEmpty)? false:(courseToday[2][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[2][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: Text('[第 4 节] ${courseToday[3][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[3][0]['CourseTeacher']} \n 地点：${courseToday[3][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
+                          title: Text('[第 4 节] ${courseToday[3][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(' 教师：${courseToday[3][0]['CourseTeacher']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              Text(' 地点：${(courseToday[3][0]['CourseLocation'] == '')? '无':'${courseToday[3][0]['CourseLocation']}'}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,)
+                            ],
+                          ),
                         ),
                         //第五节
                         (courseToday[4].isEmpty)? 
                         SizedBox()
                         :ListTile(
-                          title: ((courseToday[7].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])? true:false)? Text('[5 - 8 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
-                            ((courseToday[6].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[6][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[6][0]['CourseLocation'])? true:false)? Text('[5 - 7 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
-                            ((courseToday[5].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[5][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[5][0]['CourseLocation'])? true:false)? Text('[5 - 6 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
-                            Text('[第 5 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text('教师：${courseToday[4][0]['CourseTeacher']} \n 地点：${courseToday[4][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
+                          title: ((courseToday[7].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])? true:false)? Text('[5 - 8 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):
+                            ((courseToday[6].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[6][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[6][0]['CourseLocation'])? true:false)? Text('[5 - 7 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):
+                            ((courseToday[5].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[5][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[5][0]['CourseLocation'])? true:false)? Text('[5 - 6 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):
+                            Text('[第 5 节] ${courseToday[4][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(' 教师：${courseToday[4][0]['CourseTeacher']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              Text(' 地点：${(courseToday[4][0]['CourseLocation'] == '')? '无':'${courseToday[4][0]['CourseLocation']}'}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,)
+                            ],
+                          ),
                         ),
                         //第六节
                         (courseToday[5].isEmpty)?  (courseToday[4].isEmpty == courseToday[5].isEmpty)? SizedBox(width: 0,height: 0,):
                         SizedBox()
                         :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[5][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[5][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: Text('[第 6 节] ${courseToday[5][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[5][0]['CourseTeacher']} \n 地点：${courseToday[5][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
+                          title: Text('[第 6 节] ${courseToday[5][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(' 教师：${courseToday[5][0]['CourseTeacher']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              Text(' 地点：${(courseToday[5][0]['CourseLocation'] == '')? '无':'${courseToday[5][0]['CourseLocation']}'}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,)
+                            ],
+                          ),
                         ),
                         //第七节
                         (courseToday[6].isEmpty)? 
                         SizedBox()
                         :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[6][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[6][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: (courseToday[7].isEmpty == false)? (courseToday[6][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[6][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])? Text('[7 - 8 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):Text('[第 7 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
-                              Text('[第 7 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[6][0]['CourseTeacher']} \n 地点：${courseToday[6][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
+                          title: (courseToday[7].isEmpty == false)? (courseToday[6][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[6][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])? Text('[7 - 8 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):Text('[第 7 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):
+                              Text('[第 7 节] ${courseToday[6][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(' 教师：${courseToday[6][0]['CourseTeacher']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              Text(' 地点：${(courseToday[6][0]['CourseLocation'] == '')? '无':'${courseToday[6][0]['CourseLocation']}'}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,)
+                            ],
+                          ),
                         ),
                         //第八节
                         (courseToday[7].isEmpty)? (courseToday[6].isEmpty == courseToday[7].isEmpty)? SizedBox(width: 0,height: 0,):
                         SizedBox()
                         :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])) || ((courseToday[6].isEmpty)? false:(courseToday[6][0]['CourseName'] == courseToday[7][0]['CourseName'] || courseToday[6][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: Text('[第 8 节] ${courseToday[7][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[7][0]['CourseTeacher']} \n 地点：${courseToday[7][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
+                          title: Text('[第 8 节] ${courseToday[7][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(' 教师：${courseToday[7][0]['CourseTeacher']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              Text(' 地点：${(courseToday[7][0]['CourseLocation'] == '')? '无':'${courseToday[7][0]['CourseLocation']}'}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,)
+                            ],
+                          ),
                         ),
                         //第九节
                         (courseToday[8].isEmpty)? 
                         SizedBox()
                         :ListTile(
-                          title: (courseToday[9].isEmpty == false)? (courseToday[8][0]['CourseName'] == courseToday[9][0]['CourseName'] && courseToday[8][0]['CourseLocation'] == courseToday[9][0]['CourseLocation'])? Text('[9 - 10 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):Text('[第 9 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),):
-                            Text('[第 9 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[8][0]['CourseTeacher']} \n 地点：${courseToday[8][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
+                          title: (courseToday[9].isEmpty == false)? (courseToday[8][0]['CourseName'] == courseToday[9][0]['CourseName'] && courseToday[8][0]['CourseLocation'] == courseToday[9][0]['CourseLocation'])? Text('[9 - 10 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):Text('[第 9 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,):
+                            Text('[第 9 节] ${courseToday[8][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(' 教师：${courseToday[8][0]['CourseTeacher']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              Text(' 地点：${(courseToday[8][0]['CourseLocation'] == '')? '无':'${courseToday[8][0]['CourseLocation']}'}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,)
+                            ],
+                          ),
                         ),
                         //第十节
                         (courseToday[9].isEmpty)? (courseToday[8].isEmpty == courseToday[9].isEmpty)? SizedBox(width: 0,height: 0,):
                         SizedBox()
                         :((courseToday[8].isEmpty)? false:(courseToday[8][0]['CourseName'] == courseToday[9][0]['CourseName'] || courseToday[8][0]['CourseLocation'] == courseToday[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
                         :ListTile(
-                          title: Text('[第 10 节] ${courseToday[9][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),),
-                          subtitle: Text(' 教师：${courseToday[7][0]['CourseTeacher']} \n 地点：${courseToday[7][0]['CourseLocation']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),),
+                          title: Text('[第 10 节] ${courseToday[9][0]['CourseName']}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: GlobalVars.listTileTitle,color: Theme.of(context).colorScheme.primary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(' 教师：${courseToday[9][0]['CourseTeacher']}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              Text(' 地点：${(courseToday[9][0]['CourseLocation'] == '')? '无':'${courseToday[9][0]['CourseLocation']}'}',textAlign: TextAlign.end,style: TextStyle(fontSize: GlobalVars.listTileSubtitle,color: Theme.of(context).colorScheme.secondary),maxLines: 1,overflow: TextOverflow.ellipsis,)
+                            ],
+                          ),
                         ),
                         //今日无课
                         ((courseToday[0].isEmpty == true) && (courseToday[1].isEmpty == true) && (courseToday[2].isEmpty == true) && (courseToday[3].isEmpty == true) && (courseToday[4].isEmpty == true) && (courseToday[5].isEmpty == true) && (courseToday[6].isEmpty == true) && (courseToday[7].isEmpty == true) && (courseToday[8].isEmpty == true) && (courseToday[9].isEmpty == true))?
