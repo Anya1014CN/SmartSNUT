@@ -1392,7 +1392,7 @@ class _CourseTablePage extends State<CourseTablePage>{
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
         leading: IconButton(
           onPressed: (){Navigator.pop(context);},
-          icon: Icon(Icons.close),
+          icon: Icon(Icons.arrow_back),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
