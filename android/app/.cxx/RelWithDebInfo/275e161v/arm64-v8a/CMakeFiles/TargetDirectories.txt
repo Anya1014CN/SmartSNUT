@@ -1,0 +1,2 @@
+E:/SmartSNUT/SmartSNUT/android/app/.cxx/RelWithDebInfo/275e161v/arm64-v8a/CMakeFiles/edit_cache.dir
+E:/SmartSNUT/SmartSNUT/android/app/.cxx/RelWithDebInfo/275e161v/arm64-v8a/CMakeFiles/rebuild_cache.dir

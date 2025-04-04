@@ -1,14 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
 import 'package:smartsnut/globalvars.dart';
+
+//验证码输入框
+final TextEditingController textCaptchaController = TextEditingController();
 
 //判断是否需要联网下载成绩
 bool needRefresh = false;
@@ -476,31 +481,37 @@ class _StdGradesPageState extends State<StatefulWidget>{
   }
 
   getStdGrades() async {
+    String loadStateString = '请稍后...';
     bool getStdGradesCanceled = false;
     if(mounted){
       showDialog<String>(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => AlertDialog(
-          scrollable: true,
-          title: Text('正在刷新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-          content: Column(
-            children: [
-              SizedBox(height: 10,),
-              CircularProgressIndicator(),
-              SizedBox(height: 10,)
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                getStdGradesCanceled = true;
-                Navigator.pop(context);
-              },
-              child: const Text('取消'),
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              scrollable: true,
+              title: Text('正在刷新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Column(
+                children: [
+                  SizedBox(height: 10,),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 10,),
+                  Text(loadStateString,style: TextStyle(fontSize: GlobalVars.alertdialogContent))
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    getStdGradesCanceled = true;
+                    Navigator.pop(context);
+                  },
+                  child: const Text('取消'),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       );
     }
     
@@ -510,19 +521,25 @@ class _StdGradesPageState extends State<StatefulWidget>{
       await courseTableStddirectory.create();
     }
 
-    String? passwordhash = '';//存储 Hash
     String encryptedpassword = '';//加密后的密码
+    String authexecution = '';//存储获取到的 execution
+    String pwdEncryptSalt = '';//存储获取到的 pwdEncryptSalt
 
     //初始化 Dio
-    CookieJar jwglcookie = CookieJar();
+    CookieJar authservercookie = CookieJar();
     Dio dio = Dio();
-    dio.interceptors.add(CookieManager(jwglcookie));
+    dio.interceptors.add(CookieManager(authservercookie));
 
-    //第一次请求，获取 hash
+    //第一次请求，提取 execution
+    if(mounted){
+      setState(() {
+        loadStateString = '正在获取登录信息...';
+      });
+    }
     if(getStdGradesCanceled) return;
-    late Response response1;
+    late Response authresponse1;
     try{
-      response1 = await dio.get('http://jwgl.snut.edu.cn/eams/loginExt.action');
+      authresponse1 = await dio.get('https://authserver.snut.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.snut.edu.cn%2Feams%2FssoLogin.action');
     }catch (e){
       if(mounted){
         Navigator.pop(context);
@@ -540,105 +557,178 @@ class _StdGradesPageState extends State<StatefulWidget>{
             ],
           ),
         );
+        loadStateString = '请稍后...';
+        return;
       }
-      return;
-    }
-
-    String jwglcode = response1.data.toString();
-    RegExp regExp = RegExp(r"SHA1\('([0-9a-fA-F\-]+)-");
-    Match? match = regExp.firstMatch(jwglcode);
-      
-    if (match != null) {
-      passwordhash = match.group(1);
-    } else {
-      return;
-    }
-
-    // **对密码进行加密**
-    var combinedpassword = utf8.encode('$passwordhash-$passWord');
-    var digest = sha1.convert(combinedpassword);
-    encryptedpassword = digest.toString();
-
-    //等待半秒，防止教务系统判定为过快点击
-    if(getStdGradesCanceled) return;
-    await Future.delayed(Duration(milliseconds: 500));
-
-    //第二次请求，尝试登录
-    if(getStdGradesCanceled) return;
-    final formData = FormData.fromMap({
-      "username": userName,
-      "password": encryptedpassword,
-      "session_locale": "zh_CN"
-    });
-
-    Response response2 = await dio.post(
-      'http://jwgl.snut.edu.cn/eams/loginExt.action',
-      options: Options(
-        followRedirects: true,
-        validateStatus: (status){
-          return status != null && status <= 302;
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "User-Agent": "PostmanRuntime/7.43.0",
-        }
-      ),
-      data: formData,
+    }   
+    // 提取 execution 值// 定义正则表达式查找带有 "execution" 名称的隐藏输入字段
+    final RegExp executionRegExp = RegExp(
+      r'<input\s+type="hidden"\s+id="execution"\s+name="execution"\s+value="([^"]+)"',
+      caseSensitive: false,
     );
-    String response2string = response2.data.toString();
-    if(response2string.contains('账户不存在')){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('登录失败，账户不存在\n您的账户是否因毕业等原因被校方注销？',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      }
-    return;
-    }if(response2string.contains('密码错误')){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('登录失败，密码错误\n您是否在学校官网修改过密码？\n如果是，请退出智慧陕理工并重新登录',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      }
-    return;
+    // 在响应中查找匹配
+    final Match? match = executionRegExp.firstMatch(authresponse1.data.toString());
+    // 如果找到匹配项，则返回提取的值
+    if (match != null && match.groupCount >= 1) {
+      authexecution = match.group(1)!;
+    }
+
+    // 提取 pwdEncryptSalt 值
+    final RegExp pwdEncryptSaltRegExp = RegExp(
+      r'<input\s+type="hidden"\s+id="pwdEncryptSalt"\s+value="([^"]+)"',
+      caseSensitive: false,
+    );
+    // 在响应中查找匹配
+    final Match? saltMatch = pwdEncryptSaltRegExp.firstMatch(authresponse1.data.toString());
+    // 如果找到匹配项，则提取值
+    if (saltMatch != null && saltMatch.groupCount >= 1) {
+      pwdEncryptSalt = saltMatch.group(1)!;
+    }
+
+    //AES 加密密码// 使用提取到的 pwdEncryptSalt 作为密钥
+    encryptedpassword = encryptAES(passWord,pwdEncryptSalt);
+
+    //请求验证码
+    if(mounted){
+      setState(() {
+        loadStateString = '正在获取验证码...';
+      });
+    }
+    String captchaCode = '';
+    textCaptchaController.clear();
+    // 请求验证码图片
+    if(getStdGradesCanceled) return;
+    Response captchaResponse = await dio.get(
+      'https://authserver.snut.edu.cn/authserver/getCaptcha.htl',
+      options: Options(
+        responseType: ResponseType.bytes, // 指定响应类型为字节数组
+      ),
+    );
+  
+    // 确保响应数据是 Uint8List 类型
+    Uint8List captchaBytes;
+    if (captchaResponse.data is Uint8List) {
+      captchaBytes = captchaResponse.data;
+    } else {
+      // 如果不是，尝试转换
+      captchaBytes = Uint8List.fromList(captchaResponse.data as List<int>);
     }
     
-
-    //请求首页，初始化数据
-    if(getStdGradesCanceled) return;
-    try{
-      await dio.get(
-        options: Options(
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
-          }
+    if(mounted){
+      await showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+          scrollable: true,
+          title: Text('请输入验证码',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Column(
+            children: [
+              FittedBox(
+                child: Image.memory(captchaBytes),
+              ),
+              SizedBox(height: 10,),
+              TextField(
+                controller: textCaptchaController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '验证码',
+                  hintText: '请输入验证码',
+                  filled: false
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                if(textCaptchaController.text.isEmpty){
+                  showDialog<String>(
+                    context: context, 
+                    builder: (BuildContext context)=>AlertDialog(
+                      title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                      content: Text('验证码不能为空，请输入验证码',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                      actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+                    ));
+                  return;
+                }
+                captchaCode = textCaptchaController.text;
+                Navigator.pop(context);
+              },
+              child: const Text('确定'),
+            ),
+          ],
         ),
-        'http://jwgl.snut.edu.cn/eams/homeExt.action',
       );
-    }catch (e){
+    }
+
+    //开始登录
+    if(mounted){
+      setState(() {
+        loadStateString = '正在登录...';
+      });
+    }
+    late Response authresponse2;
+    final loginParams = {
+      "username": userName,
+      "password": encryptedpassword,
+      "captcha": captchaCode,
+      "_eventId": "submit",
+      "cllt": "userNameLogin",
+      "dllt": "generalLogin",
+      "lt": "",
+      "execution": authexecution,
+    };
+    try{
+      //这里手动处理重定向,解决 Cookie 问题
+      if(getStdGradesCanceled) return;
+      authresponse2 = await  dio.post(
+        'https://authserver.snut.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.snut.edu.cn%2Feams%2FssoLogin.action',
+        data: loginParams,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! <= 302;
+          },
+          contentType: Headers.formUrlEncodedContentType,
+        )
+      );
+      //跟随第一步重定向 (ssologin 的 ticket)
+      if(getStdGradesCanceled) return;
+      var authresponse21 = await dio.get(
+        authresponse2.headers['location']![0],
+        data: loginParams,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! <= 302;
+          },
+          contentType: Headers.formUrlEncodedContentType,
+        )
+      );
+      //跟随第二步重定向 (ssologin 的 ticket)
+      if(getStdGradesCanceled) return;
+      var authresponse22 = await dio.get(
+        authresponse21.headers['location']![0],
+        data: loginParams,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! <= 307;
+          },
+          contentType: Headers.formUrlEncodedContentType,
+        )
+      );
+      //跟随第三步重定向 (ssologin 的 jsessionid)
+      if(getStdGradesCanceled) return;
+      await dio.get(
+        'http://jwgl.snut.edu.cn${authresponse22.headers['location']![0]}',
+        data: loginParams,
+        options: Options(
+          followRedirects: false,
+          contentType: Headers.formUrlEncodedContentType,
+        )
+      );
+    }catch(e){
       if(mounted){
         Navigator.pop(context);
         showDialog<String>(
@@ -655,12 +745,59 @@ class _StdGradesPageState extends State<StatefulWidget>{
             ],
           ),
         );
+        loadStateString = '请稍后...';
+        return;
       }
-      return;
+    }
+    if(authresponse2.data.toString().contains('您提供的用户名或者密码有误')){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('用户名或密码错误',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        loadStateString = '请稍后...';
+        return;
+      }
+    }
+    if(authresponse2.data.toString().contains('图形动态码错误')){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('验证码错误',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        loadStateString = '请稍后...';
+        return;
+      }
     }
 
     //请求成绩页面
-    
+    if(mounted){
+      setState(() {
+        loadStateString = '正在获取成绩...';
+      });
+    }
     //等待半秒，防止教务系统判定为过快点击
     if(getStdGradesCanceled) return;
     await Future.delayed(Duration(milliseconds: 500));
@@ -693,8 +830,9 @@ class _StdGradesPageState extends State<StatefulWidget>{
             ],
           ),
         );
+        loadStateString = '请稍后...';
+        return;
       }
-      return;
     }
 
     //提取相关数据
@@ -738,8 +876,9 @@ class _StdGradesPageState extends State<StatefulWidget>{
             ],
           ),
         );
+        loadStateString = '请稍后...';
+        return;
       }
-      return;
     }
 
     List<Map<String, String>> foundedGrades = [];
@@ -802,6 +941,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
             ],
           ),
         );
+        loadStateString = '请稍后...';
+        return;
       }
     }
     if(mounted){
@@ -810,5 +951,44 @@ class _StdGradesPageState extends State<StatefulWidget>{
       });
       Navigator.pop(context);
     }
+  }
+  
+  //加密密码
+  String encryptAES(String data, String keyString) {
+    // 字符集
+    String chars = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678";
+    var random = Random();
+
+    // 生成随机字符串
+    String randomString(int length) {
+      var result = StringBuffer();
+      for (var i = 0; i < length; i++) {
+        result.write(chars[random.nextInt(chars.length)]);
+      }
+      return result.toString();
+    }
+
+    // 生成64位随机前缀和16位IV
+    String randomPrefix = randomString(64);
+    String iv = randomString(16);
+
+    // 准备加密所需的key和iv
+    final key = encrypt.Key.fromUtf8(keyString.trim());
+    final ivObj = encrypt.IV.fromUtf8(iv);
+
+    // 创建AES加密器
+    final encrypter = encrypt.Encrypter(
+      encrypt.AES(
+        key,
+        mode: encrypt.AESMode.cbc,
+        padding: 'PKCS7',
+      ),
+    );
+
+    // 加密数据(随机前缀+原始数据)
+    final encrypted = encrypter.encrypt(randomPrefix + data, iv: ivObj);
+
+    // 返回Base64编码的加密结果
+    return encrypted.base64;
   }
 }
