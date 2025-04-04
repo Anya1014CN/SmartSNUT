@@ -204,9 +204,11 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.format_size, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
                         title: Text('字体大小',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text((GlobalVars.fontsizeint == 0)? '极小':(GlobalVars.fontsizeint == 1)? '超小':(GlobalVars.fontsizeint == 2)? '较小':(GlobalVars.fontsizeint == 3)? '适中':(GlobalVars.fontsizeint == 4)? '较大':(GlobalVars.fontsizeint == 5)? '超大':'极大',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                        subtitle: Text((GlobalVars.fontsizeint == 0)? '极小':(GlobalVars.fontsizeint == 1)? '超小':(GlobalVars.fontsizeint == 2)? '较小':(GlobalVars.fontsizeint == 3)? '适中':(GlobalVars.fontsizeint == 4)? '较大':(GlobalVars.fontsizeint == 5)? '超大':'极大',
+                          style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){switchTextSize();},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -214,9 +216,11 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.palette, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
                         title: Text('主题颜色',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text((GlobalVars.themeColor == 0)? '琥珀色':(GlobalVars.themeColor == 1)? '深橙色':(GlobalVars.themeColor == 2)? '曼迪红':(GlobalVars.themeColor == 3)? '深紫色':(GlobalVars.themeColor == 4)? '野鸭绿':(GlobalVars.themeColor == 5)? '粉红色':(GlobalVars.themeColor == 6)? '咖啡色':'鲨鱼灰',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                        subtitle: Text((GlobalVars.themeColor == 0)? '琥珀色':(GlobalVars.themeColor == 1)? '深橙色':(GlobalVars.themeColor == 2)? '曼迪红':(GlobalVars.themeColor == 3)? '深紫色':(GlobalVars.themeColor == 4)? '野鸭绿':(GlobalVars.themeColor == 5)? '粉红色':(GlobalVars.themeColor == 6)? '咖啡色':'鲨鱼灰',
+                          style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){switchThemeColor();},
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
@@ -224,9 +228,11 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.dark_mode, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
                         title: Text('深色模式',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text((GlobalVars.darkModeint == 0)? '跟随系统':(GlobalVars.darkModeint == 1)? '始终开启':'始终关闭',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                        subtitle: Text((GlobalVars.darkModeint == 0)? '跟随系统':(GlobalVars.darkModeint == 1)? '始终开启':'始终关闭',
+                          style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){switchThemeMode();},
                       ),
                     ],
@@ -260,6 +266,7 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.calendar_view_week, color: Theme.of(context).colorScheme.primary),
                         trailing: Switch(
                           value: GlobalVars.showSatCourse,
                           onChanged: (value) {
@@ -268,13 +275,14 @@ class _SettingsPage extends State<SettingsPage>{
                           },
                         ),
                         title: Text('显示周六课程',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text('在 “我的课表” 中显示周六的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                        subtitle: Text('在 "我的课表" 中显示周六的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.calendar_view_week, color: Theme.of(context).colorScheme.primary),
                         trailing: Switch(
                           value: GlobalVars.showSunCourse,
                           onChanged: (value) {
@@ -283,16 +291,18 @@ class _SettingsPage extends State<SettingsPage>{
                           },
                         ),
                         title: Text('显示周日课程',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text('在 “我的课表” 中显示周日的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                        subtitle: Text('在 "我的课表" 中显示周日的课程',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       ),
                       Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.color_lens, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
                         title: Text('课程色系',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text((GlobalVars.courseBlockColorsInt == 0)? '莫兰迪色系':'马卡龙色系',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                        subtitle: Text((GlobalVars.courseBlockColorsInt == 0)? '莫兰迪色系':'马卡龙色系',
+                          style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){switchCourseBlockColor();},
                       ),
                     ],
@@ -324,38 +334,91 @@ class _SettingsPage extends State<SettingsPage>{
                     children: [
                       ListTile(
                         shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(21),
+                          borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.electric_bolt, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('电费账号',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text(GlobalVars.emBinded? '已绑定：$wechatUserNickname':'未绑定',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
-                        onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => ElectricmeterbindPage())).then((value) => emBindRead());},
+                        title: Text('电费账号', style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text(GlobalVars.emBinded ? '已绑定：$wechatUserNickname' : '未绑定',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => ElectricmeterbindPage()))
+                            .then((value) => emBindRead());
+                        },
                       ),
-                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      Divider(height: 1, indent: 20, endIndent: 20),
                       ListTile(
                         shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(21),
+                          borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.logout, color: Theme.of(context).colorScheme.error),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('退出登录',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text(GlobalVars.userName,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
-                        onTap: (){
+                        title: Text('退出登录', style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text(GlobalVars.userName,style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
+                        onTap: () {
                           showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                            content: Text('您确定要退出登录吗？\n退出登录同时会解绑电费账号、清除字体大小、深色模式等设置',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, 'Cancel'),
-                                child: const Text('取消'),
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: Text('确认退出登录', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('您确定要退出登录吗？', style: TextStyle(fontSize: GlobalVars.alertdialogContent, fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 10),
+                                  Text('退出登录后将会：', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text('解绑电费账号',
+                                          style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text('清除字体大小、深色模式等设置',
+                                          style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text('删除所有本地保存的数据',
+                                          style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              TextButton(
-                                onPressed: (){
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                                  child: const Text('取消'),
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Theme.of(context).colorScheme.error,
+                                  ),
+                                  onPressed: (){
                                     logout();
                                     Navigator.pop(context);
                                   },
-                                child: const Text('确认'),
+                                  child: const Text('确认退出'),
                                 ),
                               ],
                             ),
@@ -391,21 +454,27 @@ class _SettingsPage extends State<SettingsPage>{
                     children: [
                       ListTile(
                         shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(21),
+                          borderRadius: BorderRadius.circular(21),
                         ),
-                        trailing: isCheckingUpdate? CircularProgressIndicator():Icon(Icons.chevron_right),
-                        title: Text(isCheckingUpdate? '正在检查更新，请稍后...':'检查更新',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text(GlobalVars.versionCodeString,textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
-                        onTap: isCheckingUpdate? null:(){checkUpdate();},
+                        leading: Icon(Icons.system_update, color: Theme.of(context).colorScheme.primary),
+                        trailing: isCheckingUpdate ? CircularProgressIndicator(strokeWidth: 3) : Icon(Icons.chevron_right),
+                        title: Text(isCheckingUpdate ? '正在检查更新，请稍后...' : '检查更新', 
+                          style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text(GlobalVars.versionCodeString, 
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
+                        onTap: isCheckingUpdate ? null : () {checkUpdate();},
                       ),
-                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      Divider(height: 1, indent: 20, endIndent: 20),
                       ListTile(
                         shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(21),
+                          borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.history, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('更新日志',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text('版本更新日志',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                        title: Text('更新日志', 
+                          style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text('查看版本更新历史记录', 
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
                         onTap: () async {
                           String changelogContent = await rootBundle.loadString('assets/Changelog.txt');
                           if(context.mounted){
@@ -426,40 +495,46 @@ class _SettingsPage extends State<SettingsPage>{
                           }
                         },
                       ),
-                      Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
                         shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(21),
+                          borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.language, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('官方网站',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text('https://SmartSNUT.cn',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                        title: Text('官方网站', 
+                          style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text('https://SmartSNUT.cn', 
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
                         onTap: () {
                           url = Uri.parse('https://SmartSNUT.cn');
                           launchURL();
                         },
                       ),
-                      Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
                         shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(21),
+                          borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.code, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('Github 开源地址',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text('https://github.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                        title: Text('Github 开源地址', 
+                          style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text('https://github.com/Anya1014CN/SmartSNUT', 
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
                         onTap: () {
                           url = Uri.parse('https://github.com/Anya1014CN/SmartSNUT');
                           launchURL();
                         },
                       ),
-                      Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
                         shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(21),
+                          borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.code, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
-                        title: Text('Gitee 开源地址',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                        subtitle: Text('https://gitee.com/Anya1014CN/SmartSNUT',textAlign: TextAlign.end,style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                        title: Text('Gitee 开源地址', 
+                          style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text('https://gitee.com/Anya1014CN/SmartSNUT', 
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
                         onTap: () {
                           url = Uri.parse('https://gitee.com/Anya1014CN/SmartSNUT');
                           launchURL();
@@ -492,21 +567,73 @@ class _SettingsPage extends State<SettingsPage>{
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
                     children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        child: Column(
-                          children: [
-                            Text('智慧陕理工使用的所有图标/徽标均来自 Material Design 3 Icons 以及 icons8.com',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
-                            SizedBox(height: 10,),
-                            Text('智慧陕理工所使用的字体为 MiSans（https://hyperos.mi.com/font/zh/）',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
-                            SizedBox(height: 10,),
-                            Text('智慧陕理工**并非**陕西理工大学官方 APP',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
-                            SizedBox(height: 10,),
-                            Text('智慧陕理工 APP 与陕西理工大学**无**任何从属关系',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
-                            SizedBox(height: 10,),
-                            Text('智慧陕理工**从未**有意标榜或冒充是陕西理工大学官方APP',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
-                          ],
-                        ),
+                      ListTile(
+                        leading: Icon(Icons.copyright, color: Theme.of(context).colorScheme.primary),
+                        title: Text('素材来源', style: TextStyle(fontSize: GlobalVars.listTileTitle, fontWeight: FontWeight.bold)),
+                        subtitle: Text('智慧陕理工使用的所有图标/徽标均来自 Material Design 3 Icons 以及 icons8.com', 
+                          style: TextStyle(fontSize: GlobalVars.genericTextSmall)),
+                      ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
+                      ListTile(
+                        leading: Icon(Icons.font_download, color: Theme.of(context).colorScheme.primary),
+                        title: Text('字体使用', style: TextStyle(fontSize: GlobalVars.listTileTitle, fontWeight: FontWeight.bold)),
+                        subtitle: Text('智慧陕理工所使用的字体为 MiSans', 
+                          style: TextStyle(fontSize: GlobalVars.genericTextSmall)),
+                        onTap: () {
+                          url = Uri.parse('https://hyperos.mi.com/font/zh/');
+                          launchURL();
+                        },
+                        trailing: Icon(Icons.open_in_new, size: 16),
+                      ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
+                      ExpansionTile(
+                        leading: Icon(Icons.info_outline, color: Theme.of(context).colorScheme.primary),
+                        title: Text('非官方声明', style: TextStyle(fontSize: GlobalVars.listTileTitle, fontWeight: FontWeight.bold)),
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(20, 0, 20, 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text('智慧陕理工并非陕西理工大学官方APP',
+                                        style: TextStyle(fontSize: GlobalVars.genericTextSmall)),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text('智慧陕理工APP与陕西理工大学无任何从属关系',
+                                        style: TextStyle(fontSize: GlobalVars.genericTextSmall)),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text('智慧陕理工从未有意标榜或冒充是陕西理工大学官方APP',
+                                        style: TextStyle(fontSize: GlobalVars.genericTextSmall)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   )
