@@ -15,9 +15,6 @@ import 'package:smartsnut/globalvars.dart';
 //验证码输入框
 final TextEditingController textCaptchaController = TextEditingController();
 
-//判断是否需要联网下载成绩
-bool needRefresh = false;
-
 //用户数据
 List stdAccount = [];
 String userName = '';
@@ -117,7 +114,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
     }else{
       if(mounted){
         setState(() {
-          needRefresh = true;
           currentYearInt = semestersData.length - 1;
           currentYearName = semestersName[semestersName.length - 1]['name'];
           //获取当前月份
@@ -135,11 +131,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
       }
       saveSelectedTY();
     }
-    if(needRefresh){
-      getStdGrades();
-    }else{
-      readstdGrades();
-    }
+    readstdGrades();
   }
 
   //读取成绩信息
@@ -947,9 +939,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
     }
     if(mounted){
       setState(() {
-        needRefresh = false;
+        Navigator.pop(context);
       });
-      Navigator.pop(context);
     }
   }
   
