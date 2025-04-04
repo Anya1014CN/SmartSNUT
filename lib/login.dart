@@ -132,10 +132,97 @@ class _LoginPageState extends State<LoginPage>{
             prefixIcon: Icon(Icons.lock),
           ),
         ),
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+          child: Column(
+            children: [
+              FilledButton(
+                style: FilledButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  minimumSize: Size(double.infinity, 50), // 确保按钮宽度填满父容器
+                ),
+                onPressed: () {
+                  if (textUsernameController.text == '' ) {
+                    showDialog(
+                      context: context, 
+                      builder: (BuildContext context)=>AlertDialog(
+                        title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                        content: Text('用户名不能为空，请输入您的学号/工号',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                        actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+                      ));
+                    return;
+                  }if (textPasswordController.text == '') {
+                    showDialog(
+                      context: context, 
+                      builder: (BuildContext context)=>AlertDialog(
+                        title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                        content: Text('密码不能为空，请输入您的密码',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                        actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+                      ));
+                    return;
+                  }else{
+                    loginAuth();
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.login, size: 20),
+                    SizedBox(width: 8),
+                    Text(
+                      '登录智慧陕理工',
+                      style: TextStyle(
+                        fontSize: GlobalVars.genericTextMedium,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
         SizedBox(height: 10),
         Divider(height: 15,indent: 20,endIndent: 20,),
         SizedBox(height: 10),
         Text('如忘记密码，请点击下方按钮进行找回',style: TextStyle(fontSize: GlobalVars.genericTextSmall),),
+        Container(
+          padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+          child: Column(
+            children: [
+              FilledButton.tonal(
+                style: FilledButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  minimumSize: Size(double.infinity, 50), // 确保按钮宽度填满父容器
+                ),
+                onPressed: () {
+                  url = Uri.parse('https://authserver.snut.edu.cn/retrieve-password/retrievePassword/index.html');
+                  launchURL();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.help_outline, size: 20),
+                    SizedBox(width: 8),
+                    Text(
+                      '忘记密码？',
+                      style: TextStyle(
+                        fontSize: GlobalVars.genericTextMedium,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   } 
@@ -193,66 +280,6 @@ class _LoginPageState extends State<LoginPage>{
                   child: _buildCardContent(),
                 ),
               ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FilledButton(
-                    onPressed: () {
-                      if (textUsernameController.text == '' ) {
-                      showDialog(
-                        context: context, 
-                        builder: (BuildContext context)=>AlertDialog(
-                          title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                          content: Text('用户名不能为空，请输入您的学号/工号',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                          actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
-                        ));
-                      return;
-                      }if (textPasswordController.text == '') {
-                        showDialog(
-                        context: context, 
-                        builder: (BuildContext context)=>AlertDialog(
-                          title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                          content: Text('密码不能为空，请输入您的密码',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                          actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
-                        ));
-                        return;
-                      }else{
-                        loginAuth();
-                      }
-                    },
-                    child: FittedBox(
-                      child: Row(
-                        children: [
-                          Icon(Icons.login),
-                          SizedBox(width: 10,),
-                          Text('登录智慧陕理工',style: TextStyle(fontSize: GlobalVars.genericTextMedium),)
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20,),
-                  FilledButton(
-                    onPressed: () {
-                      url = Uri.parse('https://authserver.snut.edu.cn/retrieve-password/retrievePassword/index.html');
-                      launchURL();
-                    },
-                    child: FittedBox(
-                      child: Row(
-                        children: [
-                          Icon(Icons.question_mark),
-                          SizedBox(width: 10,),
-                          Text('忘记密码？',style: TextStyle(fontSize: GlobalVars.genericTextMedium),)
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
             ),
           ),
         ],
