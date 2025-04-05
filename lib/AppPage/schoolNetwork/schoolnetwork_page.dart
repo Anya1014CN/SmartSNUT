@@ -527,12 +527,22 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
     }
     if(mounted){
       setState(() {
-      realName = netdata['userName'];
-      balance = netdata['leftMoney'];
-      state = netdata['useFlag'];
-      expire = netdata['dueDate'];
+        realName = netdata['userName'];
+        balance = netdata['leftMoney'];
+        state = netdata['useFlag'];
+        expire = netdata['dueDate'];
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('查询成功'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.all(10),
+        ),
+      );
       Navigator.pop(context);
-    });
     }
   }
 
