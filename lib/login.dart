@@ -970,6 +970,11 @@ class _LoginPageState extends State<LoginPage>{
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('登录成功'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.all(10),
         ),
       );
     }
