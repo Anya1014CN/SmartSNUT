@@ -385,6 +385,7 @@ class _LoginPageState extends State<LoginPage>{
 
   //从 authserver 登录
   loginAuth() async {
+    bool loginAuthCanceled = false;
     String loginStateString = '请稍后...';
     if(mounted){
       showDialog<String>(
@@ -406,6 +407,7 @@ class _LoginPageState extends State<LoginPage>{
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
+                    loginAuthCanceled = true;
                     clearTempLogindata();
                     Navigator.pop(context);
                   },
@@ -439,6 +441,7 @@ class _LoginPageState extends State<LoginPage>{
     dio.interceptors.add(CookieManager(authservercookie));
 
     //第一次请求，提取 execution
+    if(loginAuthCanceled) return;
     if(mounted){
       setState(() {
         loginStateString = '正在获取登录信息...';
@@ -505,13 +508,14 @@ class _LoginPageState extends State<LoginPage>{
     String captchaCode = '';
     textCaptchaController.clear();
     // 请求验证码图片
+    if(loginAuthCanceled) return;
     Response captchaResponse = await dio.get(
       'https://authserver.snut.edu.cn/authserver/getCaptcha.htl',
       options: Options(
         responseType: ResponseType.bytes, // 指定响应类型为字节数组
       ),
     );
-  
+    
     // 确保响应数据是 Uint8List 类型
     Uint8List captchaBytes;
     if (captchaResponse.data is Uint8List) {
@@ -520,8 +524,9 @@ class _LoginPageState extends State<LoginPage>{
       // 如果不是，尝试转换
       captchaBytes = Uint8List.fromList(captchaResponse.data as List<int>);
     }
-    
+      
     if(mounted){
+      Navigator.pop(context);
       await showDialog<String>(
         context: context,
         barrierDismissible: false,
@@ -530,22 +535,40 @@ class _LoginPageState extends State<LoginPage>{
           title: Text('请输入验证码',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
           content: Column(
             children: [
-              FittedBox(
-                child: Image.memory(captchaBytes),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: textCaptchaController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: '验证码',
+                        hintText: '请输入验证码',
+                        filled: false
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10,),
+                  Expanded(
+                    child: FittedBox(
+                      child: Image.memory(captchaBytes),
+                    ),
+                  )
+                ],
               ),
               SizedBox(height: 10,),
-              TextField(
-                controller: textCaptchaController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '验证码',
-                  hintText: '请输入验证码',
-                  filled: false
-                ),
-              ),
+              Text('验证码不区分大小写',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             ],
           ),
           actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                loginAuthCanceled = true;
+                Navigator.pop(context);
+                return;
+              },
+              child: const Text('取消'),
+            ),
             TextButton(
               onPressed: () {
                 if(textCaptchaController.text.isEmpty){
@@ -567,6 +590,39 @@ class _LoginPageState extends State<LoginPage>{
         ),
       );
     }
+    if(loginAuthCanceled) return;
+    if(mounted){
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              scrollable: true,
+              title: Text('正在登录...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Column(
+                children: [
+                  SizedBox(height: 10,),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 10,),
+                  Text(loginStateString,style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    loginAuthCanceled = true;
+                    clearTempLogindata();
+                    Navigator.pop(context);
+                  },
+                  child: const Text('取消'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
 
     //开始登录
     if(mounted){
@@ -586,48 +642,15 @@ class _LoginPageState extends State<LoginPage>{
       "execution": authexecution,
     };
     try{
-      //这里手动处理重定向,解决 Cookie 问题
+      if(loginAuthCanceled) return;
       authresponse2 = await  dio.post(
         'https://authserver.snut.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.snut.edu.cn%2Feams%2FssoLogin.action',
         data: loginParams,
         options: Options(
           followRedirects: false,
           validateStatus: (status) {
-            return status! <= 302;
+            return status! <= 401;
           },
-          contentType: Headers.formUrlEncodedContentType,
-        )
-      );
-      //跟随第一步重定向 (ssologin 的 ticket)
-      var authresponse21 = await dio.get(
-        authresponse2.headers['location']![0],
-        data: loginParams,
-        options: Options(
-          followRedirects: false,
-          validateStatus: (status) {
-            return status! <= 302;
-          },
-          contentType: Headers.formUrlEncodedContentType,
-        )
-      );
-      //跟随第二步重定向 (ssologin 的 ticket)
-      var authresponse22 = await dio.get(
-        authresponse21.headers['location']![0],
-        data: loginParams,
-        options: Options(
-          followRedirects: false,
-          validateStatus: (status) {
-            return status! <= 307;
-          },
-          contentType: Headers.formUrlEncodedContentType,
-        )
-      );
-      //跟随第三步重定向 (ssologin 的 jsessionid)
-      await dio.get(
-        'http://jwgl.snut.edu.cn${authresponse22.headers['location']![0]}',
-        data: loginParams,
-        options: Options(
-          followRedirects: false,
           contentType: Headers.formUrlEncodedContentType,
         )
       );
@@ -698,6 +721,67 @@ class _LoginPageState extends State<LoginPage>{
       }
     }
 
+    //手动跟随重定向
+    try{
+      //跟随第一步重定向 (ssologin 的 ticket)
+      if(loginAuthCanceled) return;
+      var authresponse21 = await dio.get(
+        authresponse2.headers['location']![0],
+        data: loginParams,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! <= 302;
+          },
+          contentType: Headers.formUrlEncodedContentType,
+        )
+      );
+      //跟随第二步重定向 (ssologin 的 ticket)
+      if(loginAuthCanceled) return;
+      var authresponse22 = await dio.get(
+        authresponse21.headers['location']![0],
+        data: loginParams,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! <= 307;
+          },
+          contentType: Headers.formUrlEncodedContentType,
+        )
+      );
+      //跟随第三步重定向 (ssologin 的 jsessionid)
+      if(loginAuthCanceled) return;
+      await dio.get(
+        'http://jwgl.snut.edu.cn${authresponse22.headers['location']![0]}',
+        data: loginParams,
+        options: Options(
+          followRedirects: false,
+          contentType: Headers.formUrlEncodedContentType,
+        )
+      );
+    }catch(e){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        loginStateString = '请稍后...';
+        clearTempLogindata();
+      }
+      return;
+    }
+
     //延迟 350 毫秒
     await Future.delayed(Duration(milliseconds: 350));
 
@@ -717,9 +801,8 @@ class _LoginPageState extends State<LoginPage>{
     //真实姓名
     late Response myactionresponse;
     try{
-      myactionresponse = await dio.get('http://jwgl.snut.edu.cn/eams/security/my.action',options: Options(validateStatus: (status) {
-        return status! <= 404;
-      },));
+      if(loginAuthCanceled) return;
+      myactionresponse = await dio.get('http://jwgl.snut.edu.cn/eams/security/my.action');
     }catch(e){
       if(mounted){
         Navigator.pop(context);
@@ -768,6 +851,7 @@ class _LoginPageState extends State<LoginPage>{
     }
     late Response stdDetailresponse;
     try{
+      if(loginAuthCanceled) return;
       stdDetailresponse = await dio.get('http://jwgl.snut.edu.cn/eams/stdDetail.action');
     }catch(e){
       if(mounted){
@@ -834,6 +918,7 @@ class _LoginPageState extends State<LoginPage>{
     }
     late Response courseresponse1;
     try{
+      if(loginAuthCanceled) return;
       courseresponse1 = await dio.get('http://jwgl.snut.edu.cn/eams/courseTableForStd.action');
     }catch (e){
       if(mounted){
@@ -882,6 +967,7 @@ class _LoginPageState extends State<LoginPage>{
     });
     late Response courseresponse2;
     try{
+      if(loginAuthCanceled) return;
       courseresponse2 = await dio.post(
       'http://jwgl.snut.edu.cn/eams/dataQuery.action',
       options: Options(

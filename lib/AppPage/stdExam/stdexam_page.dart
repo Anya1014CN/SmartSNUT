@@ -979,7 +979,7 @@ class _StdExamPageState extends State<StdExamPage>{
         responseType: ResponseType.bytes, // 指定响应类型为字节数组
       ),
     );
-  
+    
     // 确保响应数据是 Uint8List 类型
     Uint8List captchaBytes;
     if (captchaResponse.data is Uint8List) {
@@ -988,8 +988,9 @@ class _StdExamPageState extends State<StdExamPage>{
       // 如果不是，尝试转换
       captchaBytes = Uint8List.fromList(captchaResponse.data as List<int>);
     }
-    
+      
     if(mounted){
+      Navigator.pop(context);
       await showDialog<String>(
         context: context,
         barrierDismissible: false,
@@ -998,22 +999,40 @@ class _StdExamPageState extends State<StdExamPage>{
           title: Text('请输入验证码',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
           content: Column(
             children: [
-              FittedBox(
-                child: Image.memory(captchaBytes),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: textCaptchaController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: '验证码',
+                        hintText: '请输入验证码',
+                        filled: false
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10,),
+                  Expanded(
+                    child: FittedBox(
+                      child: Image.memory(captchaBytes),
+                    ),
+                  )
+                ],
               ),
               SizedBox(height: 10,),
-              TextField(
-                controller: textCaptchaController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '验证码',
-                  hintText: '请输入验证码',
-                  filled: false
-                ),
-              ),
+              Text('验证码不区分大小写',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             ],
           ),
           actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                getStdExamCanceled = true;
+                Navigator.pop(context);
+                return;
+              },
+              child: const Text('取消'),
+            ),
             TextButton(
               onPressed: () {
                 if(textCaptchaController.text.isEmpty){
@@ -1035,6 +1054,47 @@ class _StdExamPageState extends State<StdExamPage>{
         ),
       );
     }
+    if(getStdExamCanceled) return;
+    if(mounted){
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              scrollable: true,
+              title: Text('正在刷新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: 16),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 20),
+                  Text(
+                    loadStateString,
+                    style: TextStyle(
+                      fontSize: GlobalVars.alertdialogContent,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 8),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    getStdExamCanceled = true;
+                    Navigator.pop(context);
+                  },
+                  child: const Text('取消'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
 
     //开始登录
     if(mounted){
@@ -1054,7 +1114,6 @@ class _StdExamPageState extends State<StdExamPage>{
       "execution": authexecution,
     };
     try{
-      //这里手动处理重定向,解决 Cookie 问题
       if(getStdExamCanceled) return;
       authresponse2 = await  dio.post(
         'https://authserver.snut.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.snut.edu.cn%2Feams%2FssoLogin.action',
@@ -1062,11 +1121,77 @@ class _StdExamPageState extends State<StdExamPage>{
         options: Options(
           followRedirects: false,
           validateStatus: (status) {
-            return status! <= 302;
+            return status! <= 401;
           },
           contentType: Headers.formUrlEncodedContentType,
         )
       );
+    }catch(e){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        loadStateString = '请稍后...';
+      }
+      return;
+    }
+    if(authresponse2.data.toString().contains('您提供的用户名或者密码有误')){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('用户名或密码错误',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        loadStateString = '请稍后...';
+        return;
+      }
+    }
+    if(authresponse2.data.toString().contains('图形动态码错误')){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            scrollable: true,
+            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('验证码错误',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        loadStateString = '请稍后...';
+        return;
+      }
+    }
+
+    //手动跟随重定向
+    try{
       //跟随第一步重定向 (ssologin 的 ticket)
       if(getStdExamCanceled) return;
       var authresponse21 = await dio.get(
@@ -1121,50 +1246,8 @@ class _StdExamPageState extends State<StdExamPage>{
           ),
         );
         loadStateString = '请稍后...';
-        return;
       }
-    }
-    if(authresponse2.data.toString().contains('您提供的用户名或者密码有误')){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('用户名或密码错误',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-        loadStateString = '请稍后...';
-        return;
-      }
-    }
-    if(authresponse2.data.toString().contains('图形动态码错误')){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('验证码错误',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-        loadStateString = '请稍后...';
-        return;
-      }
+      return;
     }
 
     //请求考试页面
