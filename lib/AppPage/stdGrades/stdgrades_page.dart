@@ -142,6 +142,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
     String stdGradespath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/stdGrades/stdGrades$semesterId.json';
     File stdGradesfile = File(stdGradespath);
     if(await stdGradesfile.exists()){
+      gpaTotal = 0.00;
       var readGradesTotal = jsonDecode(await stdGradesfile.readAsString());
       if(readGradesTotal.isEmpty){
         if(mounted){
@@ -153,10 +154,10 @@ class _StdGradesPageState extends State<StatefulWidget>{
         stdGradesTotal = readGradesTotal;
         noGrades = false;
         for(int i = 0; i < stdGradesTotal.length; i++){
+          double gpa = double.parse(stdGradesTotal[i]['CourseGradeGPA']!);
+          gpaTotal += gpa;
           try {
-            double gpa = double.parse(stdGradesTotal[i]['CourseGradeGPA']!);
             double grade = double.parse(stdGradesTotal[i]['CourseGradeTotal']!);
-            gpaTotal += gpa;
             gradeTotal += grade;
             validGradesNum++; // 只有成功解析为数字的成绩才计入有效成绩数
           } catch (e) {
@@ -168,6 +169,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
           setState(() {});
         }
       }
+
+
     }else{
       if(mounted){
         setState(() {
