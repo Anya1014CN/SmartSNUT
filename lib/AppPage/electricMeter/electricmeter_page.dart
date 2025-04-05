@@ -55,10 +55,20 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => ElectricmeterbindPage()));},
         backgroundColor: Theme.of(context).colorScheme.primary,
-        child: Icon(Icons.link),
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        label: Row(
+          children: [
+            Icon(Icons.link),
+            SizedBox(width: 10,),
+            Text('账号管理',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
+          ],
+        ),
       ),
       body: NotificationListener<ScrollNotification>(
         onNotification: (scrollNotification) {
@@ -94,49 +104,210 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
           },
           body: ListView(
             children: [
+              // 标题区域 - 改进样式和间距
               Container(
-                padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+                padding: EdgeInsets.fromLTRB(16, 20, 16, 30),
                 child: Row(
                   children: [
-                    Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/electricity.png'):AssetImage('assets/icons/darktheme/electricity.png'),height: 40,),
-                    SizedBox(width: 10,),
-                    Text('电费查询',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Image(
+                        image: Theme.of(context).brightness == Brightness.light
+                          ? AssetImage('assets/icons/lighttheme/electricity.png')
+                          : AssetImage('assets/icons/darktheme/electricity.png'),
+                        height: 32,
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                    Text(
+                      '电费查询',
+                      style: TextStyle(
+                        fontSize: GlobalVars.genericPageTitle,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    )
                   ],
                 ),
               ),
-              isQuerying?
-              SizedBox(width: 0,height: 0,):
+              
+              // 查询状态显示与电表信息展示
+              isQuerying ?
+              SizedBox() :
               Container(
-                padding: EdgeInsets.fromLTRB(15, 10, 15, 80),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 80),
                 child: Card(
-                  shadowColor: Theme.of(context).colorScheme.onPrimary,
-                  color: Theme.of(context).colorScheme.surfaceDim,
+                  elevation: 2,
                   shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Column(
-                    children: emstatetotal.map((em) {
-                    return Container(
-                      padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('电表编号：${em['userCode']}',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          SizedBox(height: 10,),
-                          Text('电表剩余：${em['emDetail']['shengyu']}',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('电表累计：${em['emDetail']['leiji']}',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          Text('电表状态：${em['emDetail']['zhuangtai']}',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
-                          SizedBox(height: 10,),
-                          Text('${em['userAddress']}',style: TextStyle(fontSize: GlobalVars.genericTextLarge),textAlign: TextAlign.center,softWrap: true,maxLines: 1,overflow: TextOverflow.ellipsis),
-                          SizedBox(height: 20,),
-                          Divider(height: 5,indent: 20,endIndent: 20,),
-                        ],
+                  shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  child: emstatetotal.isEmpty ? 
+                    // 无电表数据时显示加载提示
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 40),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            CircularProgressIndicator(),
+                            SizedBox(height: 16),
+                            Text(
+                              "正在加载电表数据...", 
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: GlobalVars.genericTextMedium,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    );
-                  }).toList(),
-                  )
+                    ) :
+                    // 有电表数据时显示列表
+                    Column(
+                      children: emstatetotal.map((em) {
+                        return Container(
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // 电表编号
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.credit_card,
+                                    size: 18,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      '电表编号：${em['userCode']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextLarge,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 16),
+                              
+                              // 电表数据卡片
+                              Container(
+                                padding: EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary.withAlpha(15),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // 电表剩余
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.electric_bolt,
+                                          size: 18,
+                                          color: Theme.of(context).colorScheme.primary,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          '电表剩余：${em['emDetail']['shengyu']}',
+                                          style: TextStyle(
+                                            fontSize: GlobalVars.genericTextLarge,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 8),
+                                    
+                                    // 电表累计
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.history,
+                                          size: 18,
+                                          color: Theme.of(context).colorScheme.primary,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          '电表累计：${em['emDetail']['leiji']}',
+                                          style: TextStyle(
+                                            fontSize: GlobalVars.genericTextLarge,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 8),
+                                    
+                                    // 电表状态
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.info_outline,
+                                          size: 18,
+                                          color: Theme.of(context).colorScheme.primary,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          '电表状态：${em['emDetail']['zhuangtai']}',
+                                          style: TextStyle(
+                                            fontSize: GlobalVars.genericTextLarge,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              
+                              SizedBox(height: 16),
+                              
+                              // 地址信息
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on_outlined,
+                                    size: 18,
+                                    color: Theme.of(context).colorScheme.secondary,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      '${em['userAddress']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextMedium,
+                                        color: Theme.of(context).colorScheme.secondary,
+                                      ),
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              
+                              SizedBox(height: 16),
+                              Divider(height: 1),
+                              SizedBox(height: 8),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
-              ),
             ],
           ),
         ),
