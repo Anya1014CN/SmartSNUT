@@ -1401,6 +1401,16 @@ class _StdExamPageState extends State<StdExamPage>{
 
     readSchoolCalendarInfo();
     if(mounted){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('刷新成功'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.all(10),
+        ),
+      );
       Navigator.pop(context);
     }
   }
