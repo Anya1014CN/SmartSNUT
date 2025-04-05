@@ -58,7 +58,7 @@ class _AppPageState extends State<AppPage> {
     }
     return ListView(
       children: [
-        // 问候语区域 - 改进样式和间距
+        // 问候语区域
         Container(
           padding: EdgeInsets.fromLTRB(16, 40, 16, 20),
           decoration: BoxDecoration(
@@ -78,7 +78,7 @@ class _AppPageState extends State<AppPage> {
           ),
         ),
         SizedBox(height: 10),
-        // 教务功能标题 - 改进样式
+        // 教务功能标题
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
@@ -102,7 +102,7 @@ class _AppPageState extends State<AppPage> {
             ],
           ),
         ),
-        // 教务功能卡片 - 改进布局和样式
+        // 教务功能卡片
         Container(
           padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Card(
@@ -188,7 +188,7 @@ class _AppPageState extends State<AppPage> {
             ),
           ),
         ),
-        // 后勤功能标题 - 改进样式
+        // 后勤功能标题
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
@@ -212,7 +212,7 @@ class _AppPageState extends State<AppPage> {
             ],
           ),
         ),
-        // 后勤功能卡片 - 改进布局和样式
+        // 后勤功能卡片
         Container(
           padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Card(
@@ -283,7 +283,7 @@ class _AppPageState extends State<AppPage> {
             ),
           ),
         ),
-        // 校内链接标题 - 改进样式
+        // 校内链接标题
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
@@ -307,7 +307,7 @@ class _AppPageState extends State<AppPage> {
             ],
           ),
         ),
-        // 校内链接卡片 - 改进布局和样式
+        // 校内链接卡片
         Container(
           padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Card(
@@ -500,7 +500,7 @@ class _AppPageState extends State<AppPage> {
                 color: Theme.of(context).colorScheme.onSurface,
               ),
               overflow: TextOverflow.ellipsis,
-              maxLines: 2,
+              maxLines: 1,
               textAlign: TextAlign.center,
             )
           ],

@@ -104,7 +104,6 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
           },
           body: ListView(
             children: [
-              // 标题区域 - 改进样式和间距
               Container(
                 padding: EdgeInsets.fromLTRB(16, 20, 16, 30),
                 child: Row(
@@ -467,7 +466,7 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('查询成功'),
+          content: Text('电表数据查询成功'),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

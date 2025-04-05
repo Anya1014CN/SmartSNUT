@@ -64,7 +64,7 @@ class _GuidePageState extends State<Guidepage>{
           },
           body: ListView(
             children: [
-              // 标题区域 - 改进样式和间距
+              // 标题区域
               Container(
                 padding: EdgeInsets.fromLTRB(16, 40, 16, 20),
                 child: Row(
@@ -88,7 +88,7 @@ class _GuidePageState extends State<Guidepage>{
                 ),
               ),
               
-              // 使用说明标题区 - 改进样式
+              // 使用说明标题区
               Container(
                 padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
                 child: Row(
@@ -114,7 +114,7 @@ class _GuidePageState extends State<Guidepage>{
                 ),
               ),
               
-              // 使用说明卡片 - 改进样式
+              // 使用说明卡片
               Container(
                 padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
                 child: Card(
@@ -157,7 +157,7 @@ class _GuidePageState extends State<Guidepage>{
                 ),
               ),
               
-              // 功能说明标题区 - 改进样式
+              // 功能说明标题区
               Container(
                 padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
                 child: Row(
@@ -183,7 +183,7 @@ class _GuidePageState extends State<Guidepage>{
                 ),
               ),
               
-              // 功能说明卡片 - 改进样式
+              // 功能说明卡片
               Container(
                 padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
                 child: Card(

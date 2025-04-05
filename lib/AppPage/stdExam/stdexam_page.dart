@@ -492,31 +492,37 @@ class _StdExamPageState extends State<StdExamPage>{
           },
           body: ListView(
             children: [
-              // 页面标题区域 - 改进样式和间距
               Container(
-                padding: EdgeInsets.fromLTRB(16, 24, 16, 20),
+                padding: EdgeInsets.fromLTRB(16, 20, 16, 30),
                 child: Row(
                   children: [
-                    Image(
-                      image: Theme.of(context).brightness == Brightness.light ? 
-                        AssetImage('assets/icons/lighttheme/exam.png') : 
-                        AssetImage('assets/icons/darktheme/exam.png'),
-                      height: 40,
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Image(
+                        image: Theme.of(context).brightness == Brightness.light
+                          ? AssetImage('assets/icons/lighttheme/exam.png')
+                          : AssetImage('assets/icons/darktheme/exam.png'),
+                        height: 32,
+                      ),
                     ),
-                    SizedBox(width: 16,),
+                    SizedBox(width: 12),
                     Text(
                       '我的考试',
                       style: TextStyle(
                         fontSize: GlobalVars.genericPageTitle,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     )
                   ],
                 ),
               ),
               
-              // 考试类型选择卡片 - 改进视觉呈现
+              // 考试类型选择卡片
               Container(
                 padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
                 child: Card(
@@ -589,7 +595,7 @@ class _StdExamPageState extends State<StdExamPage>{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      '考试类型：$currentExamBatchName', 
+                                      '类型：$currentExamBatchName', 
                                       style: TextStyle(
                                         fontSize: GlobalVars.genericSwitchContainerTitle,
                                         fontWeight: FontWeight.w500,
@@ -613,7 +619,7 @@ class _StdExamPageState extends State<StdExamPage>{
               
               // 考试信息内容区域
               noExam ? 
-              // 无考试信息显示 - 改进样式
+              // 无考试信息显示
               Center(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(16, 10, 16, 20),
@@ -661,7 +667,7 @@ class _StdExamPageState extends State<StdExamPage>{
                   ),
                 ),
               ) : 
-              // 有考试信息显示 - 改进样式
+              // 有考试信息显示
               Container(
                 padding: EdgeInsets.fromLTRB(16, 10, 16, 20),
                 child: Card(
@@ -685,12 +691,14 @@ class _StdExamPageState extends State<StdExamPage>{
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                               SizedBox(width: 8),
-                              Text(
-                                '$currentYearName $currentTermName $currentExamBatchName',
-                                style: TextStyle(
-                                  fontSize: GlobalVars.listTileTitle,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.primary,
+                              Flexible(
+                                child: Text(
+                                  '$currentYearName $currentTermName $currentExamBatchName',
+                                  style: TextStyle(
+                                    fontSize: GlobalVars.listTileTitle,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
                                 ),
                               ),
                             ],
@@ -1403,7 +1411,7 @@ class _StdExamPageState extends State<StdExamPage>{
     if(mounted){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('刷新成功'),
+          content: Text('考试数据刷新成功'),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

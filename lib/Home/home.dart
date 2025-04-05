@@ -1208,7 +1208,7 @@ class _HomeState extends State<Home>{
     //渲染首页
     return ListView(
       children: [
-        // 问候语区域 - 改进样式和间距
+        // 问候语区域
         Container(
           padding: EdgeInsets.fromLTRB(16, 40, 16, 20),
           decoration: BoxDecoration(
@@ -1230,7 +1230,7 @@ class _HomeState extends State<Home>{
         
         SizedBox(height: 10),
         
-        // 公告区域 - 改进视觉呈现
+        // 公告区域
         (smartSNUTAnnouncements.isEmpty)? 
         SizedBox():
         Container(
@@ -1298,7 +1298,7 @@ class _HomeState extends State<Home>{
           ),
         ),
         
-        // 今日课表标题 - 改进样式
+        // 今日课表标题
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
@@ -1324,7 +1324,7 @@ class _HomeState extends State<Home>{
           ),
         ),
         
-        // 今日课表卡片 - 改进视觉样式
+        // 今日课表卡片
         Container(
           padding: EdgeInsets.fromLTRB(16, 4, 16, 10),
           child: Card(
@@ -1357,7 +1357,7 @@ class _HomeState extends State<Home>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // 当前日期显示 - 改进样式
+                  // 当前日期显示
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                     decoration: BoxDecoration(
@@ -1372,21 +1372,22 @@ class _HomeState extends State<Home>{
                           color: Theme.of(context).colorScheme.primary
                         ),
                         SizedBox(width: 8),
-                        Text(
-                          '${GlobalVars.month} 月 ${GlobalVars.day} 日 ${GlobalVars.weekDay}',
-                          style: TextStyle(
-                            fontSize: GlobalVars.genericTextLarge,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary
+                        Flexible(
+                          child: Text(
+                            '${GlobalVars.month} 月 ${GlobalVars.day} 日 ${GlobalVars.weekDay}',
+                            style: TextStyle(
+                              fontSize: GlobalVars.genericTextLarge,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  
                   Divider(height: 24, indent: 20, endIndent: 20),
-                  
-                  // 课表内容 - 保持现有函数逻辑
+                  // 课表内容
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -1437,8 +1438,7 @@ class _HomeState extends State<Home>{
                       SizedBox()
                       :((courseToday[8].isEmpty)? false:(courseToday[8][0]['CourseName'] == courseToday[9][0]['CourseName'] || courseToday[8][0]['CourseLocation'] == courseToday[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
                       :buildCourseTile(context, courseToday, 9),
-                      
-                      // 今日无课提示 - 改进样式
+                      // 今日无课提示
                       ((courseToday[0].isEmpty == true) && (courseToday[1].isEmpty == true) && (courseToday[2].isEmpty == true) && (courseToday[3].isEmpty == true) && (courseToday[4].isEmpty == true) && (courseToday[5].isEmpty == true) && (courseToday[6].isEmpty == true) && (courseToday[7].isEmpty == true) && (courseToday[8].isEmpty == true) && (courseToday[9].isEmpty == true))?
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 30),
@@ -1463,10 +1463,8 @@ class _HomeState extends State<Home>{
                       ):SizedBox()
                     ],
                   ),
-                  
                   Divider(height: 24, indent: 20, endIndent: 20),
-                  
-                  // 查看更多课表按钮 - 改进样式
+                  // 查看本周课表按钮
                   InkWell(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => CourseTablePage())).then((value) => readSemesterInfo());
@@ -1480,13 +1478,17 @@ class _HomeState extends State<Home>{
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            '查看本周课表、切换学年、刷新数据',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: GlobalVars.listTileTitle,
-                              color: Theme.of(context).colorScheme.primary,
+                          Flexible(
+                            child: Text(
+                              '查看本周课表、切换学年、刷新数据',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: GlobalVars.listTileTitle,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           SizedBox(width: 8),
@@ -1505,7 +1507,7 @@ class _HomeState extends State<Home>{
           ),
         ),
         
-        // 便捷生活标题 - 改进样式
+        // 便捷生活标题
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
@@ -1531,7 +1533,7 @@ class _HomeState extends State<Home>{
           ),
         ),
         
-        // 便捷生活功能区 - 改进布局
+        // 便捷生活功能区
         Container(
           padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Card(
@@ -1621,7 +1623,7 @@ class _HomeState extends State<Home>{
           ),
         ),
         
-        // 通知公告标题 - 改进样式
+        // 通知公告标题
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
@@ -1647,7 +1649,7 @@ class _HomeState extends State<Home>{
           ),
         ),
         
-        // 通知公告卡片 - 改进样式
+        // 通知公告卡片
         Container(
           padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Card(
@@ -1894,23 +1896,30 @@ class _HomeState extends State<Home>{
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.calendar_today,
-                  size: 14,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                SizedBox(width: 4),
-                Text(
-                  '${news['date']}',
-                  style: TextStyle(
+            Flexible(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.calendar_today,
+                    size: 14,
                     color: Theme.of(context).colorScheme.secondary,
-                    fontSize: GlobalVars.listTileSubtitle,
                   ),
-                ),
-              ],
+                  SizedBox(width: 4),
+                  Flexible(
+                    child: Text(
+                      '${news['date']}',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: GlobalVars.listTileSubtitle,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
+            SizedBox(width: 8),
             Text(
               '点击查看',
               style: TextStyle(
@@ -2119,6 +2128,11 @@ class _HomeState extends State<Home>{
         if(mounted){
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: EdgeInsets.all(10),
               content: Text('暂未发现新的 Windows 版智慧陕理工\n您正在使用最新版本的 Windows 版智慧陕理工：${GlobalVars.versionCodeString}'),
             ),
           );
@@ -2155,6 +2169,11 @@ class _HomeState extends State<Home>{
         if(mounted){
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: EdgeInsets.all(10),
               content: Text('暂未发现新的 Android 版智慧陕理工\n您正在使用最新版本的 Android 版智慧陕理工：${GlobalVars.versionCodeString}'),
             ),
           );

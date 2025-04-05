@@ -64,31 +64,37 @@ class _StddetailPageState extends State<StdDetailPage>{
           },
           body: ListView(
             children: [
-              // 标题区域 - 改进样式和间距
               Container(
-                padding: EdgeInsets.fromLTRB(16, 20, 16, 24),
+                padding: EdgeInsets.fromLTRB(16, 20, 16, 30),
                 child: Row(
                   children: [
-                    Image(
-                      image: Theme.of(context).brightness == Brightness.light
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Image(
+                        image: Theme.of(context).brightness == Brightness.light
                           ? AssetImage('assets/icons/lighttheme/account.png')
                           : AssetImage('assets/icons/darktheme/account.png'),
-                      height: 40,
+                        height: 32,
+                      ),
                     ),
-                    SizedBox(width: 16),
+                    SizedBox(width: 12),
                     Text(
                       '学籍信息',
                       style: TextStyle(
                         fontSize: GlobalVars.genericPageTitle,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     )
                   ],
                 ),
               ),
               
-              // 学籍信息内容 - 改进视觉呈现
+              // 学籍信息内容
               _isLoading 
               ? Container(
                   padding: EdgeInsets.symmetric(vertical: 80),
@@ -191,6 +197,11 @@ class _StddetailPageState extends State<StdDetailPage>{
         
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            margin: EdgeInsets.all(10),
             content: Text('加载学籍信息失败，请稍后再试'),
             duration: Duration(seconds: 2),
           ),

@@ -901,6 +901,11 @@ class _SettingsPage extends State<SettingsPage>{
     if(mounted){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.all(10),
           content: Text('退出登录成功'),
         ),
       );

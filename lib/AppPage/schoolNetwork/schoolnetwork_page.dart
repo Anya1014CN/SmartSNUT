@@ -77,23 +77,30 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
           },
           body: ListView(
             children: [
-              // 标题部分
               Container(
                 padding: EdgeInsets.fromLTRB(16, 20, 16, 30),
                 child: Row(
                   children: [
-                    Image(
-                      image: Theme.of(context).brightness == Brightness.light
-                        ? AssetImage('assets/icons/lighttheme/web.png')
-                        : AssetImage('assets/icons/darktheme/web.png'),
-                      height: 40,
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Image(
+                        image: Theme.of(context).brightness == Brightness.light
+                          ? AssetImage('assets/icons/lighttheme/web.png')
+                          : AssetImage('assets/icons/darktheme/web.png'),
+                        height: 32,
+                      ),
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(width: 12),
                     Text(
                       '网费查询',
                       style: TextStyle(
                         fontSize: GlobalVars.genericPageTitle,
-                        fontWeight: FontWeight.bold
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     )
                   ],
@@ -238,11 +245,13 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                               size: 20,
                             ),
                             SizedBox(width: 12),
-                            Text(
-                              '账号：${textUsernameController.text}',
-                              style: TextStyle(
-                                fontSize: GlobalVars.genericTextLarge,
-                                fontWeight: FontWeight.w500
+                            Flexible(
+                              child: Text(
+                                '账号：${textUsernameController.text}',
+                                style: TextStyle(
+                                  fontSize: GlobalVars.genericTextLarge,
+                                  fontWeight: FontWeight.w500
+                                ),
                               ),
                             ),
                           ],
@@ -256,11 +265,13 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                               size: 20,
                             ),
                             SizedBox(width: 12),
-                            Text(
-                              '姓名：$realName',
-                              style: TextStyle(
-                                fontSize: GlobalVars.genericTextLarge,
-                                fontWeight: FontWeight.w500
+                            Flexible(
+                              child: Text(
+                                '姓名：$realName',
+                                style: TextStyle(
+                                  fontSize: GlobalVars.genericTextLarge,
+                                  fontWeight: FontWeight.w500
+                                ),
                               ),
                             ),
                           ],
@@ -274,11 +285,13 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                               size: 20,
                             ),
                             SizedBox(width: 12),
-                            Text(
-                              '余额：$balance',
-                              style: TextStyle(
-                                fontSize: GlobalVars.genericTextLarge,
-                                fontWeight: FontWeight.w500
+                            Flexible(
+                              child: Text(
+                                '余额：$balance',
+                                style: TextStyle(
+                                  fontSize: GlobalVars.genericTextLarge,
+                                  fontWeight: FontWeight.w500
+                                ),
                               ),
                             ),
                           ],
@@ -292,11 +305,13 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                               size: 20,
                             ),
                             SizedBox(width: 12),
-                            Text(
-                              '状态：$state',
-                              style: TextStyle(
-                                fontSize: GlobalVars.genericTextLarge,
-                                fontWeight: FontWeight.w500
+                            Flexible(
+                              child: Text(
+                                '状态：$state',
+                                style: TextStyle(
+                                  fontSize: GlobalVars.genericTextLarge,
+                                  fontWeight: FontWeight.w500
+                                ),
                               ),
                             ),
                           ],
@@ -310,13 +325,15 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                               size: 20,
                             ),
                             SizedBox(width: 12),
-                            Text(
-                              '到期时间：$expire',
-                              style: TextStyle(
-                                fontSize: GlobalVars.genericTextLarge,
-                                fontWeight: FontWeight.w500
+                            Flexible(
+                              child: Text(
+                                '到期时间：$expire',
+                                style: TextStyle(
+                                  fontSize: GlobalVars.genericTextLarge,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ],
@@ -534,7 +551,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('查询成功'),
+          content: Text('网费数据查询成功'),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

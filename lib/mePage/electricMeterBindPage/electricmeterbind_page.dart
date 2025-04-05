@@ -160,11 +160,13 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                   height: 40,
                 ),
                 SizedBox(width: 10,),
-                Text(
-                  '解/绑电费账号',
-                  style: TextStyle(
-                    fontSize: GlobalVars.genericPageTitle,
-                    fontWeight: FontWeight.bold
+                Flexible(
+                  child: Text(
+                    '解/绑电费账号',
+                    style: TextStyle(
+                      fontSize: GlobalVars.genericPageTitle,
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
                 )
               ],
@@ -644,7 +646,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     if(mounted){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('电表数据获取成功'),
+          content: Text('电费账号数据获取成功'),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -680,7 +682,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     if(mounted){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('电表账号解绑成功'),
+          content: Text('电费账号解绑成功'),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

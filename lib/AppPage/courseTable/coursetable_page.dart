@@ -1452,103 +1452,68 @@ class _CourseTablePage extends State<CourseTablePage>{
       :ListView(
         children: [
           Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                // 周次选择控件
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withAlpha(26),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: (currentWeekInt == 1)? null:(){
-                          if(mounted){
-                            setState(() {
-                              currentWeekInt --;
-                              weekDiff --;
-                            });
-                          }
-                          getWeekDates();
-                          readWeeklyCourseTableDetail();
-                          saveSelectedTY();
-                        },
-                        icon: Icon(Icons.arrow_back,
-                          color: (currentWeekInt == 1)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
-                        ),
-                        tooltip: '上一周',
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              elevation: 2,
+              shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+              color: Theme.of(context).colorScheme.surfaceDim,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: (currentWeekInt == 1)? null:(){
+                        if(mounted){
+                          setState(() {
+                            currentWeekInt --;
+                            weekDiff --;
+                          });
+                        }
+                        getWeekDates();
+                        readWeeklyCourseTableDetail();
+                        saveSelectedTY();
+                      },
+                      icon: Icon(Icons.arrow_back,
+                        color: (currentWeekInt == 1)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
                       ),
-                      Column(
-                        children: [
-                          Text(
-                            '第 $currentWeekInt 周',
-                            style: TextStyle(
-                              fontSize: GlobalVars.genericTextLarge,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary
-                            ),
+                      tooltip: '上一周',
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          termEnded? '第 $currentWeekInt 周（本学期已结束）':'第 $currentWeekInt 周',
+                          style: TextStyle(
+                            fontSize: GlobalVars.genericTextLarge,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary
                           ),
-                          if (termEnded) 
-                            Text(
-                              '（本学期已结束）',
-                              style: TextStyle(
-                                fontSize: GlobalVars.genericTextSmall,
-                                color: Theme.of(context).colorScheme.error,
-                              ),
-                            ),
-                        ],
-                      ),
-                      IconButton(
-                        onPressed: (currentWeekInt == termWeeks)? null:(){
-                          if(mounted){
-                            setState(() {
-                              currentWeekInt ++;
-                              weekDiff ++;
-                            });
-                          }
-                          getWeekDates();
-                          readWeeklyCourseTableDetail();
-                          saveSelectedTY();
-                        },
-                        icon: Icon(Icons.arrow_forward,
-                          color: (currentWeekInt == termWeeks)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
                         ),
-                        tooltip: '下一周',
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: (currentWeekInt == termWeeks)? null:(){
+                        if(mounted){
+                          setState(() {
+                            currentWeekInt ++;
+                            weekDiff ++;
+                          });
+                        }
+                        getWeekDates();
+                        readWeeklyCourseTableDetail();
+                        saveSelectedTY();
+                      },
+                      icon: Icon(Icons.arrow_forward,
+                        color: (currentWeekInt == termWeeks)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
                       ),
-                    ],
-                  ),
+                      tooltip: '下一周',
+                    ),
+                  ],
                 ),
-
-                SizedBox(height: 8),
-                
-                // 学期信息显示
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.calendar_month,
-                        size: 18,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        '$currentYearName | $currentTermName',
-                        style: TextStyle(
-                          fontSize: GlobalVars.genericTextMedium,
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
           noCourseTable? 
@@ -2905,7 +2870,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('刷新成功'),
+          content: Text('课表数据刷新成功'),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

@@ -32,7 +32,7 @@ class _MePageState extends State<MePage>{
     
     return ListView(
       children: [
-        // 问候语区域 - 改进样式和间距
+        // 问候语区域
         Container(
           padding: EdgeInsets.fromLTRB(16, 40, 16, 20),
           decoration: BoxDecoration(
@@ -47,7 +47,8 @@ class _MePageState extends State<MePage>{
             children: [
               Text('${GlobalVars.realName}，',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),),
               Text('这是你在陕理工的',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w300),),
-              Row(
+              Wrap(
+                spacing: 0,
                 children: [
                   Text('第 ',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w300),),
                   Text('${GlobalVars.today.difference(DateTime.parse(GlobalVars.enrollTime)).inDays}',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle + 5, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
@@ -55,7 +56,8 @@ class _MePageState extends State<MePage>{
                 ],
               ),
               Text('距离毕业还',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w300),),
-              Row(
+              Wrap(
+                spacing: 0,
                 children: [
                   Text('有 ',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle, fontWeight: FontWeight.w300),),
                   Text('${DateTime.parse(GlobalVars.graduationTime).difference(GlobalVars.today).inDays}',style: TextStyle(fontSize: GlobalVars.genericGreetingTitle + 5, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.error),),
@@ -68,7 +70,7 @@ class _MePageState extends State<MePage>{
         
         SizedBox(height: 10),
         
-        // 每日提示标题 - 改进样式
+        // 每日提示标题
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
@@ -94,7 +96,7 @@ class _MePageState extends State<MePage>{
           ),
         ),
         
-        // 每日提示卡片 - 改进视觉呈现
+        // 每日提示卡片
         Container(
           padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Card(
@@ -131,7 +133,7 @@ class _MePageState extends State<MePage>{
           ),
         ),
         
-        // 功能区标题 - 改进样式
+        // 功能区标题
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
@@ -157,7 +159,7 @@ class _MePageState extends State<MePage>{
           ),
         ),
         
-        // 功能区卡片 - 改进布局和样式
+        // 功能区卡片
         Container(
           padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Card(
@@ -321,6 +323,11 @@ class _MePageState extends State<MePage>{
     if(mounted){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.all(10),
           content: Text('退出登录成功'),
         ),
       );

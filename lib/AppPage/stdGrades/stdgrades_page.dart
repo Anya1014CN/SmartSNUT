@@ -263,24 +263,30 @@ class _StdGradesPageState extends State<StatefulWidget>{
           },
           body: ListView(
             children: [
-              // 页面标题区域 - 改进样式和间距
               Container(
-                padding: EdgeInsets.fromLTRB(16, 24, 16, 20),
+                padding: EdgeInsets.fromLTRB(16, 20, 16, 30),
                 child: Row(
                   children: [
-                    Image(
-                      image: Theme.of(context).brightness == Brightness.light ? 
-                        AssetImage('assets/icons/lighttheme/grade.png') : 
-                        AssetImage('assets/icons/darktheme/grade.png'),
-                      height: 40,
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Image(
+                        image: Theme.of(context).brightness == Brightness.light
+                          ? AssetImage('assets/icons/lighttheme/grade.png')
+                          : AssetImage('assets/icons/darktheme/grade.png'),
+                        height: 32,
+                      ),
                     ),
-                    SizedBox(width: 16,),
+                    SizedBox(width: 12),
                     Text(
                       '我的成绩',
                       style: TextStyle(
                         fontSize: GlobalVars.genericPageTitle,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     )
                   ],
@@ -288,7 +294,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
               ),
               
               noGrades? 
-              // 无成绩信息显示 - 改进样式
+              // 无成绩信息显示
               Center(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(16, 10, 16, 20),
@@ -336,7 +342,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
                   ),
                 ),
               ):
-              // 有成绩信息显示 - 改进布局
+              // 有成绩信息显示
               Column(
                 children: [
                   // 成绩统计卡片
@@ -1241,7 +1247,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
       setState(() {});
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('刷新成功'),
+          content: Text('成绩数据刷新成功'),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
