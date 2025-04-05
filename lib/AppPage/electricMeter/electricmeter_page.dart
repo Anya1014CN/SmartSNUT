@@ -462,10 +462,20 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
     }
     if(queryemCanceled) return;
     if(mounted){
-      Navigator.pop(context);
       setState(() {
         isQuerying = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('查询成功'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.all(10),
+        ),
+      );
+      Navigator.pop(context);
     }
   }
 }
