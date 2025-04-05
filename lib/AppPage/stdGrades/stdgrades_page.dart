@@ -1238,9 +1238,18 @@ class _StdGradesPageState extends State<StatefulWidget>{
       }
     }
     if(mounted){
-      setState(() {
-        Navigator.pop(context);
-      });
+      setState(() {});
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('刷新成功'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.all(10),
+        ),
+      );
+      Navigator.pop(context);
     }
   }
   
