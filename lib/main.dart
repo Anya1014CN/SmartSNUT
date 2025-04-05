@@ -228,21 +228,25 @@ class _HomePageState extends State<HomePage>{
                 selectedIndex: selectedHomeIndex,
                 destinations: [
                   NavigationDestination(
-                    icon: Icon(Icons.home),
+                    icon: Icon(Icons.home_outlined),
                     selectedIcon: Icon(Icons.home),
                     label: '首页',
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.touch_app),
+                    icon: Icon(Icons.touch_app_outlined),
                     selectedIcon: Icon(Icons.touch_app),
                     label: '校内应用',
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.person),
+                    icon: Icon(Icons.person_outline),
                     selectedIcon: Icon(Icons.person),
                     label: '我的',
                   ),
                 ],
+                labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+                height: 70,
+                elevation: 3,
+                shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.3),
               );
             }
           },
@@ -264,33 +268,50 @@ class _HomePageState extends State<HomePage>{
                       }
                     },
                     labelType: NavigationRailLabelType.selected,
-                    selectedLabelTextStyle: TextStyle(fontSize: GlobalVars.bottonbarSelectedTitle),
-                    unselectedLabelTextStyle: TextStyle(fontSize: GlobalVars.bottonbarUnselectedTitle),
+                    selectedLabelTextStyle: TextStyle(
+                      fontSize: GlobalVars.bottonbarSelectedTitle,
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    unselectedLabelTextStyle: TextStyle(
+                      fontSize: GlobalVars.bottonbarUnselectedTitle,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                     leading:sizingInformation.isDesktop? 
                     Container(
-                      padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
+                      padding: EdgeInsets.fromLTRB(10, 20, 20, 10),
                       child: Row(
                       children: [
                        Image(image: AssetImage('assets/images/logo.png'),width: 60,height: 60,),
                        SizedBox(width: 10,),
-                       Text('智慧陕理工',style: TextStyle(fontSize: GlobalVars.bottonbarAppnameTitle),)
+                       Text('智慧陕理工',style: TextStyle(
+                         fontSize: GlobalVars.bottonbarAppnameTitle,
+                         fontWeight: FontWeight.bold,
+                         color: Theme.of(context).colorScheme.primary,
+                       ),)
                         ],
                       ),
                     ):
-                    Image(image: AssetImage('assets/images/logo.png'),width: 60,height: 60,),
+                    Container(
+                      padding: EdgeInsets.only(top: 20),
+                      child: Image(image: AssetImage('assets/images/logo.png'),width: 60,height: 60,),
+                    ),
+                    useIndicator: true,
+                    minWidth: 80,
+                    minExtendedWidth: 180,
                     destinations: <NavigationRailDestination>[
                       NavigationRailDestination(
-                        icon: Icon(Icons.home),
+                        icon: Icon(Icons.home_outlined),
                         selectedIcon: Icon(Icons.home),
                         label: Text('首页',style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                       ),
                       NavigationRailDestination(
-                        icon: Icon(Icons.touch_app),
+                        icon: Icon(Icons.touch_app_outlined),
                         selectedIcon: Icon(Icons.touch_app),
                         label: Text('校内应用',style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                       ),
                       NavigationRailDestination(
-                        icon: Icon(Icons.person),
+                        icon: Icon(Icons.person_outline),
                         selectedIcon: Icon(Icons.person),
                         label: Text('我的',style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                       ),
