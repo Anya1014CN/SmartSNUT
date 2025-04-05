@@ -64,216 +64,247 @@ class _GuidePageState extends State<Guidepage>{
           },
           body: ListView(
             children: [
+              // 标题区域 - 改进样式和间距
               Container(
-                padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+                padding: EdgeInsets.fromLTRB(16, 40, 16, 20),
                 child: Row(
                   children: [
-                    Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/guide.png'):AssetImage('assets/icons/darktheme/guide.png'),height: 40,),
-                    SizedBox(width: 10,),
-                    Text('教程&说明',style: TextStyle(fontSize: 40),)
+                    Image(
+                      image: Theme.of(context).brightness == Brightness.light
+                          ? AssetImage('assets/icons/lighttheme/guide.png')
+                          : AssetImage('assets/icons/darktheme/guide.png'),
+                      height: 40,
+                    ),
+                    SizedBox(width: 16),
+                    Text(
+                      '教程&说明',
+                      style: TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    )
                   ],
                 ),
               ),
+              
+              // 使用说明标题区 - 改进样式
               Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Row(
                   children: [
-                    Text('使用说明',style: TextStyle(fontSize: GlobalVars.dividerTitle,color:Theme.of(context).colorScheme.primary),),
-                    Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      width: 4,
+                      height: 18,
+                      margin: EdgeInsets.only(right: 8),
+                    ),
+                    Text(
+                      '使用说明',
+                      style: TextStyle(
+                        fontSize: GlobalVars.dividerTitle,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary
+                      ),
+                    ),
                   ],
                 ),
               ),
+              
+              // 使用说明卡片 - 改进样式
               Container(
-                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
                 child: Card(
+                  elevation: 2,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   color: Theme.of(context).colorScheme.surfaceDim,
-                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    padding: EdgeInsets.all(8),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      title: Text(
+                        '电费账号绑定教程',
+                        style: TextStyle(
+                          fontSize: GlobalVars.listTileTitle,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      trailing: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.chevron_right,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      onTap: (){
+                        url = Uri.parse('https://smartsnut.cn/Docs/UserManual/EMBindGuide.html');
+                        launchURL();
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              
+              // 功能说明标题区 - 改进样式
+              Container(
+                padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      width: 4,
+                      height: 18,
+                      margin: EdgeInsets.only(right: 8),
+                    ),
+                    Text(
+                      '功能说明',
+                      style: TextStyle(
+                        fontSize: GlobalVars.dividerTitle,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              // 功能说明卡片 - 改进样式
+              Container(
+                padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+                child: Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+                  child: Container(
+                    padding: EdgeInsets.all(8),
                     child: Column(
                       children: [
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('电费账号绑定教程',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/EMBindGuide.html');
-                            launchURL();
-                          },
+                        buildGuideItem(
+                          context, 
+                          '我的课表',
+                          'https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/CourseTableForStd.html'
+                        ),
+                        Divider(height: 1, indent: 16, endIndent: 16),
+                        buildGuideItem(
+                          context, 
+                          '学籍信息',
+                          'https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdDetail.html'
+                        ),
+                        Divider(height: 1, indent: 16, endIndent: 16),
+                        buildGuideItem(
+                          context, 
+                          '我的考试',
+                          'https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdExam.html'
+                        ),
+                        Divider(height: 1, indent: 16, endIndent: 16),
+                        buildGuideItem(
+                          context, 
+                          '我的成绩',
+                          'https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdExam.html'
+                        ),
+                        Divider(height: 1, indent: 16, endIndent: 16),
+                        buildGuideItem(
+                          context, 
+                          '绩点计算器',
+                          'https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/GPACalculator.html'
+                        ),
+                        Divider(height: 1, indent: 16, endIndent: 16),
+                        buildGuideItem(
+                          context, 
+                          '网费查询',
+                          'https://smartsnut.cn/Docs/UserManual/Functions/HouQin/SchoolNetworkQuery.html'
+                        ),
+                        Divider(height: 1, indent: 16, endIndent: 16),
+                        buildGuideItem(
+                          context, 
+                          '电费查询',
+                          'https://smartsnut.cn/Docs/UserManual/Functions/HouQin/ElectricMeterQuery.html'
+                        ),
+                        Divider(height: 1, indent: 16, endIndent: 16),
+                        buildGuideItem(
+                          context, 
+                          '图书检索',
+                          'http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/Library.html'
+                        ),
+                        Divider(height: 1, indent: 16, endIndent: 16),
+                        buildGuideItem(
+                          context, 
+                          '人脸信息采集系统',
+                          'http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/Face.html'
+                        ),
+                        Divider(height: 1, indent: 16, endIndent: 16),
+                        buildGuideItem(
+                          context, 
+                          'WebVPN',
+                          'http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/WebVPN.html'
+                        ),
+                        Divider(height: 1, indent: 16, endIndent: 16),
+                        buildGuideItem(
+                          context, 
+                          '一网通办',
+                          'http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/NewHall.html'
                         ),
                       ],
                     ),
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('功能说明',style: TextStyle(fontSize: GlobalVars.dividerTitle,color:Theme.of(context).colorScheme.primary),),
-                    Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(21),
-                  ),
-                  color: Theme.of(context).colorScheme.surfaceDim,
-                  shadowColor: Theme.of(context).colorScheme.onPrimary,
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('我的课表',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/CourseTableForStd.html');
-                            launchURL();
-                          },
-                        ),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('学籍信息',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdDetail.html');
-                            launchURL();
-                          },
-                        ),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('我的考试',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdExam.html');
-                            launchURL();
-                          },
-                        ),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('我的成绩',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/StdExam.html');
-                            launchURL();
-                          },
-                        ),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('绩点计算器',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/JiaoWu/GPACalculator.html');
-                            launchURL();
-                          },
-                        ),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('网费查询',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/HouQin/SchoolNetworkQuery.html');
-                            launchURL();
-                          },
-                        ),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('电费查询',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/Functions/HouQin/ElectricMeterQuery.html');
-                            launchURL();
-                          },
-                        ),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('图书检索',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/Library.html');
-                            launchURL();
-                          },
-                        ),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('人脸信息采集系统',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/Face.html');
-                            launchURL();
-                          },
-                        ),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('WebVPN',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/WebVPN.html');
-                            launchURL();
-                          },
-                        ),
-                        Divider(height: 5,indent: 20,endIndent: 20,),
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                          ),
-                          title: Text('一网通办',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
-                          trailing: Icon(Icons.chevron_right),
-                          onTap: (){
-                            url = Uri.parse('http://smartsnut.cn/Docs/UserManual/Functions/ExternalLink/NewHall.html');
-                            launchURL();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              
+              // 底部空间
+              SizedBox(height: 20),
             ],
           ),
         ),
       ),
+    );
+  }
+  
+  // 辅助方法：构建指南项目
+  Widget buildGuideItem(BuildContext context, String title, String urlString) {
+    return ListTile(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: GlobalVars.listTileTitle,
+          fontWeight: FontWeight.bold
+        ),
+      ),
+      trailing: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary.withAlpha(26),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.chevron_right,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      onTap: (){
+        url = Uri.parse(urlString);
+        launchURL();
+      },
     );
   }
   
