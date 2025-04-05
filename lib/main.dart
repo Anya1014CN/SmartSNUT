@@ -246,7 +246,7 @@ class _HomePageState extends State<HomePage>{
                 labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
                 height: 70,
                 elevation: 3,
-                shadowColor: Theme.of(context).colorScheme.shadow.withOpacity(0.3),
+                shadowColor: Theme.of(context).colorScheme.shadow.withAlpha(76),
               );
             }
           },

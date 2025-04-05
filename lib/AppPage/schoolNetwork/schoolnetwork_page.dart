@@ -77,109 +77,136 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
           },
           body: ListView(
             children: [
+              // 标题部分
               Container(
-                padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
+                padding: EdgeInsets.fromLTRB(16, 20, 16, 30),
                 child: Row(
                   children: [
-                    Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/web.png'):AssetImage('assets/icons/darktheme/web.png'),height: 40,),
+                    Image(
+                      image: Theme.of(context).brightness == Brightness.light
+                        ? AssetImage('assets/icons/lighttheme/web.png')
+                        : AssetImage('assets/icons/darktheme/web.png'),
+                      height: 40,
+                    ),
                     SizedBox(width: 10,),
-                    Text('网费查询',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
+                    Text(
+                      '网费查询',
+                      style: TextStyle(
+                        fontSize: GlobalVars.genericPageTitle,
+                        fontWeight: FontWeight.bold
+                      ),
+                    )
                   ],
                 ),
               ),
+              
+              // 账号输入框
               Container(
-                padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: Card(
-                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  elevation: 2,
+                  shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
                   color: Theme.of(context).colorScheme.surfaceDim,
                   shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: Container(
                     padding: EdgeInsets.all(20),
                     child: TextField(
                       controller: textUsernameController,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         labelText: '学号/工号',
                         hintText: '请输入您的学号/工号',
-                        filled: false
+                        prefixIcon: Icon(Icons.person),
+                        filled: false,
+                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                     ),
                   ),
                 ),
               ),
+              
+              // 操作按钮区域
               Container(
-                padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: Row(
                   children: [
                     Expanded(
                       child: Card(
+                        elevation: 2,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        shadowColor: Theme.of(context).colorScheme.onPrimary,
+                        shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
                         color: Theme.of(context).colorScheme.surfaceDim,
-                        child: SizedBox(
-                          height: 75,
-                          child: TextButton(
-                            style: ElevatedButton.styleFrom(
-                              shadowColor: Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(16),
+                          onTap: () {
+                            if(textUsernameController.text == '') {
+                              if(mounted) {
+                                showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) => AlertDialog(
+                                    scrollable: true,
+                                    title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                    content: Text('请您输入账号或登录后再查询', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context, 'OK'),
+                                        child: const Text('确定'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            } else {
+                              networkQuery();
+                            }
+                          },
+                          child: Container(
+                            height: 56,
+                            alignment: Alignment.center,
+                            child: Text(
+                              '网费查询',
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericTextLarge,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary
                               ),
                             ),
-                            onPressed: () {
-                              if(textUsernameController.text == ''){
-                                if(mounted){
-                                  showDialog<String>(
-                                    context: context,
-                                    builder: (BuildContext context) => AlertDialog(
-                                      scrollable: true,
-                                      title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                                      content: Text('请您输入账号或登录后再查询',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              }else{
-                                networkQuery();
-                              }
-                            },
-                            child: Text('网费查询',style: TextStyle(fontSize: GlobalVars.genericTextMedium)),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(width: 12),
                     Expanded(
                       child: Card(
+                        elevation: 2,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        shadowColor: Theme.of(context).colorScheme.onPrimary,
-                        color: Theme.of(context).colorScheme.surfaceDim,
-                        child: SizedBox(
-                          height: 75,
-                          child: TextButton(
-                            style: ElevatedButton.styleFrom(
-                              shadowColor: Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
+                        shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+                        color: Theme.of(context).colorScheme.primary,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(16),
+                          onTap: () {
+                            url = Uri.parse('https://netpay.snut.edu.cn/WebPay/toRecharge?account=${textUsernameController.text}');
+                            launchURL();
+                          },
+                          child: Container(
+                            height: 56,
+                            alignment: Alignment.center,
+                            child: Text(
+                              '立即充值',
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericTextLarge,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.onPrimary
                               ),
                             ),
-                            onPressed: (){
-                              url = Uri.parse('https://netpay.snut.edu.cn/WebPay/toRecharge?account=${textUsernameController.text}');
-                              launchURL();
-                            },
-                            child: Text('立即充值',style: TextStyle(fontSize: GlobalVars.genericTextMedium)),
                           ),
                         ),
                       ),
@@ -187,53 +214,173 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                   ],
                 ),
               ),
+              
+              // 用户信息卡片
               Container(
-                padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: Card(
-                  shadowColor: Theme.of(context).colorScheme.onPrimary,
+                  elevation: 2,
+                  shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
                   color: Theme.of(context).colorScheme.surfaceDim,
                   shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('账号：${textUsernameController.text}',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
-                          SizedBox(height: 15,),
-                          Text('姓名：$realName',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
-                          SizedBox(height: 15,),
-                          Text('余额：$balance',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
-                          SizedBox(height: 15,),
-                          Text('状态：$state',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
-                          SizedBox(height: 15,),
-                          Text('到期时间：$expire',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
-                child: Card(
-                  shadowColor: Theme.of(context).colorScheme.onPrimary,
-                  color: Theme.of(context).colorScheme.surfaceDim,
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: Container(
                     padding: EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('服务说明',style: TextStyle(fontSize: GlobalVars.genericTextLarge,fontWeight: FontWeight.bold),),
-                        Text('1.校园网用户可使用微信，支付宝，云闪付等多种线上方式对校园网账号充值',style: TextStyle(fontSize: GlobalVars.genericTextMedium),),
-                        Text('2.账号框输入校园网上网账号--->点击“网费查询”可查看账号状态及到期日期，点击“立即充值”按页面提示操作并完成支付即可完成对校园网账号的充值',style: TextStyle(fontSize: GlobalVars.genericTextMedium),),
-                        Text('3.充值遇到问题，请致电信息化建设与管理处,服务电话:09162641255',style: TextStyle(fontSize: GlobalVars.genericTextMedium),),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.person,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 20,
+                            ),
+                            SizedBox(width: 12),
+                            Text(
+                              '账号：${textUsernameController.text}',
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericTextLarge,
+                                fontWeight: FontWeight.w500
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.badge,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 20,
+                            ),
+                            SizedBox(width: 12),
+                            Text(
+                              '姓名：$realName',
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericTextLarge,
+                                fontWeight: FontWeight.w500
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.account_balance_wallet,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 20,
+                            ),
+                            SizedBox(width: 12),
+                            Text(
+                              '余额：$balance',
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericTextLarge,
+                                fontWeight: FontWeight.w500
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.info,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 20,
+                            ),
+                            SizedBox(width: 12),
+                            Text(
+                              '状态：$state',
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericTextLarge,
+                                fontWeight: FontWeight.w500
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_today,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 20,
+                            ),
+                            SizedBox(width: 12),
+                            Text(
+                              '到期时间：$expire',
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericTextLarge,
+                                fontWeight: FontWeight.w500
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              
+              // 服务说明卡片
+              Container(
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
+                child: Card(
+                  elevation: 2,
+                  shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+                  color: Theme.of(context).colorScheme.surfaceDim,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(bottom: 16),
+                          child: Text(
+                            '服务说明',
+                            style: TextStyle(
+                              fontSize: GlobalVars.genericTextLarge,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            '1. 校园网用户可使用微信，支付宝，云闪付等多种线上方式对校园网账号充值',
+                            style: TextStyle(
+                              fontSize: GlobalVars.genericTextMedium,
+                              height: 1.5
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            '2. 账号框输入校园网上网账号--->点击"网费查询"可查看账号状态及到期日期，点击"立即充值"按页面提示操作并完成支付即可完成对校园网账号的充值',
+                            style: TextStyle(
+                              fontSize: GlobalVars.genericTextMedium,
+                              height: 1.5
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            '3. 充值遇到问题，请致电信息化建设与管理处,服务电话:09162641255',
+                            style: TextStyle(
+                              fontSize: GlobalVars.genericTextMedium,
+                              height: 1.5
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -254,12 +401,12 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
         barrierDismissible: false,
         builder: (BuildContext context) => AlertDialog(
           scrollable: true,
-          title: Text('正在查询...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          title: Text('正在查询...', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
           content: Column(
             children: [
-              SizedBox(height: 10,),
+              SizedBox(height: 16),
               CircularProgressIndicator(),
-              SizedBox(height: 10,)
+              SizedBox(height: 16)
             ],
           ),
           actions: <Widget>[
@@ -302,8 +449,8 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            title: Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接网络，请稍后再试', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -342,9 +489,9 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('无法查询到信息，请检查您输入的账号是否正确！',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+            title: Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法查询到信息，请检查您输入的账号是否正确！', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed: () => Navigator.pop(context, 'OK'), child: Text('确认'))],
           )
         );
         setState(() {
@@ -364,9 +511,9 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('无法查询到信息，请检查您输入的账号是否正确！',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+            title: Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法查询到信息，请检查您输入的账号是否正确！', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed: () => Navigator.pop(context, 'OK'), child: Text('确认'))],
           )
         );
         setState(() {
@@ -395,8 +542,8 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+        title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
