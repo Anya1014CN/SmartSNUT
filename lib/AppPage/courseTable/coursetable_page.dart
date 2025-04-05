@@ -1395,91 +1395,204 @@ class _CourseTablePage extends State<CourseTablePage>{
           IconButton(
             onPressed: () => switchTerm(),
             icon: Icon(Icons.date_range),
+            tooltip: '切换学期',
           )
         ],
-        title: Text('我的课表',style: TextStyle(fontSize: GlobalVars.genericPageTitleSmall),),
+        title: Text(
+          '我的课表',
+          style: TextStyle(
+            fontSize: GlobalVars.genericPageTitleSmall,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+        elevation: 0,
         leading: IconButton(
           onPressed: (){Navigator.pop(context);},
           icon: Icon(Icons.arrow_back),
+          tooltip: '返回',
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){getCourseTable();},
         backgroundColor: Theme.of(context).colorScheme.primary,
+        elevation: 2,
         label: Row(
           children: [
             Icon(Icons.refresh),
             SizedBox(width: 10,),
-            Text('刷新课表',style: TextStyle(fontSize: GlobalVars.genericFloationActionButtonTitle),)
+            Text(
+              '刷新课表',
+              style: TextStyle(
+                fontSize: GlobalVars.genericFloationActionButtonTitle,
+                fontWeight: FontWeight.w500,
+              ),
+            )
           ],
         ),
       ),
-      body: isReading? Center(child: CircularProgressIndicator(),):ListView(
+      body: isReading? 
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text(
+                "正在加载课表...",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: GlobalVars.listTileSubtitle,
+                ),
+              ),
+            ],
+          ),
+        )
+      :ListView(
         children: [
           Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(21),
-              ),
-              shadowColor: Theme.of(context).colorScheme.onPrimary,
-              color: Theme.of(context).colorScheme.surfaceDim,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    onPressed: (currentWeekInt == 1)? null:(){
-                      if(mounted){
-                        setState(() {
-                          currentWeekInt --;
-                          weekDiff --;
-                        });
-                      }
-                      getWeekDates();
-                      readWeeklyCourseTableDetail();
-                      saveSelectedTY();
-                    },
-                    icon: Icon(Icons.arrow_back),
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                // 周次选择控件
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  termEnded? Text('第 $currentWeekInt 周\n（本学期已结束）',textAlign: TextAlign.center,style: TextStyle(fontSize: GlobalVars.genericSwitchContainerTitle),):Text('第 $currentWeekInt 周',style: TextStyle(fontSize: GlobalVars.genericSwitchContainerTitle),),
-                  IconButton(
-                    onPressed: (currentWeekInt == termWeeks)? null:(){
-                      if(mounted){
-                        setState(() {
-                          currentWeekInt ++;
-                          weekDiff ++;
-                        });
-                      }
-                      getWeekDates();
-                      readWeeklyCourseTableDetail();
-                      saveSelectedTY();
-                    },
-                    icon: Icon(Icons.arrow_forward),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: (currentWeekInt == 1)? null:(){
+                          if(mounted){
+                            setState(() {
+                              currentWeekInt --;
+                              weekDiff --;
+                            });
+                          }
+                          getWeekDates();
+                          readWeeklyCourseTableDetail();
+                          saveSelectedTY();
+                        },
+                        icon: Icon(Icons.arrow_back,
+                          color: (currentWeekInt == 1)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
+                        ),
+                        tooltip: '上一周',
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            '第 $currentWeekInt 周',
+                            style: TextStyle(
+                              fontSize: GlobalVars.genericTextLarge,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary
+                            ),
+                          ),
+                          if (termEnded) 
+                            Text(
+                              '（本学期已结束）',
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericTextSmall,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: (currentWeekInt == termWeeks)? null:(){
+                          if(mounted){
+                            setState(() {
+                              currentWeekInt ++;
+                              weekDiff ++;
+                            });
+                          }
+                          getWeekDates();
+                          readWeeklyCourseTableDetail();
+                          saveSelectedTY();
+                        },
+                        icon: Icon(Icons.arrow_forward,
+                          color: (currentWeekInt == termWeeks)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
+                        ),
+                        tooltip: '下一周',
+                      ),
+                    ],
                   ),
-                ],
-              )
+                ),
+
+                SizedBox(height: 8),
+                
+                // 学期信息显示
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.calendar_month,
+                        size: 18,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        '$currentYearName | $currentTermName',
+                        style: TextStyle(
+                          fontSize: GlobalVars.genericTextMedium,
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
           noCourseTable? 
           Center(
             child: Container(
-              padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+              padding: EdgeInsets.all(16),
               child: Card(
-                shadowColor: Theme.of(context).colorScheme.onPrimary,
+                elevation: 2,
+                shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
                 color: Theme.of(context).colorScheme.surfaceDim,
                 shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                child: Column(
-                  children: [
-                    Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/empty.png'):AssetImage('assets/icons/darktheme/empty.png'),height: MediaQuery.of(context).size.height / 4,),
-                    Divider(height: 5,indent: 20,endIndent: 20,),
-                    SizedBox(height: 10,),
-                    Text('暂无 $currentYearName $currentTermName 的 课表 信息\n请尝试在右上角切换学期或在右下角刷新',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                    SizedBox(height: 10,),
-                  ],
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Image(
+                        image: Theme.of(context).brightness == Brightness.light
+                          ? AssetImage('assets/icons/lighttheme/empty.png')
+                          : AssetImage('assets/icons/darktheme/empty.png'),
+                        height: MediaQuery.of(context).size.height / 4,
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        '暂无 $currentYearName $currentTermName 的课表信息',
+                        style: TextStyle(
+                          fontSize: GlobalVars.listTileTitle,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        '请尝试在右上角切换学期或点击右下角刷新按钮',
+                        style: TextStyle(
+                          fontSize: GlobalVars.listTileSubtitle,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 16),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -1641,6 +1754,11 @@ class _CourseTablePage extends State<CourseTablePage>{
                             },
                             child: Card(
                               color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 2,
+                              shadowColor: Theme.of(context).colorScheme.shadow.withAlpha(77),
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseMonWeek.length - 1)? ((courseMonWeek[index + 3].isEmpty)? false:(courseMonWeek[index][0]['CourseName'] == courseMonWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1650,9 +1768,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                    SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text(
+                                      '${item[0]['CourseName']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      (item[0]['CourseLocation'] == '')? 
+                                        '${item[0]['CourseTeacher']}' : 
+                                        '${item[0]['CourseLocation']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        color: Colors.black54,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1689,6 +1830,11 @@ class _CourseTablePage extends State<CourseTablePage>{
                             },
                             child: Card(
                               color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 2,
+                              shadowColor: Theme.of(context).colorScheme.shadow.withAlpha(77),
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseTueWeek.length - 1)? ((courseTueWeek[index + 3].isEmpty)? false:(courseTueWeek[index][0]['CourseName'] == courseTueWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1698,9 +1844,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                    SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text(
+                                      '${item[0]['CourseName']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      (item[0]['CourseLocation'] == '')? 
+                                        '${item[0]['CourseTeacher']}' : 
+                                        '${item[0]['CourseLocation']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        color: Colors.black54,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1737,6 +1906,11 @@ class _CourseTablePage extends State<CourseTablePage>{
                             },
                             child: Card(
                               color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 2,
+                              shadowColor: Theme.of(context).colorScheme.shadow.withAlpha(77),
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseWedWeek.length - 1)? ((courseWedWeek[index + 3].isEmpty)? false:(courseWedWeek[index][0]['CourseName'] == courseWedWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1746,9 +1920,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                    SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text(
+                                      '${item[0]['CourseName']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      (item[0]['CourseLocation'] == '')? 
+                                        '${item[0]['CourseTeacher']}' : 
+                                        '${item[0]['CourseLocation']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        color: Colors.black54,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1785,6 +1982,11 @@ class _CourseTablePage extends State<CourseTablePage>{
                             },
                             child: Card(
                               color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 2,
+                              shadowColor: Theme.of(context).colorScheme.shadow.withAlpha(77),
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseThuWeek.length - 1)? ((courseThuWeek[index + 3].isEmpty)? false:(courseThuWeek[index][0]['CourseName'] == courseThuWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1794,9 +1996,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                    SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text(
+                                      '${item[0]['CourseName']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      (item[0]['CourseLocation'] == '')? 
+                                        '${item[0]['CourseTeacher']}' : 
+                                        '${item[0]['CourseLocation']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        color: Colors.black54,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1833,6 +2058,11 @@ class _CourseTablePage extends State<CourseTablePage>{
                             },
                             child: Card(
                               color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 2,
+                              shadowColor: Theme.of(context).colorScheme.shadow.withAlpha(77),
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseFriWeek.length - 1)? ((courseFriWeek[index + 3].isEmpty)? false:(courseFriWeek[index][0]['CourseName'] == courseFriWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1842,9 +2072,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                    SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text(
+                                      '${item[0]['CourseName']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      (item[0]['CourseLocation'] == '')? 
+                                        '${item[0]['CourseTeacher']}' : 
+                                        '${item[0]['CourseLocation']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        color: Colors.black54,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1881,6 +2134,11 @@ class _CourseTablePage extends State<CourseTablePage>{
                             },
                             child: Card(
                               color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 2,
+                              shadowColor: Theme.of(context).colorScheme.shadow.withAlpha(77),
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseSatWeek.length - 1)? ((courseSatWeek[index + 3].isEmpty)? false:(courseSatWeek[index][0]['CourseName'] == courseSatWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1890,9 +2148,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                    SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text(
+                                      '${item[0]['CourseName']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      (item[0]['CourseLocation'] == '')? 
+                                        '${item[0]['CourseTeacher']}' : 
+                                        '${item[0]['CourseLocation']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        color: Colors.black54,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1929,6 +2210,11 @@ class _CourseTablePage extends State<CourseTablePage>{
                             },
                             child: Card(
                               color: courseBlockColors[item[0]['CourseName'].hashCode % courseBlockColors.length],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 2,
+                              shadowColor: Theme.of(context).colorScheme.shadow.withAlpha(77),
                               child: SizedBox(
                                 width: tableWidth,
                                 height: ((index + 3 <= courseSunWeek.length - 1)? ((courseSunWeek[index + 3].isEmpty)? false:(courseSunWeek[index][0]['CourseName'] == courseSunWeek[index + 3][0]['CourseName'])? true:false):false)?
@@ -1938,9 +2224,32 @@ class _CourseTablePage extends State<CourseTablePage>{
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('${item[0]['CourseName']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                    SizedBox(height: 10,),
-                                    Text((item[0]['CourseLocation'] == '')? '${item[0]['CourseTeacher']}':'${item[0]['CourseLocation']}',style: TextStyle(fontSize: GlobalVars.genericTextSmall),textAlign: TextAlign.center,softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis),
+                                    Text(
+                                      '${item[0]['CourseName']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      (item[0]['CourseLocation'] == '')? 
+                                        '${item[0]['CourseTeacher']}' : 
+                                        '${item[0]['CourseLocation']}',
+                                      style: TextStyle(
+                                        fontSize: GlobalVars.genericTextSmall,
+                                        color: Colors.black54,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis
+                                    ),
                                   ],
                                 ),
                               ),
@@ -2620,53 +2929,149 @@ class _CourseTablePage extends State<CourseTablePage>{
   showCourseDetail(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(24),
+        ),
+      ),
+      backgroundColor: Theme.of(context).colorScheme.surfaceDim,
       builder: (context) {
         return Container(
-          padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
-          child: Center(
-            child: ListView(
+          padding: EdgeInsets.fromLTRB(16, 24, 16, 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // 标题栏
+              Container(
+                margin: EdgeInsets.only(bottom: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.menu_book,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 24,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      '课程详情',
+                      style: TextStyle(
+                        fontSize: GlobalVars.genericTextLarge,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              Divider(height: 16, indent: 16, endIndent: 16),
+              
+              // 课程信息展示区
+              Expanded(
+                child: ListView(
+                  children: [
+                    _buildDetailItem(
+                      context,
+                      '课程名称',
+                      sheetcourseName,
+                      Icons.subject
+                    ),
+                    SizedBox(height: 8),
+                    _buildDetailItem(
+                      context,
+                      '上课周次',
+                      "$sheetcourseWeeks 周", 
+                      Icons.calendar_month
+                    ),
+                    SizedBox(height: 8),
+                    _buildDetailItem(
+                      context,
+                      '课程教师',
+                      sheetcourseTeacher,
+                      Icons.person
+                    ),
+                    SizedBox(height: 8),
+                    _buildDetailItem(
+                      context,
+                      '上课地点',
+                      (sheetcourseLocation == '')? '无' : sheetcourseLocation,
+                      Icons.location_on
+                    ),
+                  ],
+                ),
+              ),
+              
+              // 底部按钮
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 2,
+                  ),
+                  child: Text(
+                    '关闭',
+                    style: TextStyle(
+                      fontSize: GlobalVars.genericTextMedium,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+  
+  // 构建详情项辅助函数
+  Widget _buildDetailItem(BuildContext context, String label, String value, IconData icon) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary.withAlpha(26),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: Theme.of(context).colorScheme.primary,
+            size: 24,
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: Text('课程详情',style: TextStyle(fontSize: GlobalVars.genericTextLarge),),
-                ),
-                SizedBox(height: 5,),
-                Divider(height: 5,indent: 20,endIndent: 20,),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(21),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: GlobalVars.genericTextSmall,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
-                  title: Text(sheetcourseName,style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                  subtitle: Text('课程名称',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                 ),
-                Divider(height: 5,indent: 20,endIndent: 20,),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(21),
+                SizedBox(height: 4),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: GlobalVars.listTileTitle,
+                    fontWeight: FontWeight.w500,
                   ),
-                  title: Text("$sheetcourseWeeks 周",style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                  subtitle: Text('上课周次',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
-                ),
-                Divider(height: 5,indent: 20,endIndent: 20,),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(21),
-                  ),
-                  title: Text(sheetcourseTeacher,style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                  subtitle: Text('课程教师',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
-                ),
-                Divider(height: 5,indent: 20,endIndent: 20,),
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(21),
-                  ),
-                  title: Text((sheetcourseLocation == '')? '无':sheetcourseLocation,style: TextStyle(fontSize: GlobalVars.listTileTitle),),
-                  subtitle: Text('上课地点',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                 ),
               ],
             ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
