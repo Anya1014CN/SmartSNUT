@@ -193,6 +193,16 @@ class _StdGradesPageState extends State<StatefulWidget>{
     selectedTYfile.writeAsString(jsonEncode(selectedTY));
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      readStdAccount();
+      readSemesterInfo();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
