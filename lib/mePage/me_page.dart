@@ -227,19 +227,66 @@ class _MePageState extends State<MePage>{
                             showDialog<String>(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
-                                title: Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                                content: Text('您确定要退出登录吗？\n退出登录同时会解绑电费账号、清除字体大小、颜色模式等设置', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                title: Text('确认退出登录', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('您确定要退出登录吗？', style: TextStyle(fontSize: GlobalVars.alertdialogContent, fontWeight: FontWeight.bold)),
+                                    SizedBox(height: 10),
+                                    Text('退出登录后将会：', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text('解绑电费账号',
+                                            style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text('清除字体大小、深色模式等设置',
+                                            style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text('删除所有本地保存的数据',
+                                            style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () => Navigator.pop(context, 'Cancel'),
                                     child: const Text('取消'),
                                   ),
                                   TextButton(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Theme.of(context).colorScheme.error,
+                                    ),
                                     onPressed: (){
                                       logout();
                                       Navigator.pop(context);
                                     },
-                                    child: const Text('确认'),
+                                    child: const Text('确认退出'),
                                   ),
                                 ],
                               ),
