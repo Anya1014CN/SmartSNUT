@@ -22,10 +22,6 @@ String licenseContent = '';
 //用于即将打开的链接的完整URL
 Uri url = Uri.parse("uri");
 
-//电费账号数据
-List emUserData = [];
-String wechatUserNickname = '';
-
 class SettingsPage extends StatefulWidget{
   const SettingsPage({super.key});
 
@@ -48,7 +44,7 @@ class _SettingsPage extends State<SettingsPage>{
       if(emUserData[0]['openId'] != ''){
         if(mounted){
           setState(() {
-            wechatUserNickname = emUserData[0]['wechatUserNickname'];
+            GlobalVars.wechatUserNickname = emUserData[0]['wechatUserNickname'];
             GlobalVars.emBinded = true;
           });
         }
@@ -84,19 +80,19 @@ class _SettingsPage extends State<SettingsPage>{
     String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
     File wechatUserNicknamefile = File(wechatUserNicknamepath);
     if(await wechatUserNicknamefile.exists()){
-      wechatUserNickname = await wechatUserNicknamefile.readAsString();
+      GlobalVars.wechatUserNickname = await wechatUserNicknamefile.readAsString();
       await wechatUserNicknamefile.delete();
       setState(() {GlobalVars.emBinded = true;});
     }
     
-    emUserData.clear();
-    emUserData.add({
+    GlobalVars.emUserData.clear();
+    GlobalVars.emUserData.add({
       'emNum': GlobalVars.emNum,
       'openId': GlobalVars.openId,
       'wechatId': GlobalVars.wechatUserId,
-      'wechatUserNickname': wechatUserNickname,
+      'wechatUserNickname': GlobalVars.wechatUserNickname,
     });
-    emUserDatafile.writeAsString(jsonEncode(emUserData));
+    emUserDatafile.writeAsString(jsonEncode(GlobalVars.emUserData));
   }
 
   //保存设置到本地
@@ -339,7 +335,7 @@ class _SettingsPage extends State<SettingsPage>{
                         leading: Icon(Icons.electric_bolt, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
                         title: Text('电费账号', style: TextStyle(fontSize: GlobalVars.listTileTitle)),
-                        subtitle: Text(GlobalVars.emBinded ? '已绑定：$wechatUserNickname' : '未绑定',
+                        subtitle: Text(GlobalVars.emBinded ? '已绑定：${GlobalVars.wechatUserNickname}' : '未绑定',
                           style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => ElectricmeterbindPage()))
