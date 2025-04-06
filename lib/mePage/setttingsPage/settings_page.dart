@@ -63,21 +63,21 @@ class _SettingsPage extends State<SettingsPage>{
     String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
     File emnumfile = File(emnumpath);
     if(await emnumfile.exists()){
-      electricmeternum = int.parse(await emnumfile.readAsString());
+      GlobalVars.emNum = int.parse(await emnumfile.readAsString());
       await emnumfile.delete();
     }
 
     String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
     File openidfile = File(openidpath);
     if(await openidfile.exists()){
-      openid = await openidfile.readAsString();
+      GlobalVars.openId = await openidfile.readAsString();
       await openidfile.delete();
     }
 
     String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
     File wechatIdfile = File(wechatIdpath);
     if(await wechatIdfile.exists()){
-      wechatId = await wechatIdfile.readAsString();
+      GlobalVars.wechatUserId = await wechatIdfile.readAsString();
       await wechatIdfile.delete();
     }
 
@@ -91,9 +91,9 @@ class _SettingsPage extends State<SettingsPage>{
     
     emUserData.clear();
     emUserData.add({
-      'emNum': electricmeternum,
-      'openId': openid,
-      'wechatId': wechatId,
+      'emNum': GlobalVars.emNum,
+      'openId': GlobalVars.openId,
+      'wechatId': GlobalVars.wechatUserId,
       'wechatUserNickname': wechatUserNickname,
     });
     emUserDatafile.writeAsString(jsonEncode(emUserData));

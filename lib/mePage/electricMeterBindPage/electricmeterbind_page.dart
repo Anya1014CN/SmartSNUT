@@ -22,23 +22,8 @@ String emavatarpath = '';
 //判断绑定状态
 bool isBinding = false;
 
-//用户信息
-String wechatUserNickname = '';
-String wechatId = '';
-
-//电表数量
-int electricmeternum = 0;
-
 //TextController
 final textOpenidController = TextEditingController();
-
-String openid = '';
-
-//用于存储用户的信息
-List emUserData = [];
-
-//用于存储电表详情
-List emDetail = [];
 
 //用于存储即将解绑的电表 id
 String unbindEmId = '';
@@ -65,18 +50,18 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
     File emUserDatafile = File(emUserDatapath);
     if(await emUserDatafile.exists() == true){
-    emUserData =jsonDecode(await emUserDatafile.readAsString());
+    GlobalVars.emUserData =jsonDecode(await emUserDatafile.readAsString());
 
     final docpath = (await getApplicationDocumentsDirectory()).path;
     if(mounted){
       List emUserData = jsonDecode(await emUserDatafile.readAsString());
         if(emUserData[0]['openId'] != ''){
           setState(() {
-            openid = emUserData[0]['openId'];
-            wechatId = emUserData[0]['wechatId'];
-            wechatUserNickname = emUserData[0]['wechatUserNickname'];
+            GlobalVars.openId = emUserData[0]['openId'];
+            GlobalVars.wechatUserId = emUserData[0]['wechatId'];
+            GlobalVars.wechatUserNickname = emUserData[0]['wechatUserNickname'];
             emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
-            electricmeternum = emUserData[0]['emNum'];
+            GlobalVars.emNum = GlobalVars.emDetail.length;
             GlobalVars.emBinded = true;
           });
           readEmDetail();
@@ -102,28 +87,28 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
       String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
       File emnumfile = File(emnumpath);
       if(await emnumfile.exists()){
-        electricmeternum = int.parse(await emnumfile.readAsString());
+        GlobalVars.emNum = int.parse(await emnumfile.readAsString());
         await emnumfile.delete();
       }
 
       String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
       File openidfile = File(openidpath);
       if(await openidfile.exists()){
-        openid = await openidfile.readAsString();
+        GlobalVars.openId = await openidfile.readAsString();
         await openidfile.delete();
       }
 
       String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
       File wechatIdfile = File(wechatIdpath);
       if(await wechatIdfile.exists()){
-        wechatId = await wechatIdfile.readAsString();
+        GlobalVars.wechatUserId = await wechatIdfile.readAsString();
         await wechatIdfile.delete();
       }
 
       String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
       File wechatUserNicknamefile = File(wechatUserNicknamepath);
       if(await wechatUserNicknamefile.exists()){
-        wechatUserNickname = await wechatUserNicknamefile.readAsString();
+        GlobalVars.wechatUserNickname = await wechatUserNicknamefile.readAsString();
         await wechatUserNicknamefile.delete();
         setState(() {
           GlobalVars.emBinded = true;
@@ -132,14 +117,14 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         return;
       }
       
-      emUserData.clear();
-      emUserData.add({
-        'emNum': electricmeternum,
-        'openId': openid,
-        'wechatId': wechatId,
-        'wechatUserNickname': wechatUserNickname,
+      GlobalVars.emUserData.clear();
+      GlobalVars.emUserData.add({
+        'emNum': GlobalVars.emNum,
+        'openId': GlobalVars.openId,
+        'wechatId': GlobalVars.wechatUserId,
+        'wechatUserNickname': GlobalVars.wechatUserNickname,
       });
-      emUserDatafile.writeAsString(jsonEncode(emUserData));
+      emUserDatafile.writeAsString(jsonEncode(GlobalVars.emUserData));
     }
   }
   
@@ -148,7 +133,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     String emDetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emdetail.json';
     File emDetailfile = File(emDetailpath);
     if(await emDetailfile.exists() == true){
-      emDetail = jsonDecode(await emDetailfile.readAsString());
+      GlobalVars.emDetail = jsonDecode(await emDetailfile.readAsString());
     }
     setState(() {});
   }
@@ -231,7 +216,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    wechatUserNickname,
+                                    GlobalVars.wechatUserNickname,
                                     style: TextStyle(
                                       fontSize: GlobalVars.genericTextLarge,
                                       fontWeight: FontWeight.bold
@@ -239,7 +224,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                                   ),
                                   SizedBox(height: 4),
                                   Text(
-                                    '电表数量：$electricmeternum',
+                                    '电表数量：${GlobalVars.emNum}',
                                     style: TextStyle(
                                       fontSize: GlobalVars.genericTextLarge,
                                       color: Theme.of(context).colorScheme.secondary
@@ -440,7 +425,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                                 ),
                               );
                             } else {
-                              openid = textOpenidController.text;
+                              GlobalVars.openId = textOpenidController.text;
                               bindelectricmeter();
                             }
                           },
@@ -490,7 +475,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                         ),
                       ),
                     ),
-                    (emDetail.isEmpty)?
+                    (GlobalVars.emDetail.isEmpty)?
                     Center(
                       child: Column(
                       children: [
@@ -502,7 +487,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                     ),
                     ):
                     Column(
-                      children: emDetail.map((emDetailSingal) {
+                      children: GlobalVars.emDetail.map((emDetailSingal) {
                         return Column(
                           children: [
                             Container(
@@ -567,7 +552,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                       }).toList(),
                     ),
                     SizedBox(height: 10,),
-                    (emDetail.isEmpty)? Divider(height: 16, indent: 16, endIndent: 16):SizedBox(height: 0),
+                    (GlobalVars.emDetail.isEmpty)? Divider(height: 16, indent: 16, endIndent: 16):SizedBox(height: 0),
                     SizedBox(height: 10,),
                     FilledButton(
                       style: FilledButton.styleFrom(
@@ -697,7 +682,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     if(bindelectricmeterCanceled) return;
     late Response emresponse1;
     try{
-      emresponse1 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/index?openId=$openid',);
+      emresponse1 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/index?openId=${GlobalVars.openId}',);
     }catch (e){
       if(mounted){
         Navigator.pop(context);
@@ -739,10 +724,10 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     }
 
     //检查并电表信息
-    wechatId = emresponse1.data['data']['wechatId'].toString();
+    GlobalVars.wechatUserId = emresponse1.data['data']['wechatId'].toString();
 
     if(bindelectricmeterCanceled) return;
-    Response emresponse2 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/getBindListWx?wechatUserId=$wechatId');
+    Response emresponse2 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/getBindListWx?wechatUserId=${GlobalVars.wechatUserId}');
 
     if(emresponse2.data['data'].toString() == 'null'){
       if(mounted){
@@ -778,17 +763,17 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     await dio.download(emresponse1.data['data']['wechatUserHeadimgurl'],'${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emavatar.jpg');
 
     //保存用户信息
-    emUserData.clear();
-    emUserData.add({
+    GlobalVars.emUserData.clear();
+    GlobalVars.emUserData.add({
       'emNum': emresponse2.data['data'].length,
-      'openId': openid,
+      'openId': GlobalVars.openId,
       'wechatId': emresponse1.data['data']['wechatId'].toString(),
       'wechatUserNickname': emresponse1.data['data']['wechatUserNickname'].toString(),
     });
 
     String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
     File emUserDatafile = File(emUserDatapath);
-    emUserDatafile.writeAsString(jsonEncode(emUserData));
+    emUserDatafile.writeAsString(jsonEncode(GlobalVars.emUserData));
 
     final docpath = (await getApplicationDocumentsDirectory()).path;
 
@@ -807,9 +792,9 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
       );
       setState(() {
         emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
-        wechatId = emresponse1.data['data']['wechatId'].toString();
-        wechatUserNickname = emresponse1.data['data']['wechatUserNickname'].toString();
-        electricmeternum =  emresponse2.data['data'].length;
+        GlobalVars.wechatUserId = emresponse1.data['data']['wechatId'].toString();
+        GlobalVars.wechatUserNickname = emresponse1.data['data']['wechatUserNickname'].toString();
+        GlobalVars.emNum =  emresponse2.data['data'].length;
         isBinding = false;
         GlobalVars.emBinded = true;
       });
@@ -959,7 +944,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     late Response addBindmeterResponse;
     var addEMParams = {
       "meterId": emId,
-      "wechatUserId": wechatId,
+      "wechatUserId": GlobalVars.wechatUserId,
     };
     try{
       if(bindEMCanceled) return;
@@ -1103,7 +1088,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     };
     var unBinddata = {
       'wechatBindId': unbindEmId,
-      'wechatUserId': wechatId
+      'wechatUserId': GlobalVars.wechatUserId
     };
     try{
       if(unBindEMCanceled) return;

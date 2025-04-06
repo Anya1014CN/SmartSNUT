@@ -6,9 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
 
-//用于存储用户的信息
-List emUserData = [];
-
 class Electricmeterpage extends StatefulWidget {
   const Electricmeterpage({super.key});
 
@@ -25,12 +22,6 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
   bool isQuerying =false;
   bool querySuccess = false;
   int currentQuery = 0;
-
-  String wechatUserId = '';
-  String electricUserUid = '';
-  int electricmeternum = 0;
-  late List emdetail;
-  int emnum = 0;
   List<dynamic> emstatetotal = [];
 
   @override
@@ -47,15 +38,15 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
     String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
     File emnumfile = File(emnumpath);
     if(await emnumfile.exists()){
-      electricmeternum = int.parse(await emnumfile.readAsString());
+      GlobalVars.emNum = int.parse(await emnumfile.readAsString());
     }
 
     //新版数据
     String emDetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emdetail.json';
     File emDetailfile = File(emDetailpath);
     if(await emDetailfile.exists()){
-      emdetail = jsonDecode(await emDetailfile.readAsString());
-      electricmeternum = emdetail.length;
+      GlobalVars.emDetail = jsonDecode(await emDetailfile.readAsString());
+      GlobalVars.emNum = GlobalVars.emDetail.length;
     }
     setState(() {});
   }
@@ -332,7 +323,7 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('正在查询（$currentQuery/$electricmeternum）...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Text('正在查询（$currentQuery/${GlobalVars.emNum}...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
             content: Column(
               children: [
                 SizedBox(height: 10,),
@@ -360,20 +351,16 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
     String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
     File emUserDatafile = File(emUserDatapath);
     if(await emUserDatafile.exists() == true){
-    emUserData =jsonDecode(await emUserDatafile.readAsString());
+    GlobalVars.emUserData =jsonDecode(await emUserDatafile.readAsString());
 
     final docpath = (await getApplicationDocumentsDirectory()).path;
     if(mounted){
         setState(() {
-          openid = emUserData[0]['openId'];
-          wechatId = emUserData[0]['wechatId'];
-          wechatUserNickname = emUserData[0]['wechatUserNickname'];
+          GlobalVars.openId = GlobalVars.emUserData[0]['openId'];
+          GlobalVars.wechatUserId = GlobalVars.emUserData[0]['wechatId'];
+          GlobalVars.wechatUserNickname = GlobalVars.emUserData[0]['wechatUserNickname'];
           emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
-          if(emUserData[0]['emNum'] is int){
-            electricmeternum = emUserData[0]['emNum'];
-          }if(emUserData[0]['emNum'] is String){
-            electricmeternum = int.parse(emUserData[0]['emNum']);
-          }
+          GlobalVars.emNum = GlobalVars.emDetail.length;
           GlobalVars.emBinded = true;
         });
       }
@@ -390,28 +377,28 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
       String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
       File emnumfile = File(emnumpath);
       if(await emnumfile.exists()){
-        electricmeternum = int.parse(await emnumfile.readAsString());
+        GlobalVars.emNum = int.parse(await emnumfile.readAsString());
         await emnumfile.delete();
       }
 
       String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
       File openidfile = File(openidpath);
       if(await openidfile.exists()){
-        openid = await openidfile.readAsString();
+        GlobalVars.openId = await openidfile.readAsString();
         await openidfile.delete();
       }
 
       String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
       File wechatIdfile = File(wechatIdpath);
       if(await wechatIdfile.exists()){
-        wechatId = await wechatIdfile.readAsString();
+        GlobalVars.wechatUserId = await wechatIdfile.readAsString();
         await wechatIdfile.delete();
       }
 
       String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
       File wechatUserNicknamefile = File(wechatUserNicknamepath);
       if(await wechatUserNicknamefile.exists()){
-        wechatUserNickname = await wechatUserNicknamefile.readAsString();
+        GlobalVars.wechatUserNickname = await wechatUserNicknamefile.readAsString();
         await wechatUserNicknamefile.delete();
         setState(() {
           GlobalVars.emBinded = true;
@@ -419,17 +406,17 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
         return;
       }
       
-      emUserData.clear();
-      emUserData.add({
-        'emNum': electricmeternum,
-        'openId': openid,
-        'wechatId': wechatId,
-        'wechatUserNickname': wechatUserNickname,
+      GlobalVars.emUserData.clear();
+      GlobalVars.emUserData.add({
+        'emNum': GlobalVars.emNum,
+        'openId': GlobalVars.openId,
+        'wechatId': GlobalVars.wechatUserId,
+        'wechatUserNickname': GlobalVars.wechatUserNickname,
       });
-      emUserDatafile.writeAsString(jsonEncode(emUserData));
+      emUserDatafile.writeAsString(jsonEncode(GlobalVars.emUserData));
     }
 
-    for(int i = 0;i <= electricmeternum - 1;i++){
+    for(int i = 0;i <= GlobalVars.emNum - 1;i++){
       if(mounted){
         setState(() {
         currentQuery = i + 1;
@@ -438,15 +425,15 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
       //获取电表 id
       String emdetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emdetail.json';
       File emdetailfile = File(emdetailpath);
-      emdetail = jsonDecode(await emdetailfile.readAsString());
-      String electricUserUid = emdetail[i]['bindMeterId'];
+      GlobalVars.emDetail = jsonDecode(await emdetailfile.readAsString());
+      String electricUserUid = GlobalVars.emDetail[i]['bindMeterId'];
 
       Dio dio = Dio();
       try{
-        Response emqresponse1 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/electricMeterQuery?wechatUserId=$wechatUserId&electricUserUid=$electricUserUid&isAfterMoney=0',);
+        Response emqresponse1 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/electricMeterQuery?wechatUserId=${GlobalVars.wechatUserId}&electricUserUid=$electricUserUid&isAfterMoney=0',);
         emstatetotal.add({
-          'userCode': emdetail[i]['userCode'],
-          'userAddress': emdetail[i]['userAddress'],
+          'userCode': GlobalVars.emDetail[i]['userCode'],
+          'userAddress': GlobalVars.emDetail[i]['userAddress'],
           'emDetail': emqresponse1.data['data']
         });
         if(queryemCanceled) return;

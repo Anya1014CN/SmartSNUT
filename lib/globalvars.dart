@@ -14,6 +14,16 @@ class GlobalVars {
   static String enrollTime = '1900-01-01';
   static String graduationTime = '1900-01-01';
 
+  //电表数据
+  static List emUserData = [];//电费账号用户数据
+  static String openId = '';
+  static String wechatUserNickname = '';
+  static String wechatUserId = '';
+  static List emDetail = [];//电表详细数据
+  static String electricUserUid = '';
+  static int emNum = 0;//电表的总数
+
+
   //判断用户是否绑定电表账号
   static bool emBinded = false;
 
