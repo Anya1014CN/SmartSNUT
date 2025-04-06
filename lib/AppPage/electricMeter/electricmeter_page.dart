@@ -43,10 +43,19 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
   }
 
   initData() async {
+    //旧版数据
     String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
     File emnumfile = File(emnumpath);
     if(await emnumfile.exists()){
       electricmeternum = int.parse(await emnumfile.readAsString());
+    }
+
+    //新版数据
+    String emDetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emdetail.json';
+    File emDetailfile = File(emDetailpath);
+    if(await emDetailfile.exists()){
+      emdetail = jsonDecode(await emDetailfile.readAsString());
+      electricmeternum = emdetail.length;
     }
     setState(() {});
   }
@@ -376,44 +385,49 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
       }
     }
     
-    //若用户使用旧版数据，则进行迁移
-    String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
-    File emnumfile = File(emnumpath);
-    if(await emnumfile.exists()){
-      electricmeternum = int.parse(await emnumfile.readAsString());
-      await emnumfile.delete();
-    }
+    //若用户使用旧版数据且新版数据不存在，则进行迁移
+    if(await emUserDatafile.exists() == false){
+      String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
+      File emnumfile = File(emnumpath);
+      if(await emnumfile.exists()){
+        electricmeternum = int.parse(await emnumfile.readAsString());
+        await emnumfile.delete();
+      }
 
-    String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
-    File openidfile = File(openidpath);
-    if(await openidfile.exists()){
-      openid = await openidfile.readAsString();
-      await openidfile.delete();
-    }
+      String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
+      File openidfile = File(openidpath);
+      if(await openidfile.exists()){
+        openid = await openidfile.readAsString();
+        await openidfile.delete();
+      }
 
-    String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
-    File wechatIdfile = File(wechatIdpath);
-    if(await wechatIdfile.exists()){
-      wechatId = await wechatIdfile.readAsString();
-      await wechatIdfile.delete();
-    }
+      String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
+      File wechatIdfile = File(wechatIdpath);
+      if(await wechatIdfile.exists()){
+        wechatId = await wechatIdfile.readAsString();
+        await wechatIdfile.delete();
+      }
 
-    String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
-    File wechatUserNicknamefile = File(wechatUserNicknamepath);
-    if(await wechatUserNicknamefile.exists()){
-      wechatUserNickname = await wechatUserNicknamefile.readAsString();
-      await wechatUserNicknamefile.delete();
-      setState(() {GlobalVars.emBinded = true;});
+      String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
+      File wechatUserNicknamefile = File(wechatUserNicknamepath);
+      if(await wechatUserNicknamefile.exists()){
+        wechatUserNickname = await wechatUserNicknamefile.readAsString();
+        await wechatUserNicknamefile.delete();
+        setState(() {
+          GlobalVars.emBinded = true;
+        });
+        return;
+      }
+      
+      emUserData.clear();
+      emUserData.add({
+        'emNum': electricmeternum,
+        'openId': openid,
+        'wechatId': wechatId,
+        'wechatUserNickname': wechatUserNickname,
+      });
+      emUserDatafile.writeAsString(jsonEncode(emUserData));
     }
-    
-    emUserData.clear();
-    emUserData.add({
-      'emNum': electricmeternum,
-      'openId': openid,
-      'wechatId': wechatId,
-      'wechatUserNickname': wechatUserNickname,
-    });
-    emUserDatafile.writeAsString(jsonEncode(emUserData));
 
     for(int i = 0;i <= electricmeternum - 1;i++){
       if(mounted){
