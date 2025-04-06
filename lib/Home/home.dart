@@ -52,6 +52,7 @@ List<List> courseThuWeek = [[],[],[],[],[],[],[],[],[],[]];//周四课程
 List<List> courseFriWeek = [[],[],[],[],[],[],[],[],[],[]];//周五课程
 List<List> courseSatWeek = [[],[],[],[],[],[],[],[],[],[]];//周六课程
 List<List> courseSunWeek = [[],[],[],[],[],[],[],[],[],[]];//周日课程
+List<List> courseNextMonWeek = [[],[],[],[],[],[],[],[],[],[]];//下周一课程
 
 //今日课表数据
 List<List> courseToday = [[],[],[],[],[],[],[],[],[],[]];//今日课程（第一节到第十节）
@@ -998,6 +999,7 @@ class _HomeState extends State<Home>{
     courseFriWeek = [[],[],[],[],[],[],[],[],[],[]];//周五课程
     courseSatWeek = [[],[],[],[],[],[],[],[],[],[]];//周六课程
     courseSunWeek = [[],[],[],[],[],[],[],[],[],[]];//周日课程
+    courseNextMonWeek = [[],[],[],[],[],[],[],[],[],[]];//下周周一课程
 
     //加载本周周一课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
@@ -1089,6 +1091,19 @@ class _HomeState extends State<Home>{
         }
       }
     }
+
+    //加载下周周一课程
+    for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
+      for(int courseInt = 0;courseInt < courseMonTotal[courseTODInt].length;courseInt++){
+        if(courseMonTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
+          courseNextMonWeek[courseTODInt].add({
+              'CourseName': courseMonTotal[courseTODInt][courseInt]['CourseName'],
+              'CourseLocation': courseMonTotal[courseTODInt][courseInt]['CourseLocation'],
+              'CourseTeacher': courseMonTotal[courseTODInt][courseInt]['CourseTeacher'],
+          });
+        }
+      }
+    }
     readDaildCourseTable();
   }
 
@@ -1170,6 +1185,17 @@ class _HomeState extends State<Home>{
             'CourseName': courseSunWeek[courseTODInt][0]['CourseName'],
             'CourseLocation': courseSunWeek[courseTODInt][0]['CourseLocation'],
             'CourseTeacher': courseSunWeek[courseTODInt][0]['CourseTeacher'],
+          });
+        }
+      }
+    }
+    if(currentDOW == 8){
+      for(int courseTODInt = 0;courseTODInt < 10;courseTODInt++){
+        if(courseNextMonWeek[courseTODInt].isEmpty != true){
+          courseToday[courseTODInt].add({
+            'CourseName': courseNextMonWeek[courseTODInt][0]['CourseName'],
+            'CourseLocation': courseNextMonWeek[courseTODInt][0]['CourseLocation'],
+            'CourseTeacher': courseNextMonWeek[courseTODInt][0]['CourseTeacher'],
           });
         }
       }
