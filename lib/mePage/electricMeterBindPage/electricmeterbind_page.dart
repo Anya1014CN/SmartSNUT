@@ -778,6 +778,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     final docpath = (await getApplicationDocumentsDirectory()).path;
 
     checkbindstate();
+    readEmDetail();
 
     if(mounted){
       ScaffoldMessenger.of(context).showSnackBar(
