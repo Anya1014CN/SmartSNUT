@@ -1291,55 +1291,84 @@ class _HomeState extends State<Home>{
             color: Theme.of(context).colorScheme.surfaceDim,
             child: Container(
               padding: EdgeInsets.all(8),
-              child: ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                trailing: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withAlpha(26),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Icon(
-                    Icons.chevron_right,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('${smartSNUTAnnouncements[0]['Content']}',
+              child: Column(
+                children: [
+                  ListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    trailing: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Icon(
+                        Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    title: Text('${smartSNUTAnnouncements[0]['Content']}',
                       style: TextStyle(
                         fontSize: GlobalVars.listTileTitle,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 4),
-                    Text('${smartSNUTAnnouncements[1]['Content']}',
+                    onTap: () {
+                      url = Uri.parse(smartSNUTAnnouncements[0]['Link']);
+                      launchURL();
+                    },
+                  ),
+                  (smartSNUTAnnouncements.length >= 2)? ListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    trailing: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Icon(
+                        Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    title: Text('${smartSNUTAnnouncements[1]['Content']}',
                       style: TextStyle(
                         fontSize: GlobalVars.listTileTitle,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ],
-                ),
-                subtitle: Padding(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Text(
-                    '阅读更多',
-                    textAlign: TextAlign.end,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: GlobalVars.listTileSubtitle
+                    onTap: () {
+                      url = Uri.parse(smartSNUTAnnouncements[1]['Link']);
+                      launchURL();
+                    },
+                  ):SizedBox(),
+                  (smartSNUTAnnouncements.length >= 3)? ListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                  ),
-                ),
-                onTap: () {
-                  url = Uri.parse('https://smartsnut.cn/Announcements');
-                  launchURL();
-                },
+                    trailing: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Icon(
+                        Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    title: Text('${smartSNUTAnnouncements[2]['Content']}',
+                      style: TextStyle(
+                        fontSize: GlobalVars.listTileTitle,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onTap: () {
+                      url = Uri.parse(smartSNUTAnnouncements[2]['Link']);
+                      launchURL();
+                    },
+                  ):SizedBox(),
+                ],
               )
             )
           ),
@@ -2047,7 +2076,9 @@ class _HomeState extends State<Home>{
     }
     if(mounted){
       smartSNUTAnnouncements = jsonDecode(jsonEncode(smartSNUTNotifyResponse.data));
-      announcementState = 1;
+      setState(() {
+        announcementState = 1;
+      });
     }
   }
 
@@ -2385,5 +2416,4 @@ class _HomeState extends State<Home>{
       OpenFilex.open('${(await getApplicationDocumentsDirectory()).path}/Android_latest.apk');
     }
   }
-
 }
