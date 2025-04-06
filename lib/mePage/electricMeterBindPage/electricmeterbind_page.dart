@@ -8,10 +8,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+//电表编号输入框
+TextEditingController textEmIdController = TextEditingController();
+
 //用于存储外部链接的完整URL
 Uri url = Uri.parse("uri");
 
 bool isQuerying = false;
+
 //用于存储用户头像路径
 String emavatarpath = '';
 
@@ -33,6 +37,12 @@ String openid = '';
 //用于存储用户的信息
 List emUserData = [];
 
+//用于存储电表详情
+List emDetail = [];
+
+//用于存储即将解绑的电表 id
+String unbindEmId = '';
+
 class ElectricmeterbindPage extends StatefulWidget{
   const ElectricmeterbindPage({super.key});
 
@@ -45,7 +55,6 @@ class ElectricmeterbindPage extends StatefulWidget{
 class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
 
   checkbindstate() async {
-
     //每次读取之前进行电费账号目录检查，防止后续版本升级，目录未被创建导致崩溃
     Directory datadirectory = Directory('${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata');
     if(await datadirectory.exists() == false){
@@ -70,6 +79,8 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
             electricmeternum = emUserData[0]['emNum'];
             GlobalVars.emBinded = true;
           });
+          readEmDetail();
+          return;
         }else{
           if(mounted){
             setState(() {
@@ -113,7 +124,11 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     if(await wechatUserNicknamefile.exists()){
       wechatUserNickname = await wechatUserNicknamefile.readAsString();
       await wechatUserNicknamefile.delete();
-      setState(() {GlobalVars.emBinded = true;});
+      setState(() {
+        GlobalVars.emBinded = true;
+        readEmDetail();
+      });
+      return;
     }
     
     emUserData.clear();
@@ -126,11 +141,22 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     emUserDatafile.writeAsString(jsonEncode(emUserData));
   }
   
+  readEmDetail() async {
+    //读取电表详情
+    String emDetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emdetail.json';
+    File emDetailfile = File(emDetailpath);
+    if(await emDetailfile.exists() == true){
+      emDetail = jsonDecode(await emDetailfile.readAsString());
+    }
+    setState(() {});
+  }
 
   @override
   void initState() {
-    checkbindstate();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkbindstate();
+    });
   }
 
 
@@ -434,6 +460,142 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                   ],
                 ),
               ),
+
+          //电表详情区域
+          GlobalVars.emBinded? 
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 10),
+            child: Card(
+              elevation: 2,
+              shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+              color: Theme.of(context).colorScheme.surfaceDim,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 16),
+                      child: Text(
+                        '电表列表',
+                        style: TextStyle(
+                          fontSize: GlobalVars.genericTextLarge,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary
+                        ),
+                      ),
+                    ),
+                    (emDetail.isEmpty)?
+                    Center(
+                      child: Column(
+                      children: [
+                        Icon(Icons.priority_high, color: Theme.of(context).colorScheme.primary, size: 40),
+                        SizedBox(height: 16),
+                        Text('您还未绑定电表哦~', style: TextStyle(fontSize: GlobalVars.genericTextMedium, color: Theme.of(context).colorScheme.onSurfaceVariant)),
+                        SizedBox(height: 16),
+                      ],
+                    ),
+                    ):
+                    Column(
+                      children: emDetail.map((emDetailSingal) {
+                        return Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        emDetailSingal['bindMeterCode'].toString(),
+                                        style: TextStyle(
+                                          fontSize: GlobalVars.genericTextMedium,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        emDetailSingal['userAddress'].toString(),
+                                        style: TextStyle(
+                                          fontSize: GlobalVars.genericTextSmall,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.link_off, size: 24),
+                                    onPressed: () {
+                                      if(mounted){
+                                        showDialog<String>(
+                                          context: context,
+                                          builder: (BuildContext context) => AlertDialog(
+                                            title: Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                            content: Text('您确定要解绑电表吗？', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(context, 'Cancel'),
+                                                child: const Text('取消'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  unbindEmId = emDetailSingal['bindId'].toString();
+                                                  unBindEM();
+                                                },
+                                                child: const Text('确认'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Divider(height: 0, indent: 16, endIndent: 16),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 10,),
+                    (emDetail.isEmpty)? Divider(height: 16, indent: 16, endIndent: 16):SizedBox(height: 0),
+                    SizedBox(height: 10,),
+                    FilledButton(
+                      style: FilledButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        minimumSize: Size(double.infinity, 50), // 确保按钮宽度填满父容器
+                      ),
+                      onPressed: () {bindEM();},
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add, size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            '绑定电表',
+                            style: TextStyle(
+                              fontSize: GlobalVars.genericTextMedium,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ):SizedBox(height: 0),
           
           // 服务说明
           Container(
@@ -491,6 +653,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     );
   }
 
+  // 绑定电表账号
   bindelectricmeter() async {
     bool bindelectricmeterCanceled = false;
     if(mounted){
@@ -579,23 +742,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     if(bindelectricmeterCanceled) return;
     Response emresponse2 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/getBindListWx?wechatUserId=$wechatId');
 
-    if(emresponse2.data['data'].toString() == '[]'){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog(
-          context: context, 
-          builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('您的微信账号还未绑定电表，请先前往陕西理工大学后勤保障部公众号绑定电表',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
-        ));
-        setState(() {
-          GlobalVars.emBinded = false;
-          isBinding = false;
-        });
-      }
-      return;
-    }if(emresponse2.data['data'].toString() == 'null'){
+    if(emresponse2.data['data'].toString() == 'null'){
       if(mounted){
         Navigator.pop(context);
         showDialog(
@@ -643,6 +790,8 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
 
     final docpath = (await getApplicationDocumentsDirectory()).path;
 
+    checkbindstate();
+
     if(mounted){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -666,6 +815,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     }
   }
 
+  //解绑电表账号
   unbind() async {
     if(mounted){
       setState(() {
@@ -695,6 +845,304 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         GlobalVars.emBinded = false;
       });
     }
+  }
+
+  //绑定电表
+  bindEM() async {
+    bool bindEMCanceled = false;
+    String emId = '';
+    textEmIdController.clear();
+    
+    if(mounted){
+      await showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              scrollable: true,
+              title: Text('请输入电表编号：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Column(
+                children: [
+                  SizedBox(height: 16),
+                  TextField(
+                    controller: textEmIdController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      labelText: '电表编号',
+                      prefixIcon: Icon(Icons.commit),
+                      filled: false,
+                      contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    bindEMCanceled = true;
+                    Navigator.pop(context);
+                  },
+                  child: const Text('取消'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    if(textEmIdController.text == '') {
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                          content: Text('请先输入电表编号',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'OK'),
+                              child: const Text('确定'),
+                            ),
+                          ],
+                        ),
+                      );
+                      return;
+                    }
+                    emId = textEmIdController.text;
+                    Navigator.pop(context);
+                  },
+                  child: const Text('确定'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+    
+    if(bindEMCanceled) return;
+    if(mounted){
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              scrollable: true,
+              title: Text('正在绑定...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Column(
+                children: [
+                  SizedBox(height: 10,),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 10,)
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    bindEMCanceled = true;
+                    Navigator.pop(context);
+                  },
+                  child: const Text('取消'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    //初始化 Dio
+    Dio dio = Dio();
+
+    //绑定电表
+    late Response addBindmeterResponse;
+    var addEMParams = {
+      "meterId": emId,
+      "wechatUserId": wechatId,
+    };
+    try{
+      if(bindEMCanceled) return;
+      var response = await dio.post(
+        'https://hqkddk.snut.edu.cn/kddz/electricmeterpost/addBindmeter',
+        data: addEMParams,
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+        ),
+      );
+      addBindmeterResponse = response;
+    }catch(e){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+          ));
+        }
+      return;
+    }
+
+    if(addBindmeterResponse.data['msg'] ==  '未查到用户信息！'){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('未查到用户信息，请检查您的电表编号是否正确',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [
+              TextButton(
+                onPressed:  () => Navigator.pop(context, 'OK'),
+                child: Text('确认')
+              ),
+            ],
+          ));
+        }
+        return;
+    }if(addBindmeterResponse.data['msg'] ==  '未查到用户信息！'){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('未查到用户信息，请检查您的电表编号是否正确',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [
+              TextButton(
+                onPressed:  () => Navigator.pop(context, 'OK'),
+                child: Text('确认')
+              ),
+            ],
+          ));
+        }
+        return;
+    }if(addBindmeterResponse.data['msg'] ==  '请勿重复绑定'){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('该电表已经绑定，请勿重复绑定',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [
+              TextButton(
+                onPressed:  () => Navigator.pop(context, 'OK'),
+                child: Text('确认')
+              ),
+            ],
+          ));
+        }
+        return;
+    }
+    if(addBindmeterResponse.data['msg'] ==  '操作成功'){
+      await bindelectricmeter();
+      if(mounted){
+        Navigator.pop(context);
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('绑定成功',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [
+              TextButton(
+                onPressed:  () => Navigator.pop(context, 'OK'),
+                child: Text('确认')
+              ),
+            ],
+          ));
+        }
+        return;
+    }
+  }
+
+  //解绑电表
+  unBindEM() async {
+    bool unBindEMCanceled = false;
+    
+    if(mounted){
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              scrollable: true,
+              title: Text('正在绑定...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Column(
+                children: [
+                  SizedBox(height: 10,),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 10,)
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    unBindEMCanceled = true;
+                    Navigator.pop(context);
+                  },
+                  child: const Text('取消'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    //初始化 Dio
+    Dio dio = Dio();
+
+    //解绑电表
+    late Response delBindmeterResponse;
+    var headers = {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    };
+    var unBinddata = {
+      'wechatBindId': unbindEmId,
+      'wechatUserId': wechatId
+    };
+    try{
+      if(unBindEMCanceled) return;
+      var response = await dio.request(
+        'https://hqkddk.snut.edu.cn/kddz/electricmeterpost/delBindmeter',
+        options: Options(
+          method: 'POST',
+          headers: headers,
+        ),
+        data: unBinddata,
+      );
+      delBindmeterResponse = response;
+    }catch(e){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+          ));
+        }
+        return;
+    }
+    
+    if(delBindmeterResponse.data['msg'] ==  '删除成功'){
+      await bindelectricmeter();
+      if(mounted){
+        Navigator.pop(context);
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text('解绑成功',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+          ));
+        }
+        return;
+    }
+
   }
 
   //打开链接
