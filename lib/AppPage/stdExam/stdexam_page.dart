@@ -969,91 +969,149 @@ class _StdExamPageState extends State<StdExamPage>{
         loadStateString = '正在获取验证码...';
       });
     }
-    String captchaCode = '';
-    textCaptchaController.clear();
-    // 请求验证码图片
-    if(getStdExamCanceled) return;
-    Response captchaResponse = await dio.get(
-      'https://authserver.snut.edu.cn/authserver/getCaptcha.htl',
-      options: Options(
-        responseType: ResponseType.bytes, // 指定响应类型为字节数组
-      ),
-    );
     
-    // 确保响应数据是 Uint8List 类型
-    Uint8List captchaBytes;
-    if (captchaResponse.data is Uint8List) {
-      captchaBytes = captchaResponse.data;
-    } else {
-      // 如果不是，尝试转换
-      captchaBytes = Uint8List.fromList(captchaResponse.data as List<int>);
-    }
+    String captchaCode = '';
+    Uint8List? captchaBytes;
+    bool isLoadingCaptcha = false;
+
+    getAuthCaptcha() async {
+      if(mounted){
+        setState(() {
+          isLoadingCaptcha = true;
+        });
+      }
+      textCaptchaController.clear();
+      // 请求验证码图片
+      if(getStdExamCanceled) return;
+      Response captchaResponse = await dio.get(
+        'https://authserver.snut.edu.cn/authserver/getCaptcha.htl',
+        options: Options(
+          responseType: ResponseType.bytes, // 指定响应类型为字节数组
+        ),
+      );
       
-    if(mounted){
+      // 确保响应数据是 Uint8List 类型
+      if (captchaResponse.data is Uint8List) {
+        captchaBytes = captchaResponse.data;
+      } else {
+        // 如果不是，尝试转换
+        captchaBytes = Uint8List.fromList(captchaResponse.data as List<int>);
+      }
+      if(mounted){
+        setState(() {
+          isLoadingCaptcha = false;
+        });
+      }
+    }
+
+    await getAuthCaptcha();
+    if(mounted) {
       Navigator.pop(context);
       await showDialog<String>(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => AlertDialog(
-          scrollable: true,
-          title: Text('请输入验证码',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-          content: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: textCaptchaController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: '验证码',
-                        hintText: '请输入验证码',
-                        filled: false
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+            scrollable: true,
+            title: Text('请输入验证码',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: textCaptchaController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: '验证码',
+                          hintText: '请输入验证码',
+                          filled: false
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 10,),
-                  Expanded(
-                    child: FittedBox(
-                      child: Image.memory(captchaBytes),
+                    SizedBox(width: 10,),
+                    isLoadingCaptcha? 
+                    FittedBox(
+                      child: CircularProgressIndicator(),
+                    )
+                    :Expanded(
+                      child: FittedBox(
+                        child: Image.memory(captchaBytes!),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 10,),
+                Divider(height: 15,indent: 20,endIndent: 20,),
+                Text('验证码不区分大小写',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                Divider(height: 15,indent: 20,endIndent: 20,),
+                SizedBox(height: 10,),
+                Column(
+                children: [
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      minimumSize: Size(double.infinity, 50), // 确保按钮宽度填满父容器
                     ),
-                  )
+                    onPressed: isLoadingCaptcha? null:() {
+                      getAuthCaptcha();
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.refresh, size: 20),
+                        SizedBox(width: 8),
+                        Text(
+                          '刷新验证码',
+                          style: TextStyle(
+                            fontSize: GlobalVars.genericTextMedium,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(height: 10,),
-              Text('验证码不区分大小写',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  getStdExamCanceled = true;
+                  Navigator.pop(context);
+                  return;
+                },
+                child: const Text('取消'),
+              ),
+              TextButton(
+                onPressed: () {
+                  if(textCaptchaController.text.isEmpty){
+                    showDialog<String>(
+                      context: context, 
+                      builder: (BuildContext context)=>AlertDialog(
+                        title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                        content: Text('验证码不能为空，请输入验证码',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                        actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+                      ));
+                    return;
+                  }
+                  captchaCode = textCaptchaController.text;
+                  Navigator.pop(context);
+                },
+                child: const Text('确定'),
+              ),
             ],
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                getStdExamCanceled = true;
-                Navigator.pop(context);
-                return;
-              },
-              child: const Text('取消'),
-            ),
-            TextButton(
-              onPressed: () {
-                if(textCaptchaController.text.isEmpty){
-                  showDialog<String>(
-                    context: context, 
-                    builder: (BuildContext context)=>AlertDialog(
-                      title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-                      content: Text('验证码不能为空，请输入验证码',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                      actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
-                    ));
-                  return;
-                }
-                captchaCode = textCaptchaController.text;
-                Navigator.pop(context);
-              },
-              child: const Text('确定'),
-            ),
-          ],
-        ),
+          );
+        },
       );
     }
+
     if(getStdExamCanceled) return;
     if(mounted){
       showDialog<String>(
