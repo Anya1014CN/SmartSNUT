@@ -1,15 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'dart:typed_data';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:html/parser.dart' as parser;
-import 'package:html/dom.dart' as dom;
+import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 
 //验证码输入框
@@ -782,8 +777,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
   }
 
   getStdGrades() async {
-    String loadStateString = '请稍后...';
-    bool getStdGradesCanceled = false;
+    GlobalVars.operationCanceled = false;
+    GlobalVars.loadingHint = '正在加载...';
     if(mounted){
       showDialog<String>(
         context: context,
@@ -792,19 +787,19 @@ class _StdGradesPageState extends State<StatefulWidget>{
           return StatefulBuilder(
             builder: (context, setState) => AlertDialog(
               scrollable: true,
-              title: Text('正在刷新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Text('请稍后...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Column(
                 children: [
                   SizedBox(height: 10,),
                   CircularProgressIndicator(),
                   SizedBox(height: 10,),
-                  Text(loadStateString,style: TextStyle(fontSize: GlobalVars.alertdialogContent))
+                  Text(GlobalVars.loadingHint,style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                 ],
               ),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
-                    getStdGradesCanceled = true;
+                    GlobalVars.operationCanceled = true;
                     Navigator.pop(context);
                   },
                   child: const Text('取消'),
@@ -816,121 +811,100 @@ class _StdGradesPageState extends State<StatefulWidget>{
       );
     }
     
-    //课表数据目录
-    Directory courseTableStddirectory = Directory('${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/courseTableStd');
-    if(await courseTableStddirectory.exists() == false){
-      await courseTableStddirectory.create();
-    }
-
-    String encryptedpassword = '';//加密后的密码
-    String authexecution = '';//存储获取到的 execution
-    String pwdEncryptSalt = '';//存储获取到的 pwdEncryptSalt
-
-    //初始化 Dio
-    CookieJar authservercookie = CookieJar();
-    Dio dio = Dio();
-    dio.interceptors.add(CookieManager(authservercookie));
-
-    //第一次请求，提取 execution
-    if(mounted){
-      setState(() {
-        loadStateString = '正在获取登录信息...';
-      });
-    }
-    if(getStdGradesCanceled) return;
-    late Response authresponse1;
-    try{
-      authresponse1 = await dio.get('https://authserver.snut.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.snut.edu.cn%2Feams%2FssoLogin.action');
-    }catch (e){
+    if(GlobalVars.operationCanceled) return;
+    List initialData = await Modules.initialLoginAuth();
+    if(initialData[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
         showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text(initialData[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+          ));
+      }
+      return;
+    }
+
+    //输入验证码
+    String userCaptchaCode = '';
+    textCaptchaController.clear();
+    Uint8List? captchaBytes;
+    
+    Future<List> getCaptchaCode() async {
+      GlobalVars.loadingHint = '正在获取验证码...';
+      //存储返回的信息
+      List message = [];
+
+      late Response captchaResponse;
+      try{
+        if(GlobalVars.operationCanceled) {
+          message.clear();
+          message.add({
+            'statue': false,
+            'message': '操作已取消',
+          });
+          return message;
+        }
+        var response = await GlobalVars.globalDio.get(
+          'https://authserver.snut.edu.cn/authserver/getCaptcha.htl',
+          options: Options(
+            responseType: ResponseType.bytes, // 指定响应类型为字节数组
           ),
         );
-        loadStateString = '请稍后...';
-        return;
-      }
-    }   
-    // 提取 execution 值// 定义正则表达式查找带有 "execution" 名称的隐藏输入字段
-    final RegExp executionRegExp = RegExp(
-      r'<input\s+type="hidden"\s+id="execution"\s+name="execution"\s+value="([^"]+)"',
-      caseSensitive: false,
-    );
-    // 在响应中查找匹配
-    final Match? match = executionRegExp.firstMatch(authresponse1.data.toString());
-    // 如果找到匹配项，则返回提取的值
-    if (match != null && match.groupCount >= 1) {
-      authexecution = match.group(1)!;
-    }
-
-    // 提取 pwdEncryptSalt 值
-    final RegExp pwdEncryptSaltRegExp = RegExp(
-      r'<input\s+type="hidden"\s+id="pwdEncryptSalt"\s+value="([^"]+)"',
-      caseSensitive: false,
-    );
-    // 在响应中查找匹配
-    final Match? saltMatch = pwdEncryptSaltRegExp.firstMatch(authresponse1.data.toString());
-    // 如果找到匹配项，则提取值
-    if (saltMatch != null && saltMatch.groupCount >= 1) {
-      pwdEncryptSalt = saltMatch.group(1)!;
-    }
-
-    //AES 加密密码// 使用提取到的 pwdEncryptSalt 作为密钥
-    encryptedpassword = encryptAES(passWord,pwdEncryptSalt);
-
-    //请求验证码
-    if(mounted){
-      setState(() {
-        loadStateString = '正在获取验证码...';
-      });
-    }
-    
-    String captchaCode = '';
-    Uint8List? captchaBytes;
-    bool isLoadingCaptcha = false;
-
-    getAuthCaptcha() async {
-      if(mounted){
-        setState(() {
-          isLoadingCaptcha = true;
+        captchaResponse = response;
+      }catch (e) {
+        message.clear();
+        message.add({
+          'statue': false,
+          'message': '无法连接服务器，请稍后再试',
         });
+        return message;
       }
-      textCaptchaController.clear();
-      // 请求验证码图片
-      if(getStdGradesCanceled) return;
-      Response captchaResponse = await dio.get(
-        'https://authserver.snut.edu.cn/authserver/getCaptcha.htl',
-        options: Options(
-          responseType: ResponseType.bytes, // 指定响应类型为字节数组
-        ),
-      );
-      
+        
       // 确保响应数据是 Uint8List 类型
       if (captchaResponse.data is Uint8List) {
-        captchaBytes = captchaResponse.data;
-      } else {
-        // 如果不是，尝试转换
-        captchaBytes = Uint8List.fromList(captchaResponse.data as List<int>);
+        if(mounted){
+          setState(() {
+            captchaBytes = captchaResponse.data;
+          });
+        }
+        message.clear();
+        message.add({
+          'statue': true,
+          'message': '',
+        });
+        return message;
       }
       if(mounted){
         setState(() {
-          isLoadingCaptcha = false;
+          captchaBytes = Uint8List.fromList(captchaResponse.data as List<int>);
         });
       }
+      message.clear();
+      message.add({
+        'statue': true,
+        'message': '',
+      });
+      return message;
     }
-
-    await getAuthCaptcha();
+    
+    List getCaptchaCodeResponse = await getCaptchaCode();
+    if(getCaptchaCodeResponse[0]['statue'] == false){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog<String>(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text(getCaptchaCodeResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+          ));
+      }
+      return;
+    }
+    
     if(mounted) {
       Navigator.pop(context);
       await showDialog<String>(
@@ -957,11 +931,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
                         ),
                       ),
                       SizedBox(width: 10,),
-                      isLoadingCaptcha? 
-                      FittedBox(
-                        child: CircularProgressIndicator(),
-                      )
-                      :Row(
+                      Row(
                         children: [
                           SizedBox(
                             width: 100,
@@ -971,8 +941,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
                           SizedBox(height: 4),
                           IconButton(
                             icon: Icon(Icons.refresh, size: 18),
-                            onPressed: isLoadingCaptcha ? null : () {
-                              getAuthCaptcha();
+                            onPressed: () {
+                              getCaptchaCode();
                             },
                             tooltip: '刷新验证码',
                             style: IconButton.styleFrom(
@@ -993,7 +963,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
-                    getStdGradesCanceled = true;
+                    GlobalVars.operationCanceled = true;
                     Navigator.pop(context);
                     return;
                   },
@@ -1011,7 +981,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
                         ));
                       return;
                     }
-                    captchaCode = textCaptchaController.text;
+                    userCaptchaCode = textCaptchaController.text;
                     Navigator.pop(context);
                   },
                   child: const Text('确定'),
@@ -1023,7 +993,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
       );
     }
 
-    if(getStdGradesCanceled) return;
+    if(GlobalVars.operationCanceled) return;
     if(mounted){
       showDialog<String>(
         context: context,
@@ -1032,19 +1002,19 @@ class _StdGradesPageState extends State<StatefulWidget>{
           return StatefulBuilder(
             builder: (context, setState) => AlertDialog(
               scrollable: true,
-              title: Text('正在刷新...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Text('请稍后...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Column(
                 children: [
                   SizedBox(height: 10,),
                   CircularProgressIndicator(),
                   SizedBox(height: 10,),
-                  Text(loadStateString,style: TextStyle(fontSize: GlobalVars.alertdialogContent))
+                  Text(GlobalVars.loadingHint,style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                 ],
               ),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
-                    getStdGradesCanceled = true;
+                    GlobalVars.operationCanceled = true;
                     Navigator.pop(context);
                   },
                   child: const Text('取消'),
@@ -1056,313 +1026,44 @@ class _StdGradesPageState extends State<StatefulWidget>{
       );
     }
 
-    //开始登录
-    if(mounted){
-      setState(() {
-        loadStateString = '正在登录...';
-      });
-    }
-    late Response authresponse2;
-    final loginParams = {
-      "username": userName,
-      "password": encryptedpassword,
-      "captcha": captchaCode,
-      "_eventId": "submit",
-      "cllt": "userNameLogin",
-      "dllt": "generalLogin",
-      "lt": "",
-      "execution": authexecution,
-    };
-    try{
-      if(getStdGradesCanceled) return;
-      authresponse2 = await  dio.post(
-        'https://authserver.snut.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.snut.edu.cn%2Feams%2FssoLogin.action',
-        data: loginParams,
-        options: Options(
-          followRedirects: false,
-          validateStatus: (status) {
-            return status! <= 401;
-          },
-          contentType: Headers.formUrlEncodedContentType,
-        )
-      );
-    }catch(e){
+    if(GlobalVars.operationCanceled) return;
+    List loginAuthResponse = await Modules.loginAuth(userName, passWord,initialData[0]['pwdEncryptSalt'], userCaptchaCode, initialData[0]['authexecution']);
+    if(loginAuthResponse[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
         showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-        loadStateString = '请稍后...';
-      }
-      return;
-    }
-    if(authresponse2.data.toString().contains('您提供的用户名或者密码有误')){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
             title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('用户名或密码错误',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-        loadStateString = '请稍后...';
-        return;
-      }
-    }
-    if(authresponse2.data.toString().contains('图形动态码错误')){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('验证码错误',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-        loadStateString = '请稍后...';
-        return;
-      }
-    }
-
-    //手动跟随重定向
-    try{
-      //跟随第一步重定向 (ssologin 的 ticket)
-      if(getStdGradesCanceled) return;
-      var authresponse21 = await dio.get(
-        authresponse2.headers['location']![0],
-        data: loginParams,
-        options: Options(
-          followRedirects: false,
-          validateStatus: (status) {
-            return status! <= 302;
-          },
-          contentType: Headers.formUrlEncodedContentType,
-        )
-      );
-      //跟随第二步重定向 (ssologin 的 ticket)
-      if(getStdGradesCanceled) return;
-      var authresponse22 = await dio.get(
-        authresponse21.headers['location']![0],
-        data: loginParams,
-        options: Options(
-          followRedirects: false,
-          validateStatus: (status) {
-            return status! <= 307;
-          },
-          contentType: Headers.formUrlEncodedContentType,
-        )
-      );
-      //跟随第三步重定向 (ssologin 的 jsessionid)
-      if(getStdGradesCanceled) return;
-      await dio.get(
-        'http://jwgl.snut.edu.cn${authresponse22.headers['location']![0]}',
-        data: loginParams,
-        options: Options(
-          followRedirects: false,
-          contentType: Headers.formUrlEncodedContentType,
-        )
-      );
-    }catch(e){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-        loadStateString = '请稍后...';
+            content: Text(loginAuthResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+          ));
       }
       return;
     }
 
-    //请求成绩页面
-    if(mounted){
-      setState(() {
-        loadStateString = '正在获取成绩...';
-      });
-    }
-    //等待半秒，防止教务系统判定为过快点击
-    if(getStdGradesCanceled) return;
-    await Future.delayed(Duration(milliseconds: 500));
-
-    if(getStdGradesCanceled) return;
-    late Response stdGradesresponse1;
-    try{
-      stdGradesresponse1 = await dio.get(
-        options: Options(
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
-          }
-        ),
-        'http://jwgl.snut.edu.cn/eams/teach/grade/course/person.action',
-      );
-    }catch (e){
+    if(GlobalVars.operationCanceled) return;
+    List getStdGradesResponse = await Modules.getStdGrades(currentYearInt, currentTermInt);
+    if(getStdGradesResponse[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
         showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-        loadStateString = '请稍后...';
-        return;
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            content: Text(getStdGradesResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+          ));
       }
+      return;
     }
-
-    //提取相关数据
-    String semesterId = '';
-
-    RegExp semesterExp = RegExp(r'semester\.id=(\d+)');
-    Match? semesteridmatch = semesterExp.firstMatch(stdGradesresponse1.headers['Set-Cookie']!.first);
-    if(semesteridmatch != null){
-      semesterId = semesteridmatch.group(1)!;
-    }
-
-    //使用本地选中的 semetserid
-    semesterId = semestersData['y$currentYearInt'][currentTermInt -1 ]['id'].toString();
-
-    //开始下载成绩
-    if(getStdGradesCanceled) return;
-    late Response stdGradesresponse2;
-    try{
-      stdGradesresponse2 = await dio.get(
-        'http://jwgl.snut.edu.cn/eams/teach/grade/course/person!search.action?semesterId=$semesterId',
-        options: Options(
-          headers: {
-            "User-Agent": "PostmanRuntime/7.43.0",
-          }
-        ),
-      );
-    }catch (e){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('无法连接服务器，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-        loadStateString = '请稍后...';
-        return;
-      }
-    }
-
-    List<Map<String, String>> foundedGrades = [];
-    dom.Document stdExmaDocument2 = parser.parse(stdGradesresponse2.data);
-    
-    //提取 tableid
-    dom.Element? table = stdExmaDocument2.querySelector('table.gridtable');
-    if (table == null) return jsonEncode([]);
-    String? tableId = table.attributes['id']; // 使用attributes获取id
-    if (tableId == null || tableId.isEmpty) return jsonEncode([]);
-
-    // 查找 tbody 对应的 id
-    String tbodyId = "${tableId}_data";
-    stdExmaDocument2.querySelectorAll('#$tbodyId tr').forEach((tr) {
-      List<dom.Element> tds = tr.querySelectorAll('td');
-      if (tds.length >= 8) {
-        Map<String, String> grades = {
-          "CourseTY": tds[0].text.trim(),
-          "CourseCode": tds[1].text.trim(),
-          "CourseID": tds[2].text.trim(),
-          "CourseName": tds[3].text.trim(),
-          "CourseType": tds[4].text.trim(),
-          "CourseCredit": tds[5].text.trim(),
-          "CourseGradeTotal": tds[6].text.trim(),
-          "CourseGradeFinal": tds[7].text.trim(),
-          "CourseGradeGPA": tds[8].text.trim(),
-        };
-        foundedGrades.add(grades);
-      }
-    });
 
     if(mounted){
       setState(() {
-        stdGradesTotal = foundedGrades;
+        stdGradesTotal = getStdGradesResponse[0]['stdGradesTotal'];
       });
     }
 
-    // 保存成绩信息到本地
-    // 使用本地选中的 semetserid
-    semesterId = semestersData['y$currentYearInt'][currentTermInt -1 ]['id'].toString();
-    String stdGradespath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/stdGrades/stdGrades$semesterId.json';
-    File stdGradesfile = File(stdGradespath);
-    stdGradesfile.writeAsString(jsonEncode(foundedGrades));
-
-    readstdGrades();
-    if(stdGradesTotal.isEmpty){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            scrollable: true,
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('当前学期暂无考试成绩',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-        loadStateString = '请稍后...';
-        return;
-      }
-    }
     if(mounted){
       setState(() {});
       ScaffoldMessenger.of(context).showSnackBar(
@@ -1377,44 +1078,5 @@ class _StdGradesPageState extends State<StatefulWidget>{
       );
       Navigator.pop(context);
     }
-  }
-  
-  //加密密码
-  String encryptAES(String data, String keyString) {
-    // 字符集
-    String chars = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678";
-    var random = Random();
-
-    // 生成随机字符串
-    String randomString(int length) {
-      var result = StringBuffer();
-      for (var i = 0; i < length; i++) {
-        result.write(chars[random.nextInt(chars.length)]);
-      }
-      return result.toString();
-    }
-
-    // 生成64位随机前缀和16位IV
-    String randomPrefix = randomString(64);
-    String iv = randomString(16);
-
-    // 准备加密所需的key和iv
-    final key = encrypt.Key.fromUtf8(keyString.trim());
-    final ivObj = encrypt.IV.fromUtf8(iv);
-
-    // 创建AES加密器
-    final encrypter = encrypt.Encrypter(
-      encrypt.AES(
-        key,
-        mode: encrypt.AESMode.cbc,
-        padding: 'PKCS7',
-      ),
-    );
-
-    // 加密数据(随机前缀+原始数据)
-    final encrypted = encrypter.encrypt(randomPrefix + data, iv: ivObj);
-
-    // 返回Base64编码的加密结果
-    return encrypted.base64;
   }
 }

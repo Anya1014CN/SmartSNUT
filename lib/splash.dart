@@ -46,9 +46,13 @@ class _SplashPageState extends State<SplashPage>{
     String stdAccountpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdAccount.json';
     File stdAccountfile = File(stdAccountpath);
     GlobalVars.stdAccount = jsonDecode(await stdAccountfile.readAsString());
+    
+    String stdDetailPath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdDetail.json';
+    File stdDetailFile = File(stdDetailPath);
+    GlobalVars.stdDetail = jsonDecode(await stdDetailFile.readAsString());
     if(mounted){
       setState(() {
-        GlobalVars.realName = GlobalVars.stdAccount[0]['UserRealName'];
+        GlobalVars.realName = GlobalVars.stdDetail['姓名：'];
         GlobalVars.userName = GlobalVars.stdAccount[0]['UserName'];
         GlobalVars.passWord = GlobalVars.stdAccount[0]['PassWord'];
       });

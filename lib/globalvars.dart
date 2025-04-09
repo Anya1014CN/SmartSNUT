@@ -1,15 +1,29 @@
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio/dio.dart';
+
 class GlobalVars {
   //当前版本号
   static String versionCodeString = '1.8.16';
   static int versionCodeInt = 1008016;
   static String versionReleaseDate = '2025-04-06';
 
+  //加载相关
+  static bool operationCanceled = false;
+  static String loadingHint = '';
+
+  //Dio 相关
+  static Dio globalDio = Dio();
+  static CookieJar globalCookieJar = CookieJar();
+
+  //学期数据
+  static Map semesterData = {}; //学期
+
   //用户数据
   static List stdAccount = [];
   static String realName = '';
   static String userName = '';
   static String passWord = '';
-  static Map<String, String> stdDetail = {};
+  static Map stdDetail = {};
   var documentsDirectory = "";
   static String enrollTime = '1900-01-01';
   static String graduationTime = '1900-01-01';
