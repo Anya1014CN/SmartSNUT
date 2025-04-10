@@ -85,6 +85,8 @@ class Modules {
       if(await emnumfile.exists()){
         GlobalVars.emNum = int.parse(await emnumfile.readAsString());
         await emnumfile.delete();
+      }else{
+        return;
       }
 
       String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
@@ -92,6 +94,8 @@ class Modules {
       if(await openidfile.exists()){
         GlobalVars.openId = await openidfile.readAsString();
         await openidfile.delete();
+      }else{
+        return;
       }
 
       String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
@@ -99,6 +103,8 @@ class Modules {
       if(await wechatIdfile.exists()){
         GlobalVars.wechatUserId = await wechatIdfile.readAsString();
         await wechatIdfile.delete();
+      }else{
+        return;
       }
 
       String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
@@ -106,6 +112,7 @@ class Modules {
       if(await wechatUserNicknamefile.exists()){
         GlobalVars.wechatUserNickname = await wechatUserNicknamefile.readAsString();
           GlobalVars.emBinded = true;
+      }else{
         return;
       }
       
