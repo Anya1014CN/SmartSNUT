@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/login.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
 import 'package:smartsnut/globalvars.dart';
@@ -935,7 +936,7 @@ class _SettingsPage extends State<SettingsPage>{
                         if(mounted){
                           setState((){
                             GlobalVars.fontsizeint = 0;
-                            setfontsize();
+                            Modules.setFontSize();
                           });
                         }
                         saveSettings();
@@ -956,7 +957,7 @@ class _SettingsPage extends State<SettingsPage>{
                         if(mounted){
                           setState((){
                             GlobalVars.fontsizeint = 1;
-                            setfontsize();
+                            Modules.setFontSize();
                           });
                         }
                         saveSettings();
@@ -977,7 +978,7 @@ class _SettingsPage extends State<SettingsPage>{
                         if(mounted){
                           setState((){
                             GlobalVars.fontsizeint = 2;
-                            setfontsize();
+                            Modules.setFontSize();
                           });
                         }
                         saveSettings();
@@ -998,7 +999,7 @@ class _SettingsPage extends State<SettingsPage>{
                         if(mounted){
                           setState((){
                             GlobalVars.fontsizeint = 3;
-                            setfontsize();
+                            Modules.setFontSize();
                           });
                         }
                         saveSettings();
@@ -1019,7 +1020,7 @@ class _SettingsPage extends State<SettingsPage>{
                         if(mounted){
                           setState((){
                             GlobalVars.fontsizeint = 4;
-                            setfontsize();
+                            Modules.setFontSize();
                           });
                         }
                         saveSettings();
@@ -1040,7 +1041,7 @@ class _SettingsPage extends State<SettingsPage>{
                         if(mounted){
                           setState((){
                             GlobalVars.fontsizeint = 5;
-                            setfontsize();
+                            Modules.setFontSize();
                           });
                         }
                         saveSettings();
@@ -1061,7 +1062,7 @@ class _SettingsPage extends State<SettingsPage>{
                         if(mounted){
                           setState((){
                             GlobalVars.fontsizeint = 6;
-                            setfontsize();
+                            Modules.setFontSize();
                           });
                         }
                         saveSettings();
@@ -1086,45 +1087,6 @@ class _SettingsPage extends State<SettingsPage>{
         );
       },
     );
-  }
-
-  //设置字体大小
-  setfontsize() {
-    double changevalue = 0;
-    if(GlobalVars.fontsizeint == 0)changevalue = -6;
-    if(GlobalVars.fontsizeint == 1)changevalue = -4;
-    if(GlobalVars.fontsizeint == 2)changevalue = -2;
-    if(GlobalVars.fontsizeint == 3)changevalue = 0;
-    if(GlobalVars.fontsizeint == 4)changevalue = 2;
-    if(GlobalVars.fontsizeint == 5)changevalue = 4;
-    if(GlobalVars.fontsizeint == 6)changevalue = 6;
-
-    //弹出对话框字体
-    GlobalVars.alertdialogTitle = DefaultfontSize.alertdialogTitle + changevalue;
-    GlobalVars.alertdialogContent = DefaultfontSize.alertdialogContent + changevalue;
-
-    //通用页面字体
-    GlobalVars.splashPageTitle = DefaultfontSize.splashPageTitle + changevalue;
-    GlobalVars.bottonbarAppnameTitle = DefaultfontSize.bottonbarAppnameTitle + changevalue;
-    GlobalVars.bottonbarSelectedTitle = DefaultfontSize.bottonbarSelectedTitle + changevalue;
-    GlobalVars.bottonbarUnselectedTitle = DefaultfontSize.bottonbarUnselectedTitle + changevalue;
-    GlobalVars.genericPageTitle = DefaultfontSize.genericPageTitle + changevalue;
-    GlobalVars.genericPageTitleSmall = DefaultfontSize.genericPageTitleSmall + changevalue;
-    GlobalVars.genericGreetingTitle = DefaultfontSize.genericGreetingTitle + changevalue;
-    GlobalVars.genericFloationActionButtonTitle = DefaultfontSize.genericFloationActionButtonTitle + changevalue;
-    GlobalVars.dividerTitle = DefaultfontSize.dividerTitle + changevalue;
-    GlobalVars.listTileTitle = DefaultfontSize.listTileTitle + changevalue;
-    GlobalVars.listTileSubtitle = DefaultfontSize.listTileSubtitle + changevalue;
-    GlobalVars.genericFunctionsButtonTitle = DefaultfontSize.genericFunctionsButtonTitle + changevalue;
-    GlobalVars.genericSwitchContainerTitle = DefaultfontSize.genericSwitchContainerTitle + changevalue;
-    GlobalVars.genericSwitchMenuTitle = DefaultfontSize.genericSwitchMenuTitle + changevalue;
-    GlobalVars.genericTextSmall = DefaultfontSize.genericTextSmall + changevalue;
-    GlobalVars.genericTextMedium = DefaultfontSize.genericTextMedium + changevalue;
-    GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
-
-    if(mounted){
-      setState(() {});
-    }
   }
 
   //切换主题颜色

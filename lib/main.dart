@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/AppPage/app_page.dart';
 import 'package:smartsnut/Home/home.dart';
+import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/splash.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:smartsnut/mePage/me_page.dart';
@@ -58,46 +59,8 @@ class _SmartSNUT extends State<SmartSNUT> {
         GlobalVars.courseBlockColorsInt = 0;
       });
     }
-    setfontsize();
-  }
-
-  //设置字体大小
-  setfontsize() {
-    double changevalue = 0;
-    if(GlobalVars.fontsizeint == 0)changevalue = -6;
-    if(GlobalVars.fontsizeint == 1)changevalue = -4;
-    if(GlobalVars.fontsizeint == 2)changevalue = -2;
-    if(GlobalVars.fontsizeint == 3)changevalue = 0;
-    if(GlobalVars.fontsizeint == 4)changevalue = 2;
-    if(GlobalVars.fontsizeint == 5)changevalue = 4;
-    if(GlobalVars.fontsizeint == 6)changevalue = 6;
-
-    //弹出对话框字体
-    GlobalVars.alertdialogTitle = DefaultfontSize.alertdialogTitle + changevalue;
-    GlobalVars.alertdialogContent = DefaultfontSize.alertdialogContent + changevalue;
-
-    //通用页面字体
-    GlobalVars.splashPageTitle = DefaultfontSize.splashPageTitle + changevalue;
-    GlobalVars.bottonbarAppnameTitle = DefaultfontSize.bottonbarAppnameTitle + changevalue;
-    GlobalVars.bottonbarSelectedTitle = DefaultfontSize.bottonbarSelectedTitle + changevalue;
-    GlobalVars.bottonbarUnselectedTitle = DefaultfontSize.bottonbarUnselectedTitle + changevalue;
-    GlobalVars.genericPageTitle = DefaultfontSize.genericPageTitle + changevalue;
-    GlobalVars.genericPageTitleSmall = DefaultfontSize.genericPageTitleSmall + changevalue;
-    GlobalVars.genericGreetingTitle = DefaultfontSize.genericGreetingTitle + changevalue;
-    GlobalVars.genericFloationActionButtonTitle = DefaultfontSize.genericFloationActionButtonTitle + changevalue;
-    GlobalVars.dividerTitle = DefaultfontSize.dividerTitle + changevalue;
-    GlobalVars.listTileTitle = DefaultfontSize.listTileTitle + changevalue;
-    GlobalVars.listTileSubtitle = DefaultfontSize.listTileSubtitle + changevalue;
-    GlobalVars.genericFunctionsButtonTitle = DefaultfontSize.genericFunctionsButtonTitle + changevalue;
-    GlobalVars.genericSwitchContainerTitle = DefaultfontSize.genericSwitchContainerTitle + changevalue;
-    GlobalVars.genericSwitchMenuTitle = DefaultfontSize.genericSwitchMenuTitle + changevalue;
-    GlobalVars.genericTextSmall = DefaultfontSize.genericTextSmall + changevalue;
-    GlobalVars.genericTextMedium = DefaultfontSize.genericTextMedium + changevalue;
-    GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
-
-    if(mounted){
-      setState(() {});
-    }
+    Modules.setFontSize();
+    if(mounted) setState(() {});
   }
 
   //每秒刷新一次数据及页面
