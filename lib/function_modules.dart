@@ -66,6 +66,10 @@ class Modules {
       GlobalVars.wechatUserNickname = GlobalVars.emUserData[0]['wechatUserNickname'];
       GlobalVars.emAvatarPath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
       GlobalVars.emNum = GlobalVars.emDetail.length;
+      if(GlobalVars.openId == '' || GlobalVars.wechatUserId == '' || GlobalVars.wechatUserNickname == ''){
+        GlobalVars.emBinded = false;
+        return;
+      }
       GlobalVars.emBinded = true;
     }else{
       GlobalVars.emBinded = false;
