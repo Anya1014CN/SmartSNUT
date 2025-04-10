@@ -1089,4 +1089,236 @@ class Modules {
     });
     return message;
   }
+
+  //初始化空闲教室数据
+  static Future<List> initPublicFreeData() async {
+    GlobalVars.loadingHint = '正在获取初始数据...';
+
+    //存储返回的信息
+    List message = [];
+
+    late Response publicFreeResponse;
+    try{
+      if(GlobalVars.operationCanceled) {
+        message.clear();
+        message.add({
+          'statue': true,
+          'message': '操作已取消',
+        });
+        return message;
+      }
+      publicFreeResponse = await GlobalVars.globalDio.get('http://jwgl.snut.edu.cn/eams/publicFree!index.action');
+    }catch(e){
+      message.clear();
+      message.add({
+        'statue': false,
+        'message': '无法连接服务器，请稍后再试',
+      });
+      return message;
+    }
+
+    //解析选择框数据
+    List classroomTypeList = [];
+    List campusList = [];
+    List buildingList = [];
+
+    // 使用 HTML 解析器解析响应内容
+    var document = parser.parse(publicFreeResponse.data);
+    
+    // 提取教室类型数据
+    var classroomTypeSelect = document.querySelector('select#type');
+    if (classroomTypeSelect != null) {
+      var options = classroomTypeSelect.querySelectorAll('option');
+      classroomTypeList.add({
+        'name': '未选择',
+        'id': ''
+      });
+      for (var option in options) {
+        String value = option.attributes['value'] ?? '';
+        String title = option.attributes['title'] ?? '';
+        
+        // 跳过空选项（通常是"..."选项）
+        if (value.isNotEmpty && title.isNotEmpty) {
+          classroomTypeList.add({
+            'name': title,
+            'id': value
+          });
+        }
+      }
+    }
+    
+    // 提取校区数据
+    var campusSelect = document.querySelector('select#campus');
+    if (campusSelect != null) {
+      var options = campusSelect.querySelectorAll('option');
+      campusList.add({
+        'name': '未选择',
+        'id': ''
+      });
+      for (var option in options) {
+        String value = option.attributes['value'] ?? '';
+        String title = option.attributes['title'] ?? '';
+        
+        if (value.isNotEmpty && title.isNotEmpty) {
+          campusList.add({
+            'name': title,
+            'id': value
+          });
+        }
+      }
+    }
+    
+    // 提取教学楼数据
+    var buildingSelect = document.querySelector('select#building');
+    if (buildingSelect != null) {
+      var options = buildingSelect.querySelectorAll('option');
+      buildingList.add({
+        'name': '未选择',
+        'id': ''
+      });
+      for (var option in options) {
+        String value = option.attributes['value'] ?? '';
+        String title = option.attributes['title'] ?? '';
+        
+        if (value.isNotEmpty && title.isNotEmpty) {
+          buildingList.add({
+            'name': title,
+            'id': value
+          });
+        }
+      }
+    }
+
+    // 返回成功信息和提取的数据
+    message.clear();
+    message.add({
+      'statue': true,
+      'message': '获取空闲教室初始数据成功',
+      'campusList': campusList,
+      'buildingList': buildingList,
+      'classroomTypeList': classroomTypeList,
+    });
+    return message;
+  }
+
+  //查询空闲教室
+  static Future<List> queryPublicFreeData(String classroomType,  String campus, String building,  String seats,  String classroomName, String cycleCount, String cycleType, String dateStart, String dateEnd, String roomApplyType, String timeBegin, String timeEnd,int pageNo) async {
+    GlobalVars.loadingHint = '正在查询空闲教室...';
+
+    //存储返回的信息
+    List message = [];
+    List publicFreeData = [];
+
+    //查询信息
+    var headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+    var data = {
+      'classroom.type.id': classroomType,
+      'classroom.campus.id': campus,
+      'classroom.building.id': building,
+      'seats': seats,
+      'classroom.name': classroomName,
+      'cycleTime.cycleCount': cycleCount,
+      'cycleTime.cycleType': cycleType,
+      'cycleTime.dateBegin': dateStart,
+      'cycleTime.dateEnd': dateEnd,
+      'roomApplyTimeType': roomApplyType,
+      'timeBegin': timeBegin,
+      'timeEnd': timeEnd,
+      'pageNo':pageNo
+    };
+
+    late Response publicFreeResponse;
+    try {
+      if(GlobalVars.operationCanceled) {
+        message.clear();
+        message.add({
+          'statue': true,
+          'message': '操作已取消',
+        });
+        return message;
+      }
+      var response = await GlobalVars.globalDio.request(
+        'http://jwgl.snut.edu.cn/eams/publicFree!search.action',
+        options: Options(
+          method: 'POST',
+          headers: headers,
+        ),
+        data: data,
+      );
+      publicFreeResponse = response;
+    } catch(e) {
+      message.clear();
+      message.add({
+        'statue': false,
+        'message': '无法连接服务器，请稍后再试',
+      });
+      return message;
+    }
+    
+    //提取查询结果
+    int currentPage = 1;
+    int pageSize = 20;
+    int totalItems = 0;
+    try {
+      // 使用HTML解析器解析响应内容
+      var document = parser.parse(publicFreeResponse.data);
+      // 获取教室数据表格，从表格体获取所有行
+      var tableRows = document.querySelectorAll('table.gridtable > tbody > tr');
+      // 遍历所有行，跳过标题行
+      for (var row in tableRows) {
+        var cells = row.querySelectorAll('td');
+        if (cells.length >= 6) {
+          // 直接从单元格中提取数据
+          Map<String, String> classroom = {
+            'Number': cells[0].text.trim(),              // 序号
+            'Name': cells[1].text.trim(),                // 名称
+            'Building': cells[2].text.trim(),            // 教学楼
+            'Campus': cells[3].text.trim(),              // 校区
+            'ClassroomType': cells[4].text.trim(),       // 教室设备配置
+            'Capacity': cells[5].text.trim().replaceAll(RegExp(r'\s+'), ''), // 容量
+          };
+          publicFreeData.add(classroom);
+        }
+      }
+      
+      // 获取分页信息
+      var scripts = document.querySelectorAll('script');
+      for (var script in scripts) {
+        String scriptText = script.text;
+        if (scriptText.contains('page_grid') && scriptText.contains('pageInfo')) {
+          // 提取总页数和每页数量信息
+          RegExp pageInfoRegex = RegExp(r'page_\w+\.pageInfo\((\d+),(\d+),(\d+)\);');
+          Match? pageInfoMatch = pageInfoRegex.firstMatch(scriptText);
+          if (pageInfoMatch != null && pageInfoMatch.groupCount >= 3) {
+            currentPage = int.parse(pageInfoMatch.group(1)!);
+            pageSize = int.parse(pageInfoMatch.group(2)!);
+            totalItems = int.parse(pageInfoMatch.group(3)!);
+            break;
+          }
+        }
+      }
+      
+    } catch (e) {
+      message.clear();
+      message.add({
+        'statue': false,
+        'message': '解析教室数据失败: ${e.toString()}',
+      });
+      return message;
+    }
+
+    message.clear();
+    message.add({
+      'statue': true,
+      'message': '查询空闲教室成功',
+      'currentPage': currentPage,
+      'pageSize': pageSize,
+      'totalItems': totalItems,
+      'publicFreeData': publicFreeData,
+    });
+
+    return message;
+  }
 }

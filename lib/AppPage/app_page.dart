@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartsnut/AppPage/electricMeter/electricmeter_page.dart';
+import 'package:smartsnut/AppPage/publicFree/publicfree_page.dart';
 import 'package:smartsnut/AppPage/stdGrades/stdgrades_page.dart';
 import 'package:smartsnut/AppPage/schoolNetwork/schoolnetwork_page.dart';
 import 'package:smartsnut/AppPage/stdDetail/stddetail_page.dart';
@@ -180,6 +181,29 @@ class _AppPageState extends State<AppPage> {
                                         StdGradesPage()));
                           },
                         ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '空闲教室查询',
+                          'classroom',
+                          () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext ctx) =>
+                                        PublicFreePage()));
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: SizedBox(),
                       ),
                     ],
                   ),
