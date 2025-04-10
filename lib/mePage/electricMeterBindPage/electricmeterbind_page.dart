@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,9 +16,6 @@ TextEditingController textEmIdController = TextEditingController();
 Uri url = Uri.parse("uri");
 
 bool isQuerying = false;
-
-//用于存储用户头像路径
-String emavatarpath = '';
 
 //判断绑定状态
 bool isBinding = false;
@@ -39,111 +37,9 @@ class ElectricmeterbindPage extends StatefulWidget{
 
 class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
 
-  checkbindstate() async {
-    //每次读取之前进行电费账号目录检查，防止后续版本升级，目录未被创建导致崩溃
-    Directory datadirectory = Directory('${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata');
-    if(await datadirectory.exists() == false){
-      await datadirectory.create();
-    }
-
-    //读取用户数据
-    String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
-    File emUserDatafile = File(emUserDatapath);
-    if(await emUserDatafile.exists() == true){
-    GlobalVars.emUserData =jsonDecode(await emUserDatafile.readAsString());
-
-    final docpath = (await getApplicationDocumentsDirectory()).path;
-    if(mounted){
-      List emUserData = jsonDecode(await emUserDatafile.readAsString());
-        if(emUserData[0]['openId'] != ''){
-          setState(() {
-            GlobalVars.openId = emUserData[0]['openId'];
-            GlobalVars.wechatUserId = emUserData[0]['wechatId'];
-            GlobalVars.wechatUserNickname = emUserData[0]['wechatUserNickname'];
-            emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
-            GlobalVars.emNum = GlobalVars.emDetail.length;
-            GlobalVars.emBinded = true;
-          });
-          readEmDetail();
-          return;
-        }else{
-          if(mounted){
-            setState(() {
-              GlobalVars.emBinded = false;
-            });
-          }
-        }
-      }
-    }else{
-      if(mounted){
-        setState(() {
-          GlobalVars.emBinded = false;
-        });
-      }
-    }
-    
-    //若用户使用旧版数据且新版数据不存在，则进行迁移
-    if(await emUserDatafile.exists() == false){
-      String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
-      File emnumfile = File(emnumpath);
-      if(await emnumfile.exists()){
-        GlobalVars.emNum = int.parse(await emnumfile.readAsString());
-        await emnumfile.delete();
-      }
-
-      String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
-      File openidfile = File(openidpath);
-      if(await openidfile.exists()){
-        GlobalVars.openId = await openidfile.readAsString();
-        await openidfile.delete();
-      }
-
-      String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
-      File wechatIdfile = File(wechatIdpath);
-      if(await wechatIdfile.exists()){
-        GlobalVars.wechatUserId = await wechatIdfile.readAsString();
-        await wechatIdfile.delete();
-      }
-
-      String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
-      File wechatUserNicknamefile = File(wechatUserNicknamepath);
-      if(await wechatUserNicknamefile.exists()){
-        GlobalVars.wechatUserNickname = await wechatUserNicknamefile.readAsString();
-        await wechatUserNicknamefile.delete();
-        setState(() {
-          GlobalVars.emBinded = true;
-          readEmDetail();
-        });
-        return;
-      }
-      
-      GlobalVars.emUserData.clear();
-      GlobalVars.emUserData.add({
-        'emNum': GlobalVars.emNum,
-        'openId': GlobalVars.openId,
-        'wechatId': GlobalVars.wechatUserId,
-        'wechatUserNickname': GlobalVars.wechatUserNickname,
-      });
-      emUserDatafile.writeAsString(jsonEncode(GlobalVars.emUserData));
-    }
-  }
-  
-  readEmDetail() async {
-    //读取电表详情
-    String emDetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emdetail.json';
-    File emDetailfile = File(emDetailpath);
-    if(await emDetailfile.exists() == true){
-      GlobalVars.emDetail = jsonDecode(await emDetailfile.readAsString());
-    }
-    setState(() {});
-  }
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      checkbindstate();
-    });
   }
 
 
@@ -207,7 +103,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                             CircleAvatar(
                               radius: 30,
                               backgroundImage: GlobalVars.emBinded 
-                                ? FileImage(File(emavatarpath))
+                                ? FileImage(File(GlobalVars.emAvatarPath))
                                 : AssetImage('assets/images/default_avatar.png') as ImageProvider
                             ),
                             SizedBox(width: 16),
@@ -777,8 +673,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
 
     final docpath = (await getApplicationDocumentsDirectory()).path;
 
-    checkbindstate();
-    readEmDetail();
+    await Modules.readEMInfo();
 
     if(mounted){
       ScaffoldMessenger.of(context).showSnackBar(
@@ -792,7 +687,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         ),
       );
       setState(() {
-        emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
+        GlobalVars.emAvatarPath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
         GlobalVars.wechatUserId = emresponse1.data['data']['wechatId'].toString();
         GlobalVars.wechatUserNickname = emresponse1.data['data']['wechatUserNickname'].toString();
         GlobalVars.emNum =  emresponse2.data['data'].length;

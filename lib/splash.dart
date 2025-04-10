@@ -1,12 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:smartsnut/login.dart';
 import 'package:smartsnut/main.dart';
-
-int loginstate = 0;// 0 - Splash；1 - 登录页；2 - 首页
 
 class SplashPage extends StatefulWidget{
   const SplashPage({super.key});
@@ -19,97 +15,13 @@ class SplashPage extends StatefulWidget{
 }
 
 class _SplashPageState extends State<SplashPage>{
-
-  //检查登录状态
-  checkLoginState() async {
-    String loginsuccesspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/LoginSuccess';
-    File loginsuccessfile = File(loginsuccesspath);
-    if(await loginsuccessfile.exists() == false){
-      if(mounted){
-        setState(() {
-          loginstate = 1;
-          loadPage();
-        });
-      }
-    }else{
-      if(mounted){
-        setState(() {
-          loginstate = 2;
-          readStdAccount();
-        });
-      }
-    }
-  }
-
-  //读取用户信息并保存在变量中
-  readStdAccount() async {
-    String stdAccountpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdAccount.json';
-    File stdAccountfile = File(stdAccountpath);
-    GlobalVars.stdAccount = jsonDecode(await stdAccountfile.readAsString());
-    
-    String stdDetailPath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdDetail.json';
-    File stdDetailFile = File(stdDetailPath);
-    GlobalVars.stdDetail = jsonDecode(await stdDetailFile.readAsString());
-    if(mounted){
-      setState(() {
-        GlobalVars.realName = GlobalVars.stdDetail['姓名：'];
-        GlobalVars.userName = GlobalVars.stdAccount[0]['UserName'];
-        GlobalVars.passWord = GlobalVars.stdAccount[0]['PassWord'];
-      });
-    }
-    String stdDetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdDetail.json';
-    File stdDetailfile = File(stdDetailpath);
-    String stdDetailString = await stdDetailfile.readAsString();
-    Map<String, dynamic> jsonData = json.decode(stdDetailString);
-    GlobalVars.stdDetail = jsonData.map((key, value) => MapEntry(key, value.toString()));
-    if(mounted){
-      setState(() {
-        GlobalVars.enrollTime = GlobalVars.stdDetail['入校时间：']!;
-        GlobalVars.graduationTime = GlobalVars.stdDetail['毕业时间：']!;
-      });
-    }
-    emBindCheck();
-  }
-
-  //判断用户是否绑定电表账号
-  emBindCheck() async {
-    String openidtxtpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
-    File openidtxtfile = File(openidtxtpath);
-    if(await openidtxtfile.exists() == true){
-      if(mounted){
-        setState(() {
-          GlobalVars.emBinded = true;
-        });
-      }else{
-        setState(() {
-          GlobalVars.emBinded = false;
-        });
-      }
-    }
-    String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
-    File emUserDatafile = File(emUserDatapath);
-    if(await emUserDatafile.exists() == true){
-      List emUserData = jsonDecode(await emUserDatafile.readAsString());
-      if(emUserData[0]['openId'] != ''){
-        if(mounted){
-          setState(() {
-            GlobalVars.emBinded = true;
-          });
-        }
-      }else{
-        setState(() {
-          GlobalVars.emBinded = false;
-        });
-      }
-    }
-    loadPage();
-  }
+  
 
   //根据登录状态加载页面
   loadPage(){
-    if(loginstate == 1){
+    if(GlobalVars.loginState == 1){
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
-    }if(loginstate == 2){
+    }if(GlobalVars.loginState == 2){
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
     }
   }
@@ -117,7 +29,12 @@ class _SplashPageState extends State<SplashPage>{
   @override
   void initState() {
     super.initState();
-    checkLoginState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Modules.checkLoginState();
+      await Modules.readStdAccount();
+      await Modules.readEMInfo();
+      loadPage();
+    });
   }
   @override
   Widget build(BuildContext context) {

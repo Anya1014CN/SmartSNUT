@@ -29,26 +29,7 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_){
       queryem();
-      initData();
     });
-  }
-
-  initData() async {
-    //旧版数据
-    String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
-    File emnumfile = File(emnumpath);
-    if(await emnumfile.exists()){
-      GlobalVars.emNum = int.parse(await emnumfile.readAsString());
-    }
-
-    //新版数据
-    String emDetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emdetail.json';
-    File emDetailfile = File(emDetailpath);
-    if(await emDetailfile.exists()){
-      GlobalVars.emDetail = jsonDecode(await emDetailfile.readAsString());
-      GlobalVars.emNum = GlobalVars.emDetail.length;
-    }
-    setState(() {});
   }
 
   @override
@@ -346,81 +327,11 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
     );
   }
 
-    //读取用户 id
-    //读取用户数据
-    String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
-    File emUserDatafile = File(emUserDatapath);
-    if(await emUserDatafile.exists() == true){
-    GlobalVars.emUserData =jsonDecode(await emUserDatafile.readAsString());
-
-    final docpath = (await getApplicationDocumentsDirectory()).path;
-    if(mounted){
-        setState(() {
-          GlobalVars.openId = GlobalVars.emUserData[0]['openId'];
-          GlobalVars.wechatUserId = GlobalVars.emUserData[0]['wechatId'];
-          GlobalVars.wechatUserNickname = GlobalVars.emUserData[0]['wechatUserNickname'];
-          emavatarpath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
-          GlobalVars.emNum = GlobalVars.emDetail.length;
-          GlobalVars.emBinded = true;
-        });
-      }
-    }else{
-      if(mounted){
-        setState(() {
-          GlobalVars.emBinded = false;
-        });
-      }
-    }
-    
-    //若用户使用旧版数据且新版数据不存在，则进行迁移
-    if(await emUserDatafile.exists() == false){
-      String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
-      File emnumfile = File(emnumpath);
-      if(await emnumfile.exists()){
-        GlobalVars.emNum = int.parse(await emnumfile.readAsString());
-        await emnumfile.delete();
-      }
-
-      String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
-      File openidfile = File(openidpath);
-      if(await openidfile.exists()){
-        GlobalVars.openId = await openidfile.readAsString();
-        await openidfile.delete();
-      }
-
-      String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
-      File wechatIdfile = File(wechatIdpath);
-      if(await wechatIdfile.exists()){
-        GlobalVars.wechatUserId = await wechatIdfile.readAsString();
-        await wechatIdfile.delete();
-      }
-
-      String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
-      File wechatUserNicknamefile = File(wechatUserNicknamepath);
-      if(await wechatUserNicknamefile.exists()){
-        GlobalVars.wechatUserNickname = await wechatUserNicknamefile.readAsString();
-        await wechatUserNicknamefile.delete();
-        setState(() {
-          GlobalVars.emBinded = true;
-        });
-        return;
-      }
-      
-      GlobalVars.emUserData.clear();
-      GlobalVars.emUserData.add({
-        'emNum': GlobalVars.emNum,
-        'openId': GlobalVars.openId,
-        'wechatId': GlobalVars.wechatUserId,
-        'wechatUserNickname': GlobalVars.wechatUserNickname,
-      });
-      emUserDatafile.writeAsString(jsonEncode(GlobalVars.emUserData));
-    }
-
     for(int i = 0;i <= GlobalVars.emNum - 1;i++){
       if(mounted){
         setState(() {
-        currentQuery = i + 1;
-      });
+          currentQuery = i + 1;
+        });
       }
       //获取电表 id
       String emdetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emdetail.json';

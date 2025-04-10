@@ -11,6 +11,8 @@ class GlobalVars {
   static bool operationCanceled = false;
   static String loadingHint = '';
 
+  static int loginState = 0; //0 - 未登录；1 - 登录失败；2 - 登录成功
+
   //Dio 相关
   static Dio globalDio = Dio();
   static CookieJar globalCookieJar = CookieJar();
@@ -30,6 +32,7 @@ class GlobalVars {
 
   //电表数据
   static List emUserData = [];//电费账号用户数据
+  static String emAvatarPath = '';
   static String openId = '';
   static String wechatUserNickname = '';
   static String wechatUserId = '';

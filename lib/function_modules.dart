@@ -10,6 +10,116 @@ import 'dart:math';
 import 'package:smartsnut/globalvars.dart';
 
 class Modules {
+  //检查登录状态
+  static checkLoginState() async {
+    String loginsuccesspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/LoginSuccess';
+    File loginsuccessfile = File(loginsuccesspath);
+    if(await loginsuccessfile.exists() == false){
+      GlobalVars.loginState = 1;
+    }else{
+      GlobalVars.loginState = 2;
+    }
+  }
+
+  //读取用户信息并保存在变量中
+  static readStdAccount() async {
+    String stdAccountpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdAccount.json';
+    File stdAccountfile = File(stdAccountpath);
+    GlobalVars.stdAccount = jsonDecode(await stdAccountfile.readAsString());
+    
+    String stdDetailPath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdDetail.json';
+    File stdDetailFile = File(stdDetailPath);
+    GlobalVars.stdDetail = jsonDecode(await stdDetailFile.readAsString());
+    
+    GlobalVars.realName = GlobalVars.stdDetail['姓名：'];
+    GlobalVars.userName = GlobalVars.stdAccount[0]['UserName'];
+    GlobalVars.passWord = GlobalVars.stdAccount[0]['PassWord'];
+        
+    String stdDetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdDetail.json';
+    File stdDetailfile = File(stdDetailpath);
+    String stdDetailString = await stdDetailfile.readAsString();
+    Map<String, dynamic> jsonData = json.decode(stdDetailString);
+    GlobalVars.stdDetail = jsonData.map((key, value) => MapEntry(key, value.toString()));
+
+    GlobalVars.enrollTime = GlobalVars.stdDetail['入校时间：']!;
+    GlobalVars.graduationTime = GlobalVars.stdDetail['毕业时间：']!;
+  }
+
+  //读取电表信息
+  static readEMInfo() async {
+    String openidtxtpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
+    File openidtxtfile = File(openidtxtpath);
+    if(await openidtxtfile.exists() == true){
+      GlobalVars.emBinded = true;
+    }else{
+      GlobalVars.emBinded = false;
+    }
+    String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
+    File emUserDatafile = File(emUserDatapath);
+    
+    if(await emUserDatafile.exists() == true){
+      GlobalVars.emUserData =jsonDecode(await emUserDatafile.readAsString());
+
+      final docpath = (await getApplicationDocumentsDirectory()).path;
+      GlobalVars.openId = GlobalVars.emUserData[0]['openId'];
+      GlobalVars.wechatUserId = GlobalVars.emUserData[0]['wechatId'];
+      GlobalVars.wechatUserNickname = GlobalVars.emUserData[0]['wechatUserNickname'];
+      GlobalVars.emAvatarPath = '$docpath/SmartSNUT/embinddata/emavatar.jpg';
+      GlobalVars.emNum = GlobalVars.emDetail.length;
+      GlobalVars.emBinded = true;
+    }else{
+      GlobalVars.emBinded = false;
+    }
+    
+    //读取电表详情
+    String emDetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emdetail.json';
+    File emDetailfile = File(emDetailpath);
+    if(await emDetailfile.exists() == true){
+      GlobalVars.emDetail = jsonDecode(await emDetailfile.readAsString());
+    }
+
+    //若用户使用旧版数据且新版数据不存在，则进行迁移
+    if(await emUserDatafile.exists() == false){
+      String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
+      File emnumfile = File(emnumpath);
+      if(await emnumfile.exists()){
+        GlobalVars.emNum = int.parse(await emnumfile.readAsString());
+        await emnumfile.delete();
+      }
+
+      String openidpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserOpenid.txt';
+      File openidfile = File(openidpath);
+      if(await openidfile.exists()){
+        GlobalVars.openId = await openidfile.readAsString();
+        await openidfile.delete();
+      }
+
+      String wechatIdpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatId.txt';
+      File wechatIdfile = File(wechatIdpath);
+      if(await wechatIdfile.exists()){
+        GlobalVars.wechatUserId = await wechatIdfile.readAsString();
+        await wechatIdfile.delete();
+      }
+
+      String wechatUserNicknamepath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/wechatUserNickname.txt';
+      File wechatUserNicknamefile = File(wechatUserNicknamepath);
+      if(await wechatUserNicknamefile.exists()){
+        GlobalVars.wechatUserNickname = await wechatUserNicknamefile.readAsString();
+          GlobalVars.emBinded = true;
+        return;
+      }
+      
+      GlobalVars.emUserData.clear();
+      GlobalVars.emUserData.add({
+        'emNum': GlobalVars.emNum,
+        'openId': GlobalVars.openId,
+        'wechatId': GlobalVars.wechatUserId,
+        'wechatUserNickname': GlobalVars.wechatUserNickname,
+      });
+      emUserDatafile.writeAsString(jsonEncode(GlobalVars.emUserData));
+    }
+  }
+
   //加密密码
   static String encryptPassword(String passWord, String pwdEncryptSalt) {
     // 字符集
