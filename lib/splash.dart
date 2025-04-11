@@ -30,6 +30,7 @@ class _SplashPageState extends State<SplashPage>{
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Modules.checkDirectory();
       await Modules.checkLoginState();
       if(GlobalVars.loginState == 2){
         await Modules.readStdAccount();
@@ -38,6 +39,7 @@ class _SplashPageState extends State<SplashPage>{
       loadPage();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
