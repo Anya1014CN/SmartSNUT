@@ -11,7 +11,7 @@ class GlobalVars {
   static bool operationCanceled = false;
   static String loadingHint = '';
 
-  static int loginState = 0; //0 - 未登录；1 - 登录失败；2 - 登录成功
+  static int loginState = 0; //1 - 未登录；2 - 已登录
 
   //Dio 相关
   static Dio globalDio = Dio();

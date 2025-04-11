@@ -31,8 +31,10 @@ class _SplashPageState extends State<SplashPage>{
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Modules.checkLoginState();
-      await Modules.readStdAccount();
-      await Modules.readEMInfo();
+      if(GlobalVars.loginState == 2){
+        await Modules.readStdAccount();
+        await Modules.readEMInfo();
+      }
       loadPage();
     });
   }
