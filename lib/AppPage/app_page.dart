@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartsnut/AppPage/classContacts/classcontacts_page.dart';
 import 'package:smartsnut/AppPage/electricMeter/electricmeter_page.dart';
 import 'package:smartsnut/AppPage/publicFree/publicfree_page.dart';
 import 'package:smartsnut/AppPage/stdGrades/stdgrades_page.dart';
@@ -212,6 +213,7 @@ class _AppPageState extends State<AppPage> {
             ),
           ),
         ),
+        
         // 后勤功能标题
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
@@ -307,6 +309,69 @@ class _AppPageState extends State<AppPage> {
             ),
           ),
         ),
+
+        // 学工系统卡片
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                width: 4,
+                height: 18,
+                margin: EdgeInsets.only(right: 8),
+              ),
+              Text(
+                '学工系统',
+                style: TextStyle(
+                    fontSize: GlobalVars.dividerTitle,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary),
+              ),
+            ],
+          ),
+        ),
+        // 学工系统卡片
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+          child: Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+            color: Theme.of(context).colorScheme.surfaceDim,
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: buildFunctionButton(
+                      context,
+                      '班级通讯录',
+                      'contacts',
+                      () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext ctx) =>
+                                    ClasscontactsPage()));
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: SizedBox(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        
         // 校内链接标题
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),

@@ -208,6 +208,12 @@ class Modules {
       await emdataDirectory.create();
     }
 
+    //学工系统数据目录
+    Directory wzxyDirectory = Directory('${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/wzxyData');
+    if(await wzxyDirectory.exists() == false){
+      await wzxyDirectory.create();
+    }
+
     //绩点计算器数据目录 删除
     Directory gpaCalculatordirectory = Directory('${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/GPACalculator');
     if(await gpaCalculatordirectory.exists() == true){
@@ -251,8 +257,15 @@ class Modules {
   }
 
   //初始化登录信息
-  static Future<List> initialLoginAuth() async {
+  static Future<List> initialLoginAuth(String loginService) async {
     GlobalVars.loadingHint = '正在获取登录数据...';
+
+    String loginServiceLocation = '';
+    if(loginService == 'jwgl'){
+      loginServiceLocation = 'http://jwgl.snut.edu.cn/eams/ssoLogin.action';
+    }if(loginService == 'wzxy'){
+      loginServiceLocation = 'https://wzxy.snut.edu.cn/basicinfo/mobile/login/cas?fid=50';
+    }
 
     //清除残留 Cookie
     GlobalVars.globalCookieJar.deleteAll();
@@ -276,7 +289,7 @@ class Modules {
         });
         return message;
       }
-      authresponse1 = await GlobalVars.globalDio.get('https://authserver.snut.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.snut.edu.cn%2Feams%2FssoLogin.action');
+      authresponse1 = await GlobalVars.globalDio.get('https://authserver.snut.edu.cn/authserver/login?service=$loginServiceLocation');
     }catch (e){
       message.clear();
       message.add({
@@ -321,8 +334,15 @@ class Modules {
   }
 
   //开始登录
-  static Future<List> loginAuth(String userName,String passWord,String pwdEncryptSalt,String captchaCode,String authexecution) async {
+  static Future<List> loginAuth(String userName,String passWord,String pwdEncryptSalt,String captchaCode,String authexecution,String loginService) async {
     GlobalVars.loadingHint = '正在登录统一认证平台...';
+
+    String loginServiceLocation = '';
+    if(loginService == 'jwgl'){
+      loginServiceLocation = 'http://jwgl.snut.edu.cn/eams/ssoLogin.action';
+    }if(loginService == 'wzxy'){
+      loginServiceLocation = 'https://wzxy.snut.edu.cn/basicinfo/mobile/login/cas?fid=50';
+    }
 
     //存储返回的信息
     List message = [];
@@ -352,7 +372,7 @@ class Modules {
         return message;
       }
       authresponse2 = await GlobalVars.globalDio.post(
-        'https://authserver.snut.edu.cn/authserver/login?service=http%3A%2F%2Fjwgl.snut.edu.cn%2Feams%2FssoLogin.action',
+        'https://authserver.snut.edu.cn/authserver/login?service=$loginServiceLocation',
         data: loginParams,
         options: Options(
           followRedirects: false,
@@ -400,13 +420,11 @@ class Modules {
       }
       var authresponse21 = await GlobalVars.globalDio.get(
         authresponse2.headers['location']![0],
-        data: loginParams,
         options: Options(
           followRedirects: false,
           validateStatus: (status) {
             return status! <= 302;
           },
-          contentType: Headers.formUrlEncodedContentType,
         )
       );
       //跟随第二步重定向 (ssologin 的 ticket)
@@ -420,13 +438,11 @@ class Modules {
       }
       var authresponse22 = await GlobalVars.globalDio.get(
         authresponse21.headers['location']![0],
-        data: loginParams,
         options: Options(
           followRedirects: false,
           validateStatus: (status) {
             return status! <= 307;
           },
-          contentType: Headers.formUrlEncodedContentType,
         )
       );
       //跟随第三步重定向 (ssologin 的 jsessionid)
@@ -438,14 +454,24 @@ class Modules {
         });
         return message;
       }
-      await GlobalVars.globalDio.get(
-        'http://jwgl.snut.edu.cn${authresponse22.headers['location']![0]}',
-        data: loginParams,
-        options: Options(
-          followRedirects: false,
-          contentType: Headers.formUrlEncodedContentType,
-        )
-      );
+      if(loginService == 'jwgl'){
+        await GlobalVars.globalDio.get(
+          'http://jwgl.snut.edu.cn${authresponse22.headers['location']![0]}',
+          options: Options(
+            followRedirects: false,
+          )
+        );
+      }if(loginService == 'wzxy'){
+        await GlobalVars.globalDio.get(
+          authresponse22.headers['location']![0],
+          options: Options(
+            followRedirects: false,
+            validateStatus: (status) {
+              return status! <= 400;
+            },
+          )
+        );
+      }
     }catch(e){
       message.clear();
       message.add({
@@ -1475,6 +1501,81 @@ class Modules {
       'publicFreeData': publicFreeData,
     });
 
+    return message;
+  }
+
+  //获取班级列表
+  static Future<List> getClassList() async {
+    GlobalVars.loadingHint = '正在获取班级列表...';
+
+    //存储返回的信息
+    List message = [];
+
+    late Response classListResponse;
+    try{
+      if(GlobalVars.operationCanceled) {
+        message.clear();
+        message.add({
+          'statue': true,
+          'message': '操作已取消',
+        });
+        return message;
+      }
+      classListResponse = await GlobalVars.globalDio.get('https://wzxy.snut.edu.cn/basicinfo/mobile/studentAddressBookV2/classes/getAddressBookList');
+    }catch(e){
+      message.clear();
+      message.add({
+        'statue': false,
+        'message': '无法连接服务器，请稍后再试',
+      });
+      return message;
+    }
+    Map classListJson = jsonDecode(classListResponse.data.toString());
+
+    String classListpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/wzxyData/classList.json';
+    File classListfile = File(classListpath);
+    classListfile.writeAsString(jsonEncode(classListJson['data']['classesList']));
+
+    message.clear();
+    message.add({
+      'statue': true,
+      'message': '获取班级列表成功',
+      'classList': classListJson['data']['classesList'],
+    });
+    return message;
+  }
+
+  //获取班级成员列表
+  static Future<List> getClassMemberList(String classId) async {
+    GlobalVars.loadingHint = '正在获取班级成员列表...';
+
+    //存储返回的信息
+    List message = [];
+
+    late Response getClassUsersResponse;
+    try{
+      var response = await GlobalVars.globalDio.get('https://wzxy.snut.edu.cn/basicinfo/mobile/studentAddressBookV2/classes/getClassesUsers?classesId=$classId');
+      getClassUsersResponse = response;
+    }catch(e){
+      message.clear();
+      message.add({
+        'statue': false,
+        'message': '无法连接服务器，请稍后再试',
+      });
+      return message;
+    }
+    Map classMemberJson = jsonDecode(getClassUsersResponse.data.toString());
+
+    String classMemberpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/wzxyData/ClassMembersList-$classId.json';
+    File classMemberfile = File(classMemberpath);
+    classMemberfile.writeAsString(jsonEncode(classMemberJson['data']));
+
+    message.clear();
+    message.add({
+      'statue': true,
+      'message': '获取班级成员列表成功',
+      'classMemberList': jsonEncode(classMemberJson['data']),
+    });
     return message;
   }
 }

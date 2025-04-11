@@ -40,6 +40,9 @@ class GlobalVars {
   static String electricUserUid = '';
   static int emNum = 0;//电表的总数
 
+  //班级通讯录数据
+  static List classList = [];//班级列表
+  static List classMemberList = [];//班级成员列表
 
   //判断用户是否绑定电表账号
   static bool emBinded = false;

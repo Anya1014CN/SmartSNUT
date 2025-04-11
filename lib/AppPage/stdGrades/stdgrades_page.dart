@@ -812,7 +812,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
     }
     
     if(GlobalVars.operationCanceled) return;
-    List initialData = await Modules.initialLoginAuth();
+    List initialData = await Modules.initialLoginAuth('jwgl');
     if(initialData[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
@@ -1027,7 +1027,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
     }
 
     if(GlobalVars.operationCanceled) return;
-    List loginAuthResponse = await Modules.loginAuth(userName, passWord,initialData[0]['pwdEncryptSalt'], userCaptchaCode, initialData[0]['authexecution']);
+    List loginAuthResponse = await Modules.loginAuth(userName, passWord,initialData[0]['pwdEncryptSalt'], userCaptchaCode, initialData[0]['authexecution'],'jwgl');
     if(loginAuthResponse[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
