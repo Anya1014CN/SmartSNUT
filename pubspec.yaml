@@ -106,6 +106,7 @@ flutter:
     - assets/icons/darktheme/library.png
     - assets/icons/darktheme/mountain-city.png
     - assets/icons/darktheme/museum.png
+    - assets/icons/darktheme/newspaper.png
     - assets/icons/darktheme/schedule.png
     - assets/icons/darktheme/settings.png
     - assets/icons/darktheme/vpn.png
@@ -127,6 +128,7 @@ flutter:
     - assets/icons/lighttheme/library.png
     - assets/icons/lighttheme/mountain-city.png
     - assets/icons/lighttheme/museum.png
+    - assets/icons/lighttheme/newspaper.png
     - assets/icons/lighttheme/schedule.png
     - assets/icons/lighttheme/settings.png
     - assets/icons/lighttheme/vpn.png

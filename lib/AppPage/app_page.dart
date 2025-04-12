@@ -548,6 +548,26 @@ class _AppPageState extends State<AppPage> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '陕西理工大学校报',
+                          'newspaper',
+                          () {
+                            url = Uri.parse('https://sxlgxyb.ihwrm.com/?userId=1859970247021375490&tag=wzxy&school=%E9%99%95%E8%A5%BF%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6');
+                            launchURL();
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: SizedBox(),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
