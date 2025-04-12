@@ -1079,6 +1079,25 @@ class _PublicFreePageState extends State<PublicFreePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // 返回按钮
+                        OutlinedButton.icon(
+                          icon: Icon(Icons.arrow_back),
+                          label: Text('返回查询页面'),
+                          onPressed: () {
+                            setState(() {
+                              showResultPage = false;
+                            });
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: Theme.of(context).colorScheme.outline),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: 16,),
+
                         // 结果标题
                         Row(
                           children: [
@@ -1100,7 +1119,7 @@ class _PublicFreePageState extends State<PublicFreePage> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
-                                '第 $currentPage 页，共${publicFreeData.length}个教室',
+                                '本页共${publicFreeData.length}个教室',
                                 style: TextStyle(
                                   fontSize: GlobalVars.genericTextSmall,
                                   color: Theme.of(context).colorScheme.primary,
@@ -1111,23 +1130,6 @@ class _PublicFreePageState extends State<PublicFreePage> {
                         ),
                         
                         SizedBox(height: 16),
-                        
-                        // 返回按钮
-                        OutlinedButton.icon(
-                          icon: Icon(Icons.arrow_back),
-                          label: Text('返回查询页面'),
-                          onPressed: () {
-                            setState(() {
-                              showResultPage = false;
-                            });
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Theme.of(context).colorScheme.outline),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                        ),
 
                         // 顶部分页功能
                         if (publicFreeDataPages > 1)
