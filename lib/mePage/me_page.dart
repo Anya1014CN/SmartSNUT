@@ -224,10 +224,16 @@ class _MePageState extends State<MePage>{
                           '退出登录',
                           'exit',
                           () {
-                            showDialog<String>(
+                            showDialog(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
-                                title: Text('确认退出登录', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.help),
+                                    SizedBox(width: 8),
+                                    Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                                  ],
+                                ),
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,9 +279,9 @@ class _MePageState extends State<MePage>{
                                     ),
                                   ],
                                 ),
-                                actions: <Widget>[
+                                actions: [
                                   TextButton(
-                                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                                    onPressed: () => Navigator.pop(context),
                                     child: const Text('取消'),
                                   ),
                                   TextButton(
@@ -286,7 +292,7 @@ class _MePageState extends State<MePage>{
                                       logout();
                                       Navigator.pop(context);
                                     },
-                                    child: const Text('确认退出'),
+                                    child: const Text('确定退出'),
                                   ),
                                 ],
                               ),

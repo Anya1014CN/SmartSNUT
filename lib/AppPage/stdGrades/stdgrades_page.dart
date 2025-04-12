@@ -613,7 +613,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
 
   // 切换考试学期
   switchTerm() async {
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
@@ -762,10 +762,10 @@ class _StdGradesPageState extends State<StatefulWidget>{
                 ),
               ],
             ),
-            actions: <Widget>[
+            actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('确定'),
+                onPressed: () => Navigator.pop(context),
+                child: Text('确定'),
               ),
             ],
           ),
@@ -778,7 +778,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
     GlobalVars.operationCanceled = false;
     GlobalVars.loadingHint = '正在加载...';
     if(mounted){
-      showDialog<String>(
+      showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
@@ -794,13 +794,13 @@ class _StdGradesPageState extends State<StatefulWidget>{
                   Text(GlobalVars.loadingHint,style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                 ],
               ),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     GlobalVars.operationCanceled = true;
                     Navigator.pop(context);
                   },
-                  child: const Text('取消'),
+                  child: Text('取消'),
                 ),
               ],
             ),
@@ -814,12 +814,18 @@ class _StdGradesPageState extends State<StatefulWidget>{
     if(loginAuthResponse[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text(loginAuthResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
       }
       return;
@@ -830,12 +836,18 @@ class _StdGradesPageState extends State<StatefulWidget>{
     if(getStdGradesResponse[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text(getStdGradesResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
       }
       return;

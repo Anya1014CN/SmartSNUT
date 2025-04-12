@@ -310,25 +310,31 @@ class _GuidePageState extends State<Guidepage>{
   
   //打开链接
   void launchURL() async{
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        title: Row(
+          children: [
+            Icon(Icons.info),
+            SizedBox(width: 8),
+            Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          ],
+        ),
         content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-        actions: <Widget>[
+        actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
+            onPressed: () => Navigator.pop(context),
             child: const Text('取消'),
           ),
           TextButton(
             onPressed: () async {
               await launchUrl(url);
               if(context.mounted){
-                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
               }
             },
-            child: const Text('确认'),
+            child: const Text('确定'),
           ),
         ],
       ),

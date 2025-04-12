@@ -173,22 +173,28 @@ class _LinkPageState extends State<LinkPage> {
                           '南区全景',
                           'city',
                           () {
-                            showDialog<String>(
+                            showDialog(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
                                 scrollable: true,
-                                title: Text('提示',
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.info),
+                                    SizedBox(width: 8,),
+                                    Text('提示：',
                                     style: TextStyle(
-                                        fontSize: GlobalVars.alertdialogTitle)),
+                                        fontSize: GlobalVars.alertdialogTitle))
+                                  ],
+                                ),
                                 content: Text(
                                     '此页面可能包含背景音乐\n如果您正在公共场所，请注意控制设备声音',
                                     style: TextStyle(
                                         fontSize: GlobalVars.alertdialogTitle)),
-                                actions: <Widget>[
+                                actions: [
                                   TextButton(
                                     onPressed: () =>
-                                        Navigator.pop(context, 'Cancel'),
-                                    child: const Text('取消'),
+                                        Navigator.pop(context),
+                                    child: Text('取消'),
                                   ),
                                   TextButton(
                                     onPressed: () async {
@@ -197,7 +203,7 @@ class _LinkPageState extends State<LinkPage> {
                                           'http://720yun.com/t/728jOreO5n0?scene_id=2641644');
                                       launchURL();
                                     },
-                                    child: const Text('确认'),
+                                    child: Text('确定'),
                                   ),
                                 ],
                               ),
@@ -212,22 +218,28 @@ class _LinkPageState extends State<LinkPage> {
                           '北区全景',
                           'mountain-city',
                           () {
-                            showDialog<String>(
+                            showDialog(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
                                 scrollable: true,
-                                title: Text('提示',
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.info),
+                                    SizedBox(width: 8,),
+                                    Text('提示：',
                                     style: TextStyle(
-                                        fontSize: GlobalVars.alertdialogTitle)),
+                                        fontSize: GlobalVars.alertdialogTitle))
+                                  ],
+                                ),
                                 content: Text(
                                     '此页面可能包含背景音乐\n如果您正在公共场所，请注意控制设备声音',
                                     style: TextStyle(
                                         fontSize: GlobalVars.alertdialogTitle)),
-                                actions: <Widget>[
+                                actions: [
                                   TextButton(
                                     onPressed: () =>
-                                        Navigator.pop(context, 'Cancel'),
-                                    child: const Text('取消'),
+                                        Navigator.pop(context),
+                                    child: Text('取消'),
                                   ),
                                   TextButton(
                                     onPressed: () async {
@@ -236,7 +248,7 @@ class _LinkPageState extends State<LinkPage> {
                                           'http://720yun.com/t/271jO0uyOv2?scene_id=2712476');
                                       launchURL();
                                     },
-                                    child: const Text('确认'),
+                                    child: Text('确定'),
                                   ),
                                 ],
                               ),
@@ -419,26 +431,32 @@ class _LinkPageState extends State<LinkPage> {
 
   //打开链接
   void launchURL() async {
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        title: Row(
+          children: [
+            Icon(Icons.help),
+            SizedBox(width: 8,),
+            Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+          ],
+        ),
         content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',
             style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-        actions: <Widget>[
+        actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('取消'),
+            onPressed: () => Navigator.pop(context),
+            child: Text('取消'),
           ),
           TextButton(
             onPressed: () async {
               await launchUrl(url);
               if (context.mounted) {
-                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
               }
             },
-            child: const Text('确认'),
+            child: Text('确定'),
           ),
         ],
       ),

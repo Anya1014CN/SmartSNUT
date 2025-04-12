@@ -274,21 +274,27 @@ class _AppPageState extends State<AppPage> {
                       'electricity',
                       () {
                         if (GlobalVars.emBinded == false) {
-                          showDialog<String>(
+                          showDialog(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
-                              title: Text('提示：',
+                              title: Row(
+                                children: [
+                                  Icon(Icons.info),
+                                  SizedBox(width: 8,),
+                                  Text('提示：',
                                   style: TextStyle(
-                                      fontSize: GlobalVars.alertdialogTitle)),
+                                      fontSize: GlobalVars.alertdialogTitle))
+                                ],
+                              ),
                               content: Text(
                                   '您还没有绑定电费账号，\n请先前往 "我的 -> 解/绑电费账号" 绑定后再试',
                                   style: TextStyle(
                                       fontSize: GlobalVars.alertdialogContent)),
-                              actions: <Widget>[
+                              actions: [
                                 TextButton(
                                   onPressed: () =>
-                                      Navigator.pop(context, 'OK'),
-                                  child: const Text('确定'),
+                                      Navigator.pop(context),
+                                  child: Text('确定'),
                                 ),
                               ],
                             ),
@@ -438,26 +444,32 @@ class _AppPageState extends State<AppPage> {
 
   //打开链接
   void launchURL() async {
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        title: Row(
+          children: [
+            Icon(Icons.help),
+            SizedBox(width: 8),
+            Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+          ],
+        ),
         content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',
             style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-        actions: <Widget>[
+        actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('取消'),
+            onPressed: () => Navigator.pop(context),
+            child: Text('取消'),
           ),
           TextButton(
             onPressed: () async {
               await launchUrl(url);
               if (context.mounted) {
-                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
               }
             },
-            child: const Text('确认'),
+            child: Text('确定'),
           ),
         ],
       ),

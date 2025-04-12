@@ -1391,7 +1391,7 @@ class _PublicFreePageState extends State<PublicFreePage> {
     GlobalVars.operationCanceled = false;
     GlobalVars.loadingHint = '正在加载...';
     if (mounted) {
-      showDialog<String>(
+      showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
@@ -1407,13 +1407,13 @@ class _PublicFreePageState extends State<PublicFreePage> {
                   Text(GlobalVars.loadingHint, style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                 ],
               ),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     GlobalVars.operationCanceled = true;
                     Navigator.pop(context);
                   },
-                  child: const Text('取消'),
+                  child: Text('取消'),
                 ),
               ],
             ),
@@ -1426,18 +1426,24 @@ class _PublicFreePageState extends State<PublicFreePage> {
     if(initPublicFreeDataResponse[0]['status'] == false){
       if (mounted) {
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Row(
+                children: [
+                  Icon(Icons.error),
+                  SizedBox(width: 8,),
+                  Text('错误：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                ],
+              ),
               content: Text(initPublicFreeDataResponse[0]['message'], style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('确定'),
+                  child: Text('确定'),
                 ),
               ],
             );
@@ -1454,18 +1460,24 @@ class _PublicFreePageState extends State<PublicFreePage> {
     //校验用户输入的数据
     if(textCycleCountController.text.isEmpty){
       if (mounted) {
-        showDialog<String>(
+        showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Row(
+                children: [
+                  Icon(Icons.info),
+                  SizedBox(width: 8,),
+                  Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                ],
+              ),
               content: Text('请输入时间周期', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('确定'),
+                  child: Text('确定'),
                 ),
               ],
             );
@@ -1475,18 +1487,24 @@ class _PublicFreePageState extends State<PublicFreePage> {
       return;
     }if(textTimeBeginController.text.isEmpty || textSectionBeginController.text.isEmpty){
       if (mounted) {
-        showDialog<String>(
+        showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Row(
+                children: [
+                  Icon(Icons.info),
+                  SizedBox(width: 8,),
+                  Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                ],
+              ),
               content: Text('请输入开始时间', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('确定'),
+                  child: Text('确定'),
                 ),
               ],
             );
@@ -1496,18 +1514,24 @@ class _PublicFreePageState extends State<PublicFreePage> {
       return;
     }if(textTimeEndController.text.isEmpty || textSectionEndController.text.isEmpty){
       if (mounted) {
-        showDialog<String>(
+        showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Row(
+                children: [
+                  Icon(Icons.info),
+                  SizedBox(width: 8,),
+                  Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                ],
+              ),
               content: Text('请输入结束时间', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('确定'),
+                  child: Text('确定'),
                 ),
               ],
             );
@@ -1520,7 +1544,7 @@ class _PublicFreePageState extends State<PublicFreePage> {
     GlobalVars.operationCanceled = false;
     GlobalVars.loadingHint = '正在加载...';
     if (mounted) {
-      showDialog<String>(
+      showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
@@ -1536,13 +1560,13 @@ class _PublicFreePageState extends State<PublicFreePage> {
                   Text(GlobalVars.loadingHint, style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                 ],
               ),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     GlobalVars.operationCanceled = true;
                     Navigator.pop(context);
                   },
-                  child: const Text('取消'),
+                  child: Text('取消'),
                 ),
               ],
             ),
@@ -1565,18 +1589,24 @@ class _PublicFreePageState extends State<PublicFreePage> {
     if(queryPublicFreeDataResponse[0]['status'] == false){
       if (mounted) {
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Row(
+                children: [
+                  Icon(Icons.error),
+                  SizedBox(width: 8,),
+                  Text('错误：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                ],
+              ),
               content: Text(queryPublicFreeDataResponse[0]['message'], style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('确定'),
+                  child: Text('确定'),
                 ),
               ],
             );

@@ -289,7 +289,7 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
     GlobalVars.operationCanceled = false;
     GlobalVars.loadingHint = '正在加载...';
     if(mounted){
-      showDialog<String>(
+      showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
@@ -305,13 +305,13 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
                   Text(GlobalVars.loadingHint,style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                 ],
               ),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     GlobalVars.operationCanceled = true;
                     Navigator.pop(context);
                   },
-                  child: const Text('取消'),
+                  child: Text('取消'),
                 ),
               ],
             ),
@@ -325,12 +325,18 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
     if(loginAuthResponse[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8,),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text(loginAuthResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
       }
       return;
@@ -342,12 +348,18 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
     if(getClassListResponse[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8,),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text(getClassListResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
       }
       return;
@@ -384,21 +396,27 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
     GlobalVars.operationCanceled = false;
     if(!Platform.isAndroid){
       if(mounted){
-        await showDialog<String>(
+        await showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.help),
+                SizedBox(width: 8,),
+                Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('当前系统可能不支持拨打电话，您确定要继续尝试拨打 $name 的电话？\n\n$phoneNumber',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: [
               TextButton(
-                onPressed:  () {
+                onPressed: () {
                   Navigator.pop(context);
                   GlobalVars.operationCanceled = true;
                   return;
                 }, 
                 child: Text('取消')
               ),
-              TextButton(onPressed:  () => Navigator.pop(context), child: Text('确认'))
+              TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))
             ],
           )
         );
@@ -407,21 +425,27 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
 
     if(GlobalVars.operationCanceled) return;
     if(mounted){
-      await showDialog<String>(
+      await showDialog(
         context: context, 
         builder: (BuildContext context)=>AlertDialog(
-          title: Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          title: Row(
+            children: [
+              Icon(Icons.help),
+              SizedBox(width: 8,),
+              Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+            ],
+          ),
           content: Text('是否给 $name 拨打电话？\n\n $phoneNumber',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           actions: [
             TextButton(
               child: Text('取消'),
-              onPressed:  () {
+              onPressed: () {
                 Navigator.pop(context);
                 GlobalVars.operationCanceled = true;
                 return;
               }, 
             ),
-            TextButton(onPressed:  () => Navigator.pop(context), child: Text('拨打')),
+            TextButton(onPressed: () => Navigator.pop(context), child: Text('拨打')),
           ],
         )
       );

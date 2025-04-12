@@ -298,27 +298,28 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
  queryem() async {
   bool queryemCanceled = false;
   if(mounted){
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context, setState) => AlertDialog(
             scrollable: true,
-            title: Text('正在查询（$currentQuery/${GlobalVars.emNum}...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Text('请稍后...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
             content: Column(
               children: [
                 SizedBox(height: 10,),
                 CircularProgressIndicator(),
-                SizedBox(height: 10,)
+                SizedBox(height: 10,),
+                Text('正在查询第 $currentQuery 个，共 ${GlobalVars.emNum} 个',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
               ],
             ),
-            actions: <Widget>[
+            actions: [
               TextButton(
                 onPressed: (){
-                  Navigator.pop(context, 'OK');
+                  Navigator.pop(context);
                   queryemCanceled = true;
                 },
-                child: const Text('取消'),
+                child: Text('取消'),
               ),
             ],
           ),
@@ -351,15 +352,21 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
       }catch (e){
         if(mounted){
           Navigator.pop(context);
-          showDialog<String>(
+          showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
-              title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Row(
+                children: [
+                  Icon(Icons.error),
+                  SizedBox(width: 8),
+                  Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                ],
+              ),
               content: Text('查询失败，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context, 'OK'),
-                  child: const Text('确定'),
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('确定'),
                 ),
               ],
             ),

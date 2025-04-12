@@ -154,16 +154,22 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                           onTap: () {
                             if(textUsernameController.text == '') {
                               if(mounted) {
-                                showDialog<String>(
+                                showDialog(
                                   context: context,
                                   builder: (BuildContext context) => AlertDialog(
                                     scrollable: true,
-                                    title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                    title: Row(
+                                      children: [
+                                        Icon(Icons.info),
+                                        SizedBox(width: 8),
+                                        Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                                      ],
+                                    ),
                                     content: Text('请您输入账号或登录后再查询', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                                    actions: <Widget>[
+                                    actions: [
                                       TextButton(
-                                        onPressed: () => Navigator.pop(context, 'OK'),
-                                        child: const Text('确定'),
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text('确定'),
                                       ),
                                     ],
                                   ),
@@ -413,26 +419,27 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
   networkQuery() async {
     bool networkQueryCanceled = false;
     if(mounted){
-      showDialog<String>(
+      showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) => AlertDialog(
           scrollable: true,
-          title: Text('正在查询...', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          title: Text('请稍后...', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
           content: Column(
             children: [
-              SizedBox(height: 16),
+              SizedBox(height: 10,),
               CircularProgressIndicator(),
-              SizedBox(height: 16)
+              SizedBox(height: 10,),
+              Text('正在查询...',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
             ],
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
               onPressed: () {
                 networkQueryCanceled = true;
                 Navigator.pop(context);
               },
-              child: const Text('取消'),
+              child: Text('取消'),
             ),
           ],
         ),
@@ -463,15 +470,21 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
     }catch (e){
       if(mounted){
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.info),
+                SizedBox(width: 8),
+                Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('无法连接网络，请稍后再试', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: <Widget>[
+            actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('确定'),
+                onPressed: () => Navigator.pop(context),
+                child: Text('确定'),
               ),
             ],
           ),
@@ -506,9 +519,15 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.info),
+                SizedBox(width: 8),
+                Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('无法查询到信息，请检查您输入的账号是否正确！', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed: () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           )
         );
         setState(() {
@@ -528,9 +547,15 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.info),
+                SizedBox(width: 8),
+                Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('无法查询到信息，请检查您输入的账号是否正确！', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed: () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           )
         );
         setState(() {
@@ -565,25 +590,31 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
 
   //打开链接
   void launchURL() async{
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        title: Row(
+          children: [
+            Icon(Icons.help),
+            SizedBox(width: 8),
+            Text('询问', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+          ],
+        ),
         content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-        actions: <Widget>[
+        actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('取消'),
+            onPressed: () => Navigator.pop(context),
+            child: Text('取消'),
           ),
           TextButton(
             onPressed: () async {
               await launchUrl(url);
               if(context.mounted){
-                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
               }
             },
-            child: const Text('确认'),
+            child: Text('确定'),
           ),
         ],
       ),

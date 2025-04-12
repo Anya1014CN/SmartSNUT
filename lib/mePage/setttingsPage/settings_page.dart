@@ -353,10 +353,16 @@ class _SettingsPage extends State<SettingsPage>{
                         title: Text('退出登录', style: TextStyle(fontSize: GlobalVars.listTileTitle)),
                         subtitle: Text(GlobalVars.userName,style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
                         onTap: () {
-                          showDialog<String>(
+                          showDialog(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
-                              title: Text('确认退出登录', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                              title: Row(
+                                children: [
+                                  Icon(Icons.help),
+                                  SizedBox(width: 8),
+                                  Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                                ],
+                              ),
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,10 +408,10 @@ class _SettingsPage extends State<SettingsPage>{
                                   ),
                                 ],
                               ),
-                              actions: <Widget>[
+                              actions: [
                                 TextButton(
-                                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                                  child: const Text('取消'),
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text('取消'),
                                 ),
                                 TextButton(
                                   style: TextButton.styleFrom(
@@ -415,7 +421,7 @@ class _SettingsPage extends State<SettingsPage>{
                                     logout();
                                     Navigator.pop(context);
                                   },
-                                  child: const Text('确认退出'),
+                                  child: Text('确定退出'),
                                 ),
                               ],
                             ),
@@ -475,16 +481,16 @@ class _SettingsPage extends State<SettingsPage>{
                         onTap: () async {
                           String changelogContent = await rootBundle.loadString('assets/Changelog.txt');
                           if(context.mounted){
-                            showDialog<String>(
+                            showDialog(
                               context: context,
                               builder:(BuildContext context) => AlertDialog(
                                 title: Text('历史版本更新日志',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
                                 content: Text(changelogContent,style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                                 scrollable: true,
-                                actions: <Widget>[
+                                actions: [
                                   TextButton(
-                                    onPressed: () => Navigator.pop(context, 'OK'),
-                                    child: const Text('OK'),
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('OK'),
                                   ),
                                 ],
                               ),
@@ -883,16 +889,16 @@ class _SettingsPage extends State<SettingsPage>{
   void showLicense(BuildContext context) async{
     licenseContent = await rootBundle.loadString('assets/credits/License/$licensePath.txt');
     if(context.mounted){
-      showDialog<String>(
+      showDialog(
         context: context,
         builder:(BuildContext context) => AlertDialog(
           title: Text('$licenseTitle - License',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
           content: Text(licenseContent,style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
           scrollable: true,
-          actions: <Widget>[
+          actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
             ),
           ],
         ),
@@ -930,7 +936,7 @@ class _SettingsPage extends State<SettingsPage>{
   //切换字体大小
   switchTextSize() {
     int groupValue = GlobalVars.fontsizeint;
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
@@ -1088,13 +1094,13 @@ class _SettingsPage extends State<SettingsPage>{
                 ),
               ],
             ),
-            actions: <Widget>[
+            actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   saveSettings();
                 },
-                child: const Text('OK'),
+                child: Text('OK'),
               ),
             ],
           ),
@@ -1106,7 +1112,7 @@ class _SettingsPage extends State<SettingsPage>{
   //切换主题颜色
   switchThemeColor() {
     int groupValue = GlobalVars.themeColor;
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
@@ -1293,13 +1299,13 @@ class _SettingsPage extends State<SettingsPage>{
                 ),
               ],
             ),
-            actions: <Widget>[
+            actions: [
               TextButton(
                 onPressed: (){
                   saveSettings();
-                  Navigator.pop(context, 'OK');
+                  Navigator.pop(context);
                 },
-                child: const Text('OK'),
+                child: Text('OK'),
               ),
             ],
           ),
@@ -1311,7 +1317,7 @@ class _SettingsPage extends State<SettingsPage>{
   //切换主题模式
   switchThemeMode() {
     int groupValue = GlobalVars.darkModeint;
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
@@ -1382,13 +1388,13 @@ class _SettingsPage extends State<SettingsPage>{
                 ),
               ],
             ),
-            actions: <Widget>[
+            actions: [
               TextButton(
                 onPressed: (){
                   Navigator.pop(context);
                   saveSettings();
                 },
-                child: const Text('OK'),
+                child: Text('OK'),
               ),
             ],
           ),
@@ -1400,7 +1406,7 @@ class _SettingsPage extends State<SettingsPage>{
   //切换课程色系
   switchCourseBlockColor() {
     int groupValue = GlobalVars.courseBlockColorsInt;
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
@@ -1451,13 +1457,13 @@ class _SettingsPage extends State<SettingsPage>{
                 ),
               ],
             ),
-            actions: <Widget>[
+            actions: [
               TextButton(
                 onPressed: (){
                   saveSettings();
-                  Navigator.pop(context, 'OK');
+                  Navigator.pop(context);
                 },
-                child: const Text('OK'),
+                child: Text('OK'),
               ),
             ],
           ),
@@ -1468,25 +1474,31 @@ class _SettingsPage extends State<SettingsPage>{
   
   //打开链接
   void launchURL() async{
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        title: Row(
+          children: [
+            Icon(Icons.help),
+            SizedBox(width: 8,),
+            Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+          ],
+        ),
         content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-        actions: <Widget>[
+        actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('取消'),
+            onPressed: () => Navigator.pop(context),
+            child: Text('取消'),
           ),
           TextButton(
             onPressed: () async {
               await launchUrl(url);
               if(context.mounted){
-                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
               }
             },
-            child: const Text('确认'),
+            child: Text('确定'),
           ),
         ],
       ),
@@ -1511,24 +1523,24 @@ class _SettingsPage extends State<SettingsPage>{
     if(Platform.isWindows){
       if(serverResponseData[0]['Windows'][0]['LatestVersionInt'] - GlobalVars.versionCodeInt > 0){
         if(mounted){
-          showDialog<String>(
+          showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
               title: Text('发现新的 Windows 版智慧陕理工  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('取消'),
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('取消'),
                 ),
                 TextButton(
                   onPressed: () {
                     latestDownloadLink = serverResponseData[0]['Windows'][0]['DownloadLink'];
-                    Navigator.pop(context, 'OK');
+                    Navigator.pop(context);
                     getUpdate();
                   },
-                  child: const Text('确认'),
+                  child: Text('确定'),
                 ),
               ],
             ),
@@ -1536,16 +1548,16 @@ class _SettingsPage extends State<SettingsPage>{
         }
       }else{
         if(mounted){
-          showDialog<String>(
+          showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
               title: Text('暂未发现新的 Windows 版智慧陕理工',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Text('您正在使用最新版本的 Windows 版智慧陕理工：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
-                  onPressed: () {Navigator.pop(context, 'OK');},
-                  child: const Text('确认'),
+                  onPressed: () {Navigator.pop(context);},
+                  child: Text('确定'),
                 ),
               ],
             ),
@@ -1555,24 +1567,24 @@ class _SettingsPage extends State<SettingsPage>{
     }if(Platform.isAndroid){
       if(serverResponseData[0]['Android'][0]['LatestVersionInt'] - GlobalVars.versionCodeInt > 0){
         if(mounted){
-          showDialog<String>(
+          showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
               title: Text('发现新的 Android 版智慧陕理工  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Android'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Android'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('取消'),
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('取消'),
                 ),
                 TextButton(
                   onPressed: () {
                     latestDownloadLink = serverResponseData[0]['Android'][0]['DownloadLink'];
-                    Navigator.pop(context, 'OK');
+                    Navigator.pop(context);
                     getUpdate();
                   },
-                  child: const Text('确认'),
+                  child: Text('确定'),
                 ),
               ],
             ),
@@ -1580,16 +1592,16 @@ class _SettingsPage extends State<SettingsPage>{
         }
       }else{
         if(mounted){
-          showDialog<String>(
+          showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
               title: Text('暂未发现新的 Android 版智慧陕理工',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Text('您正在使用最新版本的 Android 版智慧陕理工：${GlobalVars.versionCodeString}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
-                  onPressed: () {Navigator.pop(context, 'OK');},
-                  child: const Text('确认'),
+                  onPressed: () {Navigator.pop(context);},
+                  child: Text('确定'),
                 ),
               ],
             ),
@@ -1610,7 +1622,7 @@ class _SettingsPage extends State<SettingsPage>{
     int totalDownloadSize = 0;
     double downloadProgress = 0;
     Dio dio = Dio();
-    showDialog<String>(
+    showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
@@ -1659,16 +1671,22 @@ class _SettingsPage extends State<SettingsPage>{
       }catch(e){
         if(mounted){
           Navigator.pop(context);
-          showDialog<String>(
+          showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Row(
+                children: [
+                  Icon(Icons.error),
+                  SizedBox(width: 8,),
+                  Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                ],
+              ),
               content: Text('Windows 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
-                  onPressed: () {Navigator.pop(context, 'OK');},
-                  child: const Text('确认'),
+                  onPressed: () {Navigator.pop(context);},
+                  child: Text('确定'),
                 ),
               ],
             ),
@@ -1696,16 +1714,22 @@ class _SettingsPage extends State<SettingsPage>{
       }catch(e){
         if(mounted){
           Navigator.pop(context);
-          showDialog<String>(
+          showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Row(
+                children: [
+                  Icon(Icons.error),
+                  SizedBox(width: 8,),
+                  Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                ],
+              ),
               content: Text('Android 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
-                  onPressed: () {Navigator.pop(context, 'OK');},
-                  child: const Text('确认'),
+                  onPressed: () {Navigator.pop(context);},
+                  child: Text('确定'),
                 ),
               ],
             ),

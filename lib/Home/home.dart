@@ -1689,15 +1689,21 @@ class _HomeState extends State<Home>{
                           'electricity',
                           () {
                             if(GlobalVars.emBinded == false){
-                              showDialog<String>(
+                              showDialog(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
-                                  title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),),
+                                  title: Row(
+                                    children: [
+                                      Icon(Icons.info),
+                                      SizedBox(width: 8),
+                                      Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),)
+                                    ],
+                                  ),
                                   content: Text('您还没有绑定电费账号，\n请先前往 "我的 -> 解/绑电费账号" 绑定后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent),),
-                                  actions: <Widget>[
+                                  actions: [
                                     TextButton(
-                                      onPressed: () => Navigator.pop(context, 'OK'),
-                                      child: const Text('确定'),
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text('确定'),
                                     ),
                                   ],
                                 ),
@@ -2192,25 +2198,31 @@ class _HomeState extends State<Home>{
 
   //打开链接
   void launchURL() async{
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        title: Row(
+          children: [
+            Icon(Icons.help),
+            SizedBox(width: 8),
+            Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+          ],
+        ),
         content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-        actions: <Widget>[
+        actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('取消'),
+            onPressed: () => Navigator.pop(context),
+            child: Text('取消'),
           ),
           TextButton(
             onPressed: () async {
               await launchUrl(url);
               if(context.mounted){
-                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
               }
             },
-            child: const Text('确认'),
+            child: Text('确定'),
           ),
         ],
       ),
@@ -2231,24 +2243,24 @@ class _HomeState extends State<Home>{
     if(Platform.isWindows){
       if(serverResponseData[0]['Windows'][0]['LatestVersionInt'] - GlobalVars.versionCodeInt > 0){
         if(mounted){
-          showDialog<String>(
+          showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
               title: Text('发现新的 Windows 版智慧陕理工  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Windows'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Windows'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Windows'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('取消'),
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('取消'),
                 ),
                 TextButton(
                   onPressed: () {
                     latestDownloadLink = serverResponseData[0]['Windows'][0]['DownloadLink'];
-                    Navigator.pop(context, 'OK');
+                    Navigator.pop(context);
                     getUpdate();
                   },
-                  child: const Text('确认'),
+                  child: Text('确定'),
                 ),
               ],
             ),
@@ -2271,24 +2283,24 @@ class _HomeState extends State<Home>{
     }if(Platform.isAndroid){
       if(serverResponseData[0]['Android'][0]['LatestVersionInt'] - GlobalVars.versionCodeInt > 0){
         if(mounted){
-          showDialog<String>(
+          showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
               title: Text('发现新的 Android 版智慧陕理工  ${GlobalVars.versionCodeString} -> ${serverResponseData[0]['Android'][0]['LatestVersionString']}',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Text('是否立即更新？\n\n发布日期：${serverResponseData[0]['Android'][0]['ReleaseDate']}\n\n更新日志：\n${serverResponseData[0]['Android'][0]['Changelog']}',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('取消'),
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('取消'),
                 ),
                 TextButton(
                   onPressed: () {
                     latestDownloadLink = serverResponseData[0]['Android'][0]['DownloadLink'];
-                    Navigator.pop(context, 'OK');
+                    Navigator.pop(context);
                     getUpdate();
                   },
-                  child: const Text('确认'),
+                  child: Text('确定'),
                 ),
               ],
             ),
@@ -2323,7 +2335,7 @@ class _HomeState extends State<Home>{
     int totalDownloadSize = 0;
     double downloadProgress = 0;
     Dio dio = Dio();
-    showDialog<String>(
+    showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
@@ -2371,16 +2383,22 @@ class _HomeState extends State<Home>{
       }catch(e){
         if(mounted){
           Navigator.pop(context);
-          showDialog<String>(
+          showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Row(
+                children: [
+                  Icon(Icons.error),
+                  SizedBox(width: 8),
+                  Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                ],
+              ),
               content: Text('Windows 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
-                  onPressed: () {Navigator.pop(context, 'OK');},
-                  child: const Text('确认'),
+                  onPressed: () {Navigator.pop(context);},
+                  child: Text('确定'),
                 ),
               ],
             ),
@@ -2408,16 +2426,22 @@ class _HomeState extends State<Home>{
       }catch(e){
         if(mounted){
           Navigator.pop(context);
-          showDialog<String>(
+          showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               scrollable: true,
-              title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Row(
+                children: [
+                  Icon(Icons.error),
+                  SizedBox(width: 8),
+                  Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                ],
+              ),
               content: Text('Android 版更新下载失败，请您稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: <Widget>[
+              actions: [
                 TextButton(
-                  onPressed: () {Navigator.pop(context, 'OK');},
-                  child: const Text('确认'),
+                  onPressed: () {Navigator.pop(context);},
+                  child: Text('确定'),
                 ),
               ],
             ),

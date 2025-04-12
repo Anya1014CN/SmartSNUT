@@ -103,18 +103,30 @@ class _LoginPageState extends State<LoginPage>{
                     showDialog(
                       context: context, 
                       builder: (BuildContext context)=>AlertDialog(
-                        title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                        title: Row(
+                          children: [
+                            Icon(Icons.info),
+                            SizedBox(width: 8,),
+                            Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                          ],
+                        ),
                         content: Text('用户名不能为空，请输入您的学号/工号',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                        actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+                        actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
                       ));
                     return;
                   }if (textPasswordController.text == '') {
                     showDialog(
                       context: context, 
                       builder: (BuildContext context)=>AlertDialog(
-                        title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                        title: Row(
+                          children: [
+                            Icon(Icons.info),
+                            SizedBox(width: 8,),
+                            Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                          ],
+                        ),
                         content: Text('密码不能为空，请输入您的密码',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                        actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+                        actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
                       ));
                     return;
                   }else{
@@ -302,25 +314,31 @@ class _LoginPageState extends State<LoginPage>{
 
   //打开链接
   void launchURL() async{
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        title: Row(
+          children: [
+            Icon(Icons.help),
+            SizedBox(width: 8,),
+            Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+          ],
+        ),
         content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-        actions: <Widget>[
+        actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('取消'),
+            onPressed: () => Navigator.pop(context),
+            child: Text('取消'),
           ),
           TextButton(
             onPressed: () async {
               await launchUrl(url);
               if(context.mounted){
-                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
               }
             },
-            child: const Text('确认'),
+            child: Text('确定'),
           ),
         ],
       ),
@@ -342,7 +360,7 @@ class _LoginPageState extends State<LoginPage>{
     GlobalVars.operationCanceled = false;
     GlobalVars.loadingHint = '正在加载...';
     if(mounted){
-      showDialog<String>(
+      showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
@@ -358,13 +376,13 @@ class _LoginPageState extends State<LoginPage>{
                   Text(GlobalVars.loadingHint,style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                 ],
               ),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     GlobalVars.operationCanceled = true;
                     Navigator.pop(context);
                   },
-                  child: const Text('取消'),
+                  child: Text('取消'),
                 ),
               ],
             ),
@@ -390,12 +408,18 @@ class _LoginPageState extends State<LoginPage>{
     if(loginAuthResponse[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8,),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text(loginAuthResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
       }
       return;
@@ -421,12 +445,18 @@ class _LoginPageState extends State<LoginPage>{
     if(getStdDetailResponse[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8,),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text(getStdDetailResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
       }
       return;
@@ -441,12 +471,18 @@ class _LoginPageState extends State<LoginPage>{
     if(getCourseTableResponse[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8,),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text(getCourseTableResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
       }
       return;
@@ -468,12 +504,18 @@ class _LoginPageState extends State<LoginPage>{
     if(getCourseTableResponse1[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8,),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text(getCourseTableResponse1[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
       }
       return;
@@ -488,12 +530,18 @@ class _LoginPageState extends State<LoginPage>{
     if(getCourseTableResponse2[0]['statue'] == false){
       if(mounted){
         Navigator.pop(context);
-        showDialog<String>(
+        showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8,),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text(getCourseTableResponse2[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
       }
       return;

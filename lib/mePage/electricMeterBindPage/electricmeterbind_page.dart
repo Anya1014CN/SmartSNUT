@@ -171,22 +171,28 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                           onTap: isQuerying 
                             ? null
                             : () {
-                                showDialog<String>(
+                                showDialog(
                                   context: context,
                                   builder: (BuildContext context) => AlertDialog(
-                                    title: Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                    title: Row(
+                                      children: [
+                                        Icon(Icons.help),
+                                        SizedBox(width: 8),
+                                        Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                                      ],
+                                    ),
                                     content: Text('您确定要刷新数据吗', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                                    actions: <Widget>[
+                                    actions: [
                                       TextButton(
-                                        onPressed: () => Navigator.pop(context, 'Cancel'),
-                                        child: const Text('取消'),
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text('取消'),
                                       ),
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context);
                                           bindelectricmeter();
                                         },
-                                        child: const Text('确认'),
+                                        child: Text('确定'),
                                       ),
                                     ],
                                   ),
@@ -221,22 +227,28 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                           onTap: isQuerying
                             ? null
                             : () {
-                                showDialog<String>(
+                                showDialog(
                                   context: context,
                                   builder: (BuildContext context) => AlertDialog(
-                                    title: Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                    title: Row(
+                                      children: [
+                                        Icon(Icons.help),
+                                        SizedBox(width: 8),
+                                        Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                                      ],
+                                    ),
                                     content: Text('您确定要解绑账号吗', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                                    actions: <Widget>[
+                                    actions: [
                                       TextButton(
-                                        onPressed: () => Navigator.pop(context, 'Cancel'),
-                                        child: const Text('取消'),
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text('取消'),
                                       ),
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context);
                                           unbind();
                                         },
-                                        child: const Text('确认'),
+                                        child: Text('确定'),
                                       ),
                                     ],
                                   ),
@@ -306,16 +318,22 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                           borderRadius: BorderRadius.circular(16),
                           onTap: () {
                             if(textOpenidController.text == '') {
-                              showDialog<String>(
+                              showDialog(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
                                   scrollable: true,
-                                  title: Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                  title: Row(
+                                    children: [
+                                      Icon(Icons.info),
+                                      SizedBox(width: 8),
+                                      Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                                    ],
+                                  ),
                                   content: Text('请先输入您的 openId', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                                  actions: <Widget>[
+                                  actions: [
                                     TextButton(
-                                      onPressed: () => Navigator.pop(context, 'OK'),
-                                      child: const Text('确定'),
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text('确定'),
                                     ),
                                   ],
                                 ),
@@ -414,15 +432,21 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                                     icon: Icon(Icons.link_off, size: 24),
                                     onPressed: () {
                                       if(mounted){
-                                        showDialog<String>(
+                                        showDialog(
                                           context: context,
                                           builder: (BuildContext context) => AlertDialog(
-                                            title: Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                                            title: Row(
+                                              children: [
+                                                Icon(Icons.help),
+                                                SizedBox(width: 8),
+                                                Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                                              ],
+                                            ),
                                             content: Text('您确定要解绑电表吗？', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                                            actions: <Widget>[
+                                            actions: [
                                               TextButton(
-                                                onPressed: () => Navigator.pop(context, 'Cancel'),
-                                                child: const Text('取消'),
+                                                onPressed: () => Navigator.pop(context),
+                                                child: Text('取消'),
                                               ),
                                               TextButton(
                                                 onPressed: () {
@@ -430,7 +454,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                                                   unbindEmId = emDetailSingal['bindId'].toString();
                                                   unBindEM();
                                                 },
-                                                child: const Text('确认'),
+                                                child: Text('确定'),
                                               ),
                                             ],
                                           ),
@@ -544,26 +568,27 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         isBinding = true;
       });
       
-      showDialog<String>(
+      showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) => AlertDialog(
           scrollable: true,
-          title: Text('正在绑定...', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          title: Text('请稍后...', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
           content: Column(
             children: [
-              SizedBox(height: 16),
+              SizedBox(height: 10,),
               CircularProgressIndicator(),
-              SizedBox(height: 16)
+              SizedBox(height: 10,),
+              Text('正在绑定...',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
             ],
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
               onPressed: () {
                 bindelectricmeterCanceled = true;
                 Navigator.pop(context);
               },
-              child: const Text('取消'),
+              child: Text('取消'),
             ),
           ],
         ),
@@ -585,9 +610,15 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
           setState(() {
             isBinding = false;
@@ -607,9 +638,15 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
           showDialog(
             context: context, 
             builder: (BuildContext context)=>AlertDialog(
-              title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Row(
+                children: [
+                  Icon(Icons.error),
+                  SizedBox(width: 8),
+                  Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                ],
+              ),
               content: Text('无法获取用户信息，请检查您的 openId 是否正确',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-              actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+              actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
           setState(() {
             isBinding = false;
@@ -631,9 +668,15 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('无法获取数据，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'Cancel'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
         ));
         setState(() {
           GlobalVars.emBinded = false;
@@ -737,7 +780,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     textEmIdController.clear();
     
     if(mounted){
-      await showDialog<String>(
+      await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
@@ -763,26 +806,32 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                   SizedBox(height: 16),
                 ],
               ),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     bindEMCanceled = true;
                     Navigator.pop(context);
                   },
-                  child: const Text('取消'),
+                  child: Text('取消'),
                 ),
                 TextButton(
                   onPressed: () {
                     if(textEmIdController.text == '') {
-                      showDialog<String>(
+                      showDialog(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
-                          title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+                          title: Row(
+                            children: [
+                              Icon(Icons.info),
+                              SizedBox(width: 8),
+                              Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                            ],
+                          ),
                           content: Text('请先输入电表编号',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                          actions: <Widget>[
+                          actions: [
                             TextButton(
-                              onPressed: () => Navigator.pop(context, 'OK'),
-                              child: const Text('确定'),
+                              onPressed: () => Navigator.pop(context),
+                              child: Text('确定'),
                             ),
                           ],
                         ),
@@ -792,7 +841,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                     emId = textEmIdController.text;
                     Navigator.pop(context);
                   },
-                  child: const Text('确定'),
+                  child: Text('确定'),
                 ),
               ],
             ),
@@ -803,28 +852,29 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     
     if(bindEMCanceled) return;
     if(mounted){
-      showDialog<String>(
+      showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return StatefulBuilder(
             builder: (context, setState) => AlertDialog(
               scrollable: true,
-              title: Text('正在绑定...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              title: Text('请稍后...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               content: Column(
                 children: [
                   SizedBox(height: 10,),
                   CircularProgressIndicator(),
-                  SizedBox(height: 10,)
+                  SizedBox(height: 10,),
+                  Text('正在绑定...',style: TextStyle(fontSize: GlobalVars.alertdialogContent))
                 ],
               ),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     bindEMCanceled = true;
                     Navigator.pop(context);
                   },
-                  child: const Text('取消'),
+                  child: Text('取消'),
                 ),
               ],
             ),
@@ -858,9 +908,15 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
         }
       return;
@@ -872,29 +928,18 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('未查到用户信息，请检查您的电表编号是否正确',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: [
               TextButton(
-                onPressed:  () => Navigator.pop(context, 'OK'),
-                child: Text('确认')
-              ),
-            ],
-          ));
-        }
-        return;
-    }if(addBindmeterResponse.data['msg'] ==  '未查到用户信息！'){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog(
-          context: context, 
-          builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-            content: Text('未查到用户信息，请检查您的电表编号是否正确',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [
-              TextButton(
-                onPressed:  () => Navigator.pop(context, 'OK'),
-                child: Text('确认')
+                onPressed: () => Navigator.pop(context),
+                child: Text('确定')
               ),
             ],
           ));
@@ -906,12 +951,18 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('该电表已经绑定，请勿重复绑定',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: [
               TextButton(
-                onPressed:  () => Navigator.pop(context, 'OK'),
-                child: Text('确认')
+                onPressed: () => Navigator.pop(context),
+                child: Text('确定')
               ),
             ],
           ));
@@ -925,12 +976,18 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.info),
+                SizedBox(width: 8),
+                Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('绑定成功',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: [
               TextButton(
-                onPressed:  () => Navigator.pop(context, 'OK'),
-                child: Text('确认')
+                onPressed: () => Navigator.pop(context),
+                child: Text('确定')
               ),
             ],
           ));
@@ -944,7 +1001,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     bool unBindEMCanceled = false;
     
     if(mounted){
-      showDialog<String>(
+      showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
@@ -959,13 +1016,13 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                   SizedBox(height: 10,)
                 ],
               ),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     unBindEMCanceled = true;
                     Navigator.pop(context);
                   },
-                  child: const Text('取消'),
+                  child: Text('取消'),
                 ),
               ],
             ),
@@ -1003,9 +1060,15 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('无法连接网络，请稍后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
         }
         return;
@@ -1018,9 +1081,15 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         showDialog(
           context: context, 
           builder: (BuildContext context)=>AlertDialog(
-            title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+            title: Row(
+              children: [
+                Icon(Icons.info),
+                SizedBox(width: 8),
+                Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
             content: Text('解绑成功',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed:  () => Navigator.pop(context, 'OK'), child: Text('确认'))],
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
         }
         return;
@@ -1030,25 +1099,31 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
 
   //打开链接
   void launchURL() async{
-    showDialog<String>(
+    showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         scrollable: true,
-        title: Text('提示',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+        title: Row(
+          children: [
+            Icon(Icons.help),
+            SizedBox(width: 8),
+            Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+          ],
+        ),
         content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-        actions: <Widget>[
+        actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('取消'),
+            onPressed: () => Navigator.pop(context),
+            child: Text('取消'),
           ),
           TextButton(
             onPressed: () async {
               await launchUrl(url);
               if(context.mounted){
-                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
               }
             },
-            child: const Text('确认'),
+            child: Text('确定'),
           ),
         ],
       ),
