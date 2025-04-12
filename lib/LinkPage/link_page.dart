@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smartsnut/globalvars.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 import 'package:url_launcher/url_launcher.dart';
 
 //用于存储外部链接的完整URL
