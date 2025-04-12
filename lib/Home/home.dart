@@ -1312,6 +1312,8 @@ class _HomeState extends State<Home>{
                         fontSize: GlobalVars.listTileTitle,
                         fontWeight: FontWeight.w500,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     onTap: () {
                       url = Uri.parse(smartSNUTAnnouncements[0]['Link']);
@@ -1337,6 +1339,8 @@ class _HomeState extends State<Home>{
                         fontSize: GlobalVars.listTileTitle,
                         fontWeight: FontWeight.w500,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     onTap: () {
                       url = Uri.parse(smartSNUTAnnouncements[1]['Link']);
@@ -1362,6 +1366,8 @@ class _HomeState extends State<Home>{
                         fontSize: GlobalVars.listTileTitle,
                         fontWeight: FontWeight.w500,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     onTap: () {
                       url = Uri.parse(smartSNUTAnnouncements[2]['Link']);
