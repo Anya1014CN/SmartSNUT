@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
@@ -256,8 +257,8 @@ class Modules {
     GlobalVars.genericTextLarge = DefaultfontSize.genericTextLarge + changevalue;
   }
 
-  //初始化登录信息
-  static Future<List> initialLoginAuth(String loginService) async {
+  //开始登录
+  static Future<List> loginAuth(String userName,String passWord,String loginService) async {
     GlobalVars.loadingHint = '正在获取登录数据...';
 
     String loginServiceLocation = '';
@@ -323,29 +324,72 @@ class Modules {
       pwdEncryptSalt = saltMatch.group(1)!;
     }
 
-    message.clear();
-    message.add({
-      'statue': true,
-      'message': '',
-      'pwdEncryptSalt': pwdEncryptSalt,
-      'authexecution': authexecution,
-    });
-    return message;
-  }
+    GlobalVars.loadingHint = '正在获取验证码...';
+    Uint8List? captchaBytes;
+    
+    late Response captchaResponse;
+    try{
+      if(GlobalVars.operationCanceled){
+        message.clear();
+        message.add({
+          'statue': false,
+          'message': '操作已取消',
+        });
+        return message;
+      }
+      var response = await GlobalVars.globalDio.get(
+        'https://authserver.snut.edu.cn/authserver/getCaptcha.htl',
+        options: Options(
+          responseType: ResponseType.bytes, // 指定响应类型为字节数组
+        ),
+      );
+      captchaResponse = response;
+    }catch (e) {
+      message.clear();
+      message.add({
+        'statue': false,
+        'message': '无法连接服务器，请稍后再试',
+      });
+      return message;
+    }
+      
+    // 确保响应数据是 Uint8List 类型
+    if (captchaResponse.data is Uint8List) {
+      captchaBytes = captchaResponse.data;
+    }
+    captchaBytes = Uint8List.fromList(captchaResponse.data as List<int>);
 
-  //开始登录
-  static Future<List> loginAuth(String userName,String passWord,String pwdEncryptSalt,String captchaCode,String authexecution,String loginService) async {
+    GlobalVars.loadingHint = '正在自动识别验证码...';
+    
+    late Response ddddocrResponse;
+    try{
+      var response = await GlobalVars.globalDio.post(
+        'https://apis.smartsnut.cn/ddddocr',
+        data: captchaBytes, // 直接传递 Uint8List
+        options: Options(
+          headers: {
+            'Content-Type': 'application/octet-stream',
+          },
+        ),
+      );
+      ddddocrResponse = response;
+    }catch(e){
+      message.clear();
+      message.add({
+        'statue': false,
+        'message': '无法连接服务器，请稍后再试',
+      });
+      return message;
+    }
+    List ocrResult = ddddocrResponse.data;
+    
     GlobalVars.loadingHint = '正在登录统一认证平台...';
 
-    String loginServiceLocation = '';
     if(loginService == 'jwgl'){
       loginServiceLocation = 'http://jwgl.snut.edu.cn/eams/ssoLogin.action';
     }if(loginService == 'wzxy'){
       loginServiceLocation = 'https://wzxy.snut.edu.cn/basicinfo/mobile/login/cas?fid=50';
     }
-
-    //存储返回的信息
-    List message = [];
 
     //加密密码
     String encryptedPassWord ='';
@@ -355,7 +399,7 @@ class Modules {
     final loginParams = {
       "username": userName,
       "password": encryptedPassWord,
-      "captcha": captchaCode,
+      "captcha": ocrResult[0]['result'],
       "_eventId": "submit",
       "cllt": "userNameLogin",
       "dllt": "generalLogin",
@@ -501,7 +545,7 @@ class Modules {
       message.clear();
       message.add({
         'statue': false,
-        'message': '无法连接服务器，请稍后再试',
+        'message': '无法连接服务器1，请稍后再试',
       });
       return message;
     }
