@@ -356,7 +356,15 @@ class _LinkPageState extends State<LinkPage> {
                       ),
                       SizedBox(width: 12),
                       Expanded(
-                        child: SizedBox(),
+                        child: buildFunctionButton(
+                          context,
+                          '普通话水平测试',
+                          'speak',
+                          () {
+                            url = Uri.parse('https://bm.cltt.org/');
+                            launchURL();
+                          },
+                        ),
                       ),
                     ],
                   ),

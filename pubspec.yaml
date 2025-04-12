@@ -111,6 +111,7 @@ flutter:
     - assets/icons/darktheme/newspaper.png
     - assets/icons/darktheme/schedule.png
     - assets/icons/darktheme/settings.png
+    - assets/icons/darktheme/speak.png
     - assets/icons/darktheme/teacher.png
     - assets/icons/darktheme/vpn.png
     - assets/icons/darktheme/web.png
@@ -136,6 +137,7 @@ flutter:
     - assets/icons/lighttheme/newspaper.png
     - assets/icons/lighttheme/schedule.png
     - assets/icons/lighttheme/settings.png
+    - assets/icons/lighttheme/speak.png
     - assets/icons/lighttheme/teacher.png
     - assets/icons/lighttheme/vpn.png
     - assets/icons/lighttheme/web.png
