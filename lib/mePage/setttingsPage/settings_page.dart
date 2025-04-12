@@ -705,6 +705,20 @@ class _SettingsPage extends State<SettingsPage>{
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                         ),
+                        title: Text('ddddocr',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
+                        subtitle: Text('一个容易使用的通用验证码识别python库',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: (){
+                          licenseTitle = 'ddddocr';
+                          licensePath = 'ddddocr_LICENSE';
+                          showLicense(context);
+                        },
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
                         title: Text('dio_cookie_manager',style: TextStyle(fontSize: GlobalVars.listTileTitle,fontWeight: FontWeight.bold),),
                         subtitle: Text('A cookie manager combines cookie_jar and dio, based on the interceptor algorithm.',style: TextStyle(fontSize: GlobalVars.listTileSubtitle),),
                         trailing: Icon(Icons.chevron_right),
