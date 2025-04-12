@@ -275,7 +275,7 @@ class _LinkPageState extends State<LinkPage> {
         ),
         SizedBox(height: 10),
 
-        // 校外链接标题
+        //考证链接标题
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
@@ -290,7 +290,7 @@ class _LinkPageState extends State<LinkPage> {
                 margin: EdgeInsets.only(right: 8),
               ),
               Text(
-                '校外链接',
+                '考证链接',
                 style: TextStyle(
                     fontSize: GlobalVars.dividerTitle,
                     fontWeight: FontWeight.bold,
@@ -299,7 +299,7 @@ class _LinkPageState extends State<LinkPage> {
             ],
           ),
         ),
-        // 校外链接卡片
+        //考证链接卡片
         Container(
           padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Card(
