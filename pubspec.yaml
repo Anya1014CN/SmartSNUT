@@ -93,10 +93,12 @@ flutter:
     - assets/icons/darktheme/bulb.png
     - assets/icons/darktheme/city.png
     - assets/icons/darktheme/classroom.png
+    - assets/icons/darktheme/computer.png
     - assets/icons/darktheme/contacts.png
     - assets/icons/darktheme/electricity.png
     - assets/icons/darktheme/electricitybind.png
     - assets/icons/darktheme/empty.png
+    - assets/icons/darktheme/english.png
     - assets/icons/darktheme/exam.png
     - assets/icons/darktheme/exit.png
     - assets/icons/darktheme/face.png
@@ -109,16 +111,19 @@ flutter:
     - assets/icons/darktheme/newspaper.png
     - assets/icons/darktheme/schedule.png
     - assets/icons/darktheme/settings.png
+    - assets/icons/darktheme/teacher.png
     - assets/icons/darktheme/vpn.png
     - assets/icons/darktheme/web.png
     - assets/icons/lighttheme/account.png
     - assets/icons/lighttheme/bulb.png
     - assets/icons/lighttheme/city.png
     - assets/icons/lighttheme/classroom.png
+    - assets/icons/lighttheme/computer.png
     - assets/icons/lighttheme/contacts.png
     - assets/icons/lighttheme/electricity.png
     - assets/icons/lighttheme/electricitybind.png
     - assets/icons/lighttheme/empty.png
+    - assets/icons/lighttheme/english.png
     - assets/icons/lighttheme/exam.png
     - assets/icons/lighttheme/exit.png
     - assets/icons/lighttheme/face.png
@@ -131,6 +136,7 @@ flutter:
     - assets/icons/lighttheme/newspaper.png
     - assets/icons/lighttheme/schedule.png
     - assets/icons/lighttheme/settings.png
+    - assets/icons/lighttheme/teacher.png
     - assets/icons/lighttheme/vpn.png
     - assets/icons/lighttheme/web.png
     - assets/images/logo.png

@@ -273,6 +273,99 @@ class _LinkPageState extends State<LinkPage> {
             ),
           ),
         ),
+        SizedBox(height: 10),
+
+        // 校外链接标题
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                width: 4,
+                height: 18,
+                margin: EdgeInsets.only(right: 8),
+              ),
+              Text(
+                '校外链接',
+                style: TextStyle(
+                    fontSize: GlobalVars.dividerTitle,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary),
+              ),
+            ],
+          ),
+        ),
+        // 校外链接卡片
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+          child: Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+            color: Theme.of(context).colorScheme.surfaceDim,
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '英语四、六级考试',
+                          'english',
+                          () {
+                            url = Uri.parse('https://cet-bm.neea.edu.cn/');
+                            launchURL();
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '教师资格考试',
+                          'teacher',
+                          () {
+                            url = Uri.parse('https://ntce.neea.edu.cn/');
+                            launchURL();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: buildFunctionButton(
+                          context,
+                          '计算机等级考试',
+                          'computer',
+                          () {
+                            url = Uri.parse('https://ncre.neea.edu.cn/');
+                            launchURL();
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: SizedBox(),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                ],
+              ),
+            ),
+          ),
+        ),
         // 底部间隔
         SizedBox(height: 20),
       ],
@@ -316,26 +409,6 @@ class _LinkPageState extends State<LinkPage> {
         ),
       ),
     );
-  }
-
-  loginstatecheck() async {
-    String loginstatepath =
-        '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/loginstate.txt';
-    File loginstatefile = File(loginstatepath);
-    if (await loginstatefile.exists() == true) {
-      if (mounted) {
-        setState(() {
-          loginstate = true;
-        });
-      }
-    }
-    if (await loginstatefile.exists() == false) {
-      if (mounted) {
-        setState(() {
-          loginstate = false;
-        });
-      }
-    }
   }
 
   //打开链接
