@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/AppPage/app_page.dart';
 import 'package:smartsnut/Home/home.dart';
+import 'package:smartsnut/LinkPage/link_page.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/splash.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -101,6 +102,7 @@ class _SmartSNUT extends State<SmartSNUT> {
     super.initState();
     readSettings();
   }
+
   @override
   Widget build(BuildContext context) {
     refreshState();
@@ -217,6 +219,11 @@ class _HomePageState extends State<HomePage>{
                     label: '校内应用',
                   ),
                   NavigationDestination(
+                    icon: Icon(Icons.link_outlined),
+                    selectedIcon: Icon(Icons.link),
+                    label: '常用链接',
+                  ),
+                  NavigationDestination(
                     icon: Icon(Icons.person_outline),
                     selectedIcon: Icon(Icons.person),
                     label: '我的',
@@ -290,6 +297,11 @@ class _HomePageState extends State<HomePage>{
                         label: Text('校内应用',style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                       ),
                       NavigationRailDestination(
+                        icon: Icon(Icons.link_outlined),
+                        selectedIcon: Icon(Icons.link),
+                        label: Text('常用链接',style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                      ),
+                      NavigationRailDestination(
                         icon: Icon(Icons.person_outline),
                         selectedIcon: Icon(Icons.person),
                         label: Text('我的',style: TextStyle(color: Theme.of(context).colorScheme.primary),),
@@ -299,6 +311,7 @@ class _HomePageState extends State<HomePage>{
                   <Widget>[
                     Expanded(child: Home(),),
                     Expanded(child: AppPage(),),
+                    Expanded(child: LinkPage(),),
                     Expanded(child: MePage(),),
                   ][railselectedIndex],
                 ],
@@ -308,6 +321,7 @@ class _HomePageState extends State<HomePage>{
               return <Widget>[
                 Home(),
                 AppPage(),
+                LinkPage(),
                 MePage(),
               ][selectedHomeIndex];
             }
