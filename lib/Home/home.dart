@@ -1920,11 +1920,14 @@ class _HomeState extends State<Home>{
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 SizedBox(width: 4),
-                Text(
-                  '${courseToday[index][0]['CourseTeacher']}',
-                  style: TextStyle(
-                    fontSize: GlobalVars.listTileSubtitle,
-                    color: Theme.of(context).colorScheme.secondary,
+                Flexible(
+                  child: Text(
+                    '${courseToday[index][0]['CourseTeacher']}',
+                    style: TextStyle(
+                      fontSize: GlobalVars.listTileSubtitle,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    overflow: TextOverflow.ellipsis,  // 添加省略号
                   ),
                 ),
               ],
@@ -1938,11 +1941,14 @@ class _HomeState extends State<Home>{
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 SizedBox(width: 4),
-                Text(
-                  '${(courseToday[index][0]['CourseLocation'] == '')? '无地点信息' : courseToday[index][0]['CourseLocation']}',
-                  style: TextStyle(
-                    fontSize: GlobalVars.listTileSubtitle,
-                    color: Theme.of(context).colorScheme.secondary,
+                Flexible(
+                  child: Text(
+                    '${(courseToday[index][0]['CourseLocation'] == '')? '无地点信息' : courseToday[index][0]['CourseLocation']}',
+                    style: TextStyle(
+                      fontSize: GlobalVars.listTileSubtitle,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
