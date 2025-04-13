@@ -109,6 +109,7 @@ class _SettingsPage extends State<SettingsPage>{
       'showSunCourse': GlobalVars.showSunCourse,
       'courseBlockColorsint': GlobalVars.courseBlockColorsInt,
       'switchTomorrowCourseAfter20': GlobalVars.switchTomorrowCourseAfter20,
+      'showTzgg': GlobalVars.showTzgg,
     });
     if(mounted){
       setState(() {});
@@ -268,6 +269,22 @@ class _SettingsPage extends State<SettingsPage>{
                         ),
                         title: Text('自动切换明日课程',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
                         subtitle: Text('在每天晚上的 20:00 之后，自动切换首页的课表到明日课表',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        leading: Icon(Icons.notifications, color: Theme.of(context).colorScheme.primary),
+                        trailing: Switch(
+                          value: GlobalVars.showTzgg,
+                          onChanged: (value) {
+                            GlobalVars.showTzgg = value;
+                            saveSettings();
+                          },
+                        ),
+                        title: Text('在首页显示 “通知公告” 栏目',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text('展示学校官网的通知公告',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       ),
                     ],
                   )

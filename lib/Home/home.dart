@@ -1760,7 +1760,7 @@ class _HomeState extends State<Home>{
         ),
         
         // 通知公告标题
-        Container(
+        (GlobalVars.showTzgg)? Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Row(
             children: [
@@ -1783,10 +1783,10 @@ class _HomeState extends State<Home>{
               ),
             ],
           ),
-        ),
+        ):SizedBox(),
         
         // 通知公告卡片
-        Container(
+        (GlobalVars.showTzgg)? Container(
           padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Card(
             elevation: 2,
@@ -1855,7 +1855,7 @@ class _HomeState extends State<Home>{
               )
             ),
           ),
-        ),
+        ):SizedBox(),
         
         // 底部间隔
         SizedBox(height: 20),
