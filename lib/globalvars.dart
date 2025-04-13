@@ -67,6 +67,8 @@ class GlobalVars {
   static int fontsizeint = 1;//0 - 小；1 - 中；2 - 大
   static int darkModeint = 0;//0 - 跟随系统；1 - 始终开启；2 - 始终关闭
   static int themeColor = 0;//对应八种颜色
+  //自动切换明日课表
+  static bool switchTomorrowCourseAfter20 = true;
   //课表是否显示周六周日
   static bool showSatCourse = true;
   static bool showSunCourse = true;

@@ -49,6 +49,7 @@ class _SmartSNUT extends State<SmartSNUT> {
         GlobalVars.showSatCourse = GlobalVars.settingsTotal[0]['showSatCourse']?? true;
         GlobalVars.showSunCourse = GlobalVars.settingsTotal[0]['showSunCourse']?? true;
         GlobalVars.courseBlockColorsInt = GlobalVars.settingsTotal[0]['courseBlockColorsint']?? 0;
+        GlobalVars.switchTomorrowCourseAfter20 = GlobalVars.settingsTotal[0]['switchTomorrowCourseAfter20']?? true;
       });
     }else{
       setState(() {
@@ -58,6 +59,7 @@ class _SmartSNUT extends State<SmartSNUT> {
         GlobalVars.showSatCourse = true;
         GlobalVars.showSunCourse = true;
         GlobalVars.courseBlockColorsInt = 0;
+        GlobalVars.switchTomorrowCourseAfter20 = true;
       });
     }
     Modules.setFontSize();

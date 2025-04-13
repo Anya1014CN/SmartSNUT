@@ -1221,7 +1221,15 @@ class _HomeState extends State<Home>{
     if(announcementState == 0){
       getSmartSNUTAnnouncement();
     }
-    setState(() {});
+    
+    //判断是否需要切换明日课程
+    if(GlobalVars.switchTomorrowCourseAfter20 == true && GlobalVars.hour >= 20 && GlobalVars.hour <= 23){
+      if(mounted){
+        setState(() {
+          courseIsToday = false;
+        });
+      }
+    }
   }
 
   @override

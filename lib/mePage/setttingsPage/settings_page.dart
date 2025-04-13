@@ -100,13 +100,7 @@ class _SettingsPage extends State<SettingsPage>{
   saveSettings() async {
     String settingstpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/settings.json';
     File settingstfile = File(settingstpath);
-    GlobalVars.settingsTotal = [];
-    GlobalVars.settingsTotal.remove('fontSize');
-    GlobalVars.settingsTotal.remove('DarkMode');
-    GlobalVars.settingsTotal.remove('ThemeColor');
-    GlobalVars.settingsTotal.remove('showSatCourse');
-    GlobalVars.settingsTotal.remove('showSunCourse');
-    GlobalVars.settingsTotal.remove('courseBlockColorsInt');
+    GlobalVars.settingsTotal.clear();
     GlobalVars.settingsTotal.add({
       'fontSize': GlobalVars.fontsizeint,
       'DarkMode': GlobalVars.darkModeint,
@@ -114,6 +108,7 @@ class _SettingsPage extends State<SettingsPage>{
       'showSatCourse': GlobalVars.showSatCourse,
       'showSunCourse': GlobalVars.showSunCourse,
       'courseBlockColorsint': GlobalVars.courseBlockColorsInt,
+      'switchTomorrowCourseAfter20': GlobalVars.switchTomorrowCourseAfter20,
     });
     if(mounted){
       setState(() {});
@@ -231,6 +226,48 @@ class _SettingsPage extends State<SettingsPage>{
                         subtitle: Text((GlobalVars.darkModeint == 0)? '跟随系统':(GlobalVars.darkModeint == 1)? '始终开启':'始终关闭',
                           style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                         onTap: (){switchThemeMode();},
+                      ),
+                    ],
+                  )
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('首页设置',style: TextStyle(fontSize: GlobalVars.dividerTitle,color:Theme.of(context).colorScheme.primary),),
+                  Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                ),
+                color: Theme.of(context).colorScheme.surfaceDim,
+                shadowColor: Theme.of(context).colorScheme.onPrimary,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        leading: Icon(Icons.calendar_view_week, color: Theme.of(context).colorScheme.primary),
+                        trailing: Switch(
+                          value: GlobalVars.switchTomorrowCourseAfter20,
+                          onChanged: (value) {
+                            GlobalVars.switchTomorrowCourseAfter20 = value;
+                            saveSettings();
+                          },
+                        ),
+                        title: Text('自动切换明日课程',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text('在每天晚上的 20:00 之后，自动切换首页的课表到明日课表',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
                       ),
                     ],
                   )
