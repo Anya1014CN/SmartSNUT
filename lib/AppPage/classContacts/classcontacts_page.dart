@@ -35,7 +35,17 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
     if(await classListfile.exists()){
       GlobalVars.classList = jsonDecode(await classListfile.readAsString());
     }
-    if(mounted) setState(() {});
+
+    //
+    if(GlobalVars.classList.isNotEmpty){
+      if(mounted) {
+        setState(() {
+          selectedClass = 0;
+          selectedClassName = GlobalVars.classList.first['name'];
+        });
+        getClassMemberList(GlobalVars.classList.first['id']);
+      }
+    }
   }
 
   @override
@@ -149,7 +159,7 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.info_outline, color: Theme.of(context).colorScheme.primary),
+                            Icon(Icons.list, color: Theme.of(context).colorScheme.primary),
                             SizedBox(width: 12),
                             Text(
                               '班级列表',
@@ -173,7 +183,12 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
                         ):
                         Column(
                           children: GlobalVars.classList.map((classItem) {
+                            bool isSelected = GlobalVars.classList.indexOf(classItem) == selectedClass;
                             return ListTile(
+                              leading: isSelected ? Icon(
+                                Icons.check_circle,
+                                color: Theme.of(context).colorScheme.primary,
+                              ) : null,
                               title: Text(
                                 '${classItem['name']} （${classItem['count']} 人） ',
                                 style: TextStyle(
@@ -189,11 +204,13 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
                                 ),
                               ),
                               onTap: () {
-                                getClassMemberList(classItem['id']);
                                 setState(() {
                                   selectedClass = GlobalVars.classList.indexOf(classItem);
                                   selectedClassName = classItem['name'];
                                 });
+                                print('选中的班级id');
+                                print(classItem['id']);
+                                getClassMemberList(classItem['id']);
                               },
                             );
                           }).toList(),
@@ -221,7 +238,7 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.info_outline, color: Theme.of(context).colorScheme.primary),
+                            Icon(Icons.group_outlined, color: Theme.of(context).colorScheme.primary),
                             SizedBox(width: 12),
                             Text(
                               (selectedClass == -1)? '人员列表':'人员列表 - $selectedClassName',
@@ -374,6 +391,18 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
       if(GlobalVars.operationCanceled) return;
       await Modules.getClassMemberList(GlobalVars.classList[i-1]['id']);
     }
+
+    //如果账号下存在班级，则自动选中第一个班级
+    if(GlobalVars.classList.isNotEmpty){
+      if(mounted){
+        setState(() {
+          selectedClass = 0;
+          selectedClassName = GlobalVars.classList.first['name'];
+        });
+      }
+      getClassMemberList(GlobalVars.classList.first['id']);
+    }
+
     if(mounted){
       setState(() {
         GlobalVars.classList = getClassListResponse[0]['classList'];
