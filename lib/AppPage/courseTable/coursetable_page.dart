@@ -22,13 +22,13 @@ String termEnd = '';
 int termWeeks = 0;
 bool termEnded = false;
 
-//周信息
-int currentDOW = 0;
-
 //课表滚动控制器
 final ScrollController tableVerticalController = ScrollController();
 final ScrollController tableHorizontalController = ScrollController();
 double horizontalDragStart = 0.0;//支持鼠标直接拖拽课表
+
+//用于判断是否是本周课表
+bool isThisWeek = true;
 
 //定义课表的行高和列宽
 double tableWidth = 0;
@@ -265,7 +265,7 @@ class _CourseTablePage extends State<CourseTablePage>{
             if(mounted){
               setState(() {
                 termEnded = true;
-                currentDOW = currentDay % 7;
+                GlobalVars.currentDOW = currentDay % 7;
               });
             }
           }else{
@@ -273,7 +273,7 @@ class _CourseTablePage extends State<CourseTablePage>{
               setState(() {
                 termEnded = false;
                 currentWeekInt = (currentDay ~/ 7) + 1;
-                currentDOW = currentDay % 7;
+                GlobalVars.currentDOW = currentDay % 7;
               });
             }
           }
@@ -285,7 +285,7 @@ class _CourseTablePage extends State<CourseTablePage>{
             if(mounted){
               setState(() {
                 termEnded = true;
-                currentDOW =  7;
+                GlobalVars.currentDOW =  7;
               });
             }
           }else{
@@ -293,12 +293,21 @@ class _CourseTablePage extends State<CourseTablePage>{
               setState(() {
                 termEnded = false;
                 currentWeekInt = currentDay ~/ 7;
-                currentDOW =  7;
+                GlobalVars.currentDOW =  7;
               });
             }
           }
         }
         saveSelectedTY();
+      }
+      isThisWeek = true;
+      if(GlobalVars.switchNextWeekCourseAfter20 == true && GlobalVars.hour >= 20 && GlobalVars.hour <= 23){
+        if(mounted){
+          setState(() {
+            isThisWeek = false;
+            currentWeekInt = currentWeekInt + 1;
+          });
+        }
       }
     }
     readCourseTabDetail();
@@ -1234,6 +1243,22 @@ class _CourseTablePage extends State<CourseTablePage>{
       }
     }
     if(mounted){
+      if(isThisWeek == false && GlobalVars.switchTomorrowCourseAfter20 == true){
+        showDialog(
+          barrierDismissible: false,
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Row(
+              children: [
+                Icon(Icons.info),
+                SizedBox(width: 8,),
+                Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              ],
+            ),
+            content: Text('由于现在是本周周日的晚上 20:00 以后，已自动为您切换到下周课表！\n\n您正在查看的是第 $currentWeekInt 周的课表\n但今天是第 ${currentWeekInt - 1} 周的周日！\n\n为防止您看错课表，本提示在每次周日晚上 20:00 以后进入 “我的课表” 页面时均会弹出且无法忽略！\n\n如果您想要关闭这项功能，请前往 “我的 -> 应用设置” 在 “课表设置” 处关闭 “自动切换下周课表” 即可',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
+          ));
+      }
       setState(() {
         isReading = false;
       });//全部解析完成之后刷新
@@ -1478,8 +1503,16 @@ class _CourseTablePage extends State<CourseTablePage>{
                     ),
                     Column(
                       children: [
-                        Text(
+                        isThisWeek? Text(
                           termEnded? '第 $currentWeekInt 周（本学期已结束）':'第 $currentWeekInt 周',
+                          style: TextStyle(
+                            fontSize: GlobalVars.genericTextLarge,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary
+                          ),
+                        ):
+                        Text(
+                          termEnded? '明天：第 $currentWeekInt 周（本学期已结束）':'明天：第 $currentWeekInt 周',
                           style: TextStyle(
                             fontSize: GlobalVars.genericTextLarge,
                             fontWeight: FontWeight.bold,
@@ -1573,7 +1606,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('一\n${weekDates[0]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 1)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('一\n${weekDates[0]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (GlobalVars.currentDOW == 1)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1581,7 +1614,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('二\n${weekDates[1]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 2)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('二\n${weekDates[1]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (GlobalVars.currentDOW == 2)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1589,7 +1622,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('三\n${weekDates[2]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 3)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('三\n${weekDates[2]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (GlobalVars.currentDOW == 3)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1597,7 +1630,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('四\n${weekDates[3]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 4)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('四\n${weekDates[3]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (GlobalVars.currentDOW == 4)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     Card(
@@ -1605,7 +1638,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('五\n${weekDates[4]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 5)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('五\n${weekDates[4]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (GlobalVars.currentDOW == 5)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ),
                     GlobalVars.showSatCourse? Card(
@@ -1613,7 +1646,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('六\n${weekDates[5]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 6)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('六\n${weekDates[5]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (GlobalVars.currentDOW == 6)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ):SizedBox(),
                     GlobalVars.showSunCourse? Card(
@@ -1621,7 +1654,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       shadowColor: Theme.of(context).colorScheme.onPrimary,
                       child: SizedBox(
                         width: tableWidth,
-                        child: Text('日\n${weekDates[6]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (currentDOW == 7)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
+                        child: Text('日\n${weekDates[6]}',textAlign: TextAlign.center,style: TextStyle(fontWeight: (GlobalVars.currentDOW == 7)? FontWeight.w900:FontWeight.normal,fontSize: GlobalVars.genericTextSmall),),
                       )
                     ):SizedBox(),
                   ],

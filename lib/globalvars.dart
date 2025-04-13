@@ -57,6 +57,7 @@ class GlobalVars {
   static String tomorrowMonthString = '';
   static String tomorrowDayString = '';
   static String tomorrowWeekDay = '';
+  static int currentDOW = 0;//每周的第几天
 
   //用于存储不同时间段的问候语
   static String greeting = '';
@@ -71,6 +72,8 @@ class GlobalVars {
   static bool showTzgg = true;
   //自动切换明日课表
   static bool switchTomorrowCourseAfter20 = true;
+  //自动切换下周课表
+  static bool switchNextWeekCourseAfter20 = true;
   //课表是否显示周六周日
   static bool showSatCourse = true;
   static bool showSunCourse = true;

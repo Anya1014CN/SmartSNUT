@@ -109,6 +109,7 @@ class _SettingsPage extends State<SettingsPage>{
       'showSunCourse': GlobalVars.showSunCourse,
       'courseBlockColorsint': GlobalVars.courseBlockColorsInt,
       'switchTomorrowCourseAfter20': GlobalVars.switchTomorrowCourseAfter20,
+      'switchNextWeekCourseAfter20': GlobalVars.switchNextWeekCourseAfter20,
       'showTzgg': GlobalVars.showTzgg,
     });
     if(mounted){
@@ -313,6 +314,22 @@ class _SettingsPage extends State<SettingsPage>{
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
                     children: [
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        leading: Icon(Icons.calendar_view_week, color: Theme.of(context).colorScheme.primary),
+                        trailing: Switch(
+                          value: GlobalVars.switchNextWeekCourseAfter20,
+                          onChanged: (value) {
+                            GlobalVars.switchNextWeekCourseAfter20 = value;
+                            saveSettings();
+                          },
+                        ),
+                        title: Text('自动切换下周课表',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text('在每周日的晚上 20:00 之后，自动切换 “我的课表” 页面的课表到下周课表',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),

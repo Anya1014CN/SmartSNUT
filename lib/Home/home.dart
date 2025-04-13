@@ -31,9 +31,6 @@ String termEnd = '';
 int termWeeks = 0;
 bool termEnded = false;
 
-//周信息
-int currentDOW = 0;
-
 //全年课表数据
 List courseTableFull = [];//一学期的完整课表
 List<List> courseMonTotal = [[],[],[],[],[],[],[],[],[],[]];//周一课程（第一节到第十节）
@@ -207,7 +204,7 @@ class _HomeState extends State<Home>{
             if(mounted){
               setState(() {
                 termEnded = true;
-                currentDOW = currentDay % 7;
+                GlobalVars.currentDOW = currentDay % 7;
               });
             }
           }else{
@@ -215,7 +212,7 @@ class _HomeState extends State<Home>{
               setState(() {
                 termEnded = false;
                 currentWeekInt = (currentDay ~/ 7) + 1;
-                currentDOW = currentDay % 7;
+                GlobalVars.currentDOW = currentDay % 7;
               });
             }
           }
@@ -227,7 +224,7 @@ class _HomeState extends State<Home>{
             if(mounted){
               setState(() {
                 termEnded = true;
-                currentDOW =  7;
+                GlobalVars.currentDOW =  7;
               });
             }
           }else{
@@ -235,7 +232,7 @@ class _HomeState extends State<Home>{
               setState(() {
                 termEnded = false;
                 currentWeekInt = currentDay ~/ 7;
-                currentDOW =  7;
+                GlobalVars.currentDOW =  7;
               });
             }
           }
@@ -243,7 +240,7 @@ class _HomeState extends State<Home>{
         saveSelectedTY();
       }
     }
-    if(!courseIsToday) currentDOW = currentDOW + 1;
+    if(!courseIsToday) GlobalVars.currentDOW = GlobalVars.currentDOW + 1;
     readCourseTabDetail();
   }
 
@@ -1112,7 +1109,7 @@ class _HomeState extends State<Home>{
     //读取之前清空课表，防止与前一天的课表叠加
     courseToday = [[],[],[],[],[],[],[],[],[],[]];
     
-    if(currentDOW == 1){
+    if(GlobalVars.currentDOW == 1){
       for(int courseTODInt = 0;courseTODInt < 10;courseTODInt++){
         if(courseMonWeek[courseTODInt].isEmpty == false){
           courseToday[courseTODInt].add({
@@ -1123,7 +1120,7 @@ class _HomeState extends State<Home>{
         }
       }
     }
-    if(currentDOW == 2){
+    if(GlobalVars.currentDOW == 2){
       for(int courseTODInt = 0;courseTODInt < 10;courseTODInt++){
         if(courseTueWeek[courseTODInt].isEmpty != true){
           courseToday[courseTODInt].add({
@@ -1134,7 +1131,7 @@ class _HomeState extends State<Home>{
         }
       }
     }
-    if(currentDOW == 3){
+    if(GlobalVars.currentDOW == 3){
       for(int courseTODInt = 0;courseTODInt < 10;courseTODInt++){
         if(courseWedWeek[courseTODInt].isEmpty != true){
           courseToday[courseTODInt].add({
@@ -1145,7 +1142,7 @@ class _HomeState extends State<Home>{
         }
       }
     }
-    if(currentDOW == 4){
+    if(GlobalVars.currentDOW == 4){
       for(int courseTODInt = 0;courseTODInt < 10;courseTODInt++){
         if(courseThuWeek[courseTODInt].isEmpty != true){
           courseToday[courseTODInt].add({
@@ -1156,7 +1153,7 @@ class _HomeState extends State<Home>{
         }
       }
     }
-    if(currentDOW == 5){
+    if(GlobalVars.currentDOW == 5){
       for(int courseTODInt = 0;courseTODInt < 10;courseTODInt++){
         if(courseFriWeek[courseTODInt].isEmpty != true){
           courseToday[courseTODInt].add({
@@ -1167,7 +1164,7 @@ class _HomeState extends State<Home>{
         }
       }
     }
-    if(currentDOW == 6){
+    if(GlobalVars.currentDOW == 6){
       for(int courseTODInt = 0;courseTODInt < 10;courseTODInt++){
         if(courseSatWeek[courseTODInt].isEmpty != true){
           courseToday[courseTODInt].add({
@@ -1178,7 +1175,7 @@ class _HomeState extends State<Home>{
         }
       }
     }
-    if(currentDOW == 7){
+    if(GlobalVars.currentDOW == 7){
       for(int courseTODInt = 0;courseTODInt < 10;courseTODInt++){
         if(courseSunWeek[courseTODInt].isEmpty != true){
           courseToday[courseTODInt].add({
@@ -1189,7 +1186,7 @@ class _HomeState extends State<Home>{
         }
       }
     }
-    if(currentDOW == 8){
+    if(GlobalVars.currentDOW == 8){
       for(int courseTODInt = 0;courseTODInt < 10;courseTODInt++){
         if(courseNextMonWeek[courseTODInt].isEmpty != true){
           courseToday[courseTODInt].add({
