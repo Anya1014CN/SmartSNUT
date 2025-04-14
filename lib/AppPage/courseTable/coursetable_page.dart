@@ -151,7 +151,8 @@ String currentTermName = '';
 bool noCourseTable = false;//用于判断该学期是否有课表
 
 //当前课表信息
-int currentWeekInt = 1;
+int currentWeekInt = 1;//本周周数
+int userSelectedWeekInt = 1;//用户选中的周数
 late DateTime termStartDateTime;
 late DateTime termEndDateTime;
 
@@ -300,12 +301,13 @@ class _CourseTablePage extends State<CourseTablePage>{
         }
         saveSelectedTY();
       }
+      userSelectedWeekInt = currentWeekInt;
       isThisWeek = true;
       if(GlobalVars.switchNextWeekCourseAfter20 == true && GlobalVars.hour >= 20 && GlobalVars.hour <= 23){
         if(mounted){
           setState(() {
             isThisWeek = false;
-            currentWeekInt = currentWeekInt + 1;
+            userSelectedWeekInt = userSelectedWeekInt + 1;
           });
         }
       }
@@ -1148,7 +1150,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     //加载本周周一课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseMonTotal[courseTODInt].length;courseInt++){
-        if(courseMonTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
+        if(courseMonTotal[courseTODInt][courseInt]['CourseWeeks'][userSelectedWeekInt] == '1'){
           courseMonWeek[courseTODInt].add({
               'CourseName': courseMonTotal[courseTODInt][courseInt]['CourseName'],
               'CourseLocation': courseMonTotal[courseTODInt][courseInt]['CourseLocation'],
@@ -1162,7 +1164,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     //加载本周周二课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseTueTotal[courseTODInt].length;courseInt++){
-        if(courseTueTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
+        if(courseTueTotal[courseTODInt][courseInt]['CourseWeeks'][userSelectedWeekInt] == '1'){
           courseTueWeek[courseTODInt].add({
               'CourseName': courseTueTotal[courseTODInt][courseInt]['CourseName'],
               'CourseLocation': courseTueTotal[courseTODInt][courseInt]['CourseLocation'],
@@ -1176,7 +1178,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     //加载本周周三课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseWedTotal[courseTODInt].length;courseInt++){
-        if(courseWedTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
+        if(courseWedTotal[courseTODInt][courseInt]['CourseWeeks'][userSelectedWeekInt] == '1'){
           courseWedWeek[courseTODInt].add({
               'CourseName': courseWedTotal[courseTODInt][courseInt]['CourseName'],
               'CourseLocation': courseWedTotal[courseTODInt][courseInt]['CourseLocation'],
@@ -1190,7 +1192,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     //加载本周周四课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseThuTotal[courseTODInt].length;courseInt++){
-        if(courseThuTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
+        if(courseThuTotal[courseTODInt][courseInt]['CourseWeeks'][userSelectedWeekInt] == '1'){
           courseThuWeek[courseTODInt].add({
               'CourseName': courseThuTotal[courseTODInt][courseInt]['CourseName'],
               'CourseLocation': courseThuTotal[courseTODInt][courseInt]['CourseLocation'],
@@ -1204,7 +1206,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     //加载本周周五课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseFriTotal[courseTODInt].length;courseInt++){
-        if(courseFriTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
+        if(courseFriTotal[courseTODInt][courseInt]['CourseWeeks'][userSelectedWeekInt] == '1'){
           courseFriWeek[courseTODInt].add({
               'CourseName': courseFriTotal[courseTODInt][courseInt]['CourseName'],
               'CourseLocation': courseFriTotal[courseTODInt][courseInt]['CourseLocation'],
@@ -1218,7 +1220,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     //加载本周周六课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseSatTotal[courseTODInt].length;courseInt++){
-        if(courseSatTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
+        if(courseSatTotal[courseTODInt][courseInt]['CourseWeeks'][userSelectedWeekInt] == '1'){
           courseSatWeek[courseTODInt].add({
               'CourseName': courseSatTotal[courseTODInt][courseInt]['CourseName'],
               'CourseLocation': courseSatTotal[courseTODInt][courseInt]['CourseLocation'],
@@ -1232,7 +1234,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     //加载本周周日课程
     for(int courseTODInt = 0; courseTODInt <= 9;courseTODInt++){
       for(int courseInt = 0;courseInt < courseSunTotal[courseTODInt].length;courseInt++){
-        if(courseSunTotal[courseTODInt][courseInt]['CourseWeeks'][currentWeekInt] == '1'){
+        if(courseSunTotal[courseTODInt][courseInt]['CourseWeeks'][userSelectedWeekInt] == '1'){
           courseSunWeek[courseTODInt].add({
               'CourseName': courseSunTotal[courseTODInt][courseInt]['CourseName'],
               'CourseLocation': courseSunTotal[courseTODInt][courseInt]['CourseLocation'],
@@ -1243,7 +1245,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       }
     }
     if(mounted){
-      if(isThisWeek == false && GlobalVars.switchTomorrowCourseAfter20 == true){
+      if(userSelectedWeekInt != currentWeekInt && isThisWeek == false && GlobalVars.switchTomorrowCourseAfter20 == true){
         showDialog(
           barrierDismissible: false,
           context: context, 
@@ -1488,7 +1490,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       onPressed: (currentWeekInt == 1)? null:(){
                         if(mounted){
                           setState(() {
-                            currentWeekInt --;
+                            userSelectedWeekInt --;
                             weekDiff --;
                           });
                         }
@@ -1501,31 +1503,19 @@ class _CourseTablePage extends State<CourseTablePage>{
                       ),
                       tooltip: '上一周',
                     ),
-                    Column(
-                      children: [
-                        isThisWeek? Text(
-                          termEnded? '第 $currentWeekInt 周（本学期已结束）':'第 $currentWeekInt 周',
-                          style: TextStyle(
-                            fontSize: GlobalVars.genericTextLarge,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary
-                          ),
-                        ):
-                        Text(
-                          termEnded? '明天：第 $currentWeekInt 周（本学期已结束）':'明天：第 $currentWeekInt 周',
-                          style: TextStyle(
-                            fontSize: GlobalVars.genericTextLarge,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary
-                          ),
-                        ),
-                      ],
+                    Text(
+                      termEnded? '第 $userSelectedWeekInt 周（学期已结束）':(userSelectedWeekInt == currentWeekInt)? '第 $userSelectedWeekInt 周':'第 $userSelectedWeekInt 周（非本周）',
+                      style: TextStyle(
+                        fontSize: GlobalVars.genericTextLarge,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary
+                      ),
                     ),
                     IconButton(
                       onPressed: (currentWeekInt == termWeeks)? null:(){
                         if(mounted){
                           setState(() {
-                            currentWeekInt ++;
+                            userSelectedWeekInt ++;
                             weekDiff ++;
                           });
                         }

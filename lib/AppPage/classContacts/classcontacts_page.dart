@@ -208,8 +208,6 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
                                   selectedClass = GlobalVars.classList.indexOf(classItem);
                                   selectedClassName = classItem['name'];
                                 });
-                                print('选中的班级id');
-                                print(classItem['id']);
                                 getClassMemberList(classItem['id']);
                               },
                             );
