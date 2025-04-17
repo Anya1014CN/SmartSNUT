@@ -156,7 +156,7 @@ class _SmartSNUT extends State<SmartSNUT> {
           navigationRailLabelType: NavigationRailLabelType.all,
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        ),
+      ),
       darkTheme: FlexThemeData.dark(
         fontFamily: 'MiSans',
         scheme: (GlobalVars.themeColor == 0)? FlexScheme.amber:(GlobalVars.themeColor == 1)? FlexScheme.deepOrangeM3:(GlobalVars.themeColor == 2)? FlexScheme.mandyRed:(GlobalVars.themeColor == 3)? FlexScheme.deepBlue:(GlobalVars.themeColor == 4)? FlexScheme.mallardGreen:(GlobalVars.themeColor == 5)? FlexScheme.pinkM3:(GlobalVars.themeColor == 6)? FlexScheme.espresso:FlexScheme.shark,
@@ -172,7 +172,7 @@ class _SmartSNUT extends State<SmartSNUT> {
           navigationRailLabelType: NavigationRailLabelType.all,
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        ),
+      ),
       themeMode: (GlobalVars.darkModeint == 0)? ThemeMode.system:(GlobalVars.darkModeint == 1)? ThemeMode.dark:ThemeMode.light,
       home: SplashPage(),
     );

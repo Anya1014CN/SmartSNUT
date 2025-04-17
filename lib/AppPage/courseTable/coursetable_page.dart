@@ -1487,7 +1487,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: (currentWeekInt == 1)? null:(){
+                      onPressed: (userSelectedWeekInt == 1)? null:(){
                         if(mounted){
                           setState(() {
                             userSelectedWeekInt --;
@@ -1512,7 +1512,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       ),
                     ),
                     IconButton(
-                      onPressed: (currentWeekInt == termWeeks)? null:(){
+                      onPressed: (userSelectedWeekInt == termWeeks)? null:(){
                         if(mounted){
                           setState(() {
                             userSelectedWeekInt ++;

@@ -1254,9 +1254,6 @@ class _HomeState extends State<Home>{
     GlobalVars.tomorrowDayString = tomorrowDay.toString().padLeft(2, '0');
     GlobalVars.tomorrowWeekDay = DateFormat('EEEE', "zh_CN").format(tomorrow);
     
-    //获取长宽并保存
-    tableWidth = (MediaQuery.of(context).size.width );
-    tableHeight = tableWidth / 12;
     //渲染首页
     return ListView(
       children: [
