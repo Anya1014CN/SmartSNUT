@@ -2330,7 +2330,9 @@ class _CourseTablePage extends State<CourseTablePage>{
       return;
     }
 
+    currentWeekInt = userSelectedWeekInt;
     readSchoolCalendarInfo();
+    getWeekDates();
     if(mounted){
       setState(() {
         needRefresh = false;
