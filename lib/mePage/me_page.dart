@@ -312,7 +312,7 @@ class _MePageState extends State<MePage>{
         Container(
           padding: EdgeInsets.fromLTRB(0, 16, 0, 20),
           child: Text(
-            '智慧陕理工',
+            '智慧陕理',
             style: TextStyle(
               fontSize: 12,
               color: Colors.grey,

@@ -54,7 +54,7 @@ class _SplashPageState extends State<SplashPage>{
             children: [
               Image.asset('assets/images/logo.png',width: (MediaQuery.of(context).size.width)*0.3,),
               SizedBox(height: 10,),
-              Text('智慧陕理工',style: TextStyle(color: Colors.white,fontSize: GlobalVars.splashPageTitle),)
+              Text('智慧陕理',style: TextStyle(color: Colors.white,fontSize: GlobalVars.splashPageTitle),)
             ],
           ),
         ),

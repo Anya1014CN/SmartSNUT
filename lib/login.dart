@@ -139,7 +139,7 @@ class _LoginPageState extends State<LoginPage>{
                     Icon(Icons.login, size: 20),
                     SizedBox(width: 8),
                     Text(
-                      '登录智慧陕理工',
+                      '登录智慧陕理',
                       style: TextStyle(
                         fontSize: GlobalVars.genericTextMedium,
                         fontWeight: FontWeight.bold,
@@ -214,7 +214,7 @@ class _LoginPageState extends State<LoginPage>{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('登录智慧陕理工',style: TextStyle(fontSize: GlobalVars.genericTextMedium,color: Theme.of(context).colorScheme.primary),),
+                Text('登录智慧陕理',style: TextStyle(fontSize: GlobalVars.genericTextMedium,color: Theme.of(context).colorScheme.primary),),
                 Divider(height: 5,indent: 20,endIndent: 20,color: Theme.of(context).colorScheme.primary,),
               ],
             ),
