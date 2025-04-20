@@ -1262,7 +1262,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                 Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
               ],
             ),
-            content: Text('由于现在是本周周日的晚上 20:00 以后，已自动为您切换到下周课表！\n\n您正在查看的是第 $currentWeekInt 周的课表\n但今天是第 ${currentWeekInt - 1} 周的周日！\n\n为防止您看错课表，本提示在每次周日晚上 20:00 以后进入 “我的课表” 页面时均会弹出且无法忽略！\n\n如果您想要关闭这项功能，请前往 “我的 -> 应用设置” 在 “课表设置” 处关闭 “自动切换下周课表” 即可',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            content: Text('由于现在是本周周日的晚上 20:00 以后，已自动为您切换到下周课表！\n\n您正在查看的是第 ${currentWeekInt + 1} 周的课表\n但今天是第 $currentWeekInt 周的周日！\n\n为防止您看错课表，本提示在每次周日晚上 20:00 以后进入 “我的课表” 页面时均会弹出且无法忽略！\n\n如果您想要关闭这项功能，请前往 “我的 -> 应用设置” 在 “课表设置” 处关闭 “自动切换下周课表” 即可',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
             actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
       }
