@@ -12,6 +12,9 @@ TextEditingController textCaptchaController = TextEditingController();
 //判断是否需要联网下载课表
 bool needRefresh = false;
 
+//判断是否已经弹出 自动切换周次 的提示框
+bool isShowAutoSwitchWeek = false;
+
 //存储本周每一天的日期
 List<String> weekDates = [];
 int weekDiff = 0;//存储用户的周数与当前周数的差异
@@ -308,6 +311,8 @@ class _CourseTablePage extends State<CourseTablePage>{
           setState(() {
             isThisWeek = false;
             userSelectedWeekInt = userSelectedWeekInt + 1;
+            weekDiff++;
+            getWeekDates();
           });
         }
       }
@@ -1245,7 +1250,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       }
     }
     if(mounted){
-      if(userSelectedWeekInt != currentWeekInt && isThisWeek == false && GlobalVars.switchTomorrowCourseAfter20 == true){
+      if(userSelectedWeekInt != currentWeekInt && isThisWeek == false && GlobalVars.switchTomorrowCourseAfter20 == true && isShowAutoSwitchWeek == false){
         showDialog(
           barrierDismissible: false,
           context: context, 
@@ -1261,6 +1266,7 @@ class _CourseTablePage extends State<CourseTablePage>{
             actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
           ));
       }
+      isShowAutoSwitchWeek = true;
       setState(() {
         isReading = false;
       });//全部解析完成之后刷新
@@ -1387,6 +1393,8 @@ class _CourseTablePage extends State<CourseTablePage>{
 
   @override
   void initState() {
+    weekDiff = 0;
+    isShowAutoSwitchWeek = false;
     //加载课表色块的颜色列表
     if(GlobalVars.courseBlockColorsInt == 0){
       courseBlockColors = courseBlockMoLandiColors;
@@ -2330,6 +2338,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       return;
     }
 
+    weekDiff = 0;
     currentWeekInt = userSelectedWeekInt;
     readSchoolCalendarInfo();
     getWeekDates();
