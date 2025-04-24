@@ -38,12 +38,6 @@ class ElectricmeterbindPage extends StatefulWidget{
 class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
@@ -120,7 +114,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                                   ),
                                   SizedBox(height: 4),
                                   Text(
-                                    '电表数量：${GlobalVars.emNum}',
+                                    '电表数量：${GlobalVars.emUserData[0]['emNum']}',
                                     style: TextStyle(
                                       fontSize: GlobalVars.genericTextLarge,
                                       color: Theme.of(context).colorScheme.secondary
@@ -737,7 +731,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
         return;
     }
 
-    //检查并电表信息
+    //获取电表列表
     GlobalVars.wechatUserId = emresponse1.data['data']['wechatId'].toString();
 
     if(bindelectricmeterCanceled) return;
@@ -772,11 +766,6 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     String emdetailpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emdetail.json';
     File emdetailfile = File(emdetailpath);
     emdetailfile.writeAsString(emdetailstring);
-
-    String emnumpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emnum.txt';
-    File emnumfile = File(emnumpath);
-    emnumfile.writeAsString('${emresponse2.data['data'].length}');
-
 
     //下载用户头像
     if(bindelectricmeterCanceled) return;

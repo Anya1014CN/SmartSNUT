@@ -121,6 +121,14 @@ class Home extends StatefulWidget{
 
 class _HomeState extends State<Home>{
 
+  //初始化电表数据
+  initEMData() async {
+    String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
+    File emUserDatafile = File(emUserDatapath);
+    GlobalVars.emUserData = jsonDecode(await emUserDatafile.readAsString());
+    GlobalVars.emNum = GlobalVars.emUserData[0]['emNum'];
+  }
+
   //读取学期相关信息
   readSemesterInfo() async {
     if(mounted){
@@ -1209,16 +1217,17 @@ class _HomeState extends State<Home>{
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      readSemesterInfo();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await initEMData();
+      await readSemesterInfo();
       if(updateChecked == false){
-        checkUpdate();
+        await checkUpdate();
       }
       if(newsState == 0){
-        getNewsList();
+        await getNewsList();
       }
       if(announcementState == 0){
-        getSmartSNUTAnnouncement();
+        await getSmartSNUTAnnouncement();
       }
       //判断是否需要切换明日课程
       if(GlobalVars.switchTomorrowCourseAfter20 == true && GlobalVars.hour >= 20 && GlobalVars.hour <= 23){
@@ -1230,7 +1239,7 @@ class _HomeState extends State<Home>{
       }
       //判断是否需要刷新课表
       if(GlobalVars.autoRefreshCourseTable == true && DateTime.now().millisecondsSinceEpoch - GlobalVars.lastCourseTableRefreshTime >= 86400000){
-        getCourseTable();
+        await getCourseTable();
       }
     });
   }
