@@ -9,8 +9,9 @@ import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-//电表编号输入框
+//文本输入框
 TextEditingController textEmIdController = TextEditingController();
+TextEditingController textBindLinkController = TextEditingController();
 
 //用于存储外部链接的完整URL
 Uri url = Uri.parse("uri");
@@ -21,7 +22,6 @@ bool isQuerying = false;
 bool isBinding = false;
 
 //TextController
-final textOpenidController = TextEditingController();
 
 //用于存储即将解绑的电表 id
 String unbindEmId = '';
@@ -137,12 +137,12 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                 : Container(
                     padding: EdgeInsets.all(20),
                     child: TextField(
-                      controller: textOpenidController,
+                      controller: textBindLinkController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        labelText: 'openId',
+                        labelText: '在此粘贴绑定链接',
                         prefixIcon: Icon(Icons.commit),
                         filled: false,
                         contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
@@ -317,7 +317,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                         child: InkWell(
                           borderRadius: BorderRadius.circular(16),
                           onTap: () {
-                            if(textOpenidController.text == '') {
+                            if(textBindLinkController.text == '') {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
@@ -329,7 +329,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                                       Text('提示：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
                                     ],
                                   ),
-                                  content: Text('请先输入您的 openId', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                  content: Text('请先粘贴绑定链接', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
                                   actions: [
                                     TextButton(
                                       onPressed: () => Navigator.pop(context),
@@ -339,7 +339,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                                 ),
                               );
                             } else {
-                              GlobalVars.openId = textOpenidController.text;
+                              //GlobalVars.openId = textOpenidController.text;
                               bindelectricmeter();
                             }
                           },
@@ -593,6 +593,87 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
           ],
         ),
       );
+    }
+
+    // 解析用户输入的链接
+    if(textBindLinkController.text != ''){
+      try{
+        String url = textBindLinkController.text;
+        String? parseOpenId;
+        
+        // 处理带有#/的URL情况
+        if(url.contains('#/?')) {
+          // 提取#/?后面的部分
+          int startIndex = url.indexOf('#/?') + 3;
+          String fragmentParams = url.substring(startIndex);
+          
+          // 解析这部分内容作为查询参数
+          Map<String, String> params = {};
+          if(fragmentParams.contains('&')) {
+            // 多个参数的情况
+            List<String> pairs = fragmentParams.split('&');
+            for(String pair in pairs) {
+              List<String> keyValue = pair.split('=');
+              if(keyValue.length == 2) {
+                params[keyValue[0]] = keyValue[1];
+              }
+            }
+          } else if(fragmentParams.contains('=')) {
+            // 单个参数的情况
+            List<String> keyValue = fragmentParams.split('=');
+            if(keyValue.length == 2) {
+              params[keyValue[0]] = keyValue[1];
+            }
+          }
+          
+          parseOpenId = params['openId'];
+        } else {
+          // 常规URL处理
+          Uri hquri = Uri.parse(url);
+          parseOpenId = hquri.queryParameters['openId'];
+        }
+        
+        if(parseOpenId == null){
+          if(mounted) {
+            Navigator.pop(context);
+            showDialog(
+              context: context, 
+              builder: (BuildContext context)=>AlertDialog(
+                title: Row(
+                  children: [
+                    Icon(Icons.error),
+                    SizedBox(width: 8),
+                    Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                  ],
+                ),
+                content: Text('无法解析链接，请确保您粘贴的链接无误！',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
+              )
+            );
+          }
+          return;
+        }
+        GlobalVars.openId = parseOpenId;
+      }catch(e){
+        if(mounted) {
+          Navigator.pop(context);
+          showDialog(
+            context: context, 
+            builder: (BuildContext context)=>AlertDialog(
+              title: Row(
+                children: [
+                  Icon(Icons.error),
+                  SizedBox(width: 8),
+                  Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                ],
+              ),
+              content: Text('无法解析链接，请确保您粘贴的链接无误！',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+              actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
+            )
+          );
+        }
+        return;
+      }
     }
 
     CookieJar emcookiejar = CookieJar();
