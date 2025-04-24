@@ -298,7 +298,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       }
       userSelectedWeekInt = currentWeekInt;
       isThisWeek = true;
-      if(GlobalVars.switchNextWeekCourseAfter20 == true && GlobalVars.hour >= 20 && GlobalVars.hour <= 23){
+      if(GlobalVars.switchNextWeekCourseAfter20 == true && GlobalVars.currentDOW == 7 && GlobalVars.hour >= 20 && GlobalVars.hour <= 23){
         if(mounted){
           setState(() {
             isThisWeek = false;
