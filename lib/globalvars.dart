@@ -70,6 +70,9 @@ class GlobalVars {
   static int themeColor = 0;//对应八种颜色
   //首页显示通知公告
   static bool showTzgg = true;
+  //自动刷新课表
+  static bool autoRefreshCourseTable = true;
+  static int lastCourseTableRefreshTime = 0; //上次刷新时间
   //自动切换明日课表
   static bool switchTomorrowCourseAfter20 = true;
   //自动切换下周课表

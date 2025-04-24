@@ -108,6 +108,8 @@ class _SettingsPage extends State<SettingsPage>{
       'showSatCourse': GlobalVars.showSatCourse,
       'showSunCourse': GlobalVars.showSunCourse,
       'courseBlockColorsint': GlobalVars.courseBlockColorsInt,
+      'autoRefreshCourseTable': GlobalVars.autoRefreshCourseTable,
+      'lastCourseTableRefreshTime': GlobalVars.lastCourseTableRefreshTime,
       'switchTomorrowCourseAfter20': GlobalVars.switchTomorrowCourseAfter20,
       'switchNextWeekCourseAfter20': GlobalVars.switchNextWeekCourseAfter20,
       'showTzgg': GlobalVars.showTzgg,
@@ -115,7 +117,7 @@ class _SettingsPage extends State<SettingsPage>{
     if(mounted){
       setState(() {});
     }
-    settingstfile.writeAsString(jsonEncode(GlobalVars.settingsTotal));
+    await settingstfile.writeAsString(jsonEncode(GlobalVars.settingsTotal));
   }
 
   @override
@@ -314,6 +316,22 @@ class _SettingsPage extends State<SettingsPage>{
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
                     children: [
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                        ),
+                        leading: Icon(Icons.refresh_outlined, color: Theme.of(context).colorScheme.primary),
+                        trailing: Switch(
+                          value: GlobalVars.autoRefreshCourseTable,
+                          onChanged: (value) {
+                            GlobalVars.switchNextWeekCourseAfter20 = value;
+                            saveSettings();
+                          },
+                        ),
+                        title: Text('自动更新课表',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
+                        subtitle: Text('当课表数据 >= 24 小时未刷新时，自动从教务系统获取最新的课表数据',style: TextStyle(fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.primary,fontSize: GlobalVars.listTileSubtitle),),
+                      ),
+                      Divider(height: 5,indent: 20,endIndent: 20,),
                       ListTile(
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),

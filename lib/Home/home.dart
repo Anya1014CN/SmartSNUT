@@ -13,6 +13,7 @@ import 'package:smartsnut/AppPage/electricMeter/electricmeter_page.dart';
 import 'package:smartsnut/AppPage/schoolNetwork/schoolnetwork_page.dart';
 import 'package:smartsnut/AppPage/stdExam/stdexam_page.dart';
 import 'package:smartsnut/AppPage/stdGrades/stdgrades_page.dart';
+import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
@@ -1207,26 +1208,31 @@ class _HomeState extends State<Home>{
   //控件被创建的时候，执行 initState
   @override
   void initState() {
-    if(updateChecked == false){
-      checkUpdate();
-    }
-    readSemesterInfo();
     super.initState();
-    if(newsState == 0){
-      getNewsList();
-    }
-    if(announcementState == 0){
-      getSmartSNUTAnnouncement();
-    }
-    
-    //判断是否需要切换明日课程
-    if(GlobalVars.switchTomorrowCourseAfter20 == true && GlobalVars.hour >= 20 && GlobalVars.hour <= 23){
-      if(mounted){
-        setState(() {
-          courseIsToday = false;
-        });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      readSemesterInfo();
+      if(updateChecked == false){
+        checkUpdate();
       }
-    }
+      if(newsState == 0){
+        getNewsList();
+      }
+      if(announcementState == 0){
+        getSmartSNUTAnnouncement();
+      }
+      //判断是否需要切换明日课程
+      if(GlobalVars.switchTomorrowCourseAfter20 == true && GlobalVars.hour >= 20 && GlobalVars.hour <= 23){
+        if(mounted){
+          setState(() {
+            courseIsToday = false;
+          });
+        }
+      }
+      //判断是否需要刷新课表
+      if(GlobalVars.autoRefreshCourseTable == true && DateTime.now().millisecondsSinceEpoch - GlobalVars.lastCourseTableRefreshTime >= 86400000){
+        getCourseTable();
+      }
+    });
   }
 
   @override
@@ -2082,6 +2088,122 @@ class _HomeState extends State<Home>{
         launchURL();
       },
     );
+  }
+
+  getCourseTable() async {
+    GlobalVars.operationCanceled = false;
+    GlobalVars.loadingHint = '正在加载...';
+    if(mounted){
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              scrollable: true,
+              title: Text('正在刷新课表数据...',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+              content: Column(
+                children: [
+                  SizedBox(height: 10,),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 10,),
+                  Text(GlobalVars.loadingHint,style: TextStyle(fontSize: GlobalVars.alertdialogContent))
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    GlobalVars.operationCanceled = true;
+                    Navigator.pop(context);
+                  },
+                  child: Text('取消'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    if(GlobalVars.operationCanceled) return;
+    List loginAuthResponse = await Modules.loginAuth(GlobalVars.userName, GlobalVars.passWord,'jwgl');
+    if(loginAuthResponse[0]['statue'] == false){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
+            content: Text(loginAuthResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
+          ));
+      }
+      return;
+    }
+
+    if(GlobalVars.operationCanceled) return;
+    List getCourseTableResponse = await Modules.getCourseTable(currentYearInt,currentTermInt);
+    if(getCourseTableResponse[0]['statue'] == false){
+      if(mounted){
+        Navigator.pop(context);
+        showDialog(
+          context: context, 
+          builder: (BuildContext context)=>AlertDialog(
+            title: Row(
+              children: [
+                Icon(Icons.error),
+                SizedBox(width: 8),
+                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+              ],
+            ),
+            content: Text(getCourseTableResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
+          ));
+      }
+      return;
+    }
+
+    weekDiff = 0;
+    currentWeekInt = userSelectedWeekInt;
+    String settingstpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/settings.json';
+    File settingstfile = File(settingstpath);
+    GlobalVars.lastCourseTableRefreshTime = DateTime.now().millisecondsSinceEpoch;
+    GlobalVars.settingsTotal.clear();
+    GlobalVars.settingsTotal.add({
+      'fontSize': GlobalVars.fontsizeint,
+      'DarkMode': GlobalVars.darkModeint,
+      'ThemeColor': GlobalVars.themeColor,
+      'showSatCourse': GlobalVars.showSatCourse,
+      'showSunCourse': GlobalVars.showSunCourse,
+      'courseBlockColorsint': GlobalVars.courseBlockColorsInt,
+      'autoRefreshCourseTable': GlobalVars.autoRefreshCourseTable,
+      'lastCourseTableRefreshTime': GlobalVars.lastCourseTableRefreshTime,
+      'switchTomorrowCourseAfter20': GlobalVars.switchTomorrowCourseAfter20,
+      'switchNextWeekCourseAfter20': GlobalVars.switchNextWeekCourseAfter20,
+      'showTzgg': GlobalVars.showTzgg,
+    });
+    await settingstfile.writeAsString(jsonEncode(GlobalVars.settingsTotal));
+    readSchoolCalendarInfo();
+    if(mounted){
+      setState(() {});
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('课表数据刷新成功'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.all(10),
+        ),
+      );
+      Navigator.pop(context);
+    }
   }
 
   //获取公告
