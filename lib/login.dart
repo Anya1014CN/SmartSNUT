@@ -37,6 +37,7 @@ class _LoginPageState extends State<LoginPage>{
         GlobalVars.fontsizeint = GlobalVars.settingsTotal[0]['fontSize']?? 3;
         GlobalVars.darkModeint = GlobalVars.settingsTotal[0]['DarkMode']?? 0;
         GlobalVars.themeColor = GlobalVars.settingsTotal[0]['ThemeColor']?? 1;
+        GlobalVars.switchNextWeekCourseAfter20 = GlobalVars.settingsTotal[0]['switchNextWeekCourseAfter20']?? true;
         GlobalVars.showSatCourse = GlobalVars.settingsTotal[0]['showSatCourse']?? true;
         GlobalVars.showSunCourse = GlobalVars.settingsTotal[0]['showSunCourse']?? true;
         GlobalVars.courseBlockColorsInt = GlobalVars.settingsTotal[0]['courseBlockColorsint']?? 0;
@@ -46,6 +47,7 @@ class _LoginPageState extends State<LoginPage>{
         GlobalVars.fontsizeint = 3;
         GlobalVars.darkModeint = 0;
         GlobalVars.themeColor = 1;
+        GlobalVars.switchNextWeekCourseAfter20 = true;
         GlobalVars.showSatCourse = true;
         GlobalVars.showSunCourse = true;
         GlobalVars.courseBlockColorsInt = 0;

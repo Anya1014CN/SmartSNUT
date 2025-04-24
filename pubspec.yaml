@@ -143,6 +143,7 @@ flutter:
     - assets/icons/lighttheme/vpn.png
     - assets/icons/lighttheme/web.png
     - assets/images/logo.png
+    - assets/images/WeChatQRCode.png
     
     
   # An image asset can refer to one or more resolution-specific "variants", see

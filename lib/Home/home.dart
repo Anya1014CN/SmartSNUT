@@ -2231,7 +2231,6 @@ class _HomeState extends State<Home>{
     );
   }
 
-  
   //检查更新
   checkUpdate() async {
     Dio dio = Dio();

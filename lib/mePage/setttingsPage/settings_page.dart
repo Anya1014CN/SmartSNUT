@@ -569,6 +569,22 @@ class _SettingsPage extends State<SettingsPage>{
                           }
                         },
                       ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(21),
+                        ),
+                        leading: Icon(Icons.account_box_outlined, color: Theme.of(context).colorScheme.primary),
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('微信公众号', 
+                          style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text('智慧陕理', 
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
+                        onTap: () {
+                          showWechatQRCode();
+                        },
+                      ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
                       ListTile(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
@@ -584,6 +600,7 @@ class _SettingsPage extends State<SettingsPage>{
                           launchURL();
                         },
                       ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
                       ListTile(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
@@ -599,6 +616,7 @@ class _SettingsPage extends State<SettingsPage>{
                           launchURL();
                         },
                       ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
                       ListTile(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
@@ -614,6 +632,7 @@ class _SettingsPage extends State<SettingsPage>{
                           launchURL();
                         },
                       ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
                       ListTile(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
@@ -972,7 +991,41 @@ class _SettingsPage extends State<SettingsPage>{
     );
   }
 
-  void showLicense(BuildContext context) async{
+  //显示微信公众号二维码
+  showWechatQRCode() async{
+    if(context.mounted){
+      showDialog(
+        context: context,
+        builder:(BuildContext context) => AlertDialog(
+          title: Text('微信公众号 - 智慧陕理',style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          content: Column(
+            children: [
+              Text('关注公众号，即可订阅 “智慧陕理” 的最新消息，向我们发送意见与建议、获取技术支持',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+              SizedBox(height: 12,),
+              Divider(height: 15,indent: 20,endIndent: 20,),
+              SizedBox(height: 12,),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.3,
+                ),
+                child: Image.asset('assets/images/WechatQRCode.png',fit: BoxFit.fitWidth),
+              )
+            ],
+          ),
+          scrollable: true,
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('确定'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  //开放源代码许可
+  showLicense(BuildContext context) async{
     licenseContent = await rootBundle.loadString('assets/credits/License/$licensePath.txt');
     if(context.mounted){
       showDialog(
