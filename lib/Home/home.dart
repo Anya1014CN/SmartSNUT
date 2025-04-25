@@ -1231,7 +1231,7 @@ class _HomeState extends State<Home>{
       if(updateChecked == false){
         await checkUpdate();
       }
-      if(newsState == 0){
+      if(GlobalVars.showTzgg && newsState == 0){
         await getNewsList();
       }
       if(announcementState == 0){
