@@ -62,7 +62,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
                     : AssetImage('assets/icons/darktheme/electricitybind.png'),
                   height: 40,
                 ),
-                SizedBox(width: 10,),
+                SizedBox(width: 12,),
                 Flexible(
                   child: Text(
                     '解/绑电费账号',

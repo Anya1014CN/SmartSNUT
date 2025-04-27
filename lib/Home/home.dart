@@ -1680,87 +1680,85 @@ class _HomeState extends State<Home>{
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
+            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
             color: Theme.of(context).colorScheme.surfaceDim,
-            child: Padding(
+            child: Container(
               padding: EdgeInsets.all(16),
               child: Column(
                 children: [
                   Row(
-                    children: [
-                      Expanded(
-                        child: buildFunctionButton(
-                          context, 
-                          '网费查询', 
-                          'web',
-                          () {
-                            Navigator.push(context, 
-                              MaterialPageRoute(builder: (BuildContext ctx) => SchoolNetworkPage()));
-                          }
+                 children: [
+                Expanded(
+                  child: buildFunctionButton(
+                    context, 
+                    '网费查询', 
+                    'web',
+                    () {
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => SchoolNetworkPage()));
+                    }
+                  ),
+                ),
+                SizedBox(width: 12),
+                Expanded(
+                  child: buildFunctionButton(
+                    context, 
+                    '电费查询', 
+                    'electricity',
+                    () {
+                      if(GlobalVars.emBinded == false){
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                         title: Row(
+                        children: [
+                          Icon(Icons.info),
+                          SizedBox(width: 8),
+                          Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),)
+                        ],
+                         ),
+                         content: Text('您还没有绑定电费账号，\n请先前往 "我的 -> 解/绑电费账号" 绑定后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent),),
+                         actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('确定'),
                         ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: buildFunctionButton(
-                          context, 
-                          '电费查询', 
-                          'electricity',
-                          () {
-                            if(GlobalVars.emBinded == false){
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  title: Row(
-                                    children: [
-                                      Icon(Icons.info),
-                                      SizedBox(width: 8),
-                                      Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),)
-                                    ],
-                                  ),
-                                  content: Text('您还没有绑定电费账号，\n请先前往 "我的 -> 解/绑电费账号" 绑定后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent),),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Text('确定'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                              return;
-                            }else{
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => Electricmeterpage()));
-                            }
-                          }
-                        ),
-                      ),
-                    ],
+                         ],
+                          ),
+                        );
+                        return;
+                      }else{
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => Electricmeterpage()));
+                      }
+                    }
+                  ),
+                ),
+                 ],
                   ),
                   SizedBox(height: 12),
                   Row(
-                    children: [
-                      Expanded(
-                        child: buildFunctionButton(
-                          context, 
-                          '我的考试', 
-                          'exam',
-                          () {
-                            Navigator.push(context, 
-                              MaterialPageRoute(builder: (BuildContext ctx) => StdExamPage()));
-                          }
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: buildFunctionButton(
-                          context, 
-                          '我的成绩', 
-                          'grade',
-                          () {
-                            Navigator.push(context, 
-                              MaterialPageRoute(builder: (BuildContext ctx) => StdGradesPage()));
-                          }
-                        ),
-                      ),
-                    ],
+                 children: [
+                Expanded(
+                  child: buildFunctionButton(
+                    context, 
+                    '我的考试', 
+                    'exam',
+                    () {
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => StdExamPage()));
+                    }
+                  ),
+                ),
+                SizedBox(width: 12),
+                Expanded(
+                  child: buildFunctionButton(
+                    context, 
+                    '我的成绩', 
+                    'grade',
+                    () {
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => StdGradesPage()));
+                    }
+                  ),
+                ),
+                 ],
                   ),
                 ],
               ),

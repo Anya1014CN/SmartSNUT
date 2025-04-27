@@ -169,7 +169,7 @@ class _SettingsPage extends State<SettingsPage>{
               child: Row(
                 children: [
                   Image(image: Theme.of(context).brightness == Brightness.light? AssetImage('assets/icons/lighttheme/settings.png'):AssetImage('assets/icons/darktheme/settings.png'),height: 40,),
-                  SizedBox(width: 10,),
+                  SizedBox(width: 12,),
                   Text('应用设置',style: TextStyle(fontSize: GlobalVars.genericPageTitle),)
                 ],
               ),

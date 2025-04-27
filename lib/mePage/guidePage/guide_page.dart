@@ -75,7 +75,7 @@ class _GuidePageState extends State<Guidepage>{
                           : AssetImage('assets/icons/darktheme/guide.png'),
                       height: 40,
                     ),
-                    SizedBox(width: 16),
+                    SizedBox(width: 12),
                     Text(
                       '教程&说明',
                       style: TextStyle(

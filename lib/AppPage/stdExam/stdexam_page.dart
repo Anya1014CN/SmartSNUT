@@ -425,6 +425,7 @@ class _StdExamPageState extends State<StdExamPage>{
     readSemesterInfo();
     super.initState();
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
