@@ -145,6 +145,14 @@ class _HomeState extends State<Home>{
         'name': semestersData['y$i'][0]['schoolYear']
       });
     }
+    //判断是否需要切换明日课程
+    if(GlobalVars.switchTomorrowCourseAfter20 == true && GlobalVars.hour >= 20 && GlobalVars.hour <= 23){
+      if(mounted){
+        setState(() {
+          courseIsToday = false;
+        });
+      }
+    }
     readSelectState();
   }
 
@@ -1110,11 +1118,11 @@ class _HomeState extends State<Home>{
         }
       }
     }
-    readDaildCourseTable();
+    readDailyCourseTable();
   }
 
   //读取每日课表信息
-  readDaildCourseTable() async {
+  readDailyCourseTable() async {
     //读取之前清空课表，防止与前一天的课表叠加
     courseToday = [[],[],[],[],[],[],[],[],[],[]];
     
@@ -1219,7 +1227,7 @@ class _HomeState extends State<Home>{
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await initEMData();
-      await readSemesterInfo();
+      readSemesterInfo();
       if(updateChecked == false){
         await checkUpdate();
       }
@@ -1228,14 +1236,6 @@ class _HomeState extends State<Home>{
       }
       if(announcementState == 0){
         await getSmartSNUTAnnouncement();
-      }
-      //判断是否需要切换明日课程
-      if(GlobalVars.switchTomorrowCourseAfter20 == true && GlobalVars.hour >= 20 && GlobalVars.hour <= 23){
-        if(mounted){
-          setState(() {
-            courseIsToday = false;
-          });
-        }
       }
       //判断是否需要刷新课表
       if(GlobalVars.autoRefreshCourseTable == true && DateTime.now().millisecondsSinceEpoch - GlobalVars.lastCourseTableRefreshTime >= 86400000){
