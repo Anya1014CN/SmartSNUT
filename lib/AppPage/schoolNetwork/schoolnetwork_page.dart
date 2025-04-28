@@ -155,7 +155,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                           borderRadius: BorderRadius.circular(16),
                         ),
                         shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
-                        color: Theme.of(context).colorScheme.surfaceDim,
+                        color: Theme.of(context).colorScheme.primary,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(16),
                           onTap: () {
@@ -194,7 +194,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                               style: TextStyle(
                                 fontSize: GlobalVars.genericTextLarge,
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.primary
+                                color: Theme.of(context).colorScheme.onPrimary
                               ),
                             ),
                           ),
@@ -209,7 +209,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                           borderRadius: BorderRadius.circular(16),
                         ),
                         shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.surfaceDim,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(16),
                           onTap: () {
@@ -224,7 +224,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
                               style: TextStyle(
                                 fontSize: GlobalVars.genericTextLarge,
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.onPrimary
+                                color: Theme.of(context).colorScheme.primary
                               ),
                             ),
                           ),
