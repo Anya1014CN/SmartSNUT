@@ -6,6 +6,10 @@ import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.da
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/mePage/setttingsPage/settings_page.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+//用于即将打开的链接的完整URL
+Uri url = Uri.parse("uri");
 
 class MePage extends StatefulWidget{
   const MePage({super.key});
@@ -213,9 +217,8 @@ class _MePageState extends State<MePage>{
                           '教程&说明',
                           'guide',
                           () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (BuildContext ctx) => Guidepage()
-                            ));
+                            url = Uri.parse('https://smartsnut.cn/Docs/UserManual/');
+                            launchURL();
                           },
                         ),
                       ),
@@ -391,5 +394,38 @@ class _MePageState extends State<MePage>{
     if(mounted){
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext ctx) => LoginPage()));
     }
+  }
+
+  //打开链接
+  void launchURL() async{
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        scrollable: true,
+        title: Row(
+          children: [
+            Icon(Icons.info),
+            SizedBox(width: 8),
+            Text('提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
+          ],
+        ),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('取消'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await launchUrl(url);
+              if(context.mounted){
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('确定'),
+          ),
+        ],
+      ),
+    );
   }
 }

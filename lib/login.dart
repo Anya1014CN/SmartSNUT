@@ -525,6 +525,13 @@ class _LoginPageState extends State<LoginPage>{
       return;
     }
 
+    //登录流程完成，刷新用户信息,记录课表刷新时间，创建一个占位文件
+    GlobalVars.lastCourseTableRefreshTime = DateTime.now().millisecondsSinceEpoch;
+    readStdAccount();
+    String loginsuccesspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/LoginSuccess';
+    File loginsuccessfile = File(loginsuccesspath);
+    loginsuccessfile.writeAsString('');
+
     if(mounted){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -537,12 +544,6 @@ class _LoginPageState extends State<LoginPage>{
         ),
       );
     }
-
-    //登录流程完成，刷新用户信息，创建一个占位文件
-    readStdAccount();
-    String loginsuccesspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/LoginSuccess';
-    File loginsuccessfile = File(loginsuccesspath);
-    loginsuccessfile.writeAsString('');
 
     if(mounted){
       Navigator.pop(context);
