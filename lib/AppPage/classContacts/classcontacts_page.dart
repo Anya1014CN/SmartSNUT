@@ -6,14 +6,9 @@ import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-//验证码输入框控制器
-TextEditingController textCaptchaController = TextEditingController();
-
 //班级列表
 String selectedClassName = '';
 int selectedClass = -1;
-
-//班级成员列表
 
 class ClasscontactsPage extends StatefulWidget {
   const ClasscontactsPage({super.key});
@@ -46,6 +41,11 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
         getClassMemberList(GlobalVars.classList.first['id']);
       }
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

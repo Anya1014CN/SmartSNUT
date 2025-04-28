@@ -31,6 +31,12 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
   bool _showAppBarTitle = false;
 
   @override
+  void dispose() {
+    textUsernameController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     textUsernameController.text = GlobalVars.userName;
     super.initState();

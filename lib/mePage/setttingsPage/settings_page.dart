@@ -121,6 +121,11 @@ class _SettingsPage extends State<SettingsPage>{
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void initState() {
     emBindRead();
     super.initState();

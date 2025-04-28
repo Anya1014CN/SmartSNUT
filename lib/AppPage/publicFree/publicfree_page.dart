@@ -63,6 +63,18 @@ class _PublicFreePageState extends State<PublicFreePage> {
   bool showSectionRange = false;
 
   @override
+  void dispose() {
+    textSeatsController.dispose();
+    textClassroomNameController.dispose();
+    textCycleCountController.dispose();
+    textTimeBeginController.dispose();
+    textTimeEndController.dispose();
+    textSectionBeginController.dispose();
+    textSectionEndController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     showResultPage = false;

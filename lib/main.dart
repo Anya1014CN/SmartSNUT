@@ -107,6 +107,11 @@ class _SmartSNUT extends State<SmartSNUT> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void initState() {
     readSettings();
     super.initState();

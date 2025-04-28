@@ -22,11 +22,6 @@ String termEnd = '';
 int termWeeks = 0;
 bool termEnded = false;
 
-//课表滚动控制器
-final ScrollController tableVerticalController = ScrollController();
-final ScrollController tableHorizontalController = ScrollController();
-double horizontalDragStart = 0.0;//支持鼠标直接拖拽课表
-
 //用于判断是否是本周课表
 bool isThisWeek = true;
 
@@ -1381,6 +1376,11 @@ class _CourseTablePage extends State<CourseTablePage>{
       },
     );
 
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

@@ -1221,7 +1221,11 @@ class _HomeState extends State<Home>{
     }
   }
 
-  //控件被创建的时候，执行 initState
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();

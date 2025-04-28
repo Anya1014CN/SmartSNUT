@@ -21,6 +21,11 @@ class _StddetailPageState extends State<StdDetailPage>{
   bool _isLoading = true;
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     readstdinfo();

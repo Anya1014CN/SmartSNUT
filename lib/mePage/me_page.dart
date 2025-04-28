@@ -7,9 +7,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/mePage/setttingsPage/settings_page.dart';
 import 'package:smartsnut/globalvars.dart';
 
-
-bool isloggedin = false;//判断是否已经登录
-
 class MePage extends StatefulWidget{
   const MePage({super.key});
 
@@ -20,6 +17,11 @@ class MePage extends StatefulWidget{
 }
 
 class _MePageState extends State<MePage>{
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -385,12 +387,7 @@ class _MePageState extends State<MePage>{
         ),
       );
     }
-
-    if(mounted){
-      setState(() {
-        isloggedin = false;  
-      });
-    }
+    
     if(mounted){
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext ctx) => LoginPage()));
     }

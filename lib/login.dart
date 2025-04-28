@@ -25,7 +25,6 @@ class _LoginPageState extends State<LoginPage>{
   //创建 TextEditingController
   final textUsernameController = TextEditingController();
   final textPasswordController = TextEditingController();
-  final textCaptchaController = TextEditingController();
 
   //读取设置并保存在变量中
   readSettings() async {
@@ -63,6 +62,13 @@ class _LoginPageState extends State<LoginPage>{
     }
     Modules.setFontSize();
     if(mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    textUsernameController.dispose();
+    textPasswordController.dispose();
+    super.dispose();
   }
 
   @override

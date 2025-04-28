@@ -5,9 +5,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 
-//验证码输入框
-TextEditingController textCaptchaController = TextEditingController();
-
 //学期信息
 String termStart = '';
 String termEnd = '';
@@ -417,6 +414,11 @@ class _StdExamPageState extends State<StdExamPage>{
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

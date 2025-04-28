@@ -21,8 +21,6 @@ bool isQuerying = false;
 //判断绑定状态
 bool isBinding = false;
 
-//TextController
-
 //用于存储即将解绑的电表 id
 String unbindEmId = '';
 
@@ -36,6 +34,13 @@ class ElectricmeterbindPage extends StatefulWidget{
 }
 
 class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
+
+  @override
+  void dispose() {
+    textBindLinkController.dispose();
+    textEmIdController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

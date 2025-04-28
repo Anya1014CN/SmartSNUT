@@ -23,9 +23,15 @@ class _GuidePageState extends State<Guidepage>{
   bool _showAppBarTitle = false;
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

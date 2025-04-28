@@ -5,9 +5,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 
-//验证码输入框
-final TextEditingController textCaptchaController = TextEditingController();
-
 //用户数据
 List stdAccount = [];
 String userName = '';
@@ -187,6 +184,11 @@ class _StdGradesPageState extends State<StatefulWidget>{
       'selectedTerm': currentTermInt,
     });
     selectedTYfile.writeAsString(jsonEncode(selectedTY));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

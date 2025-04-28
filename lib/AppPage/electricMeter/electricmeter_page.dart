@@ -25,6 +25,11 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
   List<dynamic> emstatetotal = [];
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_){

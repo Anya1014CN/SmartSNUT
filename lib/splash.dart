@@ -27,6 +27,11 @@ class _SplashPageState extends State<SplashPage>{
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
