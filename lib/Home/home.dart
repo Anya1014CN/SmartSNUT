@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:html/dom.dart' as html_dom;
@@ -2249,14 +2251,8 @@ class _HomeState extends State<Home>{
         isLoading = true;
       });
     }
-      String newsurl="";
-      for(int newsType = 0;newsType < 2;newsType++){
-        newsOutput = [];//清空旧的新闻列表
-        if(newsType == 0){
-          newsurl = 'https://www.snut.edu.cn/index/lgyw.htm';
-        }if(newsType == 1){
-          newsurl = 'https://www.snut.edu.cn/index/tzgg.htm';
-        }
+    GlobalVars.globalDio.interceptors.add(CookieManager(GlobalVars.globalCookieJar));
+    newsOutput = [];//清空旧的新闻列表
         try{
           await GlobalVars.globalDio.get(
             options: Options(
@@ -2264,7 +2260,9 @@ class _HomeState extends State<Home>{
               validateStatus: (status) {
                 return status == 302;
               },
-            ),newsurl);
+            ),
+            'https://www.snut.edu.cn/index/tzgg.htm'
+          );
         }catch (e){
           if(mounted){
             setState(() {
@@ -2278,7 +2276,7 @@ class _HomeState extends State<Home>{
           //这里需要进行两次 get，第一次 get 拿到 cookie，第二次 get 需要带 cookie 才能正常获取到页面
           late html_dom.Document document;
           try{
-            Response response = await GlobalVars.globalDio.get(newsurl);
+            Response response = await GlobalVars.globalDio.get('https://www.snut.edu.cn/index/tzgg.htm');
             document = html_parser.parse(response.data);
           }catch (e){
             if(mounted){
@@ -2325,7 +2323,6 @@ class _HomeState extends State<Home>{
             tzgg5 = jsonData[5];
             tzgg6 = jsonData[6];
           }
-      }
       if(mounted){
         setState(() {
           newsState = 1;
