@@ -7,10 +7,6 @@ import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-//文本输入框
-TextEditingController textEmIdController = TextEditingController();
-TextEditingController textBindLinkController = TextEditingController();
-
 //用于存储外部链接的完整URL
 Uri url = Uri.parse("uri");
 
@@ -32,6 +28,15 @@ class ElectricmeterbindPage extends StatefulWidget{
 }
 
 class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
+    late TextEditingController textEmIdController;
+    late TextEditingController textBindLinkController;
+
+  @override
+  void initState() {
+    textEmIdController = TextEditingController();
+    textBindLinkController = TextEditingController();
+    super.initState();
+  }
 
   @override
   void dispose() {
