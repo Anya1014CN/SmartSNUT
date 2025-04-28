@@ -125,8 +125,10 @@ class _HomeState extends State<Home>{
   initEMData() async {
     String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
     File emUserDatafile = File(emUserDatapath);
-    GlobalVars.emUserData = jsonDecode(await emUserDatafile.readAsString());
-    GlobalVars.emNum = GlobalVars.emUserData[0]['emNum'];
+    if(await emUserDatafile.exists()){
+      GlobalVars.emUserData = jsonDecode(await emUserDatafile.readAsString());
+      GlobalVars.emNum = GlobalVars.emUserData[0]['emNum'];
+    }
   }
 
   //读取学期相关信息
