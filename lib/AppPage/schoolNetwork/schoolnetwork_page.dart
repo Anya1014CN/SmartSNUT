@@ -28,7 +28,7 @@ class SchoolNetworkPage extends StatefulWidget{
 }
 
 class _SchoolNetworkPage extends State<SchoolNetworkPage>{
-  final textUsernameController = TextEditingController();
+  late TextEditingController textUsernameController;
   bool _showAppBarTitle = false;
 
   @override
@@ -39,6 +39,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
 
   @override
   void initState() {
+    textUsernameController = TextEditingController();
     textUsernameController.text = GlobalVars.userName;
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
