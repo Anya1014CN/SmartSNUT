@@ -708,10 +708,10 @@ class _SettingsPage extends State<SettingsPage>{
                       ListTile(
                         leading: Icon(Icons.font_download, color: Theme.of(context).colorScheme.primary),
                         title: Text('字体使用', style: TextStyle(fontSize: GlobalVars.listTileTitle, fontWeight: FontWeight.bold)),
-                        subtitle: Text('智慧陕理所使用的字体为 MiSans', 
+                        subtitle: Text('智慧陕理所使用的字体为 OPPO Sans 4.0', 
                           style: TextStyle(fontSize: GlobalVars.genericTextSmall)),
                         onTap: () {
-                          url = Uri.parse('https://hyperos.mi.com/font/zh/');
+                          url = Uri.parse('https://open.oppomobile.com/new/developmentDoc/info?id=13223');
                           launchURL();
                         },
                         trailing: Icon(Icons.open_in_new, size: 16),

@@ -921,7 +921,7 @@ class _StdExamPageState extends State<StdExamPage>{
       return;
     }
      
-    readSchoolCalendarInfo();
+    readSemesterInfo();
     if(mounted){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

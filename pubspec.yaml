@@ -172,9 +172,12 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
   fonts:
-    - family: MiSans
+    - family: OPPOSans
       fonts:
-        - asset: assets/fonts/MiSans-Bold.ttf
-        - asset: assets/fonts/MiSans-Normal.ttf
-        - asset: assets/fonts/MiSans-Regular.ttf
+        - asset: assets/fonts/OPPOSans4.0.ttf
+    # - family: MiSans
+    #   fonts:
+    #     - asset: assets/fonts/MiSans-Bold.ttf
+    #     - asset: assets/fonts/MiSans-Normal.ttf
+    #     - asset: assets/fonts/MiSans-Regular.ttf
         
