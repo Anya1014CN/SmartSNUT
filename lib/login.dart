@@ -26,44 +26,6 @@ class _LoginPageState extends State<LoginPage>{
   final textUsernameController = TextEditingController();
   final textPasswordController = TextEditingController();
 
-  //读取设置并保存在变量中
-  readSettings() async {
-    String settingstpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/settings.json';
-    File settingstfile = File(settingstpath);
-    if(await settingstfile.exists()){
-      GlobalVars.settingsTotal = jsonDecode(await settingstfile.readAsString());
-      setState(() {
-        GlobalVars.fontsizeint = GlobalVars.settingsTotal[0]['fontSize']?? 3;
-        GlobalVars.darkModeint = GlobalVars.settingsTotal[0]['DarkMode']?? 0;
-        GlobalVars.themeColor = GlobalVars.settingsTotal[0]['ThemeColor']?? 1;
-        GlobalVars.showSatCourse = GlobalVars.settingsTotal[0]['showSatCourse']?? true;
-        GlobalVars.showSunCourse = GlobalVars.settingsTotal[0]['showSunCourse']?? true;
-        GlobalVars.courseBlockColorsInt = GlobalVars.settingsTotal[0]['courseBlockColorsint']?? 0;
-        GlobalVars.autoRefreshCourseTable = GlobalVars.settingsTotal[0]['autoRefreshCourseTable']?? true;
-        GlobalVars.lastCourseTableRefreshTime = GlobalVars.settingsTotal[0]['lastCourseTableRefreshTime']?? 0;
-        GlobalVars.switchTomorrowCourseAfter20 = GlobalVars.settingsTotal[0]['switchTomorrowCourseAfter20']?? true;
-        GlobalVars.switchNextWeekCourseAfter20 = GlobalVars.settingsTotal[0]['switchNextWeekCourseAfter20']?? true;
-        GlobalVars.showTzgg = GlobalVars.settingsTotal[0]['showTzgg']?? true;
-      });
-    }else{
-      setState(() {
-        GlobalVars.fontsizeint = 3;
-        GlobalVars.darkModeint = 0;
-        GlobalVars.themeColor = 1;
-        GlobalVars.showSatCourse = true;
-        GlobalVars.showSunCourse = true;
-        GlobalVars.courseBlockColorsInt = 0;
-        GlobalVars.autoRefreshCourseTable = true;
-        GlobalVars.lastCourseTableRefreshTime = 0;
-        GlobalVars.switchTomorrowCourseAfter20 = true;
-        GlobalVars.switchNextWeekCourseAfter20 = true;
-        GlobalVars.showTzgg = true;
-      });
-    }
-    Modules.setFontSize();
-    if(mounted) setState(() {});
-  }
-
   @override
   void dispose() {
     textUsernameController.dispose();
@@ -73,7 +35,7 @@ class _LoginPageState extends State<LoginPage>{
 
   @override
   void initState() {
-    readSettings();
+    Modules.readSettings();
     super.initState();
   }
 

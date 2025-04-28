@@ -2338,26 +2338,10 @@ class _CourseTablePage extends State<CourseTablePage>{
 
     weekDiff = 0;
     currentWeekInt = userSelectedWeekInt;
-    String settingstpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/settings.json';
-    File settingstfile = File(settingstpath);
     GlobalVars.lastCourseTableRefreshTime = DateTime.now().millisecondsSinceEpoch;
-    GlobalVars.settingsTotal.clear();
-    GlobalVars.settingsTotal.add({
-      'fontSize': GlobalVars.fontsizeint,
-      'DarkMode': GlobalVars.darkModeint,
-      'ThemeColor': GlobalVars.themeColor,
-      'showSatCourse': GlobalVars.showSatCourse,
-      'showSunCourse': GlobalVars.showSunCourse,
-      'courseBlockColorsint': GlobalVars.courseBlockColorsInt,
-      'autoRefreshCourseTable': GlobalVars.autoRefreshCourseTable,
-      'lastCourseTableRefreshTime': GlobalVars.lastCourseTableRefreshTime,
-      'switchTomorrowCourseAfter20': GlobalVars.switchTomorrowCourseAfter20,
-      'switchNextWeekCourseAfter20': GlobalVars.switchNextWeekCourseAfter20,
-      'showTzgg': GlobalVars.showTzgg,
-    });
+    await Modules.saveSettings();
     readSchoolCalendarInfo();
     getWeekDates();
-    await settingstfile.writeAsString(jsonEncode(GlobalVars.settingsTotal));
     if(mounted){
       setState(() {});
       ScaffoldMessenger.of(context).showSnackBar(

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -140,7 +139,8 @@ class _HomeState extends State<Home>{
     }
     String semesterspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/semesters.json';
     File semestersfile = File(semesterspath);
-    semestersData = jsonDecode(await semestersfile.readAsString());
+    String semestersString = await semestersfile.readAsString();
+    semestersData = jsonDecode(semestersString);
     semesterTotal = semestersData.length;
     for(int i = 0; i < semesterTotal; i++){
       semestersName.add({
@@ -1230,6 +1230,7 @@ class _HomeState extends State<Home>{
 
   @override
   void initState() {
+    Modules.readSettings();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await initEMData();
@@ -1247,6 +1248,12 @@ class _HomeState extends State<Home>{
       if(GlobalVars.autoRefreshCourseTable == true && DateTime.now().millisecondsSinceEpoch - GlobalVars.lastCourseTableRefreshTime >= 86400000){
         await getCourseTable();
       }
+      //判断是否需要刷新学期信息（每 30 天刷新一次）
+      if(DateTime.now().millisecondsSinceEpoch - GlobalVars.lastSemeatersDataRefreshTime >= 2592000000){
+        await Modules.loginAuth(GlobalVars.userName, GlobalVars.passWord, 'jwgl');
+        Modules.updateSemestersData();
+      }
+      setState(() {});
     });
   }
 
@@ -2184,24 +2191,8 @@ class _HomeState extends State<Home>{
 
     weekDiff = 0;
     currentWeekInt = userSelectedWeekInt;
-    String settingstpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/settings.json';
-    File settingstfile = File(settingstpath);
     GlobalVars.lastCourseTableRefreshTime = DateTime.now().millisecondsSinceEpoch;
-    GlobalVars.settingsTotal.clear();
-    GlobalVars.settingsTotal.add({
-      'fontSize': GlobalVars.fontsizeint,
-      'DarkMode': GlobalVars.darkModeint,
-      'ThemeColor': GlobalVars.themeColor,
-      'showSatCourse': GlobalVars.showSatCourse,
-      'showSunCourse': GlobalVars.showSunCourse,
-      'courseBlockColorsint': GlobalVars.courseBlockColorsInt,
-      'autoRefreshCourseTable': GlobalVars.autoRefreshCourseTable,
-      'lastCourseTableRefreshTime': GlobalVars.lastCourseTableRefreshTime,
-      'switchTomorrowCourseAfter20': GlobalVars.switchTomorrowCourseAfter20,
-      'switchNextWeekCourseAfter20': GlobalVars.switchNextWeekCourseAfter20,
-      'showTzgg': GlobalVars.showTzgg,
-    });
-    await settingstfile.writeAsString(jsonEncode(GlobalVars.settingsTotal));
+    await Modules.saveSettings();
     readSchoolCalendarInfo();
     if(mounted){
       setState(() {});

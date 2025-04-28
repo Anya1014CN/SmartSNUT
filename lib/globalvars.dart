@@ -91,6 +91,8 @@ class GlobalVars {
   static bool showSunCourse = true;
   //课表的配色
   static int courseBlockColorsInt = 1;
+  //上次刷新学期信息的时间
+  static int lastSemeatersDataRefreshTime = 0;
 
   //字体大小相关
   //弹出对话框字体

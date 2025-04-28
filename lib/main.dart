@@ -1,9 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/AppPage/app_page.dart';
 import 'package:smartsnut/Home/home.dart';
 import 'package:smartsnut/LinkPage/link_page.dart';
@@ -36,46 +33,13 @@ class SmartSNUT extends StatefulWidget{
  
 class _SmartSNUT extends State<SmartSNUT> {
 
-  //读取设置并保存在变量中
-  readSettings() async {
-    String settingstpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/settings.json';
-    File settingstfile = File(settingstpath);
-    if(await settingstfile.exists()){
-      GlobalVars.settingsTotal = jsonDecode(await settingstfile.readAsString());
-      setState(() {
-        GlobalVars.fontsizeint = GlobalVars.settingsTotal[0]['fontSize']?? 3;
-        GlobalVars.darkModeint = GlobalVars.settingsTotal[0]['DarkMode']?? 0;
-        GlobalVars.themeColor = GlobalVars.settingsTotal[0]['ThemeColor']?? 1;
-        GlobalVars.showSatCourse = GlobalVars.settingsTotal[0]['showSatCourse']?? true;
-        GlobalVars.showSunCourse = GlobalVars.settingsTotal[0]['showSunCourse']?? true;
-        GlobalVars.courseBlockColorsInt = GlobalVars.settingsTotal[0]['courseBlockColorsint']?? 0;
-        GlobalVars.autoRefreshCourseTable = GlobalVars.settingsTotal[0]['autoRefreshCourseTable']?? true;
-        GlobalVars.lastCourseTableRefreshTime = GlobalVars.settingsTotal[0]['lastCourseTableRefreshTime']?? 0;
-        GlobalVars.switchTomorrowCourseAfter20 = GlobalVars.settingsTotal[0]['switchTomorrowCourseAfter20']?? true;
-        GlobalVars.switchNextWeekCourseAfter20 = GlobalVars.settingsTotal[0]['switchNextWeekCourseAfter20']?? true;
-        GlobalVars.showTzgg = GlobalVars.settingsTotal[0]['showTzgg']?? true;
-      });
-    }else{
-      setState(() {
-        GlobalVars.fontsizeint = 3;
-        GlobalVars.darkModeint = 0;
-        GlobalVars.themeColor = 1;
-        GlobalVars.showSatCourse = true;
-        GlobalVars.showSunCourse = true;
-        GlobalVars.courseBlockColorsInt = 0;
-        GlobalVars.autoRefreshCourseTable = true;
-        GlobalVars.lastCourseTableRefreshTime = 0;
-        GlobalVars.switchTomorrowCourseAfter20 = true;
-        GlobalVars.switchNextWeekCourseAfter20 = true;
-        GlobalVars.showTzgg = true;
-      });
-    }
-    Modules.setFontSize();
-    if(mounted) setState(() {});
-  }
-
   //每秒刷新一次数据及页面
   refreshState() async {
+    if(!settingsLoaded){
+      await Modules.readSettings();
+      setState(() {});
+      settingsLoaded = true;
+    }
     Future.delayed(Duration(seconds: 2), () {
       if(mounted) {
         setState(() {
@@ -113,9 +77,8 @@ class _SmartSNUT extends State<SmartSNUT> {
 
   @override
   void initState() {
-    readSettings();
+    Modules.readSettings();
     super.initState();
-    readSettings();
   }
 
   @override

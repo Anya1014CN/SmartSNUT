@@ -22,6 +22,63 @@ class Modules {
     }
   }
 
+  //读取设置
+  static readSettings() async {
+    String settingstpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/settings.json';
+    File settingstfile = File(settingstpath);
+    if(await settingstfile.exists()){
+      GlobalVars.settingsTotal = jsonDecode(await settingstfile.readAsString());
+      GlobalVars.fontsizeint = GlobalVars.settingsTotal[0]['fontSize']?? 3;
+      GlobalVars.darkModeint = GlobalVars.settingsTotal[0]['DarkMode']?? 0;
+      GlobalVars.themeColor = GlobalVars.settingsTotal[0]['ThemeColor']?? 1;
+      GlobalVars.showSatCourse = GlobalVars.settingsTotal[0]['showSatCourse']?? true;
+      GlobalVars.showSunCourse = GlobalVars.settingsTotal[0]['showSunCourse']?? true;
+      GlobalVars.courseBlockColorsInt = GlobalVars.settingsTotal[0]['courseBlockColorsint']?? 0;
+      GlobalVars.autoRefreshCourseTable = GlobalVars.settingsTotal[0]['autoRefreshCourseTable']?? true;
+      GlobalVars.lastCourseTableRefreshTime = GlobalVars.settingsTotal[0]['lastCourseTableRefreshTime']?? 0;
+      GlobalVars.switchTomorrowCourseAfter20 = GlobalVars.settingsTotal[0]['switchTomorrowCourseAfter20']?? true;
+      GlobalVars.switchNextWeekCourseAfter20 = GlobalVars.settingsTotal[0]['switchNextWeekCourseAfter20']?? true;
+      GlobalVars.showTzgg = GlobalVars.settingsTotal[0]['showTzgg']?? true;
+      GlobalVars.lastSemeatersDataRefreshTime = GlobalVars.settingsTotal[0]['lastSemeatersDataRefreshTime']?? 0;
+    }else{
+      GlobalVars.fontsizeint = 3;
+      GlobalVars.darkModeint = 0;
+      GlobalVars.themeColor = 1;
+      GlobalVars.showSatCourse = true;
+      GlobalVars.showSunCourse = true;
+      GlobalVars.courseBlockColorsInt = 0;
+      GlobalVars.autoRefreshCourseTable = true;
+      GlobalVars.lastCourseTableRefreshTime = 0;
+      GlobalVars.switchTomorrowCourseAfter20 = true;
+      GlobalVars.switchNextWeekCourseAfter20 = true;
+      GlobalVars.showTzgg = true;
+      GlobalVars.lastSemeatersDataRefreshTime =  0;
+    }
+    Modules.setFontSize();
+  }
+
+  //保存设置到本地
+  static saveSettings() async {
+    String settingstpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/settings.json';
+    File settingstfile = File(settingstpath);
+    GlobalVars.settingsTotal.clear();
+    GlobalVars.settingsTotal.add({
+      'fontSize': GlobalVars.fontsizeint,
+      'DarkMode': GlobalVars.darkModeint,
+      'ThemeColor': GlobalVars.themeColor,
+      'showSatCourse': GlobalVars.showSatCourse,
+      'showSunCourse': GlobalVars.showSunCourse,
+      'courseBlockColorsint': GlobalVars.courseBlockColorsInt,
+      'autoRefreshCourseTable': GlobalVars.autoRefreshCourseTable,
+      'lastCourseTableRefreshTime': GlobalVars.lastCourseTableRefreshTime,
+      'switchTomorrowCourseAfter20': GlobalVars.switchTomorrowCourseAfter20,
+      'switchNextWeekCourseAfter20': GlobalVars.switchNextWeekCourseAfter20,
+      'showTzgg': GlobalVars.showTzgg,
+      'lastSemeatersDataRefreshTime': GlobalVars.lastSemeatersDataRefreshTime
+    });
+    await settingstfile.writeAsString(jsonEncode(GlobalVars.settingsTotal));
+  }
+
   //读取用户信息并保存在变量中
   static readStdAccount() async {
     String stdAccountpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/authserver/stdAccount.json';
@@ -578,6 +635,115 @@ class Modules {
     message.add({
       'statue': true,
       'message': '',
+    });
+    return message;
+  }
+
+  //更新学期信息
+  static Future<List> updateSemestersData() async {
+    //存储返回的信息
+    List message = [];
+    
+    //等待 500 毫秒，防止教务系统判定为过快点击
+    await Future.delayed(Duration(milliseconds: 500));
+
+    //请求课表初始信息
+    late Response courseresponse1;
+    try{
+      courseresponse1 = await GlobalVars.globalDio.get('http://jwgl.snut.edu.cn/eams/courseTableForStd.action');
+    }catch (e){
+      message.clear();
+      message.add({
+        'statue': false,
+        'message': '无法连接服务器，请稍后再试',
+      });
+      return message;
+    }
+    //提取相关数据
+    String semesterId = '';
+    String tagId = '';
+    //String idsMe = '';
+    //String idsClass = ''; 班级课表 id
+
+    RegExp semesterExp = RegExp(r'semester\.id=(\d+)');
+    Match? semesteridmatch = semesterExp.firstMatch(courseresponse1.headers['Set-Cookie']!.first);
+    if(semesteridmatch != null){
+      semesterId = semesteridmatch.group(1)!;
+    }
+
+    RegExp tagIdExp = RegExp(r'semesterBar(\d+)Semester');
+    Match? tagIdmatch = tagIdExp.firstMatch(courseresponse1.data.toString());
+    if(tagIdmatch != null){
+      tagId = tagIdmatch.group(1)!;
+    }
+
+    // RegExp idsExp = RegExp(r'bg\.form\.addInput\(form,"ids","(\d+)"\)');
+    // Iterable<Match> idsmatch = idsExp.allMatches(courseresponse1.data);
+    // if(idsmatch.length >=2 ){
+    //   //idsMe = idsmatch.elementAt(0).group(1)!;
+    //   //idsClass = idsmatch.elementAt(1).group(1)!; 班级课表
+    // }
+
+    //获取所有学期的 semester.id，学年名称，学期名称
+    final courseTableformData = FormData.fromMap({
+      "tagId": 'semesterBar${tagId}Semester',
+      "dataType": 'semesterCalendar',
+      "value": semesterId.toString(),
+      "empty": 'false'
+    });
+    late Response courseresponse2;
+    try{
+      courseresponse2 = await GlobalVars.globalDio.post(
+      'http://jwgl.snut.edu.cn/eams/dataQuery.action',
+      options: Options(
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent": "PostmanRuntime/7.43.0",
+        }
+      ),
+      data: courseTableformData,
+      );
+    }catch (e){
+      message.clear();
+      message.add({
+        'statue': false,
+        'message': '无法连接服务器，请稍后再试',
+      });
+      return message;
+    }
+    
+    String rawdata = courseresponse2.data.toString();
+    late String semesters;
+
+    //处理教务系统的非标准 json
+    rawdata = rawdata.replaceAllMapped(
+      RegExp(r'(\w+):'), (match) => '"${match[1]}":');
+    rawdata = rawdata.replaceAll("'", "\""); // 替换单引号为双引号
+
+    // 去除 HTML 代码
+    rawdata = rawdata.replaceAll(RegExp(r'\"<tr>.*?</tr>\"', dotAll: true), '""');
+
+    // 解析 JSON
+    Map<String, dynamic> proceeddata = json.decode(rawdata);
+
+      if (proceeddata.containsKey("semesters")) {
+        Map<String, dynamic> semestersMap = proceeddata["semesters"];
+
+        // 转换为标准 JSON 格式的字符串
+        String jsonSemesters = json.encode(semestersMap);
+
+        semesters = jsonSemesters;
+      }
+
+    String semesterspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/semesters.json';
+    File semestersfile = File(semesterspath);
+    semestersfile.writeAsString(semesters);
+    
+    message.clear();
+    message.add({
+      'statue': true,
+      'message': '',
+      'semestersData': jsonDecode(semesters),
     });
     return message;
   }

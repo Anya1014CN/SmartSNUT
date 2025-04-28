@@ -96,30 +96,6 @@ class _SettingsPage extends State<SettingsPage>{
     emUserDatafile.writeAsString(jsonEncode(GlobalVars.emUserData));
   }
 
-  //保存设置到本地
-  saveSettings() async {
-    String settingstpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/settings.json';
-    File settingstfile = File(settingstpath);
-    GlobalVars.settingsTotal.clear();
-    GlobalVars.settingsTotal.add({
-      'fontSize': GlobalVars.fontsizeint,
-      'DarkMode': GlobalVars.darkModeint,
-      'ThemeColor': GlobalVars.themeColor,
-      'showSatCourse': GlobalVars.showSatCourse,
-      'showSunCourse': GlobalVars.showSunCourse,
-      'courseBlockColorsint': GlobalVars.courseBlockColorsInt,
-      'autoRefreshCourseTable': GlobalVars.autoRefreshCourseTable,
-      'lastCourseTableRefreshTime': GlobalVars.lastCourseTableRefreshTime,
-      'switchTomorrowCourseAfter20': GlobalVars.switchTomorrowCourseAfter20,
-      'switchNextWeekCourseAfter20': GlobalVars.switchNextWeekCourseAfter20,
-      'showTzgg': GlobalVars.showTzgg,
-    });
-    if(mounted){
-      setState(() {});
-    }
-    await settingstfile.writeAsString(jsonEncode(GlobalVars.settingsTotal));
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -270,9 +246,10 @@ class _SettingsPage extends State<SettingsPage>{
                         leading: Icon(Icons.calendar_view_week, color: Theme.of(context).colorScheme.primary),
                         trailing: Switch(
                           value: GlobalVars.switchTomorrowCourseAfter20,
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             GlobalVars.switchTomorrowCourseAfter20 = value;
-                            saveSettings();
+                            await Modules.saveSettings();
+                            setState(() {});
                           },
                         ),
                         title: Text('自动切换明日课程',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
@@ -286,9 +263,10 @@ class _SettingsPage extends State<SettingsPage>{
                         leading: Icon(Icons.notifications, color: Theme.of(context).colorScheme.primary),
                         trailing: Switch(
                           value: GlobalVars.showTzgg,
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             GlobalVars.showTzgg = value;
-                            saveSettings();
+                            await Modules.saveSettings();
+                            setState(() {});
                           },
                         ),
                         title: Text('在首页显示 “通知公告” 栏目',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
@@ -328,9 +306,10 @@ class _SettingsPage extends State<SettingsPage>{
                         leading: Icon(Icons.refresh_outlined, color: Theme.of(context).colorScheme.primary),
                         trailing: Switch(
                           value: GlobalVars.autoRefreshCourseTable,
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             GlobalVars.switchNextWeekCourseAfter20 = value;
-                            saveSettings();
+                            await Modules.saveSettings();
+                            setState(() {});
                           },
                         ),
                         title: Text('自动更新课表',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
@@ -344,9 +323,10 @@ class _SettingsPage extends State<SettingsPage>{
                         leading: Icon(Icons.calendar_view_week, color: Theme.of(context).colorScheme.primary),
                         trailing: Switch(
                           value: GlobalVars.switchNextWeekCourseAfter20,
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             GlobalVars.switchNextWeekCourseAfter20 = value;
-                            saveSettings();
+                            await Modules.saveSettings();
+                            setState(() {});
                           },
                         ),
                         title: Text('自动切换下周课表',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
@@ -360,9 +340,10 @@ class _SettingsPage extends State<SettingsPage>{
                         leading: Icon(Icons.calendar_view_week, color: Theme.of(context).colorScheme.primary),
                         trailing: Switch(
                           value: GlobalVars.showSatCourse,
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             GlobalVars.showSatCourse = value;
-                            saveSettings();
+                            await Modules.saveSettings();
+                            setState(() {});
                           },
                         ),
                         title: Text('显示周六课程',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
@@ -376,9 +357,10 @@ class _SettingsPage extends State<SettingsPage>{
                         leading: Icon(Icons.calendar_view_week, color: Theme.of(context).colorScheme.primary),
                         trailing: Switch(
                           value: GlobalVars.showSunCourse,
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             GlobalVars.showSunCourse = value;
-                            saveSettings();
+                            await Modules.saveSettings();
+                            setState(() {});
                           },
                         ),
                         title: Text('显示周日课程',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
@@ -1113,7 +1095,7 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 0,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 0;
                         if(mounted){
                           setState((){
@@ -1121,7 +1103,8 @@ class _SettingsPage extends State<SettingsPage>{
                             Modules.setFontSize();
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1134,7 +1117,7 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 1,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 1;
                         if(mounted){
                           setState((){
@@ -1142,7 +1125,8 @@ class _SettingsPage extends State<SettingsPage>{
                             Modules.setFontSize();
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1155,7 +1139,7 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 2,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 2;
                         if(mounted){
                           setState((){
@@ -1163,7 +1147,8 @@ class _SettingsPage extends State<SettingsPage>{
                             Modules.setFontSize();
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1176,7 +1161,7 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 3,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 3;
                         if(mounted){
                           setState((){
@@ -1184,7 +1169,8 @@ class _SettingsPage extends State<SettingsPage>{
                             Modules.setFontSize();
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1197,7 +1183,7 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 4,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 4;
                         if(mounted){
                           setState((){
@@ -1205,7 +1191,8 @@ class _SettingsPage extends State<SettingsPage>{
                             Modules.setFontSize();
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1218,7 +1205,7 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 5,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 5;
                         if(mounted){
                           setState((){
@@ -1226,7 +1213,8 @@ class _SettingsPage extends State<SettingsPage>{
                             Modules.setFontSize();
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1239,7 +1227,7 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 6,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 6;
                         if(mounted){
                           setState((){
@@ -1247,7 +1235,8 @@ class _SettingsPage extends State<SettingsPage>{
                             Modules.setFontSize();
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1258,9 +1247,10 @@ class _SettingsPage extends State<SettingsPage>{
             ),
             actions: [
               TextButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.pop(context);
-                  saveSettings();
+                  await Modules.saveSettings();
+                  setState(() {});
                 },
                 child: Text('OK'),
               ),
@@ -1289,14 +1279,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 0,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 0;
                         if(mounted){
                           setState((){
                             GlobalVars.themeColor = 0;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1311,14 +1302,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 1,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 1;
                         if(mounted){
                           setState((){
                             GlobalVars.themeColor = 1;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1333,14 +1325,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 2,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 2;
                         if(mounted){
                           setState((){
                             GlobalVars.themeColor = 2;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1355,14 +1348,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 3,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 3;
                         if(mounted){
                           setState((){
                             GlobalVars.themeColor = 3;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1377,14 +1371,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 4,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 4;
                         if(mounted){
                           setState((){
                             GlobalVars.themeColor = 4;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1399,14 +1394,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 5,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 5;
                         if(mounted){
                           setState((){
                             GlobalVars.themeColor = 5;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1421,14 +1417,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 6,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 6;
                         if(mounted){
                           setState((){
                             GlobalVars.themeColor = 6;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1443,14 +1440,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 7,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async{
                         groupValue = 7;
                         if(mounted){
                           setState((){
                             GlobalVars.themeColor = 7;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1463,9 +1461,10 @@ class _SettingsPage extends State<SettingsPage>{
             ),
             actions: [
               TextButton(
-                onPressed: (){
-                  saveSettings();
+                onPressed: () async {
                   Navigator.pop(context);
+                  await Modules.saveSettings();
+                  setState(() {});
                 },
                 child: Text('OK'),
               ),
@@ -1494,14 +1493,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 0,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 0;
                         if(mounted){
                           setState((){
                             GlobalVars.darkModeint = 0;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1514,14 +1514,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 1,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 1;
                         if(mounted){
                           setState((){
                             GlobalVars.darkModeint = 1;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1534,14 +1535,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 2,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 2;
                         if(mounted){
                           setState((){
                             GlobalVars.darkModeint = 2;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1552,9 +1554,10 @@ class _SettingsPage extends State<SettingsPage>{
             ),
             actions: [
               TextButton(
-                onPressed: (){
+                onPressed: () async {
                   Navigator.pop(context);
-                  saveSettings();
+                  await Modules.saveSettings();
+                  setState(() {});
                 },
                 child: Text('OK'),
               ),
@@ -1583,14 +1586,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 0,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 0;
                         if(mounted){
                           setState((){
                             GlobalVars.courseBlockColorsInt = 0;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1603,14 +1607,15 @@ class _SettingsPage extends State<SettingsPage>{
                     Radio(
                       value: 1,
                       groupValue: groupValue,
-                      onChanged: (value){
+                      onChanged: (value) async {
                         groupValue = 1;
                         if(mounted){
                           setState((){
                             GlobalVars.courseBlockColorsInt = 1;
                           });
                         }
-                        saveSettings();
+                        await Modules.saveSettings();
+                        setState(() {});
                       },
                     ),
                     SizedBox(width: 10,),
@@ -1621,9 +1626,10 @@ class _SettingsPage extends State<SettingsPage>{
             ),
             actions: [
               TextButton(
-                onPressed: (){
-                  saveSettings();
+                onPressed: () async {
                   Navigator.pop(context);
+                  await Modules.saveSettings();
+                  setState(() {});
                 },
                 child: Text('OK'),
               ),
