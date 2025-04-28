@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'dart:io';
@@ -675,15 +673,11 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
       }
     }
 
-    CookieJar emcookiejar = CookieJar();
-    Dio dio = Dio();
-    dio.interceptors.add(CookieManager(emcookiejar));
-
     //获取用户相关信息
     if(bindelectricmeterCanceled) return;
     late Response emresponse1;
     try{
-      emresponse1 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/index?openId=${GlobalVars.openId}',);
+      emresponse1 = await GlobalVars.globalDio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/index?openId=${GlobalVars.openId}',);
     }catch (e){
       if(mounted){
         Navigator.pop(context);
@@ -740,7 +734,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     GlobalVars.wechatUserId = emresponse1.data['data']['wechatId'].toString();
 
     if(bindelectricmeterCanceled) return;
-    Response emresponse2 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/getBindListWx?wechatUserId=${GlobalVars.wechatUserId}');
+    Response emresponse2 = await GlobalVars.globalDio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/getBindListWx?wechatUserId=${GlobalVars.wechatUserId}');
 
     if(emresponse2.data['data'].toString() == 'null'){
       if(mounted){
@@ -774,7 +768,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
 
     //下载用户头像
     if(bindelectricmeterCanceled) return;
-    await dio.download(emresponse1.data['data']['wechatUserHeadimgurl'],'${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emavatar.jpg');
+    await GlobalVars.globalDio.download(emresponse1.data['data']['wechatUserHeadimgurl'],'${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emavatar.jpg');
 
     //保存用户信息
     GlobalVars.emUserData.clear();
@@ -958,9 +952,6 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
       );
     }
 
-    //初始化 Dio
-    Dio dio = Dio();
-
     //绑定电表
     late Response addBindmeterResponse;
     var addEMParams = {
@@ -969,7 +960,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     };
     try{
       if(bindEMCanceled) return;
-      var response = await dio.post(
+      var response = await GlobalVars.globalDio.post(
         'https://hqkddk.snut.edu.cn/kddz/electricmeterpost/addBindmeter',
         data: addEMParams,
         options: Options(
@@ -1106,9 +1097,6 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
       );
     }
 
-    //初始化 Dio
-    Dio dio = Dio();
-
     //解绑电表
     late Response delBindmeterResponse;
     var headers = {
@@ -1120,7 +1108,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     };
     try{
       if(unBindEMCanceled) return;
-      var response = await dio.request(
+      var response = await GlobalVars.globalDio.request(
         'https://hqkddk.snut.edu.cn/kddz/electricmeterpost/delBindmeter',
         options: Options(
           method: 'POST',

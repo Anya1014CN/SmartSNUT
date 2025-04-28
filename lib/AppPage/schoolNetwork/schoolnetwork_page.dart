@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -452,7 +453,14 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
       );
     }
     CookieJar netcookiejar = CookieJar();
-    Dio dio = Dio();
+    Dio dio = Dio(
+      BaseOptions(
+        headers: {
+          'User-Agent':
+              (Platform.isWindows)? 'SmartSNUT-Windows/${GlobalVars.versionCodeString}':(Platform.isAndroid)? 'SmartSNUT-Android/${GlobalVars.versionCodeString}':'SmartSNUT/${GlobalVars.versionCodeString}',
+        }
+      )
+    );
     dio.interceptors.add(CookieManager(netcookiejar));
 
     //第一次请求，提取相关信息

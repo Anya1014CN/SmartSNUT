@@ -687,7 +687,6 @@ class Modules {
       options: Options(
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          "User-Agent": "PostmanRuntime/7.43.0",
         }
       ),
       data: courseTableformData,
@@ -761,7 +760,6 @@ class Modules {
         options: Options(
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            "User-Agent": "PostmanRuntime/7.43.0",
           }
         ),
         data: courseTablegetformData,
@@ -873,7 +871,6 @@ class Modules {
         options: Options(
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            "User-Agent": "PostmanRuntime/7.43.0",
           }
         ),
         data: schoolCalendarformData,
@@ -941,7 +938,6 @@ class Modules {
       stdExamresponse1 = await GlobalVars.globalDio.get(
         options: Options(
           headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
             'Referer': 'http://jwgl.snut.edu.cn/eams/stdExamTable.action',
           }
         ),
@@ -1085,14 +1081,7 @@ class Modules {
         });
         return message;
       }
-      stdExamresponse6 = await GlobalVars.globalDio.get(
-        'http://jwgl.snut.edu.cn/eams/stdExamTable!examTable.action?examBatch.id=$currentExamBatchid',
-        options: Options(
-          headers: {
-            "User-Agent": "PostmanRuntime/7.43.0",
-          }
-        ),
-      );
+      stdExamresponse6 = await GlobalVars.globalDio.get('http://jwgl.snut.edu.cn/eams/stdExamTable!examTable.action?examBatch.id=$currentExamBatchid');
     }catch (e){
       message.clear();
       message.add({
@@ -1190,14 +1179,7 @@ class Modules {
         });
         return message;
       }
-      stdGradesresponse1 = await GlobalVars.globalDio.get(
-        options: Options(
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
-          }
-        ),
-        'http://jwgl.snut.edu.cn/eams/teach/grade/course/person.action',
-      );
+      stdGradesresponse1 = await GlobalVars.globalDio.get('http://jwgl.snut.edu.cn/eams/teach/grade/course/person.action');
     }catch (e){
       message.clear();
       message.add({
@@ -1231,14 +1213,7 @@ class Modules {
         });
         return message;
       }
-      stdGradesresponse2 = await GlobalVars.globalDio.get(
-        'http://jwgl.snut.edu.cn/eams/teach/grade/course/person!search.action?semesterId=$semesterId',
-        options: Options(
-          headers: {
-            "User-Agent": "PostmanRuntime/7.43.0",
-          }
-        ),
-      );
+      stdGradesresponse2 = await GlobalVars.globalDio.get('http://jwgl.snut.edu.cn/eams/teach/grade/course/person!search.action?semesterId=$semesterId');
     }catch (e){
       message.clear();
       message.add({

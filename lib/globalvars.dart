@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 
@@ -14,7 +16,14 @@ class GlobalVars {
   static int loginState = 0; //1 - 未登录；2 - 已登录
 
   //Dio 相关
-  static Dio globalDio = Dio();
+  static Dio globalDio = Dio(
+    BaseOptions(
+      headers: {
+        'User-Agent':
+            (Platform.isWindows)? 'SmartSNUT-Windows/${GlobalVars.versionCodeString}':(Platform.isAndroid)? 'SmartSNUT-Android/${GlobalVars.versionCodeString}':'SmartSNUT/${GlobalVars.versionCodeString}',
+      }
+    )
+  );
   static CookieJar globalCookieJar = CookieJar();
 
   //学期数据

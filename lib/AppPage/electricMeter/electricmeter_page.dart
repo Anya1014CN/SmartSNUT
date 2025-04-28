@@ -345,7 +345,14 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
       GlobalVars.emDetail = jsonDecode(await emdetailfile.readAsString());
       String electricUserUid = GlobalVars.emDetail[i]['bindMeterId'];
 
-      Dio dio = Dio();
+      Dio dio = Dio(
+        BaseOptions(
+          headers: {
+            'User-Agent':
+                (Platform.isWindows)? 'SmartSNUT-Windows/${GlobalVars.versionCodeString}':(Platform.isAndroid)? 'SmartSNUT-Android/${GlobalVars.versionCodeString}':'SmartSNUT/${GlobalVars.versionCodeString}',
+          }
+        )
+      );
       try{
         Response emqresponse1 = await dio.post('https://hqkddk.snut.edu.cn/kddz/electricmeterpost/electricMeterQuery?wechatUserId=${GlobalVars.wechatUserId}&electricUserUid=$electricUserUid&isAfterMoney=0',);
         emstatetotal.add({

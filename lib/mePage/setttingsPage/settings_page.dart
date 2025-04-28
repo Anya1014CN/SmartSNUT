@@ -1674,10 +1674,9 @@ class _SettingsPage extends State<SettingsPage>{
         isCheckingUpdate = true;
       });
     }
-    Dio dio = Dio();
     late Response updateServerResponse;
     try{
-      updateServerResponse = await dio.get('https://apis.smartsnut.cn/Generic/UpdateCheck/LatestVersion.json');
+      updateServerResponse = await GlobalVars.globalDio.get('https://apis.smartsnut.cn/Generic/UpdateCheck/LatestVersion.json');
     }catch(e){
       return;
     }
@@ -1783,7 +1782,6 @@ class _SettingsPage extends State<SettingsPage>{
     int downloadedSize = 0;
     int totalDownloadSize = 0;
     double downloadProgress = 0;
-    Dio dio = Dio();
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -1819,7 +1817,7 @@ class _SettingsPage extends State<SettingsPage>{
       String exePath = Platform.resolvedExecutable;
       String exeDir = File(exePath).parent.path;
       try{
-        await dio.download(
+        await GlobalVars.globalDio.download(
           latestDownloadLink,
           '$exeDir/Windows_latest.exe',
           onReceiveProgress: (count, total) {
@@ -1860,7 +1858,7 @@ class _SettingsPage extends State<SettingsPage>{
     }if(Platform.isAndroid){
       //Android 版更新代码
       try{
-        await dio.download(
+        await GlobalVars.globalDio.download(
           latestDownloadLink,
           '${(await getApplicationDocumentsDirectory()).path}/Android_latest.apk',
           onReceiveProgress: (count, total) {

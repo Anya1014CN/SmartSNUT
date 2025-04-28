@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:html/dom.dart' as html_dom;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -2222,7 +2220,14 @@ class _HomeState extends State<Home>{
   //获取公告
   getSmartSNUTAnnouncement() async {
     smartSNUTAnnouncements = [];
-    Dio dio = Dio();
+    Dio dio = Dio(
+      BaseOptions(
+        headers: {
+          'User-Agent':
+              (Platform.isWindows)? 'SmartSNUT-Windows/${GlobalVars.versionCodeString}':(Platform.isAndroid)? 'SmartSNUT-Android/${GlobalVars.versionCodeString}':'SmartSNUT/${GlobalVars.versionCodeString}',
+        }
+      )
+    );
     late Response smartSNUTNotifyResponse;
     try{
       smartSNUTNotifyResponse = await dio.get('https://apis.smartsnut.cn/Generic/Announcement/Announcement.json');
@@ -2252,11 +2257,8 @@ class _HomeState extends State<Home>{
         }if(newsType == 1){
           newsurl = 'https://www.snut.edu.cn/index/tzgg.htm';
         }
-        Dio dio = Dio();
-        CookieJar snutcookie = CookieJar();
-        dio.interceptors.add(CookieManager(snutcookie));
         try{
-          await dio.get(
+          await GlobalVars.globalDio.get(
             options: Options(
               followRedirects: false,
               validateStatus: (status) {
@@ -2276,7 +2278,7 @@ class _HomeState extends State<Home>{
           //这里需要进行两次 get，第一次 get 拿到 cookie，第二次 get 需要带 cookie 才能正常获取到页面
           late html_dom.Document document;
           try{
-            Response response = await dio.get(newsurl);
+            Response response = await GlobalVars.globalDio.get(newsurl);
             document = html_parser.parse(response.data);
           }catch (e){
             if(mounted){
@@ -2368,10 +2370,9 @@ class _HomeState extends State<Home>{
 
   //检查更新
   checkUpdate() async {
-    Dio dio = Dio();
     late Response updateServerResponse;
     try{
-      updateServerResponse = await dio.get('https://apis.smartsnut.cn/Generic/UpdateCheck/LatestVersion.json');
+      updateServerResponse = await GlobalVars.globalDio.get('https://apis.smartsnut.cn/Generic/UpdateCheck/LatestVersion.json');
     }catch(e){
       return;
     }
@@ -2470,7 +2471,6 @@ class _HomeState extends State<Home>{
     int downloadedSize = 0;
     int totalDownloadSize = 0;
     double downloadProgress = 0;
-    Dio dio = Dio();
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -2505,7 +2505,7 @@ class _HomeState extends State<Home>{
       String exePath = Platform.resolvedExecutable;
       String exeDir = File(exePath).parent.path;
       try{
-        await dio.download(
+        await GlobalVars.globalDio.download(
           latestDownloadLink,
           '$exeDir/Windows_latest.exe',
           onReceiveProgress: (count, total) {
@@ -2546,7 +2546,7 @@ class _HomeState extends State<Home>{
     }if(Platform.isAndroid){
       //Android 版更新代码
       try{
-        await dio.download(
+        await GlobalVars.globalDio.download(
           latestDownloadLink,
           '${(await getApplicationDocumentsDirectory()).path}/Android_latest.apk',
           onReceiveProgress: (count, total) {
