@@ -21,10 +21,8 @@ class LoginPage extends StatefulWidget{
 }
 
 class _LoginPageState extends State<LoginPage>{
-  
-  //创建 TextEditingController
-  final textUsernameController = TextEditingController();
-  final textPasswordController = TextEditingController();
+  late TextEditingController textUsernameController;
+  late TextEditingController textPasswordController;
 
   @override
   void dispose() {
@@ -35,6 +33,8 @@ class _LoginPageState extends State<LoginPage>{
 
   @override
   void initState() {
+    textUsernameController = TextEditingController();
+    textPasswordController = TextEditingController();
     Modules.readSettings();
     super.initState();
   }
