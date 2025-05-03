@@ -37,7 +37,7 @@ class _SmartSNUT extends State<SmartSNUT> {
   refreshState() async {
     if(!settingsLoaded){
       await Modules.readSettings();
-      if(mounted) setState(() {});
+      setState(() {});
       settingsLoaded = true;
     }
     Future.delayed(Duration(seconds: 2), () {
@@ -164,24 +164,6 @@ class HomePage extends StatefulWidget{
 
 class _HomePageState extends State<HomePage>{
   int selectedHomeIndex = 0;
-  // 添加移动端页面控制器
-  late PageController _mobilePageController;
-  // 添加桌面端页面控制器
-  late PageController _desktopPageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _mobilePageController = PageController(initialPage: selectedHomeIndex);
-    _desktopPageController = PageController(initialPage: railselectedIndex);
-  }
-
-  @override
-  void dispose() {
-    _mobilePageController.dispose();
-    _desktopPageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,12 +181,6 @@ class _HomePageState extends State<HomePage>{
                   if(mounted){
                     setState(() {
                       selectedHomeIndex = index;
-                      // 添加动画过渡
-                      _mobilePageController.animateToPage(
-                        index,
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
                     });
                   }
                 },
@@ -254,12 +230,6 @@ class _HomePageState extends State<HomePage>{
                       if(mounted){
                         setState(() {
                           railselectedIndex = index;
-                          // 添加动画过渡
-                          _desktopPageController.animateToPage(
-                            index,
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
                         });
                       }
                     },
@@ -318,47 +288,22 @@ class _HomePageState extends State<HomePage>{
                       ),
                     ],
                   ),
-                  // 使用 PageView 替换原来的直接索引切换
-                  Expanded(
-                    child: PageView(
-                      controller: _desktopPageController,
-                      scrollDirection: Axis.vertical,
-                      onPageChanged: (index) {
-                        if(mounted){
-                          setState(() {
-                            railselectedIndex = index;
-                          });
-                        }
-                      },
-                      children: [
-                        Home(),
-                        AppPage(),
-                        LinkPage(),
-                        MePage(),
-                      ],
-                    ),
-                  ),
+                  <Widget>[
+                    Expanded(child: Home(),),
+                    Expanded(child: AppPage(),),
+                    Expanded(child: LinkPage(),),
+                    Expanded(child: MePage(),),
+                  ][railselectedIndex],
                 ],
               );
             }
             else{
-              // 使用 PageView 替换原来的直接索引切换
-              return PageView(
-                controller: _mobilePageController,
-                onPageChanged: (index) {
-                  if(mounted){
-                    setState(() {
-                      selectedHomeIndex = index;
-                    });
-                  }
-                },
-                children: [
-                  Home(),
-                  AppPage(),
-                  LinkPage(),
-                  MePage(),
-                ],
-              );
+              return <Widget>[
+                Home(),
+                AppPage(),
+                LinkPage(),
+                MePage(),
+              ][selectedHomeIndex];
             }
           },
         )
