@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -2242,78 +2243,78 @@ class _HomeState extends State<Home>{
         isLoading = true;
       });
     }
-    GlobalVars.globalDio.interceptors.add(CookieManager(GlobalVars.globalCookieJar));
+    
     newsOutput = [];//清空旧的新闻列表
-        try{
-          await GlobalVars.globalDio.get(
-            options: Options(
-              followRedirects: false,
-              validateStatus: (status) {
-                return status == 302;
-              },
-            ),
-            'https://www.snut.edu.cn/index/tzgg.htm'
-          );
-        }catch (e){
-          if(mounted){
-            setState(() {
+    Dio dio = Dio();
+    CookieJar snutcookie = CookieJar();
+    dio.interceptors.add(CookieManager(snutcookie));
+    try{
+      await dio.get(
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status == 302;
+          },
+        ),
+      'https://www.snut.edu.cn/index/tzgg.htm');
+    }catch (e){
+      if(mounted){
+        setState(() {
+        isLoading = false;
+        loadSuccess = false;
+        newsState = 1;
+        });
+      }
+    }
+          
+      //这里需要进行两次 get，第一次 get 拿到 cookie，第二次 get 需要带 cookie 才能正常获取到页面
+      late html_dom.Document document;
+      try{
+        Response response = await dio.get('https://www.snut.edu.cn/index/tzgg.htm');
+        document = html_parser.parse(response.data);
+      }catch (e){
+        if(mounted){
+          setState(() {
             isLoading = false;
             loadSuccess = false;
             newsState = 1;
+          });
+        }
+        return;
+      }
+
+      var newsItems = document.querySelectorAll('.lby-list li');
+      for (var item in newsItems) {
+        var titleElement = item.querySelector('a');
+        var dateElement = item.querySelector('span');
+        var linkElement = titleElement?.attributes['href'];
+            
+        if (titleElement != null && dateElement != null && linkElement != null) {
+          // 网站中新闻的地址为 "../info/1037/75038.htm" ，这里处理 URL，去掉最前面的 ".."
+          String cleanedUrl = linkElement.startsWith("../") ? linkElement.substring(2) : linkElement;
+              
+          //保存新闻的标题、发布日期以及最终的 URL 到变量中
+          if(mounted){
+            setState(() {
+              newsOutput.add(
+                {
+                  'title': titleElement.text.trim(),
+                  'date': dateElement.text.trim(),
+                  'location': cleanedUrl.trim(),
+                }
+              );
             });
           }
-        }
-          
-          //这里需要进行两次 get，第一次 get 拿到 cookie，第二次 get 需要带 cookie 才能正常获取到页面
-          late html_dom.Document document;
-          try{
-            Response response = await GlobalVars.globalDio.get('https://www.snut.edu.cn/index/tzgg.htm');
-            document = html_parser.parse(response.data);
-          }catch (e){
-            if(mounted){
-              setState(() {
-                isLoading = false;
-                loadSuccess = false;
-                newsState = 1;
-              });
-            }
-            return;
-          }
-
-          var newsItems = document.querySelectorAll('.lby-list li');
-          for (var item in newsItems) {
-            var titleElement = item.querySelector('a');
-            var dateElement = item.querySelector('span');
-            var linkElement = titleElement?.attributes['href'];
-            
-            if (titleElement != null && dateElement != null && linkElement != null) {
-              // 网站中新闻的地址为 "../info/1037/75038.htm" ，这里处理 URL，去掉最前面的 ".."
-              String cleanedUrl = linkElement.startsWith("../") ? linkElement.substring(2) : linkElement;
-              
-              //保存新闻的标题、发布日期以及最终的 URL 到变量中
-              if(mounted){
-                setState(() {
-                  newsOutput.add(
-                    {
-                      'title': titleElement.text.trim(),
-                      'date': dateElement.text.trim(),
-                      'location': cleanedUrl.trim(),
-                    }
-                  );
-                });
-              }
-          }
-          jsonOutput = jsonEncode(newsOutput);
-          jsonData = jsonDecode(jsonOutput);
-          }
-          if(mounted){
-            tzgg1 = jsonData[1];
-            tzgg2 = jsonData[2];
-            tzgg3 = jsonData[3];
-            tzgg4 = jsonData[4];
-            tzgg5 = jsonData[5];
-            tzgg6 = jsonData[6];
-          }
+      }
+      jsonOutput = jsonEncode(newsOutput);
+      jsonData = jsonDecode(jsonOutput);
+      }
+      tzgg1 = jsonData[1];
+      tzgg2 = jsonData[2];
+      tzgg3 = jsonData[3];
+      tzgg4 = jsonData[4];
+      tzgg5 = jsonData[5];
+      tzgg6 = jsonData[6];
       if(mounted){
         setState(() {
           newsState = 1;
@@ -2322,7 +2323,7 @@ class _HomeState extends State<Home>{
         });
       }
   }
-
+  
   //打开链接
   void launchURL() async{
     showDialog(
