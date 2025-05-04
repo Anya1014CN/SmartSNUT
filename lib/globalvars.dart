@@ -4,9 +4,9 @@ import 'package:dio/dio.dart';
 
 class GlobalVars {
   //当前版本号
-  static String versionCodeString = '1.11.25';
-  static int versionCodeInt = 1011025;
-  static String versionReleaseDate = '2025-04-18';
+  static String versionCodeString = '1.12.32';
+  static int versionCodeInt = 1012032;
+  static String versionReleaseDate = '2025-05-04';
 
   //加载相关
   static bool operationCanceled = false;
