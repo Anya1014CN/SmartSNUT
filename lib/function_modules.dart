@@ -504,7 +504,7 @@ class Modules {
       message.clear();
       message.add({
         'statue': false,
-        'message': '验证码错误',
+        'message': '未能自动识别验证码，请重试',
       });
       return message;
     }
