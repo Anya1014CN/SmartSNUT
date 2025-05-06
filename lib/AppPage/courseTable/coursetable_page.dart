@@ -2292,7 +2292,10 @@ class _CourseTablePage extends State<CourseTablePage>{
       );
     }
 
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     List loginAuthResponse = await Modules.loginAuth(userName, passWord,'jwgl');
     if(loginAuthResponse[0]['statue'] == false){
       if(mounted){
@@ -2314,7 +2317,10 @@ class _CourseTablePage extends State<CourseTablePage>{
       return;
     }
 
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     List getCourseTableResponse = await Modules.getCourseTable(currentYearInt,currentTermInt);
     if(getCourseTableResponse[0]['statue'] == false){
       if(mounted){

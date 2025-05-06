@@ -341,6 +341,7 @@ class Modules {
     late Response authresponse1;
     try{
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -388,6 +389,7 @@ class Modules {
     late Response captchaResponse;
     try{
       if(GlobalVars.operationCanceled){
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': false,
@@ -466,6 +468,7 @@ class Modules {
     };
     try{
       if(GlobalVars.operationCanceled){
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -513,6 +516,7 @@ class Modules {
     try{
       //跟随第一步重定向 (ssologin 的 ticket)
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -531,6 +535,7 @@ class Modules {
       );
       //跟随第二步重定向 (ssologin 的 ticket)
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -549,6 +554,7 @@ class Modules {
       );
       //跟随第三步重定向 (ssologin 的 jsessionid)
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -778,6 +784,7 @@ class Modules {
     
     //等待 350 毫秒，防止教务系统判定为过快点击
     if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
       message.clear();
       message.add({
         'statue': true,
@@ -791,6 +798,7 @@ class Modules {
     late Response courseresponse1;
     try{
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -842,6 +850,7 @@ class Modules {
     late Response courseresponse2;
     try{
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -915,6 +924,7 @@ class Modules {
     late Response courseresponse3;
     try{
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -1095,6 +1105,7 @@ class Modules {
     late Response stdExamresponse1;
     try{
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -1135,6 +1146,7 @@ class Modules {
 
     //等待半秒，防止教务系统判定为过快点击
     if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
       message.clear();
       message.add({
         'statue': true,
@@ -1155,6 +1167,7 @@ class Modules {
         'semester.id': semesterId
       };
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -1241,6 +1254,7 @@ class Modules {
     late Response stdExamresponse6;
     try{
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -1327,6 +1341,7 @@ class Modules {
 
     //等待 350 毫秒，防止教务系统判定为过快点击
     if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
       message.clear();
       message.add({
         'statue': true,
@@ -1339,6 +1354,7 @@ class Modules {
     late Response stdGradesresponse1;
     try{
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -1373,6 +1389,7 @@ class Modules {
     late Response stdGradesresponse2;
     try{
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -1468,6 +1485,7 @@ class Modules {
     late Response publicFreeResponse;
     try{
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -1600,6 +1618,7 @@ class Modules {
     late Response publicFreeResponse;
     try {
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,
@@ -1700,6 +1719,7 @@ class Modules {
     late Response classListResponse;
     try{
       if(GlobalVars.operationCanceled) {
+        GlobalVars.operationCanceled = false;
         message.clear();
         message.add({
           'statue': true,

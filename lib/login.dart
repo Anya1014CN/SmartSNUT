@@ -375,6 +375,7 @@ class _LoginPageState extends State<LoginPage>{
     }
 
     if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
       clearTempLogindata();
       return;
     }
@@ -384,6 +385,7 @@ class _LoginPageState extends State<LoginPage>{
     String passWord = textPasswordController.text;
 
     if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
       clearTempLogindata();
       return;
     }
@@ -421,6 +423,7 @@ class _LoginPageState extends State<LoginPage>{
 
     //获取学籍信息
     if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
       clearTempLogindata();
       return;
     }
@@ -447,6 +450,7 @@ class _LoginPageState extends State<LoginPage>{
 
     //读取近两个学期的课表
     if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
       clearTempLogindata();
       return;
     }
@@ -473,6 +477,7 @@ class _LoginPageState extends State<LoginPage>{
     
     
     if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
       clearTempLogindata();
       return;
     }
@@ -480,6 +485,7 @@ class _LoginPageState extends State<LoginPage>{
     
     
     if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
       clearTempLogindata();
       return;
     }
@@ -506,6 +512,7 @@ class _LoginPageState extends State<LoginPage>{
 
     
     if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
       clearTempLogindata();
       return;
     }

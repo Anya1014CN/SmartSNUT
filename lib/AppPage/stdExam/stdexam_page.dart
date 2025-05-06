@@ -877,7 +877,10 @@ class _StdExamPageState extends State<StdExamPage>{
       );
     }
 
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     List loginAuthResponse = await Modules.loginAuth(userName, passWord,'jwgl');
     if(loginAuthResponse[0]['statue'] == false){
       if(mounted){
@@ -899,7 +902,10 @@ class _StdExamPageState extends State<StdExamPage>{
       return;
     }
 
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     List getStdExamResponse = await Modules.getStdExam(currentYearInt, currentTermInt, currentExamBatch);
     if(getStdExamResponse[0]['statue'] == false){
       if(mounted){

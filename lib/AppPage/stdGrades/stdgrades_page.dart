@@ -810,7 +810,10 @@ class _StdGradesPageState extends State<StatefulWidget>{
       );
     }
 
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     List loginAuthResponse = await Modules.loginAuth(userName, passWord,'jwgl');
     if(loginAuthResponse[0]['statue'] == false){
       if(mounted){
@@ -832,7 +835,10 @@ class _StdGradesPageState extends State<StatefulWidget>{
       return;
     }
 
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     List getStdGradesResponse = await Modules.getStdGrades(currentYearInt, currentTermInt);
     if(getStdGradesResponse[0]['statue'] == false){
       if(mounted){

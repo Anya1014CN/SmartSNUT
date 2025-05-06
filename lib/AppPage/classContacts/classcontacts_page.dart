@@ -341,7 +341,10 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
       );
     }
 
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     List loginAuthResponse = await Modules.loginAuth(GlobalVars.userName, GlobalVars.passWord,'wzxy');
     if(loginAuthResponse[0]['statue'] == false){
       if(mounted){
@@ -364,7 +367,10 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
     }
 
     //获取班级列表
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     List getClassListResponse = await Modules.getClassList();
     if(getClassListResponse[0]['statue'] == false){
       if(mounted){
@@ -388,11 +394,20 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
     GlobalVars.classList = getClassListResponse[0]['classList'];
 
     //获取班级成员
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     for(int i = 1;i <= GlobalVars.classList.length;i++){
-      if(GlobalVars.operationCanceled) return;
+      if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
       await Future.delayed(Duration(milliseconds: 100));
-      if(GlobalVars.operationCanceled) return;
+      if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
       await Modules.getClassMemberList(GlobalVars.classList[i-1]['id']);
     }
 
@@ -456,7 +471,10 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
       }
     }
 
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     if(mounted){
       await showDialog(
         context: context, 
@@ -484,7 +502,10 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
       );
     }
 
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     Uri callUri = Uri.parse('tel:$phoneNumber');
     await launchUrl(callUri);
   }

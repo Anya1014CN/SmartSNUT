@@ -2146,7 +2146,10 @@ class _HomeState extends State<Home>{
       );
     }
 
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     List loginAuthResponse = await Modules.loginAuth(GlobalVars.userName, GlobalVars.passWord,'jwgl');
     if(loginAuthResponse[0]['statue'] == false){
       if(mounted){
@@ -2168,7 +2171,10 @@ class _HomeState extends State<Home>{
       return;
     }
 
-    if(GlobalVars.operationCanceled) return;
+    if(GlobalVars.operationCanceled) {
+      GlobalVars.operationCanceled = false;
+      return;
+    }
     List getCourseTableResponse = await Modules.getCourseTable(currentYearInt,currentTermInt);
     if(getCourseTableResponse[0]['statue'] == false){
       if(mounted){
