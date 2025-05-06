@@ -745,12 +745,13 @@ class Modules {
     String semesterspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/semesters.json';
     File semestersfile = File(semesterspath);
     semestersfile.writeAsString(semesters);
+    Map semestersData = jsonDecode(semesters);
     
     message.clear();
     message.add({
       'statue': true,
       'message': '',
-      'semestersData': jsonDecode(semesters),
+      'semestersData': semestersData,
     });
     return message;
   }
@@ -762,11 +763,12 @@ class Modules {
 
     String semesterspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/semesters.json';
     File semestersfile = File(semesterspath);
+    Map semestersData = jsonDecode(await semestersfile.readAsString());
     message.clear();
     message.add({
       'statue': true,
       'message': '',
-      'semestersData': jsonDecode(await semestersfile.readAsString()),
+      'semestersData': semestersData,
     });
     return message;
   }
