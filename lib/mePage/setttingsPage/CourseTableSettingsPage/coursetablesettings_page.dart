@@ -92,7 +92,7 @@ class _CourseTableSettingsPageState extends State<CourseTableSettingsPage>{
                         trailing: Switch(
                           value: GlobalVars.autoRefreshCourseTable,
                           onChanged: (value) async {
-                            GlobalVars.switchNextWeekCourseAfter20 = value;
+                            GlobalVars.autoRefreshCourseTable = value;
                             await Modules.saveSettings();
                             setState(() {});
                           },
