@@ -23,9 +23,6 @@ int month = DateTime.now().month;
 int day = DateTime.now().day;
 int hour = DateTime.now().hour;
 
-//用于存储不同时间段的问候语
-String greeting = '';
-
 class AppPage extends StatefulWidget {
   const AppPage({super.key});
 
@@ -49,21 +46,6 @@ class _AppPageState extends State<AppPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (hour >= 0 && hour <= 5) {
-      greeting = '晚上好';
-    }
-    if (hour >= 6 && hour <= 11) {
-      greeting = '早上好';
-    }
-    if (hour >= 12 && hour <= 13) {
-      greeting = '中午好';
-    }
-    if (hour >= 14 && hour <= 18) {
-      greeting = '下午好';
-    }
-    if (hour >= 19 && hour <= 23) {
-      greeting = '晚上好';
-    }
     return ListView(
       children: [
         // 问候语区域
@@ -77,7 +59,7 @@ class _AppPageState extends State<AppPage> {
             ),
           ),
           child: Text(
-            '$greeting，${GlobalVars.realName}',
+            '${GlobalVars.greeting}，${GlobalVars.realName}',
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: GlobalVars.genericGreetingTitle,
