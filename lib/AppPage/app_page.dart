@@ -6,6 +6,7 @@ import 'package:smartsnut/AppPage/stdGrades/stdgrades_page.dart';
 import 'package:smartsnut/AppPage/schoolNetwork/schoolnetwork_page.dart';
 import 'package:smartsnut/AppPage/stdDetail/stddetail_page.dart';
 import 'package:smartsnut/AppPage/stdExam/stdexam_page.dart';
+import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'courseTable/coursetable_page.dart';
 import 'package:path_provider/path_provider.dart';
@@ -44,7 +45,6 @@ class _AppPageState extends State<AppPage> {
   @override
   void initState() {
     super.initState();
-    setState(() {});
   }
 
   @override
@@ -132,11 +132,7 @@ class _AppPageState extends State<AppPage> {
                           '我的课表',
                           'schedule',
                           () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext ctx) =>
-                                        CourseTablePage()));
+                            Navigator.push(context,CustomPageRoute(page: CourseTablePage()));
                           },
                         ),
                       ),
@@ -147,11 +143,7 @@ class _AppPageState extends State<AppPage> {
                           '学籍信息',
                           'account',
                           () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext ctx) =>
-                                        StdDetailPage()));
+                            Navigator.push(context,CustomPageRoute(page: StdDetailPage()));
                           },
                         ),
                       ),
@@ -166,11 +158,7 @@ class _AppPageState extends State<AppPage> {
                           '我的考试',
                           'exam',
                           () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext ctx) =>
-                                        StdExamPage()));
+                            Navigator.push(context,CustomPageRoute(page: StdExamPage()));
                           },
                         ),
                       ),
@@ -181,11 +169,7 @@ class _AppPageState extends State<AppPage> {
                           '我的成绩',
                           'grade',
                           () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext ctx) =>
-                                        StdGradesPage()));
+                            Navigator.push(context,CustomPageRoute(page: StdGradesPage()));
                           },
                         ),
                       ),
@@ -200,11 +184,7 @@ class _AppPageState extends State<AppPage> {
                           '空闲教室查询',
                           'classroom',
                           () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext ctx) =>
-                                        PublicFreePage()));
+                            Navigator.push(context,CustomPageRoute(page: PublicFreePage()));
                           },
                         ),
                       ),
@@ -264,11 +244,7 @@ class _AppPageState extends State<AppPage> {
                       '网费查询',
                       'web',
                       () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext ctx) =>
-                                    SchoolNetworkPage()));
+                        Navigator.push(context,CustomPageRoute(page: SchoolNetworkPage()));
                       },
                     ),
                   ),
@@ -307,11 +283,7 @@ class _AppPageState extends State<AppPage> {
                           );
                           return;
                         } else {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext ctx) =>
-                                      Electricmeterpage()));
+                          Navigator.push(context,CustomPageRoute(page: Electricmeterpage()));
                         }
                       },
                     ),
@@ -366,11 +338,7 @@ class _AppPageState extends State<AppPage> {
                       '班级通讯录',
                       'contacts',
                       () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext ctx) =>
-                                    ClasscontactsPage()));
+                        Navigator.push(context,CustomPageRoute(page: ClasscontactsPage()));
                       },
                     ),
                   ),

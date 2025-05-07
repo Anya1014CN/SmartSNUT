@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/login.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
 import 'package:smartsnut/globalvars.dart';
@@ -160,8 +161,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>{
                         subtitle: Text(GlobalVars.emBinded ? '已绑定：${GlobalVars.wechatUserNickname}' : '未绑定',
                           style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => ElectricmeterbindPage()))
-                            .then((value) => emBindRead());
+                          Navigator.push(context, CustomPageRoute(page: ElectricmeterbindPage())).then((value) => emBindRead());
                         },
                       ),
                       Divider(height: 1, indent: 20, endIndent: 20),
@@ -169,7 +169,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>{
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                         ),
-                        leading: Icon(Icons.logout, color: Theme.of(context).colorScheme.error),
+                        leading: Icon(Icons.logout, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
                         title: Text('退出登录', style: TextStyle(fontSize: GlobalVars.listTileTitle)),
                         subtitle: Text(GlobalVars.userName,style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),

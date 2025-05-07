@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:path_provider/path_provider.dart';
@@ -1763,4 +1764,27 @@ class Modules {
     });
     return message;
   }
+}
+
+//自定义的页面切换动画
+class CustomPageRoute extends PageRouteBuilder {
+final Widget page;
+
+CustomPageRoute({required this.page}) : super(
+  pageBuilder: (context, animation, secondaryAnimation) => page,
+  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+    const begin = Offset(0.0, 1.0); // 从底部向上滑动
+    const end = Offset.zero;
+    const curve = Curves.easeInOut;
+      
+    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+    var offsetAnimation = animation.drive(tween);
+      
+    return SlideTransition(
+      position: offsetAnimation,
+        child: child,
+      );
+    },
+    transitionDuration: Duration(milliseconds: 300), // 动画持续时间
+  );
 }

@@ -2521,6 +2521,6 @@ class _CourseTablePage extends State<CourseTablePage>{
       String date = day.day.toString().padLeft(2, '0');
       weekDates.add('$month-$date');
     }
-    setState(() {});
+    if(mounted) setState(() {});
   }
 }

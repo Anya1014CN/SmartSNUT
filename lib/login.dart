@@ -266,12 +266,15 @@ class _LoginPageState extends State<LoginPage>{
         setState(() {
           GlobalVars.emBinded = true;
         });
-      }else{
+      }
+    }else{
+      if(mounted){
         setState(() {
           GlobalVars.emBinded = false;
         });
       }
     }
+
     String emUserDatapath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/embinddata/emUserData.json';
     File emUserDatafile = File(emUserDatapath);
     if(await emUserDatafile.exists() == true){
@@ -283,9 +286,11 @@ class _LoginPageState extends State<LoginPage>{
           });
         }
       }else{
-        setState(() {
-          GlobalVars.emBinded = false;
-        });
+        if(mounted){
+          setState(() {
+            GlobalVars.emBinded = false;
+          });
+        }
       }
     }
   }

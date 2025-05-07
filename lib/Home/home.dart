@@ -1253,7 +1253,7 @@ class _HomeState extends State<Home>{
         await Modules.loginAuth(GlobalVars.userName, GlobalVars.passWord, 'jwgl');
         Modules.updateSemestersData();
       }
-      setState(() {});
+      if(mounted) setState(() {});
     });
   }
 
@@ -1619,7 +1619,7 @@ class _HomeState extends State<Home>{
                   // 查看本周课表按钮
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => CourseTablePage())).then((value) => readSemesterInfo());
+                      Navigator.push(context, CustomPageRoute(page: CourseTablePage())).then((value) => readSemesterInfo());
                     },
                     borderRadius: BorderRadius.circular(12),
                     child: Container(
@@ -1707,7 +1707,7 @@ class _HomeState extends State<Home>{
                     '网费查询', 
                     'web',
                     () {
-                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => SchoolNetworkPage()));
+                      Navigator.push(context, CustomPageRoute(page: SchoolNetworkPage()));
                     }
                   ),
                 ),
@@ -1740,7 +1740,7 @@ class _HomeState extends State<Home>{
                         );
                         return;
                       }else{
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => Electricmeterpage()));
+                        Navigator.push(context, CustomPageRoute(page: Electricmeterpage()));
                       }
                     }
                   ),
@@ -1756,7 +1756,7 @@ class _HomeState extends State<Home>{
                     '我的考试', 
                     'exam',
                     () {
-                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => StdExamPage()));
+                      Navigator.push(context, CustomPageRoute(page: StdExamPage()));
                     }
                   ),
                 ),
@@ -1767,7 +1767,7 @@ class _HomeState extends State<Home>{
                     '我的成绩', 
                     'grade',
                     () {
-                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => StdGradesPage()));
+                      Navigator.push(context, CustomPageRoute(page: StdGradesPage()));
                     }
                   ),
                 ),

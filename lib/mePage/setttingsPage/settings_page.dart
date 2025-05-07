@@ -4,6 +4,7 @@ import 'package:smartsnut/MePage/setttingsPage/AccountSettingsPage/accountsettin
 import 'package:smartsnut/MePage/setttingsPage/CourseTableSettingsPage/coursetablesettings_page.dart';
 import 'package:smartsnut/MePage/setttingsPage/GeneralSettingsPage/generalsettings_page.dart';
 import 'package:smartsnut/MePage/setttingsPage/HomePageSettings/homepagesettings_page.dart';
+import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 
 class SettingsPage extends StatefulWidget{
@@ -96,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage>{
                         trailing: Icon(Icons.chevron_right),
                         title: Text('通用设置',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => GeneralSettingsPage()));
+                          Navigator.push(context, CustomPageRoute(page: GeneralSettingsPage()));
                         },
                       ),
                     ],
@@ -124,7 +125,7 @@ class _SettingsPageState extends State<SettingsPage>{
                         trailing: Icon(Icons.chevron_right),
                         title: Text('首页设置',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => HomePageSettingsPage()));
+                          Navigator.push(context, CustomPageRoute(page: HomePageSettingsPage()));
                         },
                       ),
                     ],
@@ -152,7 +153,7 @@ class _SettingsPageState extends State<SettingsPage>{
                         trailing: Icon(Icons.chevron_right),
                         title: Text('课表设置',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => CourseTableSettingsPage()));
+                          Navigator.push(context, CustomPageRoute(page: CourseTableSettingsPage()));
                         },
                       ),
                     ],
@@ -180,7 +181,7 @@ class _SettingsPageState extends State<SettingsPage>{
                         trailing: Icon(Icons.chevron_right),
                         title: Text('账号设置',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => AccountSettingsPage()));
+                          Navigator.push(context, CustomPageRoute(page: AccountSettingsPage()));
                         },
                       ),
                     ],
@@ -209,7 +210,7 @@ class _SettingsPageState extends State<SettingsPage>{
                         trailing: Icon(Icons.chevron_right),
                         title: Text('关于智慧陕理',style: TextStyle(fontSize: GlobalVars.listTileTitle),),
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => AboutPage()));
+                          Navigator.push(context, CustomPageRoute(page: AboutPage()));
                         },
                       ),
                     ],

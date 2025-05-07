@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/login.dart';
-import 'package:smartsnut/mePage/guidePage/guide_page.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/mePage/setttingsPage/settings_page.dart';
@@ -187,9 +187,7 @@ class _MePageState extends State<MePage>{
                           '解/绑电费账号',
                           'electricitybind',
                           () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (BuildContext ctx) => ElectricmeterbindPage()
-                            ));
+                            Navigator.push(context, CustomPageRoute(page: ElectricmeterbindPage()));
                           },
                         ),
                       ),
@@ -200,9 +198,7 @@ class _MePageState extends State<MePage>{
                           '应用设置',
                           'settings',
                           () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (BuildContext ctx) => SettingsPage()
-                            ));
+                            Navigator.push(context, CustomPageRoute(page: SettingsPage()));
                           },
                         ),
                       ),

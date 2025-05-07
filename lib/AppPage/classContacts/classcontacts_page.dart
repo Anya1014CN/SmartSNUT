@@ -81,14 +81,18 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
       body: NotificationListener<ScrollNotification>(
         onNotification: (scrollNotification) {
           if (scrollNotification.metrics.pixels > 80 && !_showAppBarTitle) {
-            setState(() {
-              _showAppBarTitle = true;
-            });
+            if(mounted){
+              setState(() {
+                _showAppBarTitle = true;
+              });
+            }
           } else if (scrollNotification.metrics.pixels <= 80 &&
               _showAppBarTitle) {
-            setState(() {
-              _showAppBarTitle = false;
-            });
+            if(mounted){
+              setState(() {
+                _showAppBarTitle = false;
+              });
+            }
           }
           return true;
         },
@@ -204,10 +208,12 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
                                 ),
                               ),
                               onTap: () {
-                                setState(() {
-                                  selectedClass = GlobalVars.classList.indexOf(classItem);
-                                  selectedClassName = classItem['name'];
-                                });
+                                if(mounted){
+                                  setState(() {
+                                    selectedClass = GlobalVars.classList.indexOf(classItem);
+                                    selectedClassName = classItem['name'];
+                                  });
+                                }
                                 getClassMemberList(classItem['id']);
                               },
                             );

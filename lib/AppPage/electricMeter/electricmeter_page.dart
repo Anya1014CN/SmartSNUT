@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
+import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
 
@@ -42,7 +43,9 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext ctx) => ElectricmeterbindPage()));},
+        onPressed: (){
+          Navigator.push(context, CustomPageRoute(page: ElectricmeterbindPage()));
+        },
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 4,
         shape: RoundedRectangleBorder(
@@ -59,14 +62,18 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
       body: NotificationListener<ScrollNotification>(
         onNotification: (scrollNotification) {
           if (scrollNotification.metrics.pixels > 80 && !_showAppBarTitle) {
-            setState(() {
-              _showAppBarTitle = true;
-            });
+            if(mounted){
+              setState(() {
+                _showAppBarTitle = true;
+              });
+            }
           } else if (scrollNotification.metrics.pixels <= 80 &&
               _showAppBarTitle) {
-            setState(() {
-              _showAppBarTitle = false;
-            });
+            if(mounted){
+              setState(() {
+                _showAppBarTitle = false;
+              });
+            }
           }
           return true;
         },
