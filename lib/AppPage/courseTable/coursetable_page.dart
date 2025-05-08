@@ -1298,6 +1298,9 @@ class _CourseTablePage extends State<CourseTablePage>{
                           if(mounted){
                             setState(() {
                               currentYearInt = yearSelectedIndex;
+                              if(semestersData['y$currentYearInt'].length < 2) {
+                                currentTermInt = 1;
+                              }
                               currentYearName = item['name'];
                             });
                           }
