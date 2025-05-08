@@ -71,9 +71,6 @@ class _StdExamPageState extends State<StdExamPage>{
 
   //读取学期相关信息
   readSemesterInfo() async {
-    //清空学期列表
-    semestersData = {};
-    semestersName = [];
     String semesterspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/semesters.json';
     File semestersfile = File(semesterspath);
     semestersData = jsonDecode(await semestersfile.readAsString());
@@ -239,8 +236,6 @@ class _StdExamPageState extends State<StdExamPage>{
     selectedTY.add({
       'examBatch': currentExamBatch,
     });
-    //保存完成后刷新状态，防止出现参数更新不及时的情况
-    setState(() {});
     selectedTYfile.writeAsString(jsonEncode(selectedTY));
   }
   
@@ -298,8 +293,8 @@ class _StdExamPageState extends State<StdExamPage>{
                               currentYearName = item['name'];
                             });
                           }
-                          saveSelectedTY();
-                          readSemesterInfo();
+                          await saveSelectedTY();
+                          await readSemesterInfo();
                           menuYearController.close();
                         },
                         child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
@@ -360,8 +355,8 @@ class _StdExamPageState extends State<StdExamPage>{
                               currentTermName = '第一学期';
                             });
                           }
-                          saveSelectedTY();
-                          readSemesterInfo();
+                          await saveSelectedTY();
+                          await readSemesterInfo();
                           menuTermController.close();
                         },
                       ),
@@ -375,8 +370,8 @@ class _StdExamPageState extends State<StdExamPage>{
                               currentTermName = '第二学期';
                             });
                           }
-                          saveSelectedTY();
-                          readSemesterInfo();
+                          await saveSelectedTY();
+                          await readSemesterInfo();
                           menuTermController.close();
                         },
                       ),
@@ -455,12 +450,14 @@ class _StdExamPageState extends State<StdExamPage>{
 
   @override
   void initState() {
-    readStdAccount();
-    readSemesterInfo();
     super.initState();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
-        UmengCommonSdk.onPageStart("校内应用 - 我的考试");
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await readStdAccount();
+      await readSemesterInfo();
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+          UmengCommonSdk.onPageStart("校内应用 - 我的考试");
+      }
+    });
   }
   
   @override
@@ -962,7 +959,7 @@ class _StdExamPageState extends State<StdExamPage>{
       return;
     }
      
-    readSemesterInfo();
+    await readSemesterInfo();
     if(mounted){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
