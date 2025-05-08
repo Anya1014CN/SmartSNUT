@@ -475,65 +475,9 @@ class _LoginPageState extends State<LoginPage>{
       return;
     }
     
-    
     if(GlobalVars.operationCanceled) {
       GlobalVars.operationCanceled = false;
       clearTempLogindata();
-      return;
-    }
-    List getSemestersDataResponse = await Modules.getSemestersData();
-    
-    
-    if(GlobalVars.operationCanceled) {
-      GlobalVars.operationCanceled = false;
-      clearTempLogindata();
-      return;
-    }
-    List getCourseTableResponse1 = await Modules.getCourseTable(getSemestersDataResponse[0]['semestersData'].length - 1,1);
-    if(getCourseTableResponse1[0]['statue'] == false){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog(
-          context: context, 
-          builder: (BuildContext context)=>AlertDialog(
-            title: Row(
-              children: [
-                Icon(Icons.error),
-                SizedBox(width: 8,),
-                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
-              ],
-            ),
-            content: Text(getCourseTableResponse1[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
-          ));
-      }
-      return;
-    }
-
-    
-    if(GlobalVars.operationCanceled) {
-      GlobalVars.operationCanceled = false;
-      clearTempLogindata();
-      return;
-    }
-    List getCourseTableResponse2 = await Modules.getCourseTable(getSemestersDataResponse[0]['semestersData'].length - 1,2);
-    if(getCourseTableResponse2[0]['statue'] == false){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog(
-          context: context, 
-          builder: (BuildContext context)=>AlertDialog(
-            title: Row(
-              children: [
-                Icon(Icons.error),
-                SizedBox(width: 8,),
-                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
-              ],
-            ),
-            content: Text(getCourseTableResponse2[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
-          ));
-      }
       return;
     }
 
