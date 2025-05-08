@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //班级列表
@@ -46,6 +47,9 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageEnd("校内应用 - 班级通讯录");
+    }
   }
 
   @override
@@ -53,6 +57,9 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await readClassList();
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+          UmengCommonSdk.onPageStart("校内应用 - 班级通讯录");
+      }
     });
   }
 

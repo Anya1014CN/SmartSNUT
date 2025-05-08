@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 //验证码输入框
 TextEditingController textCaptchaController = TextEditingController();
@@ -1458,6 +1459,9 @@ class _CourseTablePage extends State<CourseTablePage>{
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageEnd("校内应用 - 我的课表");
+    }
   }
 
   @override
@@ -1481,6 +1485,9 @@ class _CourseTablePage extends State<CourseTablePage>{
       //判断是否需要刷新课表
       if(GlobalVars.autoRefreshCourseTable == true && DateTime.now().millisecondsSinceEpoch - GlobalVars.lastCourseTableRefreshTime >= 86400000){
         getCourseTable();
+      }
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+          UmengCommonSdk.onPageStart("校内应用 - 我的课表");
       }
     });
   }

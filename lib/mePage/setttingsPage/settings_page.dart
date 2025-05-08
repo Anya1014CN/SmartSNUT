@@ -6,6 +6,7 @@ import 'package:smartsnut/MePage/setttingsPage/GeneralSettingsPage/generalsettin
 import 'package:smartsnut/MePage/setttingsPage/HomePageSettings/homepagesettings_page.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 class SettingsPage extends StatefulWidget{
   const SettingsPage({super.key});
@@ -22,11 +23,17 @@ class _SettingsPageState extends State<SettingsPage>{
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      UmengCommonSdk.onPageEnd("我的 - 应用设置");
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      UmengCommonSdk.onPageStart("我的 - 应用设置");
+    }
   }
   
   @override

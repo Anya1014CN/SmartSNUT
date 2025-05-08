@@ -52,6 +52,17 @@ android {
             signingConfig = signingConfigs.release
         }
     }
+    
+    // 避免友盟SDK出现重复打包错误
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
+}
+
+dependencies {
+    // 添加友盟统计SDK依赖
+    implementation 'com.umeng.umsdk:common:9.5.5'
+    implementation 'com.umeng.umsdk:asms:1.6.0'
 }
 
 flutter {

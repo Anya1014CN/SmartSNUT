@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 class Electricmeterpage extends StatefulWidget {
   const Electricmeterpage({super.key});
@@ -28,6 +29,9 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageEnd("校内应用 - 电费查询");
+    }
   }
 
   @override
@@ -35,6 +39,9 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_){
       queryem();
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+          UmengCommonSdk.onPageStart("校内应用 - 电费查询");
+      }
     });
   }
 

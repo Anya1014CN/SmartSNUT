@@ -46,6 +46,7 @@ dependencies:
   responsive_builder: ^0.7.1
   url_launcher: ^6.3.1
   provider: ^6.1.2
+  umeng_common_sdk: 1.2.9
   
 dev_dependencies:
   flutter_test:
@@ -180,4 +181,4 @@ flutter:
     #     - asset: assets/fonts/MiSans-Bold.ttf
     #     - asset: assets/fonts/MiSans-Normal.ttf
     #     - asset: assets/fonts/MiSans-Regular.ttf
-        
+

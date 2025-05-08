@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //用于存储外部链接的完整URL
@@ -26,11 +27,17 @@ class _LinkPageState extends State<LinkPage> {
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageEnd("常用链接");
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageStart("常用链接");
+    }
     setState(() {});
   }
 

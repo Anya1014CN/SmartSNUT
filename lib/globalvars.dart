@@ -8,6 +8,13 @@ class GlobalVars {
   static int versionCodeInt = 1012032;
   static String versionReleaseDate = '2025-05-04';
 
+  //友盟统计相关
+  static bool isPrivacyAgreed = false; // 是否同意隐私政策
+  static bool isAnalyticsEnabled = false; // 是否启用统计功能
+  static const String umengAndroidAppKey = "67da8acb65c707471a237c33"; // 替换为您的友盟Android AppKey
+  static const String umengIOSAppKey = "67da8acb65c707471a237c33"; // 替换为您的友盟iOS AppKey
+  static const String umengChannel = "official"; // 渠道
+
   //加载相关
   static bool operationCanceled = false;
   static String loadingHint = '';

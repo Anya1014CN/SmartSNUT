@@ -437,6 +437,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  umeng_common_sdk:
+    dependency: "direct main"
+    description:
+      name: umeng_common_sdk
+      sha256: "9eeb24fa1ca5ca1cc331055628aae0438c1eeadd1d6953a9d4e28afe2f2d57cf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.9"
   universal_io:
     dependency: transitive
     description:

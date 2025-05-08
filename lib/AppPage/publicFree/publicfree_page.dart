@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:intl/intl.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 //判断显示哪个页面（查询页面/查询结果）
 bool showResultPage = false;
@@ -72,6 +73,9 @@ class _PublicFreePageState extends State<PublicFreePage> {
     textSectionBeginController.dispose();
     textSectionEndController.dispose();
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageEnd("校内应用 - 空闲教室查询");
+    }
   }
 
   @override
@@ -80,6 +84,9 @@ class _PublicFreePageState extends State<PublicFreePage> {
     showResultPage = false;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       initPublicFreeData();
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+          UmengCommonSdk.onPageStart("校内应用 - 空闲教室查询");
+      }
     });
   }
 

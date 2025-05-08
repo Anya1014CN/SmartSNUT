@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 //用户数据
 List stdAccount = [];
@@ -179,6 +180,9 @@ class _StdGradesPageState extends State<StatefulWidget>{
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageEnd("校内应用 - 我的成绩");
+    }
   }
 
   @override
@@ -187,6 +191,9 @@ class _StdGradesPageState extends State<StatefulWidget>{
     WidgetsBinding.instance.addPostFrameCallback((_) {
       readStdAccount();
       readSemesterInfo();
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+          UmengCommonSdk.onPageStart("校内应用 - 我的成绩");
+      }
     });
   }
 

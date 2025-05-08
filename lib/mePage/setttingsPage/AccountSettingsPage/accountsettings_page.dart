@@ -6,6 +6,7 @@ import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/login.dart';
 import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 class AccountSettingsPage extends StatefulWidget{
   const AccountSettingsPage({super.key});
@@ -83,12 +84,18 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>{
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      UmengCommonSdk.onPageEnd("我的 - 应用设置 - 账号设置");
+    }
   }
 
   @override
   void initState() {
     emBindRead();
     super.initState();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      UmengCommonSdk.onPageStart("我的 - 应用设置 - 账号设置");
+    }
   }
   
   @override

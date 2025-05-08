@@ -8,6 +8,7 @@ import 'package:smartsnut/AppPage/stdDetail/stddetail_page.dart';
 import 'package:smartsnut/AppPage/stdExam/stdexam_page.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'courseTable/coursetable_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -37,11 +38,17 @@ class _AppPageState extends State<AppPage> {
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageEnd("校内应用");
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageStart("校内应用");
+    }
   }
 
   @override

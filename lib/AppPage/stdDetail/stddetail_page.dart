@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 Map<String, String> studentData = {};
 
@@ -23,12 +24,18 @@ class _StddetailPageState extends State<StdDetailPage>{
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageStart("校内应用 - 学籍信息");
+    }
   }
 
   @override
   void initState() {
     super.initState();
     readstdinfo();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageStart("校内应用 - 学籍信息");
+    }
   }
 
   @override

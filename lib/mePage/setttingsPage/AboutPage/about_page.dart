@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //检查更新状态
@@ -34,11 +35,17 @@ class _AboutPageState extends State<AboutPage>{
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      UmengCommonSdk.onPageEnd("我的 - 应用设置 - 关于智慧陕理");
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      UmengCommonSdk.onPageStart("我的 - 应用设置 - 关于智慧陕理");
+    }
   }
   
   @override

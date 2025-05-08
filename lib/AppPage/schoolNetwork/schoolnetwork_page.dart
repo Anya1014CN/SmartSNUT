@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter/material.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
@@ -35,6 +36,9 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
   void dispose() {
     textUsernameController.dispose();
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageEnd("校内应用 - 网费查询");
+    }
   }
 
   @override
@@ -44,6 +48,9 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       networkQuery();
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+          UmengCommonSdk.onPageStart("校内应用 - 网费查询");
+      }
     });
   }
 

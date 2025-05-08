@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //用于存储外部链接的完整URL
@@ -36,6 +37,9 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     textEmIdController = TextEditingController();
     textBindLinkController = TextEditingController();
     super.initState();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      UmengCommonSdk.onPageStart("我的 - 解/绑电费账号");
+    }
   }
 
   @override
@@ -43,6 +47,9 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     textBindLinkController.dispose();
     textEmIdController.dispose();
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      UmengCommonSdk.onPageEnd("我的 - 解/绑电费账号");
+    }
   }
 
   @override

@@ -10,6 +10,8 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:smartsnut/mePage/me_page.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
+import 'dart:io';
 
 bool loaded = false;//防止重复加载页面
 bool settingsLoaded = false;
@@ -18,7 +20,7 @@ bool settingsLoaded = false;
 int railselectedIndex = 0;
 
 void main() {
-  //runApp(const SmartSNUT());
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(SmartSNUT(),);
 }
 

@@ -6,6 +6,7 @@ import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.da
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/mePage/setttingsPage/settings_page.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //用于即将打开的链接的完整URL
@@ -25,11 +26,17 @@ class _MePageState extends State<MePage>{
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      UmengCommonSdk.onPageEnd("我的");
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      UmengCommonSdk.onPageStart("我的");
+    }
     setState(() {});
   }
   

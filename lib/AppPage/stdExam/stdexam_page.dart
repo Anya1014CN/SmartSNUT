@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 //学期信息
 String termStart = '';
@@ -447,6 +448,9 @@ class _StdExamPageState extends State<StdExamPage>{
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageEnd("校内应用 - 我的考试");
+    }
   }
 
   @override
@@ -454,6 +458,9 @@ class _StdExamPageState extends State<StdExamPage>{
     readStdAccount();
     readSemesterInfo();
     super.initState();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageStart("校内应用 - 我的考试");
+    }
   }
   
   @override

@@ -18,6 +18,7 @@ import 'package:smartsnut/globalvars.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:html/parser.dart' as html_parser;
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 //最新版本下载链接
 bool updateChecked = false;
@@ -1216,6 +1217,9 @@ class _HomeState extends State<Home>{
   @override
   void dispose() {
     super.dispose();
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      UmengCommonSdk.onPageEnd("首页");
+    }
   }
 
   @override
@@ -1243,6 +1247,11 @@ class _HomeState extends State<Home>{
         await Modules.loginAuth(GlobalVars.userName, GlobalVars.passWord, 'jwgl');
         Modules.updateSemestersData();
       }
+      
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+        UmengCommonSdk.onPageStart("首页");
+      }
+      
       if(mounted) setState(() {});
     });
   }
