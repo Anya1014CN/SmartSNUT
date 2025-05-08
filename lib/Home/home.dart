@@ -181,19 +181,8 @@ class _HomeState extends State<Home>{
       if(mounted){
         setState(() {
           needRefresh = true;
-          currentYearInt = semestersData.length - 1;
-          currentYearName = semestersName[semestersName.length - 1]['name'];
-          //获取当前月份
-          int month = DateTime.now().month;
-          if(month < 9){
-            //如果月份小于9，则选择第二学期
-            currentTermInt = 2;
-            currentTermName = '第二学期';
-          }else{
-            //如果月份大于等于9，则选择第一学期
-            currentTermInt = 1;
-            currentTermName = '第一学期';
-          }
+          currentYearInt = 0;
+          currentYearName = semestersName[0]['name'];
         });
       }
       saveSelectedTY();
@@ -205,6 +194,7 @@ class _HomeState extends State<Home>{
   readSchoolCalendarInfo() async {
     String semesterId = '';
     //使用本地选中的 semetserid 来读取对应的课表
+    print(semestersData['y$currentYearInt']);
     semesterId = semestersData['y$currentYearInt'][currentTermInt -1 ]['id'].toString();
     String schoolCalendarpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/schoolCalendar/schoolCalendar$semesterId.json';
     File schoolCalendarfile = File(schoolCalendarpath);

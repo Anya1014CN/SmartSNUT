@@ -104,19 +104,8 @@ class _StdGradesPageState extends State<StatefulWidget>{
     }else{
       if(mounted){
         setState(() {
-          currentYearInt = semestersData.length - 1;
-          currentYearName = semestersName[semestersName.length - 1]['name'];
-          //获取当前月份
-          int month = DateTime.now().month;
-          if(month < 9){
-            //如果月份小于9，则选择第二学期
-            currentTermInt = 2;
-            currentTermName = '第二学期';
-          }else{
-            //如果月份大于等于9，则选择第一学期
-            currentTermInt = 1;
-            currentTermName = '第一学期';
-          }
+          currentYearInt = 0;
+          currentYearName = semestersName[0]['name'];
         });
       }
       saveSelectedTY();
