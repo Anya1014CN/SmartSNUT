@@ -194,7 +194,6 @@ class _HomeState extends State<Home>{
   readSchoolCalendarInfo() async {
     String semesterId = '';
     //使用本地选中的 semetserid 来读取对应的课表
-    print(semestersData['y$currentYearInt']);
     semesterId = semestersData['y$currentYearInt'][currentTermInt -1 ]['id'].toString();
     String schoolCalendarpath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/schoolCalendar/schoolCalendar$semesterId.json';
     File schoolCalendarfile = File(schoolCalendarpath);

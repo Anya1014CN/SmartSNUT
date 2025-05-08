@@ -184,6 +184,7 @@ class _CourseTablePage extends State<CourseTablePage>{
     File semestersfile = File(semesterspath);
     semestersData = jsonDecode(await semestersfile.readAsString());
     semesterTotal = semestersData.length;
+    semestersName.clear();
     for(int i = 0; i < semesterTotal; i++){
       semestersName.add({
         'name': semestersData['y$i'][0]['schoolYear']
@@ -1367,6 +1368,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                           menuTermController.close();
                         },
                       ),
+                      if(semestersData['y$currentYearInt'].length == 2)
                       MenuItemButton(
                         child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
                         onPressed: () async {
