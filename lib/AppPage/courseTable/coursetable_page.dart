@@ -1106,6 +1106,10 @@ class _CourseTablePage extends State<CourseTablePage>{
         }
       }
     }
+    //处理当前学期暂未开始的情况
+    if(currentWeekInt < 1) {
+      userSelectedWeekInt = 1;
+    }
     readWeeklyCourseTableDetail();
   }
 
@@ -1583,7 +1587,7 @@ class _CourseTablePage extends State<CourseTablePage>{
                       tooltip: '上一周',
                     ),
                     Text(
-                      termEnded? '第 $userSelectedWeekInt 周（学期已结束）':(userSelectedWeekInt == currentWeekInt)? '第 $userSelectedWeekInt 周':'第 $userSelectedWeekInt 周（非本周）',
+                      (currentWeekInt < 1)? '第 $userSelectedWeekInt 周（学期未开始）' : termEnded? '第 $userSelectedWeekInt 周（学期已结束）':(userSelectedWeekInt == currentWeekInt)? '第 $userSelectedWeekInt 周':'第 $userSelectedWeekInt 周（非本周）',
                       style: TextStyle(
                         fontSize: GlobalVars.genericTextLarge,
                         fontWeight: FontWeight.bold,
