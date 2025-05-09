@@ -62,9 +62,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
 
   //读取学期相关信息
   readSemesterInfo() async {
-    //清空学期列表
-    semestersData = {};
-    semestersName = [];
     String semesterspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/semesters.json';
     File semestersfile = File(semesterspath);
     semestersData = jsonDecode(await semestersfile.readAsString());
@@ -177,6 +174,207 @@ class _StdGradesPageState extends State<StatefulWidget>{
     selectedTYfile.writeAsString(jsonEncode(selectedTY));
   }
 
+  // 切换考试学期
+  switchTerm() async {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) => Container(
+            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '切换成绩时间',
+                      style: TextStyle(
+                        fontSize: GlobalVars.alertdialogTitle,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.close),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16),
+                // 学年选择
+                Container(
+                  margin: EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary.withAlpha(13),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: MenuAnchor(
+                    controller: menuYearController,
+                    menuChildren: semestersName.map((item) {
+                      return MenuItemButton(
+                        onPressed: () async {
+                          int yearSelectedIndex = semestersName.indexOf(item);
+                          if(mounted){
+                            setState(() {
+                              currentYearInt = yearSelectedIndex;
+                              if(semestersData['y$currentYearInt'].length < 2) {
+                                currentTermInt = 1;
+                              }
+                              currentYearName = item['name'];
+                            });
+                          }
+                          await saveSelectedTY();
+                          await readSemesterInfo();
+                          menuYearController.close();
+                        },
+                        child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
+                      );
+                    }).toList(),
+                    child: SizedBox(
+                      height: 50,
+                      child: TextButton(
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Theme.of(context).colorScheme.onPrimary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (menuYearController.isOpen) {
+                            menuYearController.close();
+                          } else {
+                            menuYearController.open();
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '学年：$currentYearName',
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericSwitchMenuTitle,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              softWrap: true,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis
+                            ),
+                            Icon(Icons.arrow_drop_down),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                
+                // 学期选择
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary.withAlpha(13),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: MenuAnchor(
+                    controller: menuTermController,
+                    menuChildren: [
+                      MenuItemButton(
+                        child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
+                        onPressed: () async {
+                          if(mounted){
+                            setState(() {
+                              currentTermInt = 1;
+                              currentTermName = '第一学期';
+                            });
+                          }
+                          await saveSelectedTY();
+                          await readSemesterInfo();
+                          menuTermController.close();
+                        },
+                      ),
+                      if(semestersData['y$currentYearInt'].length == 2)
+                      MenuItemButton(
+                        child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
+                        onPressed: () async {
+                          if(mounted){
+                            setState(() {
+                              currentTermInt = 2;
+                              currentTermName = '第二学期';
+                            });
+                          }
+                          await saveSelectedTY();
+                          await readSemesterInfo();
+                          menuTermController.close();
+                        },
+                      ),
+                    ],
+                    child: SizedBox(
+                      height: 50,
+                      child: TextButton(
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Theme.of(context).colorScheme.onPrimary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (menuTermController.isOpen) {
+                            menuTermController.close();
+                          } else {
+                            menuTermController.open();
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '学期：$currentTermName', 
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericSwitchMenuTitle,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              softWrap: true,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis
+                            ),
+                            Icon(Icons.arrow_drop_down),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(
+                    '确定',
+                    style: TextStyle(
+                      fontSize: GlobalVars.genericTextMedium,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -188,9 +386,9 @@ class _StdGradesPageState extends State<StatefulWidget>{
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      readStdAccount();
-      readSemesterInfo();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await readStdAccount();
+      await readSemesterInfo();
       if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
           UmengCommonSdk.onPageStart("校内应用 - 我的成绩");
       }
@@ -609,207 +807,6 @@ class _StdGradesPageState extends State<StatefulWidget>{
     );
   }
 
-  // 切换考试学期
-  switchTerm() async {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) => Container(
-            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '切换成绩时间',
-                      style: TextStyle(
-                        fontSize: GlobalVars.alertdialogTitle,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(Icons.close),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                // 学年选择
-                Container(
-                  margin: EdgeInsets.only(bottom: 16),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withAlpha(13),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: MenuAnchor(
-                    controller: menuYearController,
-                    menuChildren: semestersName.map((item) {
-                      return MenuItemButton(
-                        onPressed: () async {
-                          int yearSelectedIndex = semestersName.indexOf(item);
-                          if(mounted){
-                            setState(() {
-                              currentYearInt = yearSelectedIndex;
-                              if(semestersData['y$currentYearInt'].length < 2) {
-                                currentTermInt = 1;
-                              }
-                              currentYearName = item['name'];
-                            });
-                          }
-                          saveSelectedTY();
-                          readSemesterInfo();
-                          menuYearController.close();
-                        },
-                        child: Text('${item['name']} 学年',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
-                      );
-                    }).toList(),
-                    child: SizedBox(
-                      height: 50,
-                      child: TextButton(
-                        style: ElevatedButton.styleFrom(
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (menuYearController.isOpen) {
-                            menuYearController.close();
-                          } else {
-                            menuYearController.open();
-                          }
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '学年：$currentYearName',
-                              style: TextStyle(
-                                fontSize: GlobalVars.genericSwitchMenuTitle,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              softWrap: true,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis
-                            ),
-                            Icon(Icons.arrow_drop_down),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                
-                // 学期选择
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withAlpha(13),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: MenuAnchor(
-                    controller: menuTermController,
-                    menuChildren: [
-                      MenuItemButton(
-                        child: Text('第一学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
-                        onPressed: () async {
-                          if(mounted){
-                            setState(() {
-                              currentTermInt = 1;
-                              currentTermName = '第一学期';
-                            });
-                          }
-                          saveSelectedTY();
-                          readSemesterInfo();
-                          menuTermController.close();
-                        },
-                      ),
-                      if(semestersData['y$currentYearInt'].length == 2)
-                      MenuItemButton(
-                        child: Text('第二学期',style: TextStyle(fontSize: GlobalVars.genericSwitchMenuTitle),),
-                        onPressed: () async {
-                          if(mounted){
-                            setState(() {
-                              currentTermInt = 2;
-                              currentTermName = '第二学期';
-                            });
-                          }
-                          saveSelectedTY();
-                          readSemesterInfo();
-                          menuTermController.close();
-                        },
-                      ),
-                    ],
-                    child: SizedBox(
-                      height: 50,
-                      child: TextButton(
-                        style: ElevatedButton.styleFrom(
-                          shadowColor: Theme.of(context).colorScheme.onPrimary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (menuTermController.isOpen) {
-                            menuTermController.close();
-                          } else {
-                            menuTermController.open();
-                          }
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '学期：$currentTermName', 
-                              style: TextStyle(
-                                fontSize: GlobalVars.genericSwitchMenuTitle,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              softWrap: true,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis
-                            ),
-                            Icon(Icons.arrow_drop_down),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    minimumSize: Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    '确定',
-                    style: TextStyle(
-                      fontSize: GlobalVars.genericTextMedium,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   getStdGrades() async {
     GlobalVars.operationCanceled = false;
     GlobalVars.loadingHint = '正在加载...';
@@ -900,6 +897,9 @@ class _StdGradesPageState extends State<StatefulWidget>{
         stdGradesTotal = getStdGradesResponse[0]['stdGradesTotal'];
       });
     }
+
+    await readStdAccount();
+    await readSemesterInfo();
 
     if(mounted){
       setState(() {});
