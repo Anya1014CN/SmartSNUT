@@ -86,6 +86,7 @@ class _AboutPageState extends State<AboutPage>{
           },
           body: ListView(
             children: [
+            // 标题和LOGO区域
             Container(
               padding: EdgeInsets.fromLTRB(15, 10, 15, 30),
               child: Row(
@@ -324,6 +325,28 @@ class _AboutPageState extends State<AboutPage>{
                             ),
                           ),
                         ],
+                      ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
+                      ListTile(
+                        leading: Icon(Icons.policy, color: Theme.of(context).colorScheme.primary),
+                        title: Text('用户协议', style: TextStyle(fontSize: GlobalVars.listTileTitle, fontWeight: FontWeight.bold)),
+                        subtitle: Text('查看用户协议内容', style: TextStyle(fontSize: GlobalVars.genericTextSmall)),
+                        onTap: () {
+                          url = Uri.parse('https://smartsnut.cn/Docs/TermOfUse/');
+                          launchURL();
+                        },
+                        trailing: Icon(Icons.open_in_new, size: 16),
+                      ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
+                      ListTile(
+                        leading: Icon(Icons.privacy_tip, color: Theme.of(context).colorScheme.primary),
+                        title: Text('隐私政策', style: TextStyle(fontSize: GlobalVars.listTileTitle, fontWeight: FontWeight.bold)),
+                        subtitle: Text('查看隐私政策内容', style: TextStyle(fontSize: GlobalVars.genericTextSmall)),
+                        onTap: () {
+                          url = Uri.parse('https://smartsnut.cn/Docs/PrivacyPolicy/');
+                          launchURL();
+                        },
+                        trailing: Icon(Icons.open_in_new, size: 16),
                       ),
                     ],
                   )
