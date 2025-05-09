@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:umeng_common_sdk/umeng_common_sdk.dart';
@@ -27,7 +29,7 @@ class _LinkPageState extends State<LinkPage> {
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageEnd("常用链接");
     }
   }
@@ -35,7 +37,7 @@ class _LinkPageState extends State<LinkPage> {
   @override
   void initState() {
     super.initState();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageStart("常用链接");
     }
     setState(() {});

@@ -38,7 +38,7 @@ class _AppPageState extends State<AppPage> {
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageEnd("校内应用");
     }
   }
@@ -46,7 +46,7 @@ class _AppPageState extends State<AppPage> {
   @override
   void initState() {
     super.initState();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageStart("校内应用");
     }
   }

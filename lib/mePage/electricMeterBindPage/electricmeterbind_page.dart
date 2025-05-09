@@ -37,7 +37,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     textEmIdController = TextEditingController();
     textBindLinkController = TextEditingController();
     super.initState();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
       UmengCommonSdk.onPageStart("我的 - 解/绑电费账号");
     }
   }
@@ -47,7 +47,7 @@ class _ElectricmeterbindPageState extends State<ElectricmeterbindPage>{
     textBindLinkController.dispose();
     textEmIdController.dispose();
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
       UmengCommonSdk.onPageEnd("我的 - 解/绑电费账号");
     }
   }

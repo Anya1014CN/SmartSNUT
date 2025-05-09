@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
@@ -18,7 +20,7 @@ class _HomePageSettingsPageState extends State<HomePageSettingsPage>{
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
       UmengCommonSdk.onPageEnd("我的 - 应用设置 - 首页设置");
     }
   }
@@ -26,7 +28,7 @@ class _HomePageSettingsPageState extends State<HomePageSettingsPage>{
   @override
   void initState() {
     super.initState();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
       UmengCommonSdk.onPageStart("我的 - 应用设置 - 首页设置");
     }
   }

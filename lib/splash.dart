@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:smartsnut/login.dart';
 import 'package:smartsnut/main.dart';
 import 'package:umeng_common_sdk/umeng_common_sdk.dart';
-import 'dart:io';
+import 'package:url_launcher/url_launcher.dart';
+
+//用于即将打开的链接
+Uri url = Uri.parse("uri");
 
 class SplashPage extends StatefulWidget{
   const SplashPage({super.key});
@@ -17,7 +22,40 @@ class SplashPage extends StatefulWidget{
 }
 
 class _SplashPageState extends State<SplashPage>{
-  
+
+  //打开链接
+  void launchURL() async{
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        scrollable: true,
+        title: Row(
+          children: [
+            Icon(Icons.help),
+            SizedBox(width: 8),
+            Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+          ],
+        ),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('取消'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await launchUrl(url);
+              if(context.mounted){
+                Navigator.pop(context);
+              }
+            },
+            child: Text('确定'),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   //根据登录状态加载页面
   loadPage(){
@@ -32,67 +70,156 @@ class _SplashPageState extends State<SplashPage>{
   }
   
   // 显示隐私协议对话框
-  void showPrivacyDialog() {
-    showDialog(
+  void showPrivacyDialog() async {
+    await showModalBottomSheet(
       context: context,
-      barrierDismissible: false,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('隐私政策提示', style: TextStyle(fontSize: GlobalVars.alertdialogTitle)),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('感谢您使用智慧陕理！', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-                SizedBox(height: 10),
-                Text('我们非常重视您的个人信息和隐私保护。为了更好地保障您的个人权益，在您使用我们的产品前，请您认真阅读并了解《隐私政策》的全部内容。', 
-                  style: TextStyle(fontSize: GlobalVars.alertdialogContent)
+        return StatefulBuilder(
+          builder: (context, setState) => Container(
+            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '隐私政策提示',
+                      style: TextStyle(
+                        fontSize: GlobalVars.alertdialogTitle,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 10),
-                Text('我们的产品集成友盟+SDK，友盟+SDK需要收集您的设备Mac地址、唯一设备识别码（IMEI/android ID/IDFA/OPENUDID/GUID/IP地址/SIM 卡 IMSI 信息）以提供统计分析服务，并通过地理位置校准报表数据准确性，提供基础反作弊能力。', 
-                  style: TextStyle(fontSize: GlobalVars.alertdialogContent)
+                SizedBox(height: 16),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  child: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Text('感谢您使用智慧陕理！', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                        SizedBox(height: 10),
+                        Text('我们非常重视您的个人信息和隐私保护。为了更好地保障您的个人权益，在您使用我们的产品前，请您认真阅读并了解《用户协议》和《隐私政策》的全部内容。', 
+                          style: TextStyle(fontSize: GlobalVars.alertdialogContent)
+                        ),
+                        SizedBox(height: 10),
+                        Text('点击下方按钮可查看相关协议的详细内容：', 
+                          style: TextStyle(fontSize: GlobalVars.alertdialogContent)
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                SizedBox(height: 10),
-                Text('您可以选择同意或拒绝数据收集。如果拒绝，应用的核心功能仍将正常工作，但我们将无法获得改进应用的必要数据。', 
-                  style: TextStyle(fontSize: GlobalVars.alertdialogContent)
+                SizedBox(height: 16),
+                // 用户协议和隐私政策按钮
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        url = Uri.parse('https://smartsnut.cn/Docs/TermOfUse/');
+                        launchURL();
+                      },
+                      icon: Icon(Icons.description),
+                      label: Text('用户协议', style: TextStyle(fontSize: GlobalVars.genericTextMedium)),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        url = Uri.parse('https://smartsnut.cn/Docs/PrivacyPolicy/');
+                        launchURL();
+                      },
+                      icon: Icon(Icons.privacy_tip),
+                      label: Text('隐私政策', style: TextStyle(fontSize: GlobalVars.genericTextMedium)),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          // 用户不同意隐私政策
+                          GlobalVars.isPrivacyAgreed = true;
+                          GlobalVars.isAnalyticsEnabled = false;
+                          await Modules.saveSettings();
+                          if(context.mounted) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.surface,
+                          foregroundColor: Theme.of(context).colorScheme.primary,
+                          minimumSize: Size(0, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                          ),
+                        ),
+                        child: Text(
+                          '不同意',
+                          style: TextStyle(
+                            fontSize: GlobalVars.genericTextMedium,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 16),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          // 用户同意隐私政策
+                          GlobalVars.isPrivacyAgreed = true;
+                          GlobalVars.isAnalyticsEnabled = true;
+                          await Modules.saveSettings();
+                          initUmengAnalytics();
+                          if(context.mounted) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                          minimumSize: Size(0, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          '同意',
+                          style: TextStyle(
+                            fontSize: GlobalVars.genericTextMedium,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
               ],
             ),
           ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('不同意'),
-              onPressed: () {
-                // 用户不同意隐私政策
-                GlobalVars.isPrivacyAgreed = true;
-                GlobalVars.isAnalyticsEnabled = false;
-                Modules.savePrivacySettings().then((_) {
-                  // 用户不同意，不初始化友盟SDK
-                  if(GlobalVars.loginState == 1){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
-                  } else if(GlobalVars.loginState == 2){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
-                  }
-                });
-              },
-            ),
-            TextButton(
-              child: Text('同意'),
-              onPressed: () {
-                // 用户同意隐私政策
-                GlobalVars.isPrivacyAgreed = true;
-                GlobalVars.isAnalyticsEnabled = true;
-                Modules.savePrivacySettings().then((_) {
-                  // 完成友盟SDK初始化
-                  initUmengAnalytics();
-                  if(GlobalVars.loginState == 1){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
-                  } else if(GlobalVars.loginState == 2){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
-                  }
-                });
-              },
-            ),
-          ],
         );
       },
     );
@@ -100,6 +227,8 @@ class _SplashPageState extends State<SplashPage>{
   
   // 初始化友盟统计
   void initUmengAnalytics() {
+    // Windows 版不要初始化友盟统计
+    if(Platform.isWindows) return;
     // 使用正确的 initCommon 方法初始化友盟统计
     UmengCommonSdk.initCommon(
       GlobalVars.umengAndroidAppKey, 
@@ -121,7 +250,6 @@ class _SplashPageState extends State<SplashPage>{
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Modules.checkDirectory();
-      await Modules.readPrivacySettings(); // 读取隐私设置
       await Modules.checkLoginState();
       
       // 如果已同意隐私政策且启用了统计，初始化友盟统计

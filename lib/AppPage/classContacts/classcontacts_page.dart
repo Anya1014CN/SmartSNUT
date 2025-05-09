@@ -47,7 +47,7 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageEnd("校内应用 - 班级通讯录");
     }
   }
@@ -57,7 +57,7 @@ class _ClasscontactsPageState extends State<ClasscontactsPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await readClassList();
-      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
           UmengCommonSdk.onPageStart("校内应用 - 班级通讯录");
       }
     });

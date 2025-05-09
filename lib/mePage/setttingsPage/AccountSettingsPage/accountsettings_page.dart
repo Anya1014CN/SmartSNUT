@@ -84,7 +84,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>{
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
       UmengCommonSdk.onPageEnd("我的 - 应用设置 - 账号设置");
     }
   }
@@ -93,7 +93,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>{
   void initState() {
     emBindRead();
     super.initState();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
       UmengCommonSdk.onPageStart("我的 - 应用设置 - 账号设置");
     }
   }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
@@ -73,7 +75,7 @@ class _PublicFreePageState extends State<PublicFreePage> {
     textSectionBeginController.dispose();
     textSectionEndController.dispose();
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageEnd("校内应用 - 空闲教室查询");
     }
   }
@@ -84,7 +86,7 @@ class _PublicFreePageState extends State<PublicFreePage> {
     showResultPage = false;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       initPublicFreeData();
-      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
           UmengCommonSdk.onPageStart("校内应用 - 空闲教室查询");
       }
     });

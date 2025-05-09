@@ -1217,7 +1217,7 @@ class _HomeState extends State<Home>{
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
       UmengCommonSdk.onPageEnd("首页");
     }
   }
@@ -1248,7 +1248,7 @@ class _HomeState extends State<Home>{
         Modules.updateSemestersData();
       }
       
-      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageStart("首页");
       }
       

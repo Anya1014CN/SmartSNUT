@@ -378,7 +378,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageEnd("校内应用 - 我的成绩");
     }
   }
@@ -389,7 +389,7 @@ class _StdGradesPageState extends State<StatefulWidget>{
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await readStdAccount();
       await readSemesterInfo();
-      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
           UmengCommonSdk.onPageStart("校内应用 - 我的成绩");
       }
     });

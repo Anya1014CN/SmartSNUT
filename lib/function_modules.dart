@@ -29,6 +29,8 @@ class Modules {
     File settingstfile = File(settingstpath);
     if(await settingstfile.exists()){
       GlobalVars.settingsTotal = jsonDecode(await settingstfile.readAsString());
+      GlobalVars.isPrivacyAgreed = GlobalVars.settingsTotal[0]['isPrivacyAgreed']?? false;
+      GlobalVars.isAnalyticsEnabled = GlobalVars.settingsTotal[0]['isAnalyticsEnabled']?? false;
       GlobalVars.fontsizeint = GlobalVars.settingsTotal[0]['fontSize']?? 3;
       GlobalVars.darkModeint = GlobalVars.settingsTotal[0]['DarkMode']?? 0;
       GlobalVars.themeColor = GlobalVars.settingsTotal[0]['ThemeColor']?? 1;
@@ -42,6 +44,8 @@ class Modules {
       GlobalVars.showTzgg = GlobalVars.settingsTotal[0]['showTzgg']?? true;
       GlobalVars.lastSemeatersDataRefreshTime = GlobalVars.settingsTotal[0]['lastSemeatersDataRefreshTime']?? 0;
     }else{
+      GlobalVars.isPrivacyAgreed = false;
+      GlobalVars.isAnalyticsEnabled = false;
       GlobalVars.fontsizeint = 3;
       GlobalVars.darkModeint = 0;
       GlobalVars.themeColor = 1;
@@ -64,6 +68,8 @@ class Modules {
     File settingstfile = File(settingstpath);
     GlobalVars.settingsTotal.clear();
     GlobalVars.settingsTotal.add({
+      'isPrivacyAgreed': GlobalVars.isPrivacyAgreed,
+      'isAnalyticsEnabled': GlobalVars.isAnalyticsEnabled,
       'fontSize': GlobalVars.fontsizeint,
       'DarkMode': GlobalVars.darkModeint,
       'ThemeColor': GlobalVars.themeColor,
@@ -280,43 +286,6 @@ class Modules {
     }
   }
 
-  //读取隐私协议同意状态
-  static Future<void> readPrivacySettings() async {
-    try {
-      String privacySettingsPath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/privacySettings.json';
-      File privacySettingsFile = File(privacySettingsPath);
-      
-      if (await privacySettingsFile.exists()) {
-        Map<String, dynamic> settings = jsonDecode(await privacySettingsFile.readAsString());
-        GlobalVars.isPrivacyAgreed = settings['isPrivacyAgreed'] ?? false;
-        GlobalVars.isAnalyticsEnabled = settings['isAnalyticsEnabled'] ?? false;
-      } else {
-        GlobalVars.isPrivacyAgreed = false;
-        GlobalVars.isAnalyticsEnabled = false;
-      }
-    } catch (e) {
-      GlobalVars.isPrivacyAgreed = false;
-      GlobalVars.isAnalyticsEnabled = false;
-    }
-  }
-
-  //保存隐私协议同意状态
-  static Future<void> savePrivacySettings() async {
-    try {
-      String privacySettingsPath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/privacySettings.json';
-      File privacySettingsFile = File(privacySettingsPath);
-      
-      Map<String, dynamic> settings = {
-        'isPrivacyAgreed': GlobalVars.isPrivacyAgreed,
-        'isAnalyticsEnabled': GlobalVars.isAnalyticsEnabled
-      };
-      
-      await privacySettingsFile.writeAsString(jsonEncode(settings));
-    } catch (e) {
-      // 保存失败时的处理
-    }
-  }
-  
   //设置字体大小
   static setFontSize() {
     double changevalue = 0;

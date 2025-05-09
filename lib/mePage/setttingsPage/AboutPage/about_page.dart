@@ -35,7 +35,7 @@ class _AboutPageState extends State<AboutPage>{
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
       UmengCommonSdk.onPageEnd("我的 - 应用设置 - 关于智慧陕理");
     }
   }
@@ -43,7 +43,7 @@ class _AboutPageState extends State<AboutPage>{
   @override
   void initState() {
     super.initState();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
       UmengCommonSdk.onPageStart("我的 - 应用设置 - 关于智慧陕理");
     }
   }

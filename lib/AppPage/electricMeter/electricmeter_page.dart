@@ -29,7 +29,7 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageEnd("校内应用 - 电费查询");
     }
   }
@@ -39,7 +39,7 @@ class _ElectricmeterPageState extends State<Electricmeterpage>{
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_){
       queryem();
-      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
           UmengCommonSdk.onPageStart("校内应用 - 电费查询");
       }
     });

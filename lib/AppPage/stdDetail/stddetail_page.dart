@@ -24,7 +24,7 @@ class _StddetailPageState extends State<StdDetailPage>{
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageStart("校内应用 - 学籍信息");
     }
   }
@@ -33,7 +33,7 @@ class _StddetailPageState extends State<StdDetailPage>{
   void initState() {
     super.initState();
     readstdinfo();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageStart("校内应用 - 学籍信息");
     }
   }

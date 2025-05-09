@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:smartsnut/MePage/setttingsPage/AboutPage/about_page.dart';
 import 'package:smartsnut/MePage/setttingsPage/AccountSettingsPage/accountsettings_page.dart';
@@ -23,7 +25,7 @@ class _SettingsPageState extends State<SettingsPage>{
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
       UmengCommonSdk.onPageEnd("我的 - 应用设置");
     }
   }
@@ -31,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage>{
   @override
   void initState() {
     super.initState();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
       UmengCommonSdk.onPageStart("我的 - 应用设置");
     }
   }

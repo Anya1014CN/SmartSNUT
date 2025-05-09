@@ -36,7 +36,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
   void dispose() {
     textUsernameController.dispose();
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
         UmengCommonSdk.onPageEnd("校内应用 - 网费查询");
     }
   }
@@ -48,7 +48,7 @@ class _SchoolNetworkPage extends State<SchoolNetworkPage>{
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       networkQuery();
-      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
           UmengCommonSdk.onPageStart("校内应用 - 网费查询");
       }
     });

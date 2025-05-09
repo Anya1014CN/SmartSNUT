@@ -1459,7 +1459,8 @@ class _CourseTablePage extends State<CourseTablePage>{
   @override
   void dispose() {
     super.dispose();
-    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+    if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
+      if(Platform.isWindows) return;
         UmengCommonSdk.onPageEnd("校内应用 - 我的课表");
     }
   }
@@ -1486,7 +1487,7 @@ class _CourseTablePage extends State<CourseTablePage>{
       if(GlobalVars.autoRefreshCourseTable == true && DateTime.now().millisecondsSinceEpoch - GlobalVars.lastCourseTableRefreshTime >= 86400000){
         getCourseTable();
       }
-      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
+      if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled && !Platform.isWindows) {
           UmengCommonSdk.onPageStart("校内应用 - 我的课表");
       }
     });
