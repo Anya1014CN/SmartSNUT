@@ -1345,8 +1345,7 @@ class _HomeState extends State<Home>{
                       overflow: TextOverflow.ellipsis,
                     ),
                     onTap: () {
-                      url = Uri.parse(smartSNUTAnnouncements[0]['Link']);
-                      launchURL();
+                      showAnnounceDetail(smartSNUTAnnouncements[0]['Link'], smartSNUTAnnouncements[0]['Detail']);
                     },
                   ),
                   (smartSNUTAnnouncements.length >= 2)? ListTile(
@@ -1372,8 +1371,7 @@ class _HomeState extends State<Home>{
                       overflow: TextOverflow.ellipsis,
                     ),
                     onTap: () {
-                      url = Uri.parse(smartSNUTAnnouncements[1]['Link']);
-                      launchURL();
+                      showAnnounceDetail(smartSNUTAnnouncements[1]['Link'], smartSNUTAnnouncements[1]['Detail']);
                     },
                   ):SizedBox(),
                   (smartSNUTAnnouncements.length >= 3)? ListTile(
@@ -1399,8 +1397,7 @@ class _HomeState extends State<Home>{
                       overflow: TextOverflow.ellipsis,
                     ),
                     onTap: () {
-                      url = Uri.parse(smartSNUTAnnouncements[2]['Link']);
-                      launchURL();
+                      showAnnounceDetail(smartSNUTAnnouncements[2]['Link'], smartSNUTAnnouncements[2]['Detail']);
                     },
                   ):SizedBox(),
                 ],
@@ -2103,8 +2100,7 @@ class _HomeState extends State<Home>{
         ),
       ),
       onTap: () {
-        url = Uri.parse('https://www.snut.edu.cn${news['location']}');
-        launchURL();
+        launchURL('https://www.snut.edu.cn${news['location']}');
       },
     );
   }
@@ -2329,7 +2325,7 @@ class _HomeState extends State<Home>{
   }
   
   //打开链接
-  void launchURL() async{
+  void launchURL(String url) async{
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -2349,7 +2345,7 @@ class _HomeState extends State<Home>{
           ),
           TextButton(
             onPressed: () async {
-              await launchUrl(url);
+              await launchUrl(Uri.parse(url));
               if(context.mounted){
                 Navigator.pop(context);
               }
@@ -2580,5 +2576,103 @@ class _HomeState extends State<Home>{
       }
       OpenFilex.open('${(await getApplicationDocumentsDirectory()).path}/Android_latest.apk');
     }
+  }
+
+  // 显示公告详情
+  void showAnnounceDetail(String url,String detail) async {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) => Container(
+            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '公告详情',
+                      style: TextStyle(
+                        fontSize: GlobalVars.alertdialogTitle,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  child: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Text(detail, style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: ()  {
+                          launchURL(url);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.surface,
+                          foregroundColor: Theme.of(context).colorScheme.primary,
+                          minimumSize: Size(0, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                          ),
+                        ),
+                        child: Text(
+                          '查看详情',
+                          style: TextStyle(
+                            fontSize: GlobalVars.genericTextMedium,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 16),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                          minimumSize: Size(0, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          '确定',
+                          style: TextStyle(
+                            fontSize: GlobalVars.genericTextMedium,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
