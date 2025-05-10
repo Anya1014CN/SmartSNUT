@@ -447,9 +447,6 @@ class _LoginPageState extends State<LoginPage>{
       }
       return;
     }
-
-    GlobalVars.lastCourseTableRefreshTime = DateTime.now().millisecondsSinceEpoch;
-    await Modules.saveSettings();
     
     if(GlobalVars.operationCanceled) {
       GlobalVars.operationCanceled = false;
@@ -457,8 +454,10 @@ class _LoginPageState extends State<LoginPage>{
       return;
     }
 
-    //登录流程完成，刷新用户信息,记录课表刷新时间，创建一个占位文件
+    //登录流程完成，刷新用户信息,记录课表刷新时间，刷新学期数据创建一个占位文件
     GlobalVars.lastCourseTableRefreshTime = DateTime.now().millisecondsSinceEpoch;
+    await Modules.saveSettings();
+    await Modules.updateSemestersData();
     readStdAccount();
     String loginsuccesspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/LoginSuccess';
     File loginsuccessfile = File(loginsuccesspath);
