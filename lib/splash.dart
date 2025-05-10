@@ -59,18 +59,15 @@ class _SplashPageState extends State<SplashPage>{
 
   //根据登录状态加载页面
   loadPage(){
-    if(!GlobalVars.isPrivacyAgreed) {
-      // 如果用户尚未同意隐私政策，则显示隐私政策弹窗
-      showPrivacyDialog();
-    } else if(GlobalVars.loginState == 1){
+    if(GlobalVars.loginState == 1){
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
     } else if(GlobalVars.loginState == 2){
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
     }
   }
   
-  // 显示隐私协议对话框
-  void showPrivacyDialog() async {
+  // 显示用户协议与隐私政策对话框
+  showPrivacyDialog() async {
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -88,7 +85,7 @@ class _SplashPageState extends State<SplashPage>{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '隐私政策提示',
+                      '用户协议 & 隐私政策',
                       style: TextStyle(
                         fontSize: GlobalVars.alertdialogTitle,
                         fontWeight: FontWeight.bold,
@@ -251,6 +248,11 @@ class _SplashPageState extends State<SplashPage>{
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Modules.checkDirectory();
       await Modules.checkLoginState();
+
+      if(!GlobalVars.isPrivacyAgreed) {
+        // 如果用户尚未同意隐私政策，则显示隐私政策弹窗
+        await showPrivacyDialog();
+      }
       
       // 如果已同意隐私政策且启用了统计，初始化友盟统计
       if (GlobalVars.isPrivacyAgreed && GlobalVars.isAnalyticsEnabled) {
