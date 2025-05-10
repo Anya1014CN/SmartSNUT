@@ -53,296 +53,284 @@ class _AppPageState extends State<AppPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        // 问候语区域
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 40, 16, 20),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface.withAlpha(179),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(24),
-              bottomRight: Radius.circular(24),
-            ),
-          ),
-          child: Text(
-            '${GlobalVars.greeting}，${GlobalVars.realName}',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: GlobalVars.genericGreetingTitle,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ),
-        SizedBox(height: 10),
-        // 教务功能标题
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(4),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('${GlobalVars.greeting}，${GlobalVars.realName}'),
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+      ),
+      backgroundColor:  Theme.of(context).colorScheme.surfaceContainer,
+      body: ListView(
+        children: [
+          // 教务功能标题
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  width: 4,
+                  height: 18,
+                  margin: EdgeInsets.only(right: 8),
                 ),
-                width: 4,
-                height: 18,
-                margin: EdgeInsets.only(right: 8),
-              ),
-              Text(
-                '教务功能',
-                style: TextStyle(
-                    fontSize: GlobalVars.dividerTitle,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary),
-              ),
-            ],
-          ),
-        ),
-        // 教务功能卡片
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
-          child: Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: buildFunctionButton(
-                          context,
-                          '我的课表',
-                          'schedule',
-                          () {
-                            Navigator.push(context,CustomPageRoute(page: CourseTablePage()));
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: buildFunctionButton(
-                          context,
-                          '学籍信息',
-                          'account',
-                          () {
-                            Navigator.push(context,CustomPageRoute(page: StdDetailPage()));
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: buildFunctionButton(
-                          context,
-                          '我的考试',
-                          'exam',
-                          () {
-                            Navigator.push(context,CustomPageRoute(page: StdExamPage()));
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: buildFunctionButton(
-                          context,
-                          '我的成绩',
-                          'grade',
-                          () {
-                            Navigator.push(context,CustomPageRoute(page: StdGradesPage()));
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: buildFunctionButton(
-                          context,
-                          '空闲教室查询',
-                          'classroom',
-                          () {
-                            Navigator.push(context,CustomPageRoute(page: PublicFreePage()));
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: SizedBox(),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        
-        // 后勤功能标题
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(4),
+                Text(
+                  '教务功能',
+                  style: TextStyle(
+                      fontSize: GlobalVars.dividerTitle,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary),
                 ),
-                width: 4,
-                height: 18,
-                margin: EdgeInsets.only(right: 8),
-              ),
-              Text(
-                '后勤功能',
-                style: TextStyle(
-                    fontSize: GlobalVars.dividerTitle,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary),
-              ),
-            ],
-          ),
-        ),
-        // 后勤功能卡片
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
-          child: Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              ],
             ),
-            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: buildFunctionButton(
-                      context,
-                      '网费查询',
-                      'web',
-                      () {
-                        Navigator.push(context,CustomPageRoute(page: SchoolNetworkPage()));
-                      },
+          ),
+          // 教务功能卡片
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+              color: Theme.of(context).colorScheme.surfaceDim,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: buildFunctionButton(
+                            context,
+                            '我的课表',
+                            'schedule',
+                            () {
+                              Navigator.push(context,CustomPageRoute(page: CourseTablePage()));
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: buildFunctionButton(
+                            context,
+                            '学籍信息',
+                            'account',
+                            () {
+                              Navigator.push(context,CustomPageRoute(page: StdDetailPage()));
+                            },
+                          ),
+                        ),
+                      ],
                     ),
+                    SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: buildFunctionButton(
+                            context,
+                            '我的考试',
+                            'exam',
+                            () {
+                              Navigator.push(context,CustomPageRoute(page: StdExamPage()));
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: buildFunctionButton(
+                            context,
+                            '我的成绩',
+                            'grade',
+                            () {
+                              Navigator.push(context,CustomPageRoute(page: StdGradesPage()));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: buildFunctionButton(
+                            context,
+                            '空闲教室查询',
+                            'classroom',
+                            () {
+                              Navigator.push(context,CustomPageRoute(page: PublicFreePage()));
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: SizedBox(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          
+          // 后勤功能标题
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: buildFunctionButton(
-                      context,
-                      '电费查询',
-                      'electricity',
-                      () {
-                        if (GlobalVars.emBinded == false) {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: Row(
-                                children: [
-                                  Icon(Icons.info),
-                                  SizedBox(width: 8,),
-                                  Text('提示：',
-                                  style: TextStyle(
-                                      fontSize: GlobalVars.alertdialogTitle))
+                  width: 4,
+                  height: 18,
+                  margin: EdgeInsets.only(right: 8),
+                ),
+                Text(
+                  '后勤功能',
+                  style: TextStyle(
+                      fontSize: GlobalVars.dividerTitle,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary),
+                ),
+              ],
+            ),
+          ),
+          // 后勤功能卡片
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+              color: Theme.of(context).colorScheme.surfaceDim,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: buildFunctionButton(
+                        context,
+                        '网费查询',
+                        'web',
+                        () {
+                          Navigator.push(context,CustomPageRoute(page: SchoolNetworkPage()));
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: buildFunctionButton(
+                        context,
+                        '电费查询',
+                        'electricity',
+                        () {
+                          if (GlobalVars.emBinded == false) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.info),
+                                    SizedBox(width: 8,),
+                                    Text('提示：',
+                                    style: TextStyle(
+                                        fontSize: GlobalVars.alertdialogTitle))
+                                  ],
+                                ),
+                                content: Text(
+                                    '您还没有绑定电费账号，\n请先前往 "我的 -> 解/绑电费账号" 绑定后再试',
+                                    style: TextStyle(
+                                        fontSize: GlobalVars.alertdialogContent)),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context),
+                                    child: Text('确定'),
+                                  ),
                                 ],
                               ),
-                              content: Text(
-                                  '您还没有绑定电费账号，\n请先前往 "我的 -> 解/绑电费账号" 绑定后再试',
-                                  style: TextStyle(
-                                      fontSize: GlobalVars.alertdialogContent)),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context),
-                                  child: Text('确定'),
-                                ),
-                              ],
-                            ),
-                          );
-                          return;
-                        } else {
-                          Navigator.push(context,CustomPageRoute(page: Electricmeterpage()));
-                        }
-                      },
+                            );
+                            return;
+                          } else {
+                            Navigator.push(context,CustomPageRoute(page: Electricmeterpage()));
+                          }
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-
-        // 学工系统卡片
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(4),
+                  ],
                 ),
-                width: 4,
-                height: 18,
-                margin: EdgeInsets.only(right: 8),
               ),
-              Text(
-                '学工系统',
-                style: TextStyle(
-                    fontSize: GlobalVars.dividerTitle,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary),
-              ),
-            ],
-          ),
-        ),
-        // 学工系统卡片
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
-          child: Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
             ),
-            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: buildFunctionButton(
-                      context,
-                      '班级通讯录',
-                      'contacts',
-                      () {
-                        Navigator.push(context,CustomPageRoute(page: ClasscontactsPage()));
-                      },
+          ),
+
+          // 学工系统卡片
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  width: 4,
+                  height: 18,
+                  margin: EdgeInsets.only(right: 8),
+                ),
+                Text(
+                  '学工系统',
+                  style: TextStyle(
+                      fontSize: GlobalVars.dividerTitle,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary),
+                ),
+              ],
+            ),
+          ),
+          // 学工系统卡片
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+              color: Theme.of(context).colorScheme.surfaceDim,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: buildFunctionButton(
+                        context,
+                        '班级通讯录',
+                        'contacts',
+                        () {
+                          Navigator.push(context,CustomPageRoute(page: ClasscontactsPage()));
+                        },
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: SizedBox(),
-                  ),
-                ],
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: SizedBox(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        // 底部间隔
-        SizedBox(height: 20),
-      ],
+          // 底部间隔
+          SizedBox(height: 20),
+        ],
+      ),
     );
   }
 

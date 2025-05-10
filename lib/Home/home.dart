@@ -1282,600 +1282,586 @@ class _HomeState extends State<Home>{
     GlobalVars.tomorrowWeekDay = DateFormat('EEEE', "zh_CN").format(tomorrow);
     
     //渲染首页
-    return ListView(
-      children: [
-        // 问候语区域
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 40, 16, 20),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface.withAlpha(179),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(24),
-              bottomRight: Radius.circular(24),
-            ),
-          ),
-          child: Text(
-            '${GlobalVars.greeting}，${GlobalVars.realName}',
-            style: TextStyle(
-              fontWeight: FontWeight.w500, 
-              fontSize: GlobalVars.genericGreetingTitle,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ),
-        
-        SizedBox(height: 10),
-        
-        // 公告区域
-        (smartSNUTAnnouncements.isEmpty)? 
-        SizedBox():
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            child: Container(
-              padding: EdgeInsets.all(8),
-              child: Column(
-                children: [
-                  ListTile(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    trailing: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Icon(
-                        Icons.chevron_right,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    title: Text('${smartSNUTAnnouncements[0]['Content']}',
-                      style: TextStyle(
-                        fontSize: GlobalVars.listTileTitle,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onTap: () {
-                      showAnnounceDetail(smartSNUTAnnouncements[0]['Link'], smartSNUTAnnouncements[0]['Detail']);
-                    },
-                  ),
-                  (smartSNUTAnnouncements.length >= 2)? ListTile(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    trailing: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Icon(
-                        Icons.chevron_right,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    title: Text('${smartSNUTAnnouncements[1]['Content']}',
-                      style: TextStyle(
-                        fontSize: GlobalVars.listTileTitle,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onTap: () {
-                      showAnnounceDetail(smartSNUTAnnouncements[1]['Link'], smartSNUTAnnouncements[1]['Detail']);
-                    },
-                  ):SizedBox(),
-                  (smartSNUTAnnouncements.length >= 3)? ListTile(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    trailing: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary.withAlpha(26),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Icon(
-                        Icons.chevron_right,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    title: Text('${smartSNUTAnnouncements[2]['Content']}',
-                      style: TextStyle(
-                        fontSize: GlobalVars.listTileTitle,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onTap: () {
-                      showAnnounceDetail(smartSNUTAnnouncements[2]['Link'], smartSNUTAnnouncements[2]['Detail']);
-                    },
-                  ):SizedBox(),
-                ],
-              )
-            )
-          ),
-        ),
-        
-        // 今日课表标题
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                width: 4,
-                height: 18,
-                margin: EdgeInsets.only(right: 8),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('${GlobalVars.greeting}，${GlobalVars.realName}'),
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+      ),
+      backgroundColor:  Theme.of(context).colorScheme.surfaceContainer,
+      body: ListView(
+        children: [
+          // 公告区域
+          (smartSNUTAnnouncements.isEmpty)? 
+          SizedBox():
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
               ),
-              Text(
-                (courseIsToday)? '今日课表':'明日课表',
-                style: TextStyle(
-                  fontSize: GlobalVars.dividerTitle,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary
-                ),
-              ),
-            ],
-          ),
-        ),
-        
-        // 今日课表卡片
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 4, 16, 10),
-          child: Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            child: isReadingCT? 
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 40),
-                child: Center(
-                  child: Column(
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(height: 16),
-                      Text("正在加载课表...", 
+              shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+              color: Theme.of(context).colorScheme.surfaceDim,
+              child: Container(
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      trailing: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Icon(
+                          Icons.chevron_right,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      title: Text('${smartSNUTAnnouncements[0]['Content']}',
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: GlobalVars.listTileSubtitle,
+                          fontSize: GlobalVars.listTileTitle,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () {
+                        showAnnounceDetail(smartSNUTAnnouncements[0]['Link'], smartSNUTAnnouncements[0]['Detail']);
+                      },
+                    ),
+                    (smartSNUTAnnouncements.length >= 2)? ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      trailing: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Icon(
+                          Icons.chevron_right,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                    ],
+                      title: Text('${smartSNUTAnnouncements[1]['Content']}',
+                        style: TextStyle(
+                          fontSize: GlobalVars.listTileTitle,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () {
+                        showAnnounceDetail(smartSNUTAnnouncements[1]['Link'], smartSNUTAnnouncements[1]['Detail']);
+                      },
+                    ):SizedBox(),
+                    (smartSNUTAnnouncements.length >= 3)? ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      trailing: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Icon(
+                          Icons.chevron_right,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      title: Text('${smartSNUTAnnouncements[2]['Content']}',
+                        style: TextStyle(
+                          fontSize: GlobalVars.listTileTitle,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () {
+                        showAnnounceDetail(smartSNUTAnnouncements[2]['Link'], smartSNUTAnnouncements[2]['Detail']);
+                      },
+                    ):SizedBox(),
+                  ],
+                )
+              )
+            ),
+          ),
+          
+          // 今日课表标题
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  width: 4,
+                  height: 18,
+                  margin: EdgeInsets.only(right: 8),
+                ),
+                Text(
+                  (courseIsToday)? '今日课表':'明日课表',
+                  style: TextStyle(
+                    fontSize: GlobalVars.dividerTitle,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary
                   ),
                 ),
-              )
-            :Container(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // 当前日期显示
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary.withAlpha(26),
-                      borderRadius: BorderRadius.circular(12),
+              ],
+            ),
+          ),
+          
+          // 今日课表卡片
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 4, 16, 10),
+            child: Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+              color: Theme.of(context).colorScheme.surfaceDim,
+              child: isReadingCT? 
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 40),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: 16),
+                        Text("正在加载课表...", 
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontSize: GlobalVars.listTileSubtitle,
+                          ),
+                        ),
+                      ],
                     ),
-                    child: (courseIsToday)? Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            '今 | ${GlobalVars.monthString} 月 ${GlobalVars.dayString} 日 | ${GlobalVars.weekDay}',
-                            style: TextStyle(
-                              fontSize: GlobalVars.genericTextLarge,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        IconButton(
-                          onPressed: (!courseIsToday)? null:(){
-                            if(mounted){
-                              setState(() {
-                                courseIsToday = false;
-                                readSchoolCalendarInfo();
-                              });
-                            }
-                          },
-                          icon: Icon(Icons.arrow_forward,
-                            color: (currentWeekInt == 1)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
-                          ),
-                          tooltip: '明日课表',
-                        ),
-                      ],
-                    ):Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            '明 | ${GlobalVars.tomorrowMonthString} 月 ${GlobalVars.tomorrowDayString} 日 | ${GlobalVars.tomorrowWeekDay}',
-                            style: TextStyle(
-                              fontSize: GlobalVars.genericTextLarge,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        IconButton(
-                          onPressed: (courseIsToday)? null:(){
-                            if(mounted){
-                              setState(() {
-                                courseIsToday = true;
-                                readSchoolCalendarInfo();
-                              });
-                            }
-                          },
-                          icon: Icon(Icons.arrow_back,
-                            color: (currentWeekInt == 1)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
-                          ),
-                          tooltip: '今日课表',
-                        ),
-                      ],
-                    )
                   ),
-                  Divider(height: 24, indent: 20, endIndent: 20),
-                  // 课表内容
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      //第一节
-                      (courseToday[0].isEmpty)?
-                      SizedBox()
-                      :buildCourseTile(context, courseToday, 0),
-                      //第二节
-                      (courseToday[1].isEmpty)? (courseToday[0].isEmpty == courseToday[1].isEmpty)? SizedBox(width: 0,height: 0,) :
-                      SizedBox()
-                      :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[1][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[1][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                      :buildCourseTile(context, courseToday, 1),
-                      //第三节
-                      (courseToday[2].isEmpty)? 
-                      SizedBox()
-                      :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[2][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[2][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                      :buildCourseTile(context, courseToday, 2),
-                      //第四节
-                      (courseToday[3].isEmpty)? (courseToday[2].isEmpty == courseToday[3].isEmpty)? SizedBox(width: 0,height: 0,) :
-                      SizedBox()
-                      :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])) || ((courseToday[2].isEmpty)? false:(courseToday[2][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[2][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                      :buildCourseTile(context, courseToday, 3),
-                      //第五节
-                      (courseToday[4].isEmpty)? 
-                      SizedBox()
-                      :buildCourseTile(context, courseToday, 4),
-                      //第六节
-                      (courseToday[5].isEmpty)?  (courseToday[4].isEmpty == courseToday[5].isEmpty)? SizedBox(width: 0,height: 0,):
-                      SizedBox()
-                      :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[5][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[5][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                      :buildCourseTile(context, courseToday, 5),
-                      //第七节
-                      (courseToday[6].isEmpty)? 
-                      SizedBox()
-                      :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[6][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[6][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                      :buildCourseTile(context, courseToday, 6),
-                      //第八节
-                      (courseToday[7].isEmpty)? (courseToday[6].isEmpty == courseToday[7].isEmpty)? SizedBox(width: 0,height: 0,):
-                      SizedBox()
-                      :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])) || ((courseToday[6].isEmpty)? false:(courseToday[6][0]['CourseName'] == courseToday[7][0]['CourseName'] || courseToday[6][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
-                      :buildCourseTile(context, courseToday, 7),
-                      //第九节
-                      (courseToday[8].isEmpty)? 
-                      SizedBox()
-                      :buildCourseTile(context, courseToday, 8),
-                      //第十节
-                      (courseToday[9].isEmpty)? (courseToday[8].isEmpty == courseToday[9].isEmpty)? SizedBox(width: 0,height: 0,):
-                      SizedBox()
-                      :((courseToday[8].isEmpty)? false:(courseToday[8][0]['CourseName'] == courseToday[9][0]['CourseName'] || courseToday[8][0]['CourseLocation'] == courseToday[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
-                      :buildCourseTile(context, courseToday, 9),
-                      // 今日无课提示
-                      ((courseToday[0].isEmpty == true) && (courseToday[1].isEmpty == true) && (courseToday[2].isEmpty == true) && (courseToday[3].isEmpty == true) && (courseToday[4].isEmpty == true) && (courseToday[5].isEmpty == true) && (courseToday[6].isEmpty == true) && (courseToday[7].isEmpty == true) && (courseToday[8].isEmpty == true) && (courseToday[9].isEmpty == true))?
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 30),
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.event_available,
-                              size: 48,
-                              color: Theme.of(context).colorScheme.primary.withAlpha(179),
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              (courseIsToday)?'今日无课，尽情享受休闲时光':'明日无课，今天上完课可以休息啦',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: GlobalVars.genericTextLarge,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ):SizedBox()
-                    ],
-                  ),
-                  Divider(height: 24, indent: 20, endIndent: 20),
-                  // 查看本周课表按钮
-                  InkWell(
-                    onTap: (){
-                      Navigator.push(context, CustomPageRoute(page: CourseTablePage())).then((value) => readSemesterInfo());
-                    },
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
+                )
+              :Container(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // 当前日期显示
+                    Container(
                       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primary.withAlpha(26),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: (courseIsToday)? Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Flexible(
                             child: Text(
-                              '查看本周课表、切换学年、刷新数据',
+                              '今 | ${GlobalVars.monthString} 月 ${GlobalVars.dayString} 日 | ${GlobalVars.weekDay}',
                               style: TextStyle(
+                                fontSize: GlobalVars.genericTextLarge,
                                 fontWeight: FontWeight.bold,
-                                fontSize: GlobalVars.listTileTitle,
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Theme.of(context).colorScheme.primary
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           SizedBox(width: 8),
-                          Icon(
-                            Icons.arrow_forward,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 20,
+                          IconButton(
+                            onPressed: (!courseIsToday)? null:(){
+                              if(mounted){
+                                setState(() {
+                                  courseIsToday = false;
+                                  readSchoolCalendarInfo();
+                                });
+                              }
+                            },
+                            icon: Icon(Icons.arrow_forward,
+                              color: (currentWeekInt == 1)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
+                            ),
+                            tooltip: '明日课表',
                           ),
                         ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        
-        // 便捷生活标题
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                width: 4,
-                height: 18,
-                margin: EdgeInsets.only(right: 8),
-              ),
-              Text(
-                '便捷生活',
-                style: TextStyle(
-                  fontSize: GlobalVars.dividerTitle,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary
-                ),
-              ),
-            ],
-          ),
-        ),
-        
-        // 便捷生活功能区
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
-          child: Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            child: Container(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Row(
-                 children: [
-                Expanded(
-                  child: buildFunctionButton(
-                    context, 
-                    '网费查询', 
-                    'web',
-                    () {
-                      Navigator.push(context, CustomPageRoute(page: SchoolNetworkPage()));
-                    }
-                  ),
-                ),
-                SizedBox(width: 12),
-                Expanded(
-                  child: buildFunctionButton(
-                    context, 
-                    '电费查询', 
-                    'electricity',
-                    () {
-                      if(GlobalVars.emBinded == false){
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                         title: Row(
+                      ):Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.info),
-                          SizedBox(width: 8),
-                          Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),)
-                        ],
-                         ),
-                         content: Text('您还没有绑定电费账号，\n请先前往 "我的 -> 解/绑电费账号" 绑定后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent),),
-                         actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('确定'),
-                        ),
-                         ],
+                          Flexible(
+                            child: Text(
+                              '明 | ${GlobalVars.tomorrowMonthString} 月 ${GlobalVars.tomorrowDayString} 日 | ${GlobalVars.tomorrowWeekDay}',
+                              style: TextStyle(
+                                fontSize: GlobalVars.genericTextLarge,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        );
-                        return;
-                      }else{
-                        Navigator.push(context, CustomPageRoute(page: Electricmeterpage()));
-                      }
-                    }
-                  ),
-                ),
-                 ],
-                  ),
-                  SizedBox(height: 12),
-                  Row(
-                 children: [
-                Expanded(
-                  child: buildFunctionButton(
-                    context, 
-                    '我的考试', 
-                    'exam',
-                    () {
-                      Navigator.push(context, CustomPageRoute(page: StdExamPage()));
-                    }
-                  ),
-                ),
-                SizedBox(width: 12),
-                Expanded(
-                  child: buildFunctionButton(
-                    context, 
-                    '我的成绩', 
-                    'grade',
-                    () {
-                      Navigator.push(context, CustomPageRoute(page: StdGradesPage()));
-                    }
-                  ),
-                ),
-                 ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        
-        // 通知公告标题
-        (GlobalVars.showTzgg)? Container(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                width: 4,
-                height: 18,
-                margin: EdgeInsets.only(right: 8),
-              ),
-              Text(
-                '通知公告',
-                style: TextStyle(
-                  fontSize: GlobalVars.dividerTitle,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary
-                ),
-              ),
-            ],
-          ),
-        ):SizedBox(),
-        
-        // 通知公告卡片
-        (GlobalVars.showTzgg)? Container(
-          padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
-          child: Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            color: Theme.of(context).colorScheme.surfaceDim,
-            shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
-            child: Container(
-              padding: EdgeInsets.all(8),
-              child: isLoading? 
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 40),
-                child: Center(
-                  child: Column(
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(height: 16),
-                      Text("正在加载通知公告...", 
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: GlobalVars.listTileSubtitle,
+                          SizedBox(width: 8),
+                          IconButton(
+                            onPressed: (courseIsToday)? null:(){
+                              if(mounted){
+                                setState(() {
+                                  courseIsToday = true;
+                                  readSchoolCalendarInfo();
+                                });
+                              }
+                            },
+                            icon: Icon(Icons.arrow_back,
+                              color: (currentWeekInt == 1)? Theme.of(context).colorScheme.onSurface.withAlpha(97) : Theme.of(context).colorScheme.primary,
+                            ),
+                            tooltip: '今日课表',
+                          ),
+                        ],
+                      )
+                    ),
+                    Divider(height: 24, indent: 20, endIndent: 20),
+                    // 课表内容
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        //第一节
+                        (courseToday[0].isEmpty)?
+                        SizedBox()
+                        :buildCourseTile(context, courseToday, 0),
+                        //第二节
+                        (courseToday[1].isEmpty)? (courseToday[0].isEmpty == courseToday[1].isEmpty)? SizedBox(width: 0,height: 0,) :
+                        SizedBox()
+                        :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[1][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[1][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
+                        :buildCourseTile(context, courseToday, 1),
+                        //第三节
+                        (courseToday[2].isEmpty)? 
+                        SizedBox()
+                        :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[2][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[2][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
+                        :buildCourseTile(context, courseToday, 2),
+                        //第四节
+                        (courseToday[3].isEmpty)? (courseToday[2].isEmpty == courseToday[3].isEmpty)? SizedBox(width: 0,height: 0,) :
+                        SizedBox()
+                        :(((courseToday[0].isEmpty)? false:(courseToday[0][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[0][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])) || ((courseToday[2].isEmpty)? false:(courseToday[2][0]['CourseName'] == courseToday[3][0]['CourseName'] && courseToday[2][0]['CourseLocation'] == courseToday[3][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
+                        :buildCourseTile(context, courseToday, 3),
+                        //第五节
+                        (courseToday[4].isEmpty)? 
+                        SizedBox()
+                        :buildCourseTile(context, courseToday, 4),
+                        //第六节
+                        (courseToday[5].isEmpty)?  (courseToday[4].isEmpty == courseToday[5].isEmpty)? SizedBox(width: 0,height: 0,):
+                        SizedBox()
+                        :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[5][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[5][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
+                        :buildCourseTile(context, courseToday, 5),
+                        //第七节
+                        (courseToday[6].isEmpty)? 
+                        SizedBox()
+                        :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[6][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[6][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
+                        :buildCourseTile(context, courseToday, 6),
+                        //第八节
+                        (courseToday[7].isEmpty)? (courseToday[6].isEmpty == courseToday[7].isEmpty)? SizedBox(width: 0,height: 0,):
+                        SizedBox()
+                        :(((courseToday[4].isEmpty)? false:(courseToday[4][0]['CourseName'] == courseToday[7][0]['CourseName'] && courseToday[4][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])) || ((courseToday[6].isEmpty)? false:(courseToday[6][0]['CourseName'] == courseToday[7][0]['CourseName'] || courseToday[6][0]['CourseLocation'] == courseToday[7][0]['CourseLocation'])))? SizedBox(width: 0,height: 0,)
+                        :buildCourseTile(context, courseToday, 7),
+                        //第九节
+                        (courseToday[8].isEmpty)? 
+                        SizedBox()
+                        :buildCourseTile(context, courseToday, 8),
+                        //第十节
+                        (courseToday[9].isEmpty)? (courseToday[8].isEmpty == courseToday[9].isEmpty)? SizedBox(width: 0,height: 0,):
+                        SizedBox()
+                        :((courseToday[8].isEmpty)? false:(courseToday[8][0]['CourseName'] == courseToday[9][0]['CourseName'] || courseToday[8][0]['CourseLocation'] == courseToday[9][0]['CourseLocation']))? SizedBox(width: 0,height: 0,)
+                        :buildCourseTile(context, courseToday, 9),
+                        // 今日无课提示
+                        ((courseToday[0].isEmpty == true) && (courseToday[1].isEmpty == true) && (courseToday[2].isEmpty == true) && (courseToday[3].isEmpty == true) && (courseToday[4].isEmpty == true) && (courseToday[5].isEmpty == true) && (courseToday[6].isEmpty == true) && (courseToday[7].isEmpty == true) && (courseToday[8].isEmpty == true) && (courseToday[9].isEmpty == true))?
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 30),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.event_available,
+                                size: 48,
+                                color: Theme.of(context).colorScheme.primary.withAlpha(179),
+                              ),
+                              SizedBox(height: 16),
+                              Text(
+                                (courseIsToday)?'今日无课，尽情享受休闲时光':'明日无课，今天上完课可以休息啦',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: GlobalVars.genericTextLarge,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ):SizedBox()
+                      ],
+                    ),
+                    Divider(height: 24, indent: 20, endIndent: 20),
+                    // 查看本周课表按钮
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(context, CustomPageRoute(page: CourseTablePage())).then((value) => readSemesterInfo());
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary.withAlpha(26),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ):
-              loadSuccess? Column(
-                children: [
-                  buildNewsItem(context, tzgg1),
-                  Divider(height: 1, indent: 16, endIndent: 16),
-                  buildNewsItem(context, tzgg2),
-                  Divider(height: 1, indent: 16, endIndent: 16),
-                  buildNewsItem(context, tzgg3),
-                  Divider(height: 1, indent: 16, endIndent: 16),
-                  buildNewsItem(context, tzgg4),
-                  Divider(height: 1, indent: 16, endIndent: 16),
-                  buildNewsItem(context, tzgg5),
-                  Divider(height: 1, indent: 16, endIndent: 16),
-                  buildNewsItem(context, tzgg6),
-                ],
-              ):
-              ListTile(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                contentPadding: EdgeInsets.all(16),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.error_outline, color: Theme.of(context).colorScheme.error),
-                    SizedBox(width: 8),
-                    Text(
-                      '无法连接网络，点击刷新',
-                      style: TextStyle(
-                        fontSize: GlobalVars.listTileTitle,
-                        fontWeight: FontWeight.bold,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                '查看本周课表、切换学年、刷新数据',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: GlobalVars.listTileTitle,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 20,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
-                onTap: (){
-                  getNewsList();
-                },
-              )
+              ),
             ),
           ),
-        ):SizedBox(),
-        
-        // 底部间隔
-        SizedBox(height: 20),
-      ],
+          
+          // 便捷生活标题
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  width: 4,
+                  height: 18,
+                  margin: EdgeInsets.only(right: 8),
+                ),
+                Text(
+                  '便捷生活',
+                  style: TextStyle(
+                    fontSize: GlobalVars.dividerTitle,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // 便捷生活功能区
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+              color: Theme.of(context).colorScheme.surfaceDim,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Row(
+                  children: [
+                  Expanded(
+                    child: buildFunctionButton(
+                      context, 
+                      '网费查询', 
+                      'web',
+                      () {
+                        Navigator.push(context, CustomPageRoute(page: SchoolNetworkPage()));
+                      }
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: buildFunctionButton(
+                      context, 
+                      '电费查询', 
+                      'electricity',
+                      () {
+                        if(GlobalVars.emBinded == false){
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                          title: Row(
+                          children: [
+                            Icon(Icons.info),
+                            SizedBox(width: 8),
+                            Text('提示：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle),)
+                          ],
+                          ),
+                          content: Text('您还没有绑定电费账号，\n请先前往 "我的 -> 解/绑电费账号" 绑定后再试',style: TextStyle(fontSize: GlobalVars.alertdialogContent),),
+                          actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('确定'),
+                          ),
+                          ],
+                            ),
+                          );
+                          return;
+                        }else{
+                          Navigator.push(context, CustomPageRoute(page: Electricmeterpage()));
+                        }
+                      }
+                    ),
+                  ),
+                  ],
+                    ),
+                    SizedBox(height: 12),
+                    Row(
+                  children: [
+                  Expanded(
+                    child: buildFunctionButton(
+                      context, 
+                      '我的考试', 
+                      'exam',
+                      () {
+                        Navigator.push(context, CustomPageRoute(page: StdExamPage()));
+                      }
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: buildFunctionButton(
+                      context, 
+                      '我的成绩', 
+                      'grade',
+                      () {
+                        Navigator.push(context, CustomPageRoute(page: StdGradesPage()));
+                      }
+                    ),
+                  ),
+                  ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          
+          // 通知公告标题
+          (GlobalVars.showTzgg)? Container(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  width: 4,
+                  height: 18,
+                  margin: EdgeInsets.only(right: 8),
+                ),
+                Text(
+                  '通知公告',
+                  style: TextStyle(
+                    fontSize: GlobalVars.dividerTitle,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary
+                  ),
+                ),
+              ],
+            ),
+          ):SizedBox(),
+          
+          // 通知公告卡片
+          (GlobalVars.showTzgg)? Container(
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              color: Theme.of(context).colorScheme.surfaceDim,
+              shadowColor: Theme.of(context).colorScheme.onPrimary.withAlpha(77),
+              child: Container(
+                padding: EdgeInsets.all(8),
+                child: isLoading? 
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 40),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: 16),
+                        Text("正在加载通知公告...", 
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontSize: GlobalVars.listTileSubtitle,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ):
+                loadSuccess? Column(
+                  children: [
+                    buildNewsItem(context, tzgg1),
+                    Divider(height: 1, indent: 16, endIndent: 16),
+                    buildNewsItem(context, tzgg2),
+                    Divider(height: 1, indent: 16, endIndent: 16),
+                    buildNewsItem(context, tzgg3),
+                    Divider(height: 1, indent: 16, endIndent: 16),
+                    buildNewsItem(context, tzgg4),
+                    Divider(height: 1, indent: 16, endIndent: 16),
+                    buildNewsItem(context, tzgg5),
+                    Divider(height: 1, indent: 16, endIndent: 16),
+                    buildNewsItem(context, tzgg6),
+                  ],
+                ):
+                ListTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  contentPadding: EdgeInsets.all(16),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error_outline, color: Theme.of(context).colorScheme.error),
+                      SizedBox(width: 8),
+                      Text(
+                        '无法连接网络，点击刷新',
+                        style: TextStyle(
+                          fontSize: GlobalVars.listTileTitle,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  onTap: (){
+                    getNewsList();
+                  },
+                )
+              ),
+            ),
+          ):SizedBox(),
+          
+          // 底部间隔
+          SizedBox(height: 20),
+        ],
+      ),
     );
   }
   
