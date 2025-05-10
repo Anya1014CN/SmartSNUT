@@ -448,32 +448,8 @@ class _LoginPageState extends State<LoginPage>{
       return;
     }
 
-    //读取近两个学期的课表
-    if(GlobalVars.operationCanceled) {
-      GlobalVars.operationCanceled = false;
-      clearTempLogindata();
-      return;
-    }
-    List getCourseTableResponse = await Modules.getCourseTable(-1,-1);
-    if(getCourseTableResponse[0]['statue'] == false){
-      if(mounted){
-        Navigator.pop(context);
-        showDialog(
-          context: context, 
-          builder: (BuildContext context)=>AlertDialog(
-            title: Row(
-              children: [
-                Icon(Icons.error),
-                SizedBox(width: 8,),
-                Text('错误：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
-              ],
-            ),
-            content: Text(getCourseTableResponse[0]['message'],style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
-            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('确定'))],
-          ));
-      }
-      return;
-    }
+    GlobalVars.lastCourseTableRefreshTime = DateTime.now().millisecondsSinceEpoch;
+    await Modules.saveSettings();
     
     if(GlobalVars.operationCanceled) {
       GlobalVars.operationCanceled = false;
