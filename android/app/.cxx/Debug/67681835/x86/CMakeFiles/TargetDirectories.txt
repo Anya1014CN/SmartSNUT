@@ -1,0 +1,2 @@
+D:/SmartSNUT/SmartSNUT/android/app/.cxx/Debug/67681835/x86/CMakeFiles/edit_cache.dir
+D:/SmartSNUT/SmartSNUT/android/app/.cxx/Debug/67681835/x86/CMakeFiles/rebuild_cache.dir
