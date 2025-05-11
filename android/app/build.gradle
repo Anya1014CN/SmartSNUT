@@ -11,20 +11,20 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-android {
-    namespace = "com.anya1014.smartsnut"
+android {    namespace = "com.anya1014.smartsnut"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
-
+    // 使用固定的NDK版本而不是从flutter读取
+    ndkVersion = "25.1.8937393"
+    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-
+    
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
-
+    
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.anya1014.smartsnut"
@@ -34,8 +34,13 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+          // 禁用Flutter延迟组件加载，避免需要Google Play Core库
+        manifestPlaceholders = [
+            flutter_deferred_components_enabled: "false",
+            applicationName: "io.flutter.app.FlutterApplication"
+        ]
     }
-
+    
     signingConfigs {
         release {
             keyAlias = keystoreProperties['keyAlias']
@@ -44,12 +49,20 @@ android {
             storePassword = keystoreProperties['storePassword']
         }
     }
-
+    
     buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
+        release {            // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.release
+            // 启用代码混淆和资源压缩
+            minifyEnabled true
+            shrinkResources true
+            
+            // 使用自定义ProGuard规则，避免混淆友盟SDK
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            
+            // 解决R8处理问题
+            matchingFallbacks = ['release']
         }
     }
     
@@ -60,9 +73,12 @@ android {
 }
 
 dependencies {
-    // 添加友盟统计SDK依赖
+    // 添加友盟统计SDK依赖 - 调整版本以匹配Flutter插件版本1.2.9
     implementation 'com.umeng.umsdk:common:9.5.5'
-    implementation 'com.umeng.umsdk:asms:1.6.0'
+    implementation 'com.umeng.umsdk:asms:1.2.5'
+    
+    // 添加Google Play Core库，解决R8混淆相关问题
+    implementation 'com.google.android.play:core:1.10.3'
 }
 
 flutter {
