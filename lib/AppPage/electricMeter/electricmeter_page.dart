@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/globalvars.dart';
-import 'package:smartsnut/mePage/electricMeterBindPage/electricmeterbind_page.dart';
+import 'package:smartsnut/MePage/electricMeterBindPage/electricmeterbind_page.dart';
 import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 class Electricmeterpage extends StatefulWidget {

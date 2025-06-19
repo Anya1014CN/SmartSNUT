@@ -7,7 +7,7 @@ import 'package:smartsnut/LinkPage/link_page.dart';
 import 'package:smartsnut/function_modules.dart';
 import 'package:smartsnut/splash.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:smartsnut/mePage/me_page.dart';
+import 'package:smartsnut/MePage/me_page.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
