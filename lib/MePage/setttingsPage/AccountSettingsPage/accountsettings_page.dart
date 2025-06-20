@@ -7,6 +7,10 @@ import 'package:smartsnut/login.dart';
 import 'package:smartsnut/MePage/electricMeterBindPage/electricmeterbind_page.dart';
 import 'package:smartsnut/globalvars.dart';
 import 'package:umeng_common_sdk/umeng_common_sdk.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+//用于存储要打开的URL
+Uri url = Uri.parse("uri");
 
 class AccountSettingsPage extends StatefulWidget{
   const AccountSettingsPage({super.key});
@@ -176,6 +180,92 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>{
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: Icon(Icons.password, color: Theme.of(context).colorScheme.primary),
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text('重置密码', style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text('忘记密码？',style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: Row(
+                                children: [
+                                  Icon(Icons.help),
+                                  SizedBox(width: 8),
+                                  Text('询问：', style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+                                ],
+                              ),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('您确定要重置密码吗？', style: TextStyle(fontSize: GlobalVars.alertdialogContent, fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 10),
+                                  Text('重置密码后请务必退出智慧陕理并重新登录，否则可能会导致下列功能无法正常使用', style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text('我的课表',
+                                          style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text('我的考试',
+                                          style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.circle, size: 8, color: Theme.of(context).colorScheme.primary),
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text('我的成绩',
+                                          style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text('取消'),
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Theme.of(context).colorScheme.error,
+                                  ),
+                                  onPressed: (){
+                                    url = Uri.parse('https://authserver.snut.edu.cn/retrieve-password/retrievePassword/index.html');
+                                    launchURL();
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('重置密码'),
+                                ),
+                              ],
+                            ),
+                          );    
+                        },
+                      ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(21),
+                        ),
                         leading: Icon(Icons.logout, color: Theme.of(context).colorScheme.primary),
                         trailing: Icon(Icons.chevron_right),
                         title: Text('退出登录', style: TextStyle(fontSize: GlobalVars.listTileTitle)),
@@ -267,6 +357,40 @@ class _AccountSettingsPageState extends State<AccountSettingsPage>{
       ),
     );
   }
+
+  //打开链接
+  void launchURL() async{
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        scrollable: true,
+        title: Row(
+          children: [
+            Icon(Icons.help),
+            SizedBox(width: 8,),
+            Text('询问：',style: TextStyle(fontSize: GlobalVars.alertdialogTitle))
+          ],
+        ),
+        content: Text('是否要使用系统默认浏览器打开外部链接？\n\n$url',style: TextStyle(fontSize: GlobalVars.alertdialogContent)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('取消'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await launchUrl(url);
+              if(context.mounted){
+                Navigator.pop(context);
+              }
+            },
+            child: Text('确定'),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   //退出登录
   logout() async {
