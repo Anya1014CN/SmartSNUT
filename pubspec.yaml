@@ -145,6 +145,9 @@ flutter:
     - assets/icons/lighttheme/web.png
     - assets/images/logo.png
     - assets/images/WeChatQRCode.png
+    - assets/images/Contributers/Anya1014.jpg
+    - assets/images/Contributers/HuaLiMao-AQ.jpg
+    - assets/images/Contributers/Ruyue..jpg
     
     
   # An image asset can refer to one or more resolution-specific "variants", see

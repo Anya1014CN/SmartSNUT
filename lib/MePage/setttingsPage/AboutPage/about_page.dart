@@ -113,6 +113,55 @@ class _AboutPageState extends State<AboutPage>{
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
                         ),
+                        leading: CircleAvatar(foregroundImage: AssetImage('assets/images/Contributers/anya1014.jpg'),),
+                        title: Text('Anya1014', 
+                          style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text('主开发，UI 设计', 
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
+                      ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(21),
+                        ),
+                        leading: CircleAvatar(foregroundImage: AssetImage('assets/images/Contributers/Ruyue..jpg'),),
+                        title: Text('Ruyue.', 
+                          style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text('UI 设计', 
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
+                      ),
+                      Divider(height: 1, indent: 20, endIndent: 20),
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(21),
+                        ),
+                        leading: CircleAvatar(foregroundImage: AssetImage('assets/images/Contributers/HuaLiMao-AQ.jpg'),),
+                        title: Text('HuaLiMao-AQ', 
+                          style: TextStyle(fontSize: GlobalVars.listTileTitle)),
+                        subtitle: Text('Pad 优化，功能改进', 
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontSize: GlobalVars.listTileSubtitle)),
+                      ),
+                   ],
+                  )
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(21),
+                ),
+                color: Theme.of(context).colorScheme.surfaceDim,
+                shadowColor: Theme.of(context).colorScheme.onPrimary,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(21),
+                        ),
                         leading: Icon(Icons.system_update, color: Theme.of(context).colorScheme.primary),
                         trailing: isCheckingUpdate ? CircularProgressIndicator(strokeWidth: 3) : Icon(Icons.chevron_right),
                         title: Text(isCheckingUpdate ? '正在检查更新，请稍后...' : '检查更新', 
