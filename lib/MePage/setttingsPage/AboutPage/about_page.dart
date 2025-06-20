@@ -613,7 +613,7 @@ class _AboutPageState extends State<AboutPage>{
                 constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.3,
                 ),
-                child: Image.asset('assets/images/WechatQRCode.png',fit: BoxFit.fitWidth),
+                child: Image.asset('assets/images/WeChatQRCode.png',fit: BoxFit.fitWidth),
               )
             ],
           ),
