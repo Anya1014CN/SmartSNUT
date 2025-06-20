@@ -76,9 +76,12 @@ dependencies {
     // 添加友盟统计SDK依赖 - 调整版本以匹配Flutter插件版本1.2.9
     implementation 'com.umeng.umsdk:common:9.5.5'
     implementation 'com.umeng.umsdk:asms:1.2.5'
-    
+
     // 添加Google Play Core库，解决R8混淆相关问题
     implementation 'com.google.android.play:core:1.10.3'
+
+    // AndroidX Core
+    implementation 'androidx.core:core-ktx:1.12.0'
 }
 
 flutter {
