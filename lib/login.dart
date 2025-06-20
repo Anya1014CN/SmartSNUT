@@ -458,7 +458,7 @@ class _LoginPageState extends State<LoginPage>{
     GlobalVars.lastCourseTableRefreshTime = DateTime.now().millisecondsSinceEpoch;
     await Modules.saveSettings();
     await Modules.updateSemestersData();
-    readStdAccount();
+    await readStdAccount();
     String loginsuccesspath = '${(await getApplicationDocumentsDirectory()).path}/SmartSNUT/LoginSuccess';
     File loginsuccessfile = File(loginsuccesspath);
     loginsuccessfile.writeAsString('');
